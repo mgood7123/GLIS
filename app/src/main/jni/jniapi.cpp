@@ -29,28 +29,32 @@
 static ANativeWindow *window = 0;
 static Renderer *renderer = 0;
 
-JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStart(JNIEnv* jenv, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStart(JNIEnv* jenv,
+                                                                                       jclass type)
 {
     LOG_INFO("nativeOnStart");
     renderer = new Renderer();
     return;
 }
 
-JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnResume(JNIEnv* jenv, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnResume(JNIEnv* jenv,
+                                                                                        jclass type)
 {
     LOG_INFO("nativeOnResume");
     renderer->start();
     return;
 }
 
-JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnPause(JNIEnv* jenv, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnPause(JNIEnv* jenv,
+                                                                                       jclass type)
 {
     LOG_INFO("nativeOnPause");
     renderer->stop();
     return;
 }
 
-JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStop(JNIEnv* jenv, jobject obj)
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStop(JNIEnv* jenv,
+                                                                                      jclass type)
 {
     LOG_INFO("nativeOnStop");
     delete renderer;
@@ -58,7 +62,8 @@ JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStop(JNIEn
     return;
 }
 
-JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeSetSurface(JNIEnv* jenv, jobject obj, jobject surface)
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeSetSurface(JNIEnv* jenv,
+                                                                                          jclass type, jobject surface)
 {
     if (surface != 0) {
         window = ANativeWindow_fromSurface(jenv, surface);
