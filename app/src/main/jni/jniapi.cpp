@@ -29,7 +29,7 @@
 static ANativeWindow *window = 0;
 static Renderer *renderer = 0;
 
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStart(JNIEnv* jenv,
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
                                                                                        jclass type)
 {
     LOG_INFO("nativeOnStart");
@@ -37,7 +37,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeO
     return;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnResume(JNIEnv* jenv,
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnResume(JNIEnv* jenv,
                                                                                         jclass type)
 {
     LOG_INFO("nativeOnResume");
@@ -45,7 +45,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeO
     return;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnPause(JNIEnv* jenv,
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnPause(JNIEnv* jenv,
                                                                                        jclass type)
 {
     LOG_INFO("nativeOnPause");
@@ -53,7 +53,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeO
     return;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeOnStop(JNIEnv* jenv,
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,
                                                                                       jclass type)
 {
     LOG_INFO("nativeOnStop");
@@ -62,7 +62,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeO
     return;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeEglExample_nativeSetSurface(JNIEnv* jenv,
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
                                                                                           jclass type, jobject surface)
 {
     if (surface != 0) {

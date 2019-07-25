@@ -1,6 +1,7 @@
 package glnative.example
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import android.view.Surface
@@ -9,19 +10,35 @@ import android.view.SurfaceHolder
 import android.view.View
 import android.view.View.OnClickListener
 import android.util.Log
+import android.widget.RelativeLayout
+import android.widget.TextView
 
 
-class NativeEglExample : Activity(), SurfaceHolder.Callback {
+class NativeEglExample : Activity() {
+
+    var n: NativeView? = null;
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.i(TAG, "onCreate()")
+        if (n == null) n = NativeView(applicationContext);
 
-        setContentView(R.layout.activity_main)
-        val surfaceView = findViewById<View>(R.id.surfaceview) as SurfaceView
-        surfaceView.holder.addCallback(this)
-        surfaceView.setOnClickListener {
+        Log.i(n!!.TAG, "onCreate()")
+
+        // build layout
+        val rel = RelativeLayout(applicationContext)
+        rel.addView(n!!.surfaceView!!)
+
+        val text = TextView(applicationContext);
+        text.text = "Hello World! Try clicking the screen"
+        text.setTextSize(60f)
+        text.setTextColor(Color.WHITE)
+        rel.addView(text)
+
+        // set layout
+        setContentView(rel)
+
+        n!!.surfaceView!!.setOnClickListener {
             val toast = Toast.makeText(this@NativeEglExample,
                     "This demo combines Java UI and native EGL + OpenGL renderer",
                     Toast.LENGTH_LONG)
@@ -31,52 +48,25 @@ class NativeEglExample : Activity(), SurfaceHolder.Callback {
 
     override fun onStart() {
         super.onStart()
-        Log.i(TAG, "onStart()")
-        nativeOnStart()
+        Log.i(n!!.TAG, "onStart()")
+        n!!.nativeOnStart()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.i(TAG, "onResume()")
-        nativeOnResume()
+        Log.i(n!!.TAG, "onResume()")
+        n!!.nativeOnResume()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i(TAG, "onPause()")
-        nativeOnPause()
+        Log.i(n!!.TAG, "onPause()")
+        n!!.nativeOnPause()
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i(TAG, "onStop()")
-        nativeOnStop()
+        Log.i(n!!.TAG, "onStop()")
+        n!!.nativeOnStop()
     }
-
-    override fun surfaceChanged(holder: SurfaceHolder, format: Int, w: Int, h: Int) {
-        nativeSetSurface(holder.surface)
-    }
-
-    override fun surfaceCreated(holder: SurfaceHolder) {}
-
-    override fun surfaceDestroyed(holder: SurfaceHolder) {
-        nativeSetSurface(null)
-    }
-
-    // move these out of the companion object to avoid needing to rename JNI methods to Java_glnative_example_NativeEglExample_00024Companion
-    external fun nativeOnStart()
-    external fun nativeOnResume()
-    external fun nativeOnPause()
-    external fun nativeOnStop()
-    external fun nativeSetSurface(surface: Surface?)
-
-    companion object {
-
-        private val TAG = "EglSample"
-
-        init {
-            System.loadLibrary("nativeegl")
-        }
-    }
-
 }
