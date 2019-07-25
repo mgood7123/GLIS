@@ -8,7 +8,6 @@ import android.view.SurfaceView
 
 class NativeView(val context: Context) {
     val TAG = "EglSample"
-    val nativeView = this
     external fun nativeOnStart()
     external fun nativeOnResume()
     external fun nativeOnPause()
