@@ -39,7 +39,7 @@
 struct GLINITIALIZATIONSTRUCTURE WM[2];
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
-                                                                                          jclass type, jobject surface)
+                                                                                    jclass type, jobject surface)
 {
     if (surface != nullptr) {
         WM[0].native_window = ANativeWindow_fromSurface(jenv, surface);
@@ -88,16 +88,7 @@ bool initialize(int index)
     if (!init_display(WM[index])) destroy(index);
     if (!init_config(WM[index])) destroy(index);
     if (!init_surface(WM[index])) destroy(index);
-    if (index == 0) {
-        if (!create_context(WM[index])) destroy(index);
-    } else {
-        if (!(WM[1].context = eglCreateContext(WM[1].display, WM[1].configs, WM[0].context,
-                                               nullptr))) {
-            LOG_ERROR("eglCreateContext() returned error %d", eglGetError());
-            destroy(1);
-            return false;
-        }
-    }
+    if (!create_context(WM[index])) destroy(index);
     if (!switch_to_context(WM[index])) destroy(index);
     if (!get_width_height(WM[index])) destroy(index);
 
@@ -188,6 +179,9 @@ void Xmain(struct window *window) {
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices);
 
         _angle += 1.2f;
+        if (!eglSwapBuffers(WM[window->index].display, WM[window->index].surface)) { // this WILL NOT support multiple windows
+            LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
+        }
     }
 }
 
@@ -199,32 +193,15 @@ void * ptm(void * arg) {
     return nullptr;
 }
 
-void * X (void * args) {
-    long _threadId1;
-    long _threadId2;
+
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
+                                                                                    jclass type)
+{
+    long _threadId;
     struct window * w1 = new struct window;
     *w1 = {0,0,0,500,500};
     struct window * w2 = new struct window;
     *w2 = {1,500,500,500,500};
-    pthread_create(&_threadId1, nullptr, ptm, w1);
-    pthread_create(&_threadId2, nullptr, ptm, w2);
-    while(true) {
-        if (WM[0].display) {
-            if (!eglSwapBuffers(WM[0].display, WM[0].surface)) { // this WILL NOT support multiple windows
-                LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-            }
-        }
-        if (WM[1].display) {
-            if (!eglSwapBuffers(WM[1].display, WM[1].surface)) { // this WILL NOT support multiple windows
-                LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-            }
-        }
-    }
-}
-
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
-                                                                                 jclass type)
-{
-    long _threadId0;
-    pthread_create(&_threadId0, nullptr, X, nullptr);
+    pthread_create(&_threadId, nullptr, ptm, w1);
+    //    pthread_create(&_threadId, nullptr, ptm, w2);
 }

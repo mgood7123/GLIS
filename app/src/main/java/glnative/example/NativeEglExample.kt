@@ -51,22 +51,4 @@ class NativeEglExample : Activity() {
         Log.i(n!!.TAG, "onStart()")
         n!!.nativeOnStart()
     }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i(n!!.TAG, "onResume()")
-        n!!.nativeOnResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i(n!!.TAG, "onPause()")
-        n!!.nativeOnPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i(n!!.TAG, "onStop()")
-        n!!.nativeOnStop()
-    }
 }
