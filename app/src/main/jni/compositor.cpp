@@ -29,7 +29,7 @@
 #include <android/native_window_jni.h> // requires ndk r5 or newer
 #include <pthread.h>
 
-#include "jniapi.h"
+#include "compositor.h"
 #include "logger.h"
 #include "GLA.h"
 #include <vector>
@@ -93,62 +93,99 @@ bool initialize(int index)
     if (!get_width_height(WM[index])) destroy(index);
 
     LOG_INFO("Initialized");
-
-    glDisable(GL_DITHER);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_SCISSOR_TEST);
     return true;
 }
 
 bool makeWindow(int index, int x, int y, size_t w, size_t h) {
-    // glScissorArray and glViewportArray
-    glScissor(static_cast<GLint>(x),static_cast<GLint>(y), static_cast<GLsizei>(w),static_cast<GLsizei>(h));
+    GLint X = static_cast<GLint>(x);
+    GLint Y = static_cast<GLint>(y);
+    GLsizei W = static_cast<GLsizei>(w);
+    GLsizei H = static_cast<GLsizei>(h);
+    GLuint frameBuffer;
+    glGenFramebuffers(1, &frameBuffer);
+    /* bind buffers */
+    GLuint rboDepthStencil;
+    glGenRenderbuffers(1, &rboDepthStencil);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, W, H);
+    GLenum enu = glCheckFramebufferStatus(1);
+    LOG_INFO("enu: %d", enu);
+    switch(enu) {
+        case GL_FRAMEBUFFER_COMPLETE: {
+            LOG_INFO("GL_FRAMEBUFFER_COMPLETE");
+            break;
+        }
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: {
+            LOG_INFO("GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+            break;
+        }
+        case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: {
+            LOG_INFO("GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS");
+            break;
+        }
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: {
+            LOG_INFO("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+            break;
+        }
+        case GL_FRAMEBUFFER_UNSUPPORTED: {
+            LOG_INFO("GL_FRAMEBUFFER_UNSUPPORTED");
+            break;
+        }
+        case GL_INVALID_ENUM: {
+            LOG_INFO("GL_INVALID_ENUM");
+            break;
+        }
+        case 0: {
+            GLenum en = glGetError();
+            LOG_INFO("en: %d", en);
+            switch (en) {
+                case GL_NO_ERROR: {
+                    LOG_INFO("GL_NO_ERROR");
+                    break;
+                }
+                case GL_INVALID_ENUM: {
+                    LOG_INFO("GL_INVALID_ENUM");
+                    break;
+                }
+                case GL_INVALID_VALUE: {
+                    LOG_INFO("GL_INVALID_VALUE");
+                    break;
+                }
+                case GL_INVALID_OPERATION: {
+                    LOG_INFO("GL_INVALID_OPERATION");
+                    break;
+                }
+                case GL_INVALID_FRAMEBUFFER_OPERATION: {
+                    LOG_INFO("GL_INVALID_FRAMEBUFFER_OPERATION");
+                    break;
+                }
+                case GL_OUT_OF_MEMORY: {
+                    LOG_INFO("GL_OUT_OF_MEMORY");
+                    break;
+                }
+                default: {
+                    LOG_INFO("unknown error: %d", en);
+                    break;
+                }
+            }
+            break;
+        }
+        default: {
+            LOG_INFO("unknown return value: %d", enu);
+            break;
+        }
+    }
+//    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+    glDeleteFramebuffers(1, &frameBuffer);
+//    glEnable(GL_SCISSOR_TEST);
+//    glScissor(X,Y,W,H);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-    glViewport(static_cast<GLint>(x), static_cast<GLint>(y), static_cast<GLsizei>(w), static_cast<GLsizei>(h));
-
-    GLfloat ratio;
-    ratio = (GLfloat) WM[index].width / WM[index].height;
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustumf(-ratio, ratio, -1, 1, 1, 10);
+    glClear(GL_COLOR_BUFFER_BIT);
+    if (!eglSwapBuffers(WM[index].display, WM[index].surface)) {
+        LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
+    }
     return true;
 }
-
-static GLint vertices[][3] = {
-        { -0x10000, -0x10000, -0x10000 },
-        {  0x10000, -0x10000, -0x10000 },
-        {  0x10000,  0x10000, -0x10000 },
-        { -0x10000,  0x10000, -0x10000 },
-        { -0x10000, -0x10000,  0x10000 },
-        {  0x10000, -0x10000,  0x10000 },
-        {  0x10000,  0x10000,  0x10000 },
-        { -0x10000,  0x10000,  0x10000 }
-};
-
-static GLint colors[][4] = {
-        { 0x00000, 0x00000, 0x00000, 0x10000 },
-        { 0x10000, 0x00000, 0x00000, 0x10000 },
-        { 0x10000, 0x10000, 0x00000, 0x10000 },
-        { 0x00000, 0x10000, 0x00000, 0x10000 },
-        { 0x00000, 0x00000, 0x10000, 0x10000 },
-        { 0x10000, 0x00000, 0x10000, 0x10000 },
-        { 0x10000, 0x10000, 0x10000, 0x10000 },
-        { 0x00000, 0x10000, 0x10000, 0x10000 }
-};
-
-GLubyte indices[] = {
-        0, 4, 5,    0, 5, 1,
-        1, 5, 6,    1, 6, 2,
-        2, 6, 7,    2, 7, 3,
-        3, 7, 4,    3, 4, 0,
-        4, 7, 6,    4, 6, 5,
-        3, 0, 1,    3, 1, 2
-};
-
-GLfloat _angle;
 
 struct window{
     int index;
@@ -161,28 +198,6 @@ struct window{
 void Xmain(struct window *window) {
     initialize(window->index); // initialization MUST occur in the thread
     makeWindow(window->index, window->x,window->y,window->w,window->h);
-    while(WM[window->index].native_window != nullptr) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glTranslatef(0.0f, 0.0f, -3.0f);
-        glRotatef(_angle, 0.0f, 1.0f, 0.0f);
-        glRotatef(_angle * 0.25f, 1.0f, 0.0f, 0.0f);
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
-
-        glFrontFace(GL_CW);
-        glVertexPointer(3, GL_FIXED, 0, vertices);
-        glColorPointer(4, GL_FIXED, 0, colors);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices);
-
-        _angle += 1.2f;
-        if (!eglSwapBuffers(WM[window->index].display, WM[window->index].surface)) { // this WILL NOT support multiple windows
-            LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-        }
-    }
 }
 
 void * ptm(void * arg) {
@@ -202,6 +217,6 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
     *w1 = {0,0,0,500,500};
     struct window * w2 = new struct window;
     *w2 = {1,500,500,500,500};
-    pthread_create(&_threadId, nullptr, ptm, w1);
-    //    pthread_create(&_threadId, nullptr, ptm, w2);
+//    pthread_create(&_threadId, nullptr, ptm, w1);
+        pthread_create(&_threadId, nullptr, ptm, w2);
 }
