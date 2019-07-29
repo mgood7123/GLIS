@@ -80,7 +80,8 @@ struct window{
 
 void Xmain(struct window *window) {
     if (GLIS_setupOnScreenRendering(Compositor[window->index])) {
-        makeWindow(window->index, window->x,window->y,window->w,window->h);
+//    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h)) {
+        makeWindow(window->index, window->x, window->y, window->w, window->h);
     }
 }
 
