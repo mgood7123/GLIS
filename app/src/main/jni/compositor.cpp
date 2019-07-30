@@ -31,7 +31,7 @@
 
 #include "compositor.h"
 #include "logger.h"
-#include "GLA.h"
+#include "GLIS.h"
 #include <vector>
 
 #define LOG_TAG "EglSample"
