@@ -81,7 +81,94 @@ struct window{
 void Xmain(struct window *window) {
 //    if (GLIS_setupOnScreenRendering(Compositor[window->index])) {
     if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h)) {
-        makeWindow(window->index, window->x, window->y, window->w, window->h);
+        GLIS_error_to_string();
+        GLuint vbo; // VBO
+        float vertices[] = {
+                0.0f,  0.5f, // Vertex 1 (X, Y)
+                0.5f, -0.5f, // Vertex 2 (X, Y)
+                -0.5f, -0.5f  // Vertex 3 (X, Y)
+        };
+        GLuint vertexShader;
+        GLuint tex; // TEXTURE
+        // VBO
+        {
+            glGenBuffers(1, &vbo); // Generate 1 buffer
+            GLIS_error_to_string();
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            GLIS_error_to_string();
+            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+            GLIS_error_to_string();
+        }
+        // SHADER
+        {
+            const char* vertexSource = R"glsl(
+    #version 150 core
+
+    in vec2 position;
+
+    void main()
+    {
+        gl_Position = vec4(position, 0.0, 1.0);
+    }
+)glsl";
+            // params returns a single boolean value indicating whether a shader compiler is supported.
+            // GL_FALSE indicates that any call to glShaderSource, glCompileShader, or glReleaseShaderCompiler
+            // will result in a GL_INVALID_OPERATION error being generated.
+            GLboolean GLSC_supported;
+            glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported);
+            LOG_INFO("Supports Shader Compiler: %s", GLSC_supported == GL_TRUE ? "true" : "false");
+            LOG_INFO("Creating Shader");
+            vertexShader = glCreateShader(GL_VERTEX_SHADER);
+            GLIS_error_to_string();
+            GLint status;
+            glShaderSource(vertexShader, 1, &vertexSource, &status);
+            LOG_INFO("Compiling Shader");
+            glCompileShader(vertexShader);
+            GLIS_error_to_string();
+            char buffer[512];
+            glGetShaderInfoLog(vertexShader, 512, nullptr, buffer);
+            LOG_INFO("glCompileShader log: '%s'", buffer);
+            GLIS_error_to_string();
+            LOG_INFO("Creating Shader program");
+            GLuint shaderProgram = glCreateProgram();
+            GLIS_error_to_string();
+            LOG_INFO("Attaching Shader to program");
+            glAttachShader(shaderProgram, vertexShader);
+            GLIS_error_to_string();
+            LOG_INFO("Linking Shader program");
+            glLinkProgram(shaderProgram);
+            GLIS_error_to_string();
+            LOG_INFO("Using Shader program");
+            glUseProgram(shaderProgram);
+            GLIS_error_to_string();
+            GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+            glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            glEnableVertexAttribArray(posAttrib);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+        }
+        // TEXTURE
+        {
+//            glGenTextures(1, &tex);
+//            GLIS_error_to_string();
+//            glBindTexture(GL_TEXTURE_2D, tex);
+//            GLIS_error_to_string();
+//            // wrapping
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+//            // filtering
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//            GLIS_error_to_string();
+//            // load texture
+//            // Black/white checkerboard
+//            float pixels[] = {
+//                    0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+//                    1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f
+//            };
+//            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);
+//            GLIS_error_to_string();
+        }
+//        makeWindow(window->index, window->x, window->y, window->w, window->h);
     }
 }
 
