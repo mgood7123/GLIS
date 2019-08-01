@@ -29,11 +29,7 @@ class NativeEglExample : Activity() {
         val rel = RelativeLayout(applicationContext)
         rel.addView(n!!.surfaceView!!)
 
-        val text = TextView(applicationContext);
-        text.text = "Hello World! Try clicking the screen"
-        text.setTextSize(60f)
-        text.setTextColor(Color.WHITE)
-        rel.addView(text)
+        // DO NOT add text!, adding text will incure screen burn when displayed for long periods of time
 
         // set layout
         setContentView(rel)
