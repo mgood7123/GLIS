@@ -108,6 +108,32 @@ void Xmain(struct window *window) {
         else
             LOG_INFO("framebuffer is complete");
 
+        // create a new texture
+        GLuint renderedTexture;
+        GLIS_error_to_string_exec(glGenTextures(1, &renderedTexture));
+        GLIS_error_to_string_exec(glBindTexture(GL_TEXTURE_2D, renderedTexture));
+        GLIS_error_to_string_exec(glTexImage2D(GL_TEXTURE_2D,
+                                               0,
+                                               GL_RGBA,
+                                               Compositor[window->index].width,
+                                               Compositor[window->index].height,
+                                               0,
+                                               GL_RGBA,
+                                               GL_UNSIGNED_BYTE,
+                                               0));
+        GLIS_error_to_string_exec(glGenerateMipmap(GL_TEXTURE_2D));
+        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        // Set "renderedTexture" as our colour attachement #0
+        GLIS_error_to_string_exec(glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0));
+        // Set the list of draw buffers.
+        GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+        GLIS_error_to_string_exec(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
+
+        // draw something to the texture
+        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+
         // bind system framebuffer
         GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
@@ -123,25 +149,102 @@ void Xmain(struct window *window) {
         GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
         GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
 
+        // render texture
 
-        // copy FBO to FBO
-        GLIS_error_to_string_exec(glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOID));
-        GLIS_error_to_string_exec(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+        GLuint shaderProgram, vertexShader, fragmentShader;
+        // SHADER PART 1
+        {
+            const char *vertexSource = R"glsl( #version 320 es
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
 
-        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-            LOG_ERROR("framebuffer is not complete");
-        else
-            LOG_INFO("framebuffer is complete");
+out vec3 ourColor;
+out vec2 TexCoord;
 
-        GLIS_error_to_string_exec(glBlitFramebuffer(window->x, window->y, window->w + window->x, window->h + window->y,             // src rect
-                                                    window->x, window->y, window->w + window->x, window->h + window->y,             // dst rect
-                                                    GL_COLOR_BUFFER_BIT,        // buffer mask
-                                                    GL_NEAREST));               // scale filter
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+)glsl";
 
-        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-            LOG_ERROR("framebuffer is not complete");
-        else
-            LOG_INFO("framebuffer is complete");
+            const char *fragmentSource = R"glsl( #version 320 es
+out highp vec4 FragColor;
+
+in highp vec3 ourColor;
+in highp vec2 TexCoord;
+
+uniform sampler2D ourTexture;
+
+void main()
+{
+    FragColor = texture(ourTexture, TexCoord);
+}
+)glsl";
+
+            vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+            fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+            LOG_INFO("Creating Shader program");
+            shaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+            LOG_INFO("Attaching vertex Shader to program");
+            GLIS_error_to_string_exec(glAttachShader(shaderProgram, vertexShader));
+            LOG_INFO("Attaching fragment Shader to program");
+            GLIS_error_to_string_exec(glAttachShader(shaderProgram, fragmentShader));
+            LOG_INFO("Linking Shader program");
+            GLIS_error_to_string_exec(glLinkProgram(shaderProgram));
+            LOG_INFO("Validating Shader program");
+            GLboolean ProgramIsValid = GLIS_error_to_string_exec(
+                GLIS_validate_program(shaderProgram));
+            assert(ProgramIsValid == GL_TRUE);
+        }
+        // set up vertex data (and buffer(s)) and configure vertex attributes
+        // ------------------------------------------------------------------
+        float vertices[] = {
+            // positions          // colors           // texture coords
+            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+        };
+        unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+        };
+        unsigned int VBO, VAO, EBO;
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+
+        glBindVertexArray(VAO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        // color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+        // texture coord attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        // SHADER PART 2
+        {
+            LOG_INFO("Using Shader program");
+            GLIS_error_to_string_exec(glUseProgram(shaderProgram));
+
+            glBindTexture(GL_TEXTURE_2D, renderedTexture);
+            GLIS_error_to_string_exec(glBindVertexArray(VAO));
+            GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+            GLIS_error_to_string_exec(glBindVertexArray(0));
+
+        }
 
         // display system framebuffer
         if (!eglSwapBuffers(Compositor[window->index].display,
@@ -171,7 +274,7 @@ void * COMPOSITORMAIN(void * arg) {
 //        struct window *w1 = new struct window;
 //        *w1 = {0, 0, 0, 500, 500};
         auto *w2 = new struct window;
-        *w2 = {1, 500, 500, 500, 500, CompositorMain.context};
+        *w2 = {1, 0,0,200,200, CompositorMain.context};
 //        pthread_create(&_threadId1, nullptr, ptm, w1);
         LOG_INFO("starting test application");
         pthread_create(&_threadId2, nullptr, ptm, w2);
