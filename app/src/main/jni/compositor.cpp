@@ -77,125 +77,94 @@ struct window{
     EGLContext MainContext;
 };
 
-int METHOD = 1;
-
 void Xmain(struct window *window) {
     if (GLIS_setupOnScreenRendering(Compositor[window->index], window->MainContext)) {
+//    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
         GLIS_error_to_string();
         // TODO: Xorg uses Textures to render, specifically Xorg renders FROM textures and DOES NOT modify them
-        if (METHOD == 2) {
-            GLuint frameBuffer;
-            GLIS_error_to_string_exec(glGenFramebuffers(1, &frameBuffer));
-            GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer));
+        GLuint rboColorId;
+        GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboColorId));
+        GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboColorId));
+        GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB8, Compositor[window->index].width, Compositor[window->index].height));
 
-            GLuint rboDepthStencil;
-            GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboDepthStencil));
-            GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboDepthStencil));
-            GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, window->w, window->h));
+        GLuint rboDepthId;
+        GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboDepthId));
+        GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboDepthId));
+        GLIS_error_to_string_exec(
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32F, Compositor[window->index].width, Compositor[window->index].height));
 
-            GLIS_error_to_string_exec(glFramebufferRenderbuffer(
-                    GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboDepthStencil
-            ));
+        GLuint FBOID;
+        GLIS_error_to_string_exec(glGenFramebuffers(1, &FBOID));
+        GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
 
-            GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer));
+        // attach colorbuffer image to FBO
+        GLIS_error_to_string_exec(
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER,       // 1. fbo target: GL_FRAMEBUFFER
+                                      GL_COLOR_ATTACHMENT0, // 2. color attachment point
+                                      GL_RENDERBUFFER,      // 3. rbo target: GL_RENDERBUFFER
+                                      rboColorId));          // 4. rbo ID
 
-            GLenum FramebufferStatus = GLIS_error_to_string_exec(glCheckFramebufferStatus(GL_FRAMEBUFFER));
+        // attach depthbuffer image to FBO
+        GLIS_error_to_string_exec(
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER,       // 1. fbo target: GL_FRAMEBUFFER
+                                      GL_DEPTH_ATTACHMENT,  // 2. depth attachment point
+                                      GL_RENDERBUFFER,      // 3. rbo target: GL_RENDERBUFFER
+                                      rboDepthId));          // 4. rbo ID
+
+        GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
+
+        GLenum FramebufferStatus = GLIS_error_to_string_exec(
+            glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+            LOG_ERROR("framebuffer is not complete");
+        else {
+            LOG_INFO("framebuffer is complete");
+
+            // clear framebuffer
+            GLIS_error_to_string_exec(glClearColor(0.0F, 0.0F, 0.0F, 1.0F));
+            GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+
+            // bind system framebuffer
+            GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
+            GLenum FramebufferStatus = GLIS_error_to_string_exec(
+                glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
             if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
                 LOG_ERROR("framebuffer is not complete");
-            else {
+            else
                 LOG_INFO("framebuffer is complete");
-                GLIS_error_to_string_exec(glEnable(GL_SCISSOR_TEST));
-                GLIS_error_to_string_exec(glScissor(window->x, window->y, window->w, window->h));
-                GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
-                GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
-//            makeWindow(window->index, window->x, window->y, window->w, window->h);
-            }
-        } else if (METHOD == 1) {
-            GLuint vbo; // VBO
-            float vertices[] = {
-                    0.0F, 0.5F, // Vertex 1 (X, Y)
-                    0.5F, -0.5F, // Vertex 2 (X, Y)
-                    -0.5F, -0.5F  // Vertex 3 (X, Y)
-            };
-            GLuint vertexShader;
-            GLuint fragmentShader;
-            GLuint tex; // TEXTURE
-            // VBO
-            {
-                GLIS_error_to_string_exec(glGenBuffers(1, &vbo)); // Generate 1 buffer
-                GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, vbo));
-                GLIS_error_to_string_exec(
-                        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW));
-            }
-            // SHADER
-            {
-                const char *vertexSource = R"glsl( #version 320 es
-in vec2 position;
-void main()
-{
-    gl_Position = vec4(position, 0.0, 1.0);
-} )glsl";
 
-                const char *fragmentSource = R"glsl( #version 320 es
-out lowp vec4 outColor;
-uniform sampler2D tex;
-void main()
-{
-    outColor = vec4(1.0, 1.0, 1.0, 1.0);
+            // clear framebuffer
+            GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
+            GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
 
-} )glsl";
 
-                vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-                fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
-                LOG_INFO("Creating Shader program");
-                GLuint shaderProgram = GLIS_error_to_string_exec(glCreateProgram());
-                LOG_INFO("Attaching vertex Shader to program");
-                GLIS_error_to_string_exec(glAttachShader(shaderProgram, vertexShader));
-                LOG_INFO("Attaching fragment Shader to program");
-                GLIS_error_to_string_exec(glAttachShader(shaderProgram, fragmentShader));
-                LOG_INFO("Linking Shader program");
-                GLIS_error_to_string_exec(glLinkProgram(shaderProgram));
-                LOG_INFO("Validating Shader program");
-                GLboolean ProgramIsValid = GLIS_error_to_string_exec(GLIS_validate_program(shaderProgram));
-                assert(ProgramIsValid == GL_TRUE);
-                LOG_INFO("Using Shader program");
-                GLIS_error_to_string_exec(glUseProgram(shaderProgram));
-                GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-                GLIS_error_to_string_exec(
-                        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, nullptr));
-                GLIS_error_to_string_exec(glEnableVertexAttribArray(posAttrib));
-                GLIS_error_to_string_exec(glDrawArrays(GL_TRIANGLES, 0, 3));
-            }
-            // TEXTURE
-            {
-                GLIS_error_to_string_exec(glGenTextures(1, &tex));
-                GLIS_error_to_string_exec(glBindTexture(GL_TEXTURE_2D, tex));
-                // wrapping
-                GLIS_error_to_string_exec(
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-                GLIS_error_to_string_exec(
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-                // filtering
-                GLIS_error_to_string_exec(
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-                GLIS_error_to_string_exec(
-                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-                // load texture
-                // Black/white checkerboard
-                float pixels[] = {
-                        0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F,
-                        1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F
-                };
-                GLIS_error_to_string_exec(
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 2, 2, 0, GL_RGBA, GL_FLOAT, pixels)
-                );
-                GLIS_error_to_string_exec(
-                    eglSwapBuffers(
-                        Compositor[window->index].display,
-                        Compositor[window->index].surface
-                    )
-                );
+
+            // SHOULD copy a black square into system frame buffer
+            GLIS_error_to_string_exec(glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOID));
+            GLIS_error_to_string_exec(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+
+            if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+                LOG_ERROR("framebuffer is not complete");
+            else
+                LOG_INFO("framebuffer is complete");
+
+            GLIS_error_to_string_exec(glBlitFramebuffer(window->x, window->y, window->w + window->x, window->h + window->y,             // src rect
+                                                        window->x, window->y, window->w + window->x, window->h + window->y,             // dst rect
+                                                        GL_COLOR_BUFFER_BIT,        // buffer mask
+                                                        GL_NEAREST));               // scale filter
+
+            if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+                LOG_ERROR("framebuffer is not complete");
+            else
+                LOG_INFO("framebuffer is complete");
+
+            // display system framebuffer
+            if (!eglSwapBuffers(Compositor[window->index].display,
+                                Compositor[window->index].surface)) {
+                LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
             }
         }
     }
