@@ -82,35 +82,22 @@ void Xmain(struct window *window) {
 //    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
         GLIS_error_to_string();
         // TODO: Xorg uses Textures to render, specifically Xorg renders FROM textures and DOES NOT modify them
-        GLuint rboColorId;
-        GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboColorId));
-        GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboColorId));
-        GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB8, Compositor[window->index].width, Compositor[window->index].height));
 
-        GLuint rboDepthId;
-        GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboDepthId));
-        GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboDepthId));
-        GLIS_error_to_string_exec(
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32F, Compositor[window->index].width, Compositor[window->index].height));
-
+        // create a new frame buffer
         GLuint FBOID;
         GLIS_error_to_string_exec(glGenFramebuffers(1, &FBOID));
         GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
-
-        // attach colorbuffer image to FBO
-        GLIS_error_to_string_exec(
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER,       // 1. fbo target: GL_FRAMEBUFFER
-                                      GL_COLOR_ATTACHMENT0, // 2. color attachment point
-                                      GL_RENDERBUFFER,      // 3. rbo target: GL_RENDERBUFFER
-                                      rboColorId));          // 4. rbo ID
-
-        // attach depthbuffer image to FBO
-        GLIS_error_to_string_exec(
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER,       // 1. fbo target: GL_FRAMEBUFFER
-                                      GL_DEPTH_ATTACHMENT,  // 2. depth attachment point
-                                      GL_RENDERBUFFER,      // 3. rbo target: GL_RENDERBUFFER
-                                      rboDepthId));          // 4. rbo ID
-
+        GLuint rboColorId;
+        GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboColorId));
+        GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboColorId));
+        GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER,
+                                                        GL_RGB8,
+                                                        Compositor[window->index].width,
+                                                        Compositor[window->index].height));
+        GLIS_error_to_string_exec(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
+                                                            GL_COLOR_ATTACHMENT0,
+                                                            GL_RENDERBUFFER,
+                                                            rboColorId));
         GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
 
         GLenum FramebufferStatus = GLIS_error_to_string_exec(
@@ -118,54 +105,48 @@ void Xmain(struct window *window) {
 
         if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
             LOG_ERROR("framebuffer is not complete");
-        else {
+        else
             LOG_INFO("framebuffer is complete");
 
-            // clear framebuffer
-            GLIS_error_to_string_exec(glClearColor(0.0F, 0.0F, 0.0F, 1.0F));
-            GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+        // bind system framebuffer
+        GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
-            // bind system framebuffer
-            GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+        FramebufferStatus = GLIS_error_to_string_exec(
+            glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
-            GLenum FramebufferStatus = GLIS_error_to_string_exec(
-                glCheckFramebufferStatus(GL_FRAMEBUFFER));
+        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+            LOG_ERROR("framebuffer is not complete");
+        else
+            LOG_INFO("framebuffer is complete");
 
-            if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-                LOG_ERROR("framebuffer is not complete");
-            else
-                LOG_INFO("framebuffer is complete");
-
-            // clear framebuffer
-            GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
-            GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+        // clear framebuffer
+        GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
 
 
+        // copy FBO to FBO
+        GLIS_error_to_string_exec(glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOID));
+        GLIS_error_to_string_exec(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
 
-            // SHOULD copy a black square into system frame buffer
-            GLIS_error_to_string_exec(glBindFramebuffer(GL_READ_FRAMEBUFFER, FBOID));
-            GLIS_error_to_string_exec(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+            LOG_ERROR("framebuffer is not complete");
+        else
+            LOG_INFO("framebuffer is complete");
 
-            if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-                LOG_ERROR("framebuffer is not complete");
-            else
-                LOG_INFO("framebuffer is complete");
+        GLIS_error_to_string_exec(glBlitFramebuffer(window->x, window->y, window->w + window->x, window->h + window->y,             // src rect
+                                                    window->x, window->y, window->w + window->x, window->h + window->y,             // dst rect
+                                                    GL_COLOR_BUFFER_BIT,        // buffer mask
+                                                    GL_NEAREST));               // scale filter
 
-            GLIS_error_to_string_exec(glBlitFramebuffer(window->x, window->y, window->w + window->x, window->h + window->y,             // src rect
-                                                        window->x, window->y, window->w + window->x, window->h + window->y,             // dst rect
-                                                        GL_COLOR_BUFFER_BIT,        // buffer mask
-                                                        GL_NEAREST));               // scale filter
+        if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+            LOG_ERROR("framebuffer is not complete");
+        else
+            LOG_INFO("framebuffer is complete");
 
-            if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
-                LOG_ERROR("framebuffer is not complete");
-            else
-                LOG_INFO("framebuffer is complete");
-
-            // display system framebuffer
-            if (!eglSwapBuffers(Compositor[window->index].display,
-                                Compositor[window->index].surface)) {
-                LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-            }
+        // display system framebuffer
+        if (!eglSwapBuffers(Compositor[window->index].display,
+                            Compositor[window->index].surface)) {
+            LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
         }
     }
 }
