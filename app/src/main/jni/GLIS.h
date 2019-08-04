@@ -687,36 +687,36 @@ class GLIS_coordinates<TYPETO> GLIS_convertPair(TYPETO TYPETO_INITIALIZER, TYPEF
 }
 
 template <typename TYPE>
-struct quater_position {
+struct GLIS_quater_position {
     TYPE x;
     TYPE y;
     TYPE z;
 };
 
 template <typename TYPE>
-struct quater_color {
+struct GLIS_quater_color {
     TYPE R;
     TYPE B;
     TYPE G;
 };
 
 template <typename TYPE>
-struct quater {
-    struct quater_position<TYPE> position;
-    struct quater_color<TYPE> color;
-    struct quater_position<TYPE> texture_position;
+struct GLIS_quater {
+    struct GLIS_quater_position<TYPE> position;
+    struct GLIS_quater_color<TYPE> color;
+    struct GLIS_quater_position<TYPE> texture_position;
 };
 
 template <typename TYPE>
-struct vertex_map_rectangle {
-    struct quater<TYPE> top_right;
-    struct quater<TYPE> bottom_right;
-    struct quater<TYPE> bottom_left;
-    struct quater<TYPE> top_left;
+struct GLIS_vertex_map_rectangle {
+    struct GLIS_quater<TYPE> top_right;
+    struct GLIS_quater<TYPE> bottom_right;
+    struct GLIS_quater<TYPE> bottom_left;
+    struct GLIS_quater<TYPE> top_left;
 };
 
 template <typename TYPE>
-class vertex_data {
+class GLIS_vertex_data {
     public:
         TYPE *vertex;
         int size_of_position;
@@ -786,7 +786,7 @@ class vertex_data {
 };
 
 template <typename TYPE>
-void fill_vertex_rect(TYPE * vertex, struct quater<TYPE> & quater, int offset) {
+void GLIS_fill_vertex_rect(TYPE * vertex, struct GLIS_quater<TYPE> & quater, int offset) {
     vertex[offset+0] = quater.position.x;
     vertex[offset+1] = quater.position.y;
     vertex[offset+2] = quater.position.z;
@@ -798,8 +798,8 @@ void fill_vertex_rect(TYPE * vertex, struct quater<TYPE> & quater, int offset) {
 };
 
 template <typename TYPE>
-struct vertex_data<TYPE> build_vertex_rect(struct vertex_map_rectangle<TYPE> & data) {
-    struct vertex_data<TYPE> v;
+struct GLIS_vertex_data<TYPE> GLIS_build_vertex_rect(struct GLIS_vertex_map_rectangle<TYPE> & data) {
+    struct GLIS_vertex_data<TYPE> v;
     v.typesize = sizeof(TYPE);
     v.size_of_position = 3;
     v.size_of_color = 3;
@@ -808,10 +808,10 @@ struct vertex_data<TYPE> build_vertex_rect(struct vertex_map_rectangle<TYPE> & d
     v.number_of_points = 4;
     v.vertex_size = v.typesize*(v.size_per_quater*v.number_of_points);
     v.vertex = static_cast<TYPE*>(malloc(v.vertex_size));
-    fill_vertex_rect(v.vertex, data.top_right, 0*v.size_per_quater);
-    fill_vertex_rect(v.vertex, data.bottom_right, 1*v.size_per_quater);
-    fill_vertex_rect(v.vertex, data.bottom_left, 2*v.size_per_quater);
-    fill_vertex_rect(v.vertex, data.top_left, 3*v.size_per_quater);
+    GLIS_fill_vertex_rect(v.vertex, data.top_right, 0*v.size_per_quater);
+    GLIS_fill_vertex_rect(v.vertex, data.bottom_right, 1*v.size_per_quater);
+    GLIS_fill_vertex_rect(v.vertex, data.bottom_left, 2*v.size_per_quater);
+    GLIS_fill_vertex_rect(v.vertex, data.top_left, 3*v.size_per_quater);
     v.indices_size = 6 * sizeof(unsigned int);
     v.indices = static_cast<unsigned int *>(malloc(v.indices_size));
     v.indices[0] = 0;
@@ -824,8 +824,8 @@ struct vertex_data<TYPE> build_vertex_rect(struct vertex_map_rectangle<TYPE> & d
 }
 
 template <typename TYPEFROM, typename TYPETO>
-struct vertex_map_rectangle<TYPETO> build_vertex_data_rect(TYPETO TYPETO_INITIALIZER, class GLIS_rect<TYPEFROM> data, TYPEFROM max_x, TYPEFROM max_y) {
-    struct vertex_map_rectangle<TYPETO> m;
+struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPETO_INITIALIZER, class GLIS_rect<TYPEFROM> data, TYPEFROM max_x, TYPEFROM max_y) {
+    struct GLIS_vertex_map_rectangle<TYPETO> m;
     GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
     GLIS_coordinates<TYPETO> point1 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.topLeft.x,data.topLeft.y,max_x,max_y);
     m.top_left.position.x = point1.x;

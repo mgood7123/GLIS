@@ -217,10 +217,11 @@ void main()
     TOP LEFT:         |  -1.0f,  0.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f,  0.0f   |
 */
         class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 700, 500, 800);
-        struct vertex_map_rectangle<float> vmr = build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
-        class vertex_data<float> v = build_vertex_rect<float>(vmr);
+        struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
+        class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
         v.print("%4.1ff");
-        unsigned int VBO, VAO, EBO;
+
+        GLuint VBO, VAO, EBO;
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
