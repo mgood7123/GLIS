@@ -77,9 +77,12 @@ struct window{
     EGLContext MainContext;
 };
 
+GLuint renderedTexture;
+bool texturenotready = true;
+
 void Xmain(struct window *window) {
-    if (GLIS_setupOnScreenRendering(Compositor[window->index], window->MainContext)) {
-//    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
+//    if (GLIS_setupOnScreenRendering(Compositor[window->index], window->MainContext)) {
+    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
         GLIS_error_to_string();
         // TODO: Xorg uses Textures to render, specifically Xorg renders FROM textures and DOES NOT modify them
 
@@ -110,7 +113,6 @@ void Xmain(struct window *window) {
             LOG_INFO("framebuffer is complete");
 
         // create a new texture
-        GLuint renderedTexture;
         GLIS_error_to_string_exec(glGenTextures(1, &renderedTexture));
         GLIS_error_to_string_exec(glBindTexture(GL_TEXTURE_2D, renderedTexture));
         GLIS_error_to_string_exec(glTexImage2D(GL_TEXTURE_2D,
@@ -184,21 +186,9 @@ void main()
             }
             // set up vertex data (and buffer(s)) and configure vertex attributes
             // ------------------------------------------------------------------
-            float vertices[] = {
-                // positions          // colors           // texture coords
-                1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-                1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-                -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-                -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
-            };
-            GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
             class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 0, 0, Compositor[window->index].width, Compositor[window->index].height);
             struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
             class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
-//        v.vertex[6] = 1.0f; v.vertex[7] = 1.0f;
-//        v.vertex[14] = 1.0f; v.vertex[15] = 0.0f;
-//        v.vertex[22] = 0.0; v.vertex[23] = 0.0f;
-//        v.vertex[30] = 0.0f; v.vertex[31] = 1.0f;
             v.print("%4.1ff");
 
             GLuint VBO, VAO, EBO;
@@ -232,17 +222,39 @@ void main()
                 GLIS_error_to_string_exec(glBindVertexArray(VAO));
                 GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
                 GLIS_error_to_string_exec(glBindVertexArray(0));
+                texturenotready = false;
+                while(true);
             }
         }
+    }
+}
 
-//        // draw something to the texture
-//        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
-//        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+void * ptm(void * arg) {
+    auto * window = static_cast<struct window*>(arg);
+    Xmain(window);
+    GLIS_destroy_GLIS(Compositor[window->index]);
+    return nullptr;
+}
 
-        // bind system framebuffer
-        GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
-        FramebufferStatus = GLIS_error_to_string_exec(
+void * COMPOSITORMAIN(void * arg) {
+    LOG_INFO("waiting for main Compositor to obtain a native window");
+    while (CompositorMain.native_window == nullptr) {}
+    Compositor[1].native_window = CompositorMain.native_window;
+    LOG_INFO("main Compositor has obtained a native window");
+    LOG_INFO("initializing main Compositor");
+    if (GLIS_setupOnScreenRendering(CompositorMain)) {
+        LOG_INFO("initialized main Compositor");
+        long _threadId1;
+        long _threadId2;
+//        struct window *w1 = new struct window;
+//        *w1 = {0, 0, 0, 500, 500};
+        auto *w2 = new struct window;
+        *w2 = {1, 0,0,200,200, CompositorMain.context};
+//        pthread_create(&_threadId1, nullptr, ptm, w1);
+        LOG_INFO("starting test application");
+        pthread_create(&_threadId2, nullptr, ptm, w2);
+        while (texturenotready) {}
+        GLint FramebufferStatus = GLIS_error_to_string_exec(
             glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
         if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
@@ -251,7 +263,7 @@ void main()
             LOG_INFO("framebuffer is complete");
 
         // clear framebuffer
-        GLIS_error_to_string_exec(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
         GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
 
         // render texture
@@ -306,24 +318,9 @@ void main()
         }
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-        float vertices[] = {
-            // positions          // colors           // texture coords
-             1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-             1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-            -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-            -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
-        };
-/*
-
-    VECTOR OUTPUT:    |       positions       |       colors          |texture positions|
-    TOP RIGHT:        |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f   |
-    BOTTOM RIGHT:     |   1.0f, -1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |   1.0f, -1.0f   |
-    BOTTOM LEFT:      |  -1.0f, -1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f, -1.0f   |
-    TOP LEFT:         |  -1.0f,  0.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f,  0.0f   |
-*/
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
         class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1500);
-        struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
+        struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, CompositorMain.width, CompositorMain.height);
         class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
         v.print("%4.1ff");
 
@@ -361,38 +358,11 @@ void main()
         }
 
         // display system framebuffer
-        if (!eglSwapBuffers(Compositor[window->index].display,
-                            Compositor[window->index].surface)) {
+        if (!eglSwapBuffers(CompositorMain.display,
+                            CompositorMain.surface)) {
             LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
         }
-    }
-}
-
-void * ptm(void * arg) {
-    auto * window = static_cast<struct window*>(arg);
-    Xmain(window);
-    GLIS_destroy_GLIS(Compositor[window->index]);
-    return nullptr;
-}
-
-void * COMPOSITORMAIN(void * arg) {
-    LOG_INFO("waiting for main Compositor to obtain a native window");
-    while (CompositorMain.native_window == nullptr) {}
-    Compositor[1].native_window = CompositorMain.native_window;
-    LOG_INFO("main Compositor has obtained a native window");
-    LOG_INFO("initializing main Compositor");
-//    if (GLIS_setupOnScreenRendering(CompositorMain)) {
-        LOG_INFO("initialized main Compositor");
-        long _threadId1;
-        long _threadId2;
-//        struct window *w1 = new struct window;
-//        *w1 = {0, 0, 0, 500, 500};
-        auto *w2 = new struct window;
-        *w2 = {1, 0,0,200,200, CompositorMain.context};
-//        pthread_create(&_threadId1, nullptr, ptm, w1);
-        LOG_INFO("starting test application");
-        pthread_create(&_threadId2, nullptr, ptm, w2);
-//    } else LOG_ERROR("failed to initialize main Compositor");
+    } else LOG_ERROR("failed to initialize main Compositor");
     return nullptr;
 }
 
