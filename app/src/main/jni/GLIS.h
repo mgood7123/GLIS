@@ -731,6 +731,7 @@ class GLIS_vertex_data {
         size_t vertex_size;
         unsigned int *indices;
         size_t indices_size;
+        size_t typesize;
 
         void print(const char *format) {
             std::string fmt = "\n";
@@ -788,7 +789,30 @@ class GLIS_vertex_data {
                      vertex[30], vertex[31]
             );
         }
-        size_t typesize;
+
+        void init_attributes() {
+            // position attribute
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+            // color attribute
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
+            // texture coord attribute
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+            glEnableVertexAttribArray(2);
+        }
+
+        void gen_buffers(GLuint &vertex_buffer_object, GLuint &vertex_array_object,
+                         GLuint &element_buffer_object, GLenum usage) {
+            glGenVertexArrays(1, &vertex_array_object);
+            glGenBuffers(1, &vertex_buffer_object);
+            glGenBuffers(1, &element_buffer_object);
+            glBindVertexArray(vertex_array_object);
+            glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+            glBufferData(GL_ARRAY_BUFFER, vertex_size, vertex, usage);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_size, indices, usage);
+        }
 };
 
 template <typename TYPE>
@@ -874,6 +898,57 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     m.bottom_right.color.B = 1.0F;
     m.bottom_right.color.G = 0.0F;
     return m;
+}
+
+GLuint GLIS_texture_buffer(GLuint & renderedTexture, GLint & texture_width, GLint & texture_height) {
+    GLuint FBOID;
+    GLIS_error_to_string_exec(glGenFramebuffers(1, &FBOID));
+    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
+    GLuint rboColorId;
+    GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboColorId));
+    GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboColorId));
+    GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER,
+                                                    GL_RGB8,
+                                                    texture_width,
+                                                    texture_height
+    ));
+    GLIS_error_to_string_exec(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
+                                                        GL_COLOR_ATTACHMENT0,
+                                                        GL_RENDERBUFFER,
+                                                        rboColorId));
+    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
+
+    GLenum FramebufferStatus = GLIS_error_to_string_exec(
+        glCheckFramebufferStatus(GL_FRAMEBUFFER));
+
+    if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+        LOG_ERROR("framebuffer is not complete");
+    else
+        LOG_INFO("framebuffer is complete");
+
+    // create a new texture
+    GLIS_error_to_string_exec(glGenTextures(1, &renderedTexture));
+    GLIS_error_to_string_exec(glBindTexture(GL_TEXTURE_2D, renderedTexture));
+    GLIS_error_to_string_exec(glTexImage2D(GL_TEXTURE_2D,
+                                           0,
+                                           GL_RGBA,
+                                           texture_width,
+                                           texture_height,
+                                           0,
+                                           GL_RGBA,
+                                           GL_UNSIGNED_BYTE,
+                                           0));
+    GLIS_error_to_string_exec(glGenerateMipmap(GL_TEXTURE_2D));
+    GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+    GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+    // Set "renderedTexture" as our colour attachement #0
+    GLIS_error_to_string_exec(glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0));
+    // Set the list of draw buffers.
+    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    GLIS_error_to_string_exec(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
+    return FBOID;
 }
 
 #endif //GLNE_GLIS_H
