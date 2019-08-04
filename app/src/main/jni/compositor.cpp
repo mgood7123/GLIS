@@ -78,7 +78,7 @@ struct window{
 };
 
 GLuint renderedTexture;
-bool texturenotready = true;
+GLsync CHILD;
 
 void Xmain(struct window *window) {
 //    if (GLIS_setupOnScreenRendering(Compositor[window->index], window->MainContext)) {
@@ -222,8 +222,12 @@ void main()
                 GLIS_error_to_string_exec(glBindVertexArray(VAO));
                 GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
                 GLIS_error_to_string_exec(glBindVertexArray(0));
-                texturenotready = false;
-                while(true);
+                CHILD = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+                EGLint error = eglGetError();
+                if (CHILD == 0 || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
+                {
+                    LOG_ERROR("glFenceSync failed at workingFunction.");
+                }
             }
         }
     }
@@ -253,7 +257,12 @@ void * COMPOSITORMAIN(void * arg) {
 //        pthread_create(&_threadId1, nullptr, ptm, w1);
         LOG_INFO("starting test application");
         pthread_create(&_threadId2, nullptr, ptm, w2);
-        while (texturenotready) {}
+        // https://arm-software.github.io/opengl-es-sdk-for-android/thread_sync.html
+        LOG_INFO("waiting for CHILD to complete");
+        while(CHILD == 0) {}
+        LOG_INFO("CHILD has completed");
+        LOG_INFO("synchronizing");
+        glWaitSync(CHILD, 0, GL_TIMEOUT_IGNORED);
         GLint FramebufferStatus = GLIS_error_to_string_exec(
             glCheckFramebufferStatus(GL_FRAMEBUFFER));
 

@@ -273,6 +273,10 @@ bool GLIS_initialize(class GLIS_CLASS & GLIS, GLint surface_type) {
             return false;
         }
     }
+    if (!eglBindAPI(EGL_OPENGL_ES_API)) {
+        GLIS_destroy_GLIS(GLIS);
+        return false;
+    }
     if (!GLIS_create_context(GLIS)) {
         GLIS_destroy_GLIS(GLIS);
         return false;
@@ -318,7 +322,7 @@ bool GLIS_setupOffScreenRendering(class GLIS_CLASS & GLIS, int w, int h, EGLCont
     const EGLint context[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
     GLIS.context_attributes = context;
 
-    const EGLint surface[] = { EGL_WIDTH, w, EGL_HEIGHT, h, EGL_NONE };
+    const EGLint surface[] = { EGL_WIDTH, w, EGL_HEIGHT, h, EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGB, EGL_TEXTURE_TARGET, EGL_TEXTURE_2D, EGL_NONE };
     GLIS.surface_attributes = surface;
 
     return GLIS_initialize(GLIS, EGL_PBUFFER_BIT);
