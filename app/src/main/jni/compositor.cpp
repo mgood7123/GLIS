@@ -201,17 +201,25 @@ void main()
         }
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
+/*
         float vertices[] = {
             // positions          // colors           // texture coords
-            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+             1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+             1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
         };
-        unsigned int indices[] = {
-            0, 1, 3, // first triangle
-            1, 2, 3  // second triangle
-        };
+
+    VECTOR OUTPUT:    |       positions       |       colors          |texture positions|
+    TOP RIGHT:        |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f   |
+    BOTTOM RIGHT:     |   1.0f, -1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |   1.0f, -1.0f   |
+    BOTTOM LEFT:      |  -1.0f, -1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f, -1.0f   |
+    TOP LEFT:         |  -1.0f,  0.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f,  0.0f   |
+*/
+        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 700, 500, 800);
+        struct vertex_map_rectangle<float> vmr = build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
+        class vertex_data<float> v = build_vertex_rect<float>(vmr);
+        v.print("%4.1ff");
         unsigned int VBO, VAO, EBO;
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -220,10 +228,10 @@ void main()
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW);
 
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -243,7 +251,6 @@ void main()
             GLIS_error_to_string_exec(glBindVertexArray(VAO));
             GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
             GLIS_error_to_string_exec(glBindVertexArray(0));
-
         }
 
         // display system framebuffer

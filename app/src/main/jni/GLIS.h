@@ -10,6 +10,8 @@
 #include <GLES3/gl32.h>
 #include <cstdlib>
 #include <cassert>
+#include <malloc.h>
+#include <string>
 #include "logger.h"
 
 #define LOG_TAG "EglSample"
@@ -431,6 +433,441 @@ GLboolean GLIS_validate_program(GLuint & Program) {
         if (GLIS_validate_program_valid(Program) == GL_TRUE)
             return glIsProgram(Program);
     return GL_FALSE;
+}
+
+/*
+// Normalized Device Coordinates (NDC)
+                   height
+( -1, 1)             | (  0,  1)  (  1,  1)
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+( -1,  0)            | (  0,  0)  (  1,  0)
+---------------------+--------------------- width
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+                     |
+( -1, -1)            | (  0, -1)   (  1, -1)
+
+// height = 40
+// width = 20
+
+GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_LEFT);
+GLIS_convertPair(0,0,20,40);
+GLIS_convertPair(0,40,20,40);
+GLIS_convertPair(20,0,20,40);
+GLIS_convertPair(10,10,20,40);
+GLIS_convertPair(10,20,20,40);
+GLIS_convertPair(20,20,20,40);
+GLIS_convertPair(20,40,20,40);
+GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
+GLIS_convertPair(0,0,20,40);
+GLIS_convertPair(0,40,20,40);
+GLIS_convertPair(20,0,20,40);
+GLIS_convertPair(10,10,20,40);
+GLIS_convertPair(10,20,20,40);
+GLIS_convertPair(20,20,20,40);
+GLIS_convertPair(20,40,20,40);
+GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
+GLIS_convertPair(0,0,20,40);
+GLIS_convertPair(0,40,20,40);
+GLIS_convertPair(20,0,20,40);
+GLIS_convertPair(10,10,20,40);
+GLIS_convertPair(10,20,20,40);
+GLIS_convertPair(20,20,20,40);
+GLIS_convertPair(20,40,20,40);
+GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_RIGHT);
+GLIS_convertPair(0,0,20,40);
+GLIS_convertPair(0,40,20,40);
+GLIS_convertPair(20,0,20,40);
+GLIS_convertPair(10,10,20,40);
+GLIS_convertPair(10,20,20,40);
+GLIS_convertPair(20,20,20,40);
+GLIS_convertPair(20,40,20,40);
+
+    converting with origin top left
+    inverting 'y'
+    width: 0, height: 0, ConvertPair: -1.000000, 1.000000
+    inverting 'y'
+    width: 0, height: 40, ConvertPair: -1.000000, -1.000000
+    inverting 'y'
+    width: 20, height: 0, ConvertPair: 1.000000, 1.000000
+    inverting 'y'
+    width: 10, height: 10, ConvertPair: 0.000000, 0.500000
+    inverting 'y'
+    width: 10, height: 20, ConvertPair: 0.000000, -0.000000
+    inverting 'y'
+    width: 20, height: 20, ConvertPair: 1.000000, -0.000000
+    inverting 'y'
+    width: 20, height: 40, ConvertPair: 1.000000, -1.000000
+    converting with origin top right
+    inverting 'x'
+    inverting 'y'
+    width: 0, height: 0, ConvertPair: 1.000000, 1.000000
+    inverting 'x'
+    inverting 'y'
+    width: 0, height: 40, ConvertPair: 1.000000, -1.000000
+    inverting 'x'
+    inverting 'y'
+    width: 20, height: 0, ConvertPair: -1.000000, 1.000000
+    inverting 'x'
+    inverting 'y'
+    width: 10, height: 10, ConvertPair: -0.000000, 0.500000
+    inverting 'x'
+    inverting 'y'
+    width: 10, height: 20, ConvertPair: -0.000000, -0.000000
+    inverting 'x'
+    inverting 'y'
+    width: 20, height: 20, ConvertPair: -1.000000, -0.000000
+    inverting 'x'
+    inverting 'y'
+    width: 20, height: 40, ConvertPair: -1.000000, -1.000000
+    converting with origin bottom left
+    no conversion
+    width: 0, height: 0, ConvertPair: -1.000000, -1.000000
+    no conversion
+    width: 0, height: 40, ConvertPair: -1.000000, 1.000000
+    no conversion
+    width: 20, height: 0, ConvertPair: 1.000000, -1.000000
+    no conversion
+    width: 10, height: 10, ConvertPair: 0.000000, -0.500000
+    no conversion
+    width: 10, height: 20, ConvertPair: 0.000000, 0.000000
+    no conversion
+    width: 20, height: 20, ConvertPair: 1.000000, 0.000000
+    no conversion
+    width: 20, height: 40, ConvertPair: 1.000000, 1.000000
+    converting with origin bottom right
+    inverting 'x'
+    width: 0, height: 0, ConvertPair: 1.000000, -1.000000
+    inverting 'x'
+    width: 0, height: 40, ConvertPair: 1.000000, 1.000000
+    inverting 'x'
+    width: 20, height: 0, ConvertPair: -1.000000, -1.000000
+    inverting 'x'
+    width: 10, height: 10, ConvertPair: -0.000000, -0.500000
+    inverting 'x'
+    width: 10, height: 20, ConvertPair: -0.000000, 0.000000
+    inverting 'x'
+    width: 20, height: 20, ConvertPair: -1.000000, 0.000000
+    inverting 'x'
+    width: 20, height: 40, ConvertPair: -1.000000, 1.000000
+*/
+
+template <typename TYPE>
+float GLIS_inverse(TYPE num) {
+    return num<0?-num:-(num);
+}
+
+template <typename TYPE>
+float GLIS_convert(TYPE num, TYPE num_max) {
+    // 3 year old magic
+    return (num-(num_max/2))/(num_max/2);
+}
+
+template <typename TYPE>
+class GLIS_coordinates {
+    public:
+        GLIS_coordinates(TYPE TYPE_INITIALIZER) {
+            TYPE x = TYPE_INITIALIZER;
+            TYPE y = TYPE_INITIALIZER;
+        }
+
+        TYPE x;
+        TYPE y;
+};
+
+template <typename TYPE>
+class GLIS_rect {
+    public:
+        GLIS_rect(TYPE TYPE_INITIALIZER) {
+            topLeft = GLIS_coordinates<TYPE>(TYPE_INITIALIZER);
+            topRight = GLIS_coordinates<TYPE>(TYPE_INITIALIZER);
+            bottomLeft = GLIS_coordinates<TYPE>(TYPE_INITIALIZER);
+            bottomRight = GLIS_coordinates<TYPE>(TYPE_INITIALIZER);
+        }
+
+        class GLIS_coordinates <TYPE> topLeft = NULL;
+        class GLIS_coordinates <TYPE> topRight = NULL;
+        class GLIS_coordinates <TYPE> bottomLeft = NULL;
+        class GLIS_coordinates <TYPE> bottomRight = NULL;
+};
+
+template <typename TYPE>
+class GLIS_rect<TYPE> GLIS_points_to_rect(TYPE TYPE_INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2) {
+    class GLIS_rect<TYPE> r(TYPE_INITIALIZER);
+    /* assume origin bottom left */
+    r.bottomLeft.x = x1;
+    r.bottomLeft.y = y1;
+    r.topRight.x = x2;
+    r.topRight.y = y2;
+    /* figure out bottomRight and topLeft */
+    r.bottomRight.x = x2;
+    r.bottomRight.y = y1;
+    r.topLeft.x = x1;
+    r.topLeft.y = y2;
+    return r;
+}
+
+#define GLIS_CONVERSION_ORIGIN_TOP_LEFT 0
+#define GLIS_CONVERSION_ORIGIN_TOP_RIGHT 1
+#define GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT 2
+#define GLIS_CONVERSION_ORIGIN_BOTTOM_RIGHT 3
+
+int GLIS_CONVERSION_ORIGIN = GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT;
+
+void GLIS_set_conversion_origin(int origin) {
+    GLIS_CONVERSION_ORIGIN = origin;
+    switch (GLIS_CONVERSION_ORIGIN) {
+        case GLIS_CONVERSION_ORIGIN_TOP_LEFT:
+            LOG_INFO("converting with origin top left");
+            break;
+        case GLIS_CONVERSION_ORIGIN_TOP_RIGHT:
+            LOG_INFO("converting with origin top right");
+            break;
+        case GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT:
+            LOG_INFO("converting with origin bottom left");
+            break;
+        case GLIS_CONVERSION_ORIGIN_BOTTOM_RIGHT:
+            LOG_INFO("converting with origin bottom right");
+            break;
+        default:
+            LOG_INFO("unknown conversion");
+            break;
+    }
+}
+
+template <typename TYPEFROM, typename TYPETO>
+class GLIS_coordinates<TYPETO> GLIS_convertPair(TYPETO TYPETO_INITIALIZER, TYPEFROM x, TYPEFROM y, TYPEFROM x_max, TYPEFROM y_max) {
+    class GLIS_coordinates<TYPETO> xy(TYPETO_INITIALIZER);
+    if (x > x_max) LOG_INFO("x is out of bounds (expected %hi, got %hi)\n", x_max, x);
+    else if (y < 0) LOG_INFO("x is out of bounds (expected %hi, got %hi)\n", 0, x);
+    if (y > y_max) LOG_INFO("y is out of bounds (expected %hi, got %hi)\n", y_max, y);
+    else if (y < 0) LOG_INFO("y is out of bounds (expected %hi, got %hi)\n", 0, y);
+    else {
+        xy.x = GLIS_convert<TYPETO>(static_cast<TYPETO>(x), static_cast<TYPETO>(x_max)); // x
+        xy.y = GLIS_convert<TYPETO>(static_cast<TYPETO>(y), static_cast<TYPETO>(y_max)); // y
+        switch (GLIS_CONVERSION_ORIGIN) {
+            case GLIS_CONVERSION_ORIGIN_TOP_LEFT:
+                LOG_INFO("inverting 'y'");
+                xy.y = GLIS_inverse<TYPETO>(xy.y);
+                break;
+            case GLIS_CONVERSION_ORIGIN_TOP_RIGHT:
+                LOG_INFO("inverting 'x'");
+                xy.x = GLIS_inverse<TYPETO>(xy.x);
+                LOG_INFO("inverting 'y'");
+                xy.y = GLIS_inverse<TYPETO>(xy.y);
+                break;
+            case GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT: {
+                LOG_INFO("no conversion");
+                break;
+            }
+            case GLIS_CONVERSION_ORIGIN_BOTTOM_RIGHT:
+                LOG_INFO("inverting 'x'");
+                xy.x = GLIS_inverse<TYPETO>(xy.x);
+                break;
+            default:
+                LOG_INFO("unknown conversion");
+                break;
+        }
+        LOG_INFO("width: %hi, width_max: %hi, height: %hi, height_max: %hi, ConvertPair: %f, %f\n", x, x_max, y, y_max, xy.x, xy.y);
+    }
+    return xy;
+}
+
+template <typename TYPE>
+struct quater_position {
+    TYPE x;
+    TYPE y;
+    TYPE z;
+};
+
+template <typename TYPE>
+struct quater_color {
+    TYPE R;
+    TYPE B;
+    TYPE G;
+};
+
+template <typename TYPE>
+struct quater {
+    struct quater_position<TYPE> position;
+    struct quater_color<TYPE> color;
+    struct quater_position<TYPE> texture_position;
+};
+
+template <typename TYPE>
+struct vertex_map_rectangle {
+    struct quater<TYPE> top_right;
+    struct quater<TYPE> bottom_right;
+    struct quater<TYPE> bottom_left;
+    struct quater<TYPE> top_left;
+};
+
+template <typename TYPE>
+class vertex_data {
+    public:
+        TYPE *vertex;
+        int size_of_position;
+        int size_of_color;
+        int size_of_texture_position;
+        int size_per_quater;
+        int number_of_points;
+        size_t vertex_size;
+        unsigned int *indices;
+        size_t indices_size;
+
+        void print(const char *format) {
+            std::string fmt = "\n";
+            fmt += "VECTOR OUTPUT:    |       positions       |       colors          |texture positions|";
+            fmt += "\n";
+            fmt += "TOP RIGHT:      ";
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format;
+            fmt += "   |";
+            fmt += "\n";
+            fmt += "BOTTOM RIGHT:   ";
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format;
+            fmt += "   |";
+            fmt += "\n";
+            fmt += "BOTTOM LEFT:    ";
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format;
+            fmt += "   |";
+            fmt += "\n";
+            fmt += "TOP LEFT:       ";
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format; fmt += ", "; fmt += format;
+            fmt += "  |  ";
+            fmt += format; fmt += ", "; fmt += format;
+            fmt += "   |";
+            LOG_INFO(fmt.c_str(),
+                     vertex[0], vertex[1], vertex[2],
+                     vertex[3], vertex[4], vertex[5],
+                     vertex[6], vertex[7],
+                     vertex[8], vertex[9], vertex[10],
+                     vertex[11], vertex[12], vertex[13],
+                     vertex[14], vertex[15],
+                     vertex[16], vertex[17], vertex[18],
+                     vertex[19], vertex[20], vertex[21],
+                     vertex[22], vertex[23],
+                     vertex[24], vertex[25], vertex[26],
+                     vertex[27], vertex[28], vertex[29],
+                     vertex[30], vertex[31]
+            );
+        }
+        size_t typesize;
+};
+
+template <typename TYPE>
+void fill_vertex_rect(TYPE * vertex, struct quater<TYPE> & quater, int offset) {
+    vertex[offset+0] = quater.position.x;
+    vertex[offset+1] = quater.position.y;
+    vertex[offset+2] = quater.position.z;
+    vertex[offset+3] = quater.color.R;
+    vertex[offset+4] = quater.color.B;
+    vertex[offset+5] = quater.color.G;
+    vertex[offset+6] = quater.texture_position.x;
+    vertex[offset+7] = quater.texture_position.y;
+};
+
+template <typename TYPE>
+struct vertex_data<TYPE> build_vertex_rect(struct vertex_map_rectangle<TYPE> & data) {
+    struct vertex_data<TYPE> v;
+    v.typesize = sizeof(TYPE);
+    v.size_of_position = 3;
+    v.size_of_color = 3;
+    v.size_of_texture_position = 2;
+    v.size_per_quater = v.size_of_position+v.size_of_color+v.size_of_texture_position;
+    v.number_of_points = 4;
+    v.vertex_size = v.typesize*(v.size_per_quater*v.number_of_points);
+    v.vertex = static_cast<TYPE*>(malloc(v.vertex_size));
+    fill_vertex_rect(v.vertex, data.top_right, 0*v.size_per_quater);
+    fill_vertex_rect(v.vertex, data.bottom_right, 1*v.size_per_quater);
+    fill_vertex_rect(v.vertex, data.bottom_left, 2*v.size_per_quater);
+    fill_vertex_rect(v.vertex, data.top_left, 3*v.size_per_quater);
+    v.indices_size = 6 * sizeof(unsigned int);
+    v.indices = static_cast<unsigned int *>(malloc(v.indices_size));
+    v.indices[0] = 0;
+    v.indices[1] = 1;
+    v.indices[2] = 3;
+    v.indices[3] = 1;
+    v.indices[4] = 2;
+    v.indices[5] = 3;
+    return v;
+}
+
+template <typename TYPEFROM, typename TYPETO>
+struct vertex_map_rectangle<TYPETO> build_vertex_data_rect(TYPETO TYPETO_INITIALIZER, class GLIS_rect<TYPEFROM> data, TYPEFROM max_x, TYPEFROM max_y) {
+    struct vertex_map_rectangle<TYPETO> m;
+    GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
+    GLIS_coordinates<TYPETO> point1 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.topLeft.x,data.topLeft.y,max_x,max_y);
+    m.top_left.position.x = point1.x;
+    m.top_left.position.y = point1.y;
+    m.top_left.position.z = 0;
+    m.top_left.texture_position.x = point1.x;
+    m.top_left.texture_position.y = point1.y;
+    m.top_left.texture_position.z = 0;
+    m.top_left.color.R = 1.0F;
+    m.top_left.color.B = 1.0F;
+    m.top_left.color.G = 0.0F;
+    GLIS_coordinates<TYPETO> point2 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.topRight.x,data.topRight.y,max_x,max_y);
+    m.top_right.position.x = point2.x;
+    m.top_right.position.y = point2.y;
+    m.top_right.position.z = 0;
+    m.top_right.texture_position.x = point2.x;
+    m.top_right.texture_position.y = point2.y;
+    m.top_right.texture_position.z = 0;
+    m.top_right.color.R = 1.0F;
+    m.top_right.color.B = 1.0F;
+    m.top_right.color.G = 0.0F;
+    GLIS_coordinates<TYPETO> point3 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.bottomLeft.x,data.bottomLeft.y,max_x,max_y);
+    m.bottom_left.position.x = point3.x;
+    m.bottom_left.position.y = point3.y;
+    m.bottom_left.position.z = 0;
+    m.bottom_left.texture_position.x = point3.x;
+    m.bottom_left.texture_position.y = point3.y;
+    m.bottom_left.texture_position.z = 0;
+    m.bottom_left.color.R = 1.0F;
+    m.bottom_left.color.B = 1.0F;
+    m.bottom_left.color.G = 0.0F;
+    GLIS_coordinates<TYPETO> point4 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.bottomRight.x,data.bottomRight.y,max_x,max_y);
+    m.bottom_right.position.x = point4.x;
+    m.bottom_right.position.y = point4.y;
+    m.bottom_right.position.z = 0;
+    m.bottom_right.texture_position.x = point4.x;
+    m.bottom_right.texture_position.y = point4.y;
+    m.bottom_right.texture_position.z = 0;
+    m.bottom_right.color.R = 1.0F;
+    m.bottom_right.color.B = 1.0F;
+    m.bottom_right.color.G = 0.0F;
+    return m;
 }
 
 #endif //GLNE_GLIS_H
