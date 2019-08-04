@@ -93,7 +93,8 @@ void Xmain(struct window *window) {
         GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER,
                                                         GL_RGB8,
                                                         Compositor[window->index].width,
-                                                        Compositor[window->index].height));
+                                                        Compositor[window->index].height
+                                                        ));
         GLIS_error_to_string_exec(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                                                             GL_COLOR_ATTACHMENT0,
                                                             GL_RENDERBUFFER,
@@ -123,16 +124,120 @@ void Xmain(struct window *window) {
                                                0));
         GLIS_error_to_string_exec(glGenerateMipmap(GL_TEXTURE_2D));
         GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+        GLIS_error_to_string_exec(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
         // Set "renderedTexture" as our colour attachement #0
         GLIS_error_to_string_exec(glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0));
         // Set the list of draw buffers.
         GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
         GLIS_error_to_string_exec(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
 
-        // draw something to the texture
-        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
-        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+        {
+            GLuint shaderProgram, vertexShader, fragmentShader;
+            // SHADER PART 1
+            {
+                const char *vertexSource = R"glsl( #version 320 es
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
+
+out vec3 ourColor;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+)glsl";
+
+                const char *fragmentSource = R"glsl( #version 320 es
+out highp vec4 FragColor;
+
+in highp vec3 ourColor;
+in highp vec2 TexCoord;
+
+uniform sampler2D ourTexture;
+
+void main()
+{
+    FragColor = vec4(ourColor, 1.0);
+}
+)glsl";
+
+                vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+                fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+                LOG_INFO("Creating Shader program");
+                shaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+                LOG_INFO("Attaching vertex Shader to program");
+                GLIS_error_to_string_exec(glAttachShader(shaderProgram, vertexShader));
+                LOG_INFO("Attaching fragment Shader to program");
+                GLIS_error_to_string_exec(glAttachShader(shaderProgram, fragmentShader));
+                LOG_INFO("Linking Shader program");
+                GLIS_error_to_string_exec(glLinkProgram(shaderProgram));
+                LOG_INFO("Validating Shader program");
+                GLboolean ProgramIsValid = GLIS_error_to_string_exec(
+                    GLIS_validate_program(shaderProgram));
+                assert(ProgramIsValid == GL_TRUE);
+            }
+            // set up vertex data (and buffer(s)) and configure vertex attributes
+            // ------------------------------------------------------------------
+            float vertices[] = {
+                // positions          // colors           // texture coords
+                1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+                1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+                -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+                -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+            };
+            GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
+            class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 0, 0, Compositor[window->index].width, Compositor[window->index].height);
+            struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
+            class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
+//        v.vertex[6] = 1.0f; v.vertex[7] = 1.0f;
+//        v.vertex[14] = 1.0f; v.vertex[15] = 0.0f;
+//        v.vertex[22] = 0.0; v.vertex[23] = 0.0f;
+//        v.vertex[30] = 0.0f; v.vertex[31] = 1.0f;
+            v.print("%4.1ff");
+
+            GLuint VBO, VAO, EBO;
+            glGenVertexArrays(1, &VAO);
+            glGenBuffers(1, &VBO);
+            glGenBuffers(1, &EBO);
+
+            glBindVertexArray(VAO);
+
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW);
+
+            // position attribute
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+            // color attribute
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
+            // texture coord attribute
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+            glEnableVertexAttribArray(2);
+            // SHADER PART 2
+            {
+                LOG_INFO("Using Shader program");
+                GLIS_error_to_string_exec(glUseProgram(shaderProgram));
+
+                glBindTexture(GL_TEXTURE_2D, renderedTexture);
+                GLIS_error_to_string_exec(glBindVertexArray(VAO));
+                GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+                GLIS_error_to_string_exec(glBindVertexArray(0));
+            }
+        }
+
+//        // draw something to the texture
+//        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
+//        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
 
         // bind system framebuffer
         GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, 0));
@@ -201,7 +306,6 @@ void main()
         }
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-/*
         float vertices[] = {
             // positions          // colors           // texture coords
              1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -209,6 +313,7 @@ void main()
             -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
             -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
         };
+/*
 
     VECTOR OUTPUT:    |       positions       |       colors          |texture positions|
     TOP RIGHT:        |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |   1.0f,  1.0f   |
@@ -216,7 +321,8 @@ void main()
     BOTTOM LEFT:      |  -1.0f, -1.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f, -1.0f   |
     TOP LEFT:         |  -1.0f,  0.0f,  0.0f  |   1.0f,  1.0f,  0.0f  |  -1.0f,  0.0f   |
 */
-        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 700, 500, 800);
+        GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
+        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1500);
         struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, Compositor[window->index].width, Compositor[window->index].height);
         class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
         v.print("%4.1ff");
