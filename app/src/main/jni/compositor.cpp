@@ -77,17 +77,7 @@ struct window{
     EGLContext MainContext;
 };
 
-GLuint renderedTexture;
-GLsync CHILD;
-
-void Xmain(struct window *window) {
-//    if (GLIS_setupOnScreenRendering(Compositor[window->index], window->MainContext)) {
-    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
-        GLIS_error_to_string();
-        // create a new texture
-        GLIS_texture_buffer(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
-        GLuint shaderProgram, vertexShader, fragmentShader;
-        const char *vertexSource = R"glsl( #version 320 es
+const char *PARENTvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
@@ -103,7 +93,37 @@ void main()
 }
 )glsl";
 
-            const char *fragmentSource = R"glsl( #version 320 es
+const char *PARENTfragmentSource = R"glsl( #version 320 es
+out highp vec4 FragColor;
+
+in highp vec3 ourColor;
+in highp vec2 TexCoord;
+
+uniform sampler2D ourTexture;
+
+void main()
+{
+    FragColor = texture(ourTexture, TexCoord);
+}
+)glsl";
+
+const char * CHILDvertexSource = R"glsl( #version 320 es
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
+
+out vec3 ourColor;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+)glsl";
+
+const char *CHILDfragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
 
 in highp vec3 ourColor;
@@ -117,19 +137,30 @@ void main()
 }
 )glsl";
 
-        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+
+GLuint renderedTexture;
+GLsync CHILD;
+
+void Xmain(struct window *window) {
+    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
+        GLIS_error_to_string();
+        // create a new texture
+        GLIS_texture_buffer(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
+
+        GLuint CHILDshaderProgram, CHILDvertexShader, CHILDfragmentShader;
+        CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
+        CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
         LOG_INFO("Creating Shader program");
-        shaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+        CHILDshaderProgram = GLIS_error_to_string_exec(glCreateProgram());
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(shaderProgram, vertexShader));
+        GLIS_error_to_string_exec(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(shaderProgram, fragmentShader));
+        GLIS_error_to_string_exec(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec(glLinkProgram(shaderProgram));
+        GLIS_error_to_string_exec(glLinkProgram(CHILDshaderProgram));
         LOG_INFO("Validating Shader program");
         GLboolean ProgramIsValid = GLIS_error_to_string_exec(
-            GLIS_validate_program(shaderProgram));
+            GLIS_validate_program(CHILDshaderProgram));
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
@@ -145,7 +176,7 @@ void main()
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec(glUseProgram(shaderProgram));
+        GLIS_error_to_string_exec(glUseProgram(CHILDshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
         GLIS_error_to_string_exec(glBindVertexArray(VAO));
@@ -204,50 +235,20 @@ void * COMPOSITORMAIN(void * arg) {
 
         // render texture
 
-        GLuint shaderProgram, vertexShader, fragmentShader;
-        const char *vertexSource = R"glsl( #version 320 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-        const char *fragmentSource = R"glsl( #version 320 es
-out highp vec4 FragColor;
-
-in highp vec3 ourColor;
-in highp vec2 TexCoord;
-
-uniform sampler2D ourTexture;
-
-void main()
-{
-    FragColor = texture(ourTexture, TexCoord);
-}
-)glsl";
-
-        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+        GLuint PARENTshaderProgram, PARENTvertexShader, PARENTfragmentShader;
+        PARENTvertexShader = GLIS_createShader(GL_VERTEX_SHADER, PARENTvertexSource);
+        PARENTfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, PARENTfragmentSource);
         LOG_INFO("Creating Shader program");
-        shaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+        PARENTshaderProgram = GLIS_error_to_string_exec(glCreateProgram());
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(shaderProgram, vertexShader));
+        GLIS_error_to_string_exec(glAttachShader(PARENTshaderProgram, PARENTvertexShader));
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(shaderProgram, fragmentShader));
+        GLIS_error_to_string_exec(glAttachShader(PARENTshaderProgram, PARENTfragmentShader));
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec(glLinkProgram(shaderProgram));
+        GLIS_error_to_string_exec(glLinkProgram(PARENTshaderProgram));
         LOG_INFO("Validating Shader program");
         GLboolean ProgramIsValid = GLIS_error_to_string_exec(
-            GLIS_validate_program(shaderProgram));
+            GLIS_validate_program(PARENTshaderProgram));
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
@@ -264,7 +265,7 @@ void main()
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec(glUseProgram(shaderProgram));
+        GLIS_error_to_string_exec(glUseProgram(PARENTshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
         GLIS_error_to_string_exec(glBindVertexArray(VAO));
