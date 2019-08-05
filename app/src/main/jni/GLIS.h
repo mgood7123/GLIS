@@ -434,8 +434,10 @@ GLboolean GLIS_validate_program_valid(GLuint & Program) {
 
 GLboolean GLIS_validate_program(GLuint & Program) {
     if (GLIS_validate_program_link(Program) == GL_TRUE)
-        if (GLIS_validate_program_valid(Program) == GL_TRUE)
-            return glIsProgram(Program);
+        if (GLIS_validate_program_valid(Program) == GL_TRUE) {
+            GLboolean v = GLIS_error_to_string_exec(glIsProgram(Program));
+            return v;
+        }
     return GL_FALSE;
 }
 
@@ -790,28 +792,25 @@ class GLIS_vertex_data {
             );
         }
 
-        void init_attributes() {
-            // position attribute
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
-            // color attribute
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-            glEnableVertexAttribArray(1);
-            // texture coord attribute
-            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-            glEnableVertexAttribArray(2);
+        void bind_buffers(GLuint * vertex_buffer_object, GLuint * vertex_array_object,
+                         GLuint * element_buffer_object, GLenum usage) {
+            GLIS_error_to_string_exec(glBindVertexArray(*vertex_array_object));
+            GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, *vertex_buffer_object));
+            GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, this->vertex_size, this->vertex, usage));
+            GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *element_buffer_object));
+            GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices_size, this->indices, usage));
         }
 
-        void gen_buffers(GLuint &vertex_buffer_object, GLuint &vertex_array_object,
-                         GLuint &element_buffer_object, GLenum usage) {
-            glGenVertexArrays(1, &vertex_array_object);
-            glGenBuffers(1, &vertex_buffer_object);
-            glGenBuffers(1, &element_buffer_object);
-            glBindVertexArray(vertex_array_object);
-            glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
-            glBufferData(GL_ARRAY_BUFFER, vertex_size, vertex, usage);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_size, indices, usage);
+        void init_attributes() {
+            // position attribute
+            GLIS_error_to_string_exec(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
+            GLIS_error_to_string_exec(glEnableVertexAttribArray(0));
+            // color attribute
+            GLIS_error_to_string_exec(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))));
+            GLIS_error_to_string_exec(glEnableVertexAttribArray(1));
+            // texture coord attribute
+            GLIS_error_to_string_exec(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))));
+            GLIS_error_to_string_exec(glEnableVertexAttribArray(2));
         }
 };
 

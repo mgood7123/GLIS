@@ -139,10 +139,16 @@ void main()
 
 
 GLuint renderedTexture;
-GLsync CHILD;
+GLsync PARENT = nullptr, CHILD = nullptr;
 
 void Xmain(struct window *window) {
     if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
+        LOG_INFO("waiting for PARENT to complete");
+        while(PARENT == nullptr) {}
+        LOG_INFO("PARENT has completed");
+        LOG_INFO("synchronizing");
+        glWaitSync(PARENT, 0, GL_TIMEOUT_IGNORED);
+        LOG_INFO("synchronized");
         GLIS_error_to_string();
         // create a new texture
         GLIS_texture_buffer(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
@@ -169,25 +175,36 @@ void Xmain(struct window *window) {
         class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
         v.print("%4.1ff");
 
-        GLuint VBO;
-        GLuint VAO;
-        GLuint EBO;
-        v.gen_buffers(VAO, VBO, EBO, GL_STATIC_DRAW);
+        GLuint vertex_array_object;
+        GLuint vertex_buffer_object;
+        GLuint element_buffer_object;
+        LOG_INFO("Generating buffers");
+        GLIS_error_to_string_exec(glGenVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec(glGenBuffers(1, &vertex_buffer_object));
+        GLIS_error_to_string_exec(glGenBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
+        GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
+        GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+        LOG_INFO("Initializing Attributes");
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
         GLIS_error_to_string_exec(glUseProgram(CHILDshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        GLIS_error_to_string_exec(glBindVertexArray(VAO));
+        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
         GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
         GLIS_error_to_string_exec(glBindVertexArray(0));
         CHILD = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
         EGLint error = eglGetError();
-        if (CHILD == 0 || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
+        if (CHILD == nullptr || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
         {
             LOG_ERROR("glFenceSync failed at workingFunction.");
         }
+        GLIS_destroy_GLIS(Compositor[window->index]);
+        LOG_INFO("Destroyed sub Compositor GLIS");
     }
 }
 
@@ -216,11 +233,19 @@ void * COMPOSITORMAIN(void * arg) {
         LOG_INFO("starting test application");
         pthread_create(&_threadId2, nullptr, ptm, w2);
         // https://arm-software.github.io/opengl-es-sdk-for-android/thread_sync.html
+        PARENT = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+        EGLint error = eglGetError();
+        if (PARENT == nullptr || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
+        {
+            LOG_ERROR("glFenceSync failed at workingFunction.");
+        }
         LOG_INFO("waiting for CHILD to complete");
-        while(CHILD == 0) {}
+        while(CHILD == nullptr) {}
         LOG_INFO("CHILD has completed");
         LOG_INFO("synchronizing");
         glWaitSync(CHILD, 0, GL_TIMEOUT_IGNORED);
+        LOG_INFO("synchronized");
+        CHILD = nullptr;
         GLint FramebufferStatus = GLIS_error_to_string_exec(
             glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
@@ -253,30 +278,47 @@ void * COMPOSITORMAIN(void * arg) {
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
-        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1500);
+        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1000);
         struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, CompositorMain.width, CompositorMain.height);
         class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
         v.print("%4.1ff");
 
-        GLuint VBO;
-        GLuint VAO;
-        GLuint EBO;
-        v.gen_buffers(VAO, VBO, EBO, GL_STATIC_DRAW);
+        GLuint vertex_array_object;
+        GLuint vertex_buffer_object;
+        GLuint element_buffer_object;
+        LOG_INFO("Generating buffers");
+        GLIS_error_to_string_exec(glGenVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec(glGenBuffers(1, &vertex_buffer_object));
+        GLIS_error_to_string_exec(glGenBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
+        GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
+        GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+        LOG_INFO("Initializing Attributes");
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
         GLIS_error_to_string_exec(glUseProgram(PARENTshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        GLIS_error_to_string_exec(glBindVertexArray(VAO));
+        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
         GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
         GLIS_error_to_string_exec(glBindVertexArray(0));
-
+        PARENT = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+        error = eglGetError();
+        if (PARENT == nullptr || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
+        {
+            LOG_ERROR("glFenceSync failed at workingFunction.");
+        }
         // display system framebuffer
         if (!eglSwapBuffers(CompositorMain.display,
                             CompositorMain.surface)) {
             LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
         }
+        GLIS_destroy_GLIS(CompositorMain);
+        PARENT = nullptr;
+        LOG_INFO("Destroyed main Compositor GLIS");
     } else LOG_ERROR("failed to initialize main Compositor");
     return nullptr;
 }
