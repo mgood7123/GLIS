@@ -151,7 +151,8 @@ void Xmain(struct window *window) {
         LOG_INFO("synchronized");
         GLIS_error_to_string();
         // create a new texture
-        GLIS_texture_buffer(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
+        GLuint FB, RB;
+        GLIS_texture_buffer(FB, RB, renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
 
         GLuint CHILDshaderProgram, CHILDvertexShader, CHILDfragmentShader;
         CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
@@ -213,6 +214,8 @@ void Xmain(struct window *window) {
         GLIS_error_to_string_exec(glDeleteVertexArrays(1, &vertex_array_object));
         GLIS_error_to_string_exec(glDeleteBuffers(1,&vertex_buffer_object));
         GLIS_error_to_string_exec(glDeleteBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec(glDeleteRenderbuffers(1, &RB));
+        GLIS_error_to_string_exec(glDeleteFramebuffers(1, &FB));
         GLIS_destroy_GLIS(Compositor[window->index]);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");

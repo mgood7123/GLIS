@@ -890,13 +890,11 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     return m;
 }
 
-GLuint GLIS_texture_buffer(GLuint & renderedTexture, GLint & texture_width, GLint & texture_height) {
-    GLuint FBOID;
-    GLIS_error_to_string_exec(glGenFramebuffers(1, &FBOID));
-    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
-    GLuint rboColorId;
-    GLIS_error_to_string_exec(glGenRenderbuffers(1, &rboColorId));
-    GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, rboColorId));
+void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & renderedTexture, GLint & texture_width, GLint & texture_height) {
+    GLIS_error_to_string_exec(glGenFramebuffers(1, &framebuffer));
+    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
+    GLIS_error_to_string_exec(glGenRenderbuffers(1, &renderbuffer));
+    GLIS_error_to_string_exec(glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer));
     GLIS_error_to_string_exec(glRenderbufferStorage(GL_RENDERBUFFER,
                                                     GL_RGB8,
                                                     texture_width,
@@ -905,8 +903,8 @@ GLuint GLIS_texture_buffer(GLuint & renderedTexture, GLint & texture_width, GLin
     GLIS_error_to_string_exec(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                                                         GL_COLOR_ATTACHMENT0,
                                                         GL_RENDERBUFFER,
-                                                        rboColorId));
-    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, FBOID));
+                                                        renderbuffer));
+    GLIS_error_to_string_exec(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
 
     GLenum FramebufferStatus = GLIS_error_to_string_exec(
         glCheckFramebufferStatus(GL_FRAMEBUFFER));
@@ -938,7 +936,6 @@ GLuint GLIS_texture_buffer(GLuint & renderedTexture, GLint & texture_width, GLin
     // Set the list of draw buffers.
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     GLIS_error_to_string_exec(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
-    return FBOID;
 }
 
 #endif //GLNE_GLIS_H
