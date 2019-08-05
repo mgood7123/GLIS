@@ -203,8 +203,19 @@ void Xmain(struct window *window) {
         {
             LOG_ERROR("glFenceSync failed at workingFunction.");
         }
+        LOG_INFO("Cleaning up");
+        GLIS_error_to_string_exec(glDeleteProgram(CHILDshaderProgram));
+        GLIS_error_to_string_exec(glDeleteShader(CHILDfragmentShader));
+        GLIS_error_to_string_exec(glDeleteShader(CHILDvertexShader));
+        GLIS_error_to_string_exec(glBindVertexArray(0));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec(glDeleteVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec(glDeleteBuffers(1,&vertex_buffer_object));
+        GLIS_error_to_string_exec(glDeleteBuffers(1, &element_buffer_object));
         GLIS_destroy_GLIS(Compositor[window->index]);
         LOG_INFO("Destroyed sub Compositor GLIS");
+        LOG_INFO("Cleaned up");
     }
 }
 
@@ -316,9 +327,22 @@ void * COMPOSITORMAIN(void * arg) {
                             CompositorMain.surface)) {
             LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
         }
-        GLIS_destroy_GLIS(CompositorMain);
+        // clean up
+        LOG_INFO("Cleaning up");
         PARENT = nullptr;
+        GLIS_error_to_string_exec(glDeleteProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec(glDeleteShader(PARENTfragmentShader));
+        GLIS_error_to_string_exec(glDeleteShader(PARENTvertexShader));
+        GLIS_error_to_string_exec(glDeleteTextures(1, &renderedTexture));
+        GLIS_error_to_string_exec(glBindVertexArray(0));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec(glDeleteVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec(glDeleteBuffers(1,&vertex_buffer_object));
+        GLIS_error_to_string_exec(glDeleteBuffers(1, &element_buffer_object));
+        GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
+        LOG_INFO("Cleaned up");
     } else LOG_ERROR("failed to initialize main Compositor");
     return nullptr;
 }

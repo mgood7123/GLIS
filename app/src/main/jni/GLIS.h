@@ -792,15 +792,6 @@ class GLIS_vertex_data {
             );
         }
 
-        void bind_buffers(GLuint * vertex_buffer_object, GLuint * vertex_array_object,
-                         GLuint * element_buffer_object, GLenum usage) {
-            GLIS_error_to_string_exec(glBindVertexArray(*vertex_array_object));
-            GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, *vertex_buffer_object));
-            GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, this->vertex_size, this->vertex, usage));
-            GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *element_buffer_object));
-            GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices_size, this->indices, usage));
-        }
-
         void init_attributes() {
             // position attribute
             GLIS_error_to_string_exec(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
