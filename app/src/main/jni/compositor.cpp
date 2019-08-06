@@ -62,9 +62,7 @@ bool makeWindow(int index, int x, int y, int w, int h) {
     glScissor(X,Y,W,H);
     glClearColor(0.0F, 1.0F, 1.0F, 1.0F);
     glClear(GL_COLOR_BUFFER_BIT);
-    if (!eglSwapBuffers(Compositor[index].display, Compositor[index].surface)) {
-        LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-    }
+    GLIS_error_to_string_exec_EGL(eglSwapBuffers(Compositor[index].display, Compositor[index].surface));
     return true;
 }
 
@@ -151,23 +149,25 @@ void Xmain(struct window *window) {
         LOG_INFO("synchronized");
         GLIS_error_to_string();
         // create a new texture
-        GLuint FB, RB;
+        GLuint FB;
+        GLuint RB;
         GLIS_texture_buffer(FB, RB, renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
 
-        GLuint CHILDshaderProgram, CHILDvertexShader, CHILDfragmentShader;
+        GLuint CHILDshaderProgram;
+        GLuint CHILDvertexShader;
+        GLuint CHILDfragmentShader;
         CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
         CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
         LOG_INFO("Creating Shader program");
-        CHILDshaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+        CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec(glLinkProgram(CHILDshaderProgram));
+        GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
         LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_error_to_string_exec(
-            GLIS_validate_program(CHILDshaderProgram));
+        GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
@@ -180,24 +180,24 @@ void Xmain(struct window *window) {
         GLuint vertex_buffer_object;
         GLuint element_buffer_object;
         LOG_INFO("Generating buffers");
-        GLIS_error_to_string_exec(glGenVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec(glGenBuffers(1, &vertex_buffer_object));
-        GLIS_error_to_string_exec(glGenBuffers(1, &element_buffer_object));
-        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
-        GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
-        GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec_GL(glGenVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec_GL(glGenBuffers(1, &vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glGenBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
+        GLIS_error_to_string_exec_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
         LOG_INFO("Initializing Attributes");
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec(glUseProgram(CHILDshaderProgram));
+        GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-        GLIS_error_to_string_exec(glBindVertexArray(0));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec_GL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
         CHILD = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
         EGLint error = eglGetError();
         if (CHILD == nullptr || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
@@ -205,17 +205,17 @@ void Xmain(struct window *window) {
             LOG_ERROR("glFenceSync failed at workingFunction.");
         }
         LOG_INFO("Cleaning up");
-        GLIS_error_to_string_exec(glDeleteProgram(CHILDshaderProgram));
-        GLIS_error_to_string_exec(glDeleteShader(CHILDfragmentShader));
-        GLIS_error_to_string_exec(glDeleteShader(CHILDvertexShader));
-        GLIS_error_to_string_exec(glBindVertexArray(0));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec(glDeleteVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec(glDeleteBuffers(1,&vertex_buffer_object));
-        GLIS_error_to_string_exec(glDeleteBuffers(1, &element_buffer_object));
-        GLIS_error_to_string_exec(glDeleteRenderbuffers(1, &RB));
-        GLIS_error_to_string_exec(glDeleteFramebuffers(1, &FB));
+        GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
+        GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
+        GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec_GL(glDeleteVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec_GL(glDeleteBuffers(1,&vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
+        GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
         GLIS_destroy_GLIS(Compositor[window->index]);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");
@@ -260,7 +260,7 @@ void * COMPOSITORMAIN(void * arg) {
         glWaitSync(CHILD, 0, GL_TIMEOUT_IGNORED);
         LOG_INFO("synchronized");
         CHILD = nullptr;
-        GLint FramebufferStatus = GLIS_error_to_string_exec(
+        GLint FramebufferStatus = GLIS_error_to_string_exec_GL(
             glCheckFramebufferStatus(GL_FRAMEBUFFER));
 
         if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
@@ -269,29 +269,30 @@ void * COMPOSITORMAIN(void * arg) {
             LOG_INFO("framebuffer is complete");
 
         // clear framebuffer
-        GLIS_error_to_string_exec(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
-        GLIS_error_to_string_exec(glClear(GL_COLOR_BUFFER_BIT));
+        GLIS_error_to_string_exec_GL(glClearColor(1.0F, 0.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
 
         // render texture
 
-        GLuint PARENTshaderProgram, PARENTvertexShader, PARENTfragmentShader;
+        GLuint PARENTshaderProgram;
+        GLuint PARENTvertexShader;
+        GLuint PARENTfragmentShader;
         PARENTvertexShader = GLIS_createShader(GL_VERTEX_SHADER, PARENTvertexSource);
         PARENTfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, PARENTfragmentSource);
         LOG_INFO("Creating Shader program");
-        PARENTshaderProgram = GLIS_error_to_string_exec(glCreateProgram());
+        PARENTshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(PARENTshaderProgram, PARENTvertexShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(PARENTshaderProgram, PARENTvertexShader));
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec(glAttachShader(PARENTshaderProgram, PARENTfragmentShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(PARENTshaderProgram, PARENTfragmentShader));
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec(glLinkProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec_GL(glLinkProgram(PARENTshaderProgram));
         LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_error_to_string_exec(
-            GLIS_validate_program(PARENTshaderProgram));
+        GLboolean ProgramIsValid = GLIS_validate_program(PARENTshaderProgram);
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-        GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_TOP_RIGHT);
+        GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1000);
         struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, CompositorMain.width, CompositorMain.height);
         class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
@@ -301,48 +302,41 @@ void * COMPOSITORMAIN(void * arg) {
         GLuint vertex_buffer_object;
         GLuint element_buffer_object;
         LOG_INFO("Generating buffers");
-        GLIS_error_to_string_exec(glGenVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec(glGenBuffers(1, &vertex_buffer_object));
-        GLIS_error_to_string_exec(glGenBuffers(1, &element_buffer_object));
-        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
-        GLIS_error_to_string_exec(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
-        GLIS_error_to_string_exec(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec_GL(glGenVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec_GL(glGenBuffers(1, &vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glGenBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
+        GLIS_error_to_string_exec_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
         LOG_INFO("Initializing Attributes");
         v.init_attributes();
 
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec(glUseProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec_GL(glUseProgram(PARENTshaderProgram));
 
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        GLIS_error_to_string_exec(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-        GLIS_error_to_string_exec(glBindVertexArray(0));
-        PARENT = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-        error = eglGetError();
-        if (PARENT == nullptr || error == GL_INVALID_ENUM  || error == GL_INVALID_VALUE )
-        {
-            LOG_ERROR("glFenceSync failed at workingFunction.");
-        }
+        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+        GLIS_error_to_string_exec_GL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+        PARENT = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
+        assert(PARENT != nullptr);
         // display system framebuffer
-        if (!eglSwapBuffers(CompositorMain.display,
-                            CompositorMain.surface)) {
-            LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-        }
+        GLIS_error_to_string_exec_EGL(eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
         // clean up
         LOG_INFO("Cleaning up");
         PARENT = nullptr;
-        GLIS_error_to_string_exec(glDeleteProgram(PARENTshaderProgram));
-        GLIS_error_to_string_exec(glDeleteShader(PARENTfragmentShader));
-        GLIS_error_to_string_exec(glDeleteShader(PARENTvertexShader));
-        GLIS_error_to_string_exec(glDeleteTextures(1, &renderedTexture));
-        GLIS_error_to_string_exec(glBindVertexArray(0));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec(glDeleteVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec(glDeleteBuffers(1,&vertex_buffer_object));
-        GLIS_error_to_string_exec(glDeleteBuffers(1, &element_buffer_object));
+        GLIS_error_to_string_exec_GL(glDeleteProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec_GL(glDeleteShader(PARENTfragmentShader));
+        GLIS_error_to_string_exec_GL(glDeleteShader(PARENTvertexShader));
+        GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
+        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        GLIS_error_to_string_exec_GL(glDeleteVertexArrays(1, &vertex_array_object));
+        GLIS_error_to_string_exec_GL(glDeleteBuffers(1,&vertex_buffer_object));
+        GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
