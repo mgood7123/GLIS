@@ -23,6 +23,20 @@
 // for example if the window is minimized or its position changes,
 // the compositor will then redraw itself as it sees fit according to the recieved information
 
+// X uses a buffer to draw from, and this buffer must have a supported pixel format,
+// and applications which write to this buffer must obtain a handle to this buffer,
+// then convert their pixel data to match the buffer's pixel format then write to buffer
+
+//  A client can choose to use any pixel format the server understand.
+//  Buffer allocation is nowadays done by the client, and handle passed to the server,
+//  but the opposite also exists.
+
+// all of this is fundamentally incompatible with networking, because it relies on shared memory
+
+// in networking case the pixel data is sent to the server, along with control messages,
+// in shared memory case it is stored directly in the buffer,
+// and control messages get sent to the server from the client
+
 #include <cstdint>
 #include <jni.h>
 #include <android/native_window.h> // requires ndk r5 or newer
