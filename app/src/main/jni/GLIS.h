@@ -1024,10 +1024,14 @@ void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, T
     GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
 }
 
-template <typename TYPE>
-void GLIS_draw_rectangle(GLenum textureUnit, GLuint texture, TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
+void GLIS_set_texture(GLenum textureUnit, GLuint texture) {
     GLIS_error_to_string_exec_GL(glActiveTexture(textureUnit));
     GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, texture));
+}
+
+template <typename TYPE>
+void GLIS_draw_rectangle(GLenum textureUnit, GLuint texture, TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
+    GLIS_set_texture(textureUnit, texture);
     GLIS_draw_rectangle<TYPE>(INITIALIZER, x1, y1, x2, y2, max_x, max_y);
 }
 
@@ -1081,22 +1085,41 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
 
 GLuint GLIS_current_texture = 0;
 
-void GLIS_make_sync(GLsync & target) {
-    target = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
-    if (target == nullptr) LOG_ERROR("glFenceSync failed at workingFunction.");
+void GLIS_Sync_GPU() {
+    LOG_INFO("synchronizing with GPU");
+    GLsync GPU = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
+    if (GPU == nullptr) LOG_ERROR("glFenceSync failed at workingFunction.");
+    LOG_INFO("synchronizing");
+    GLIS_error_to_string_exec(glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED));
+    LOG_INFO("synchronized");
+    glDeleteSync(GPU);
+    LOG_INFO("synchronized with GPU");
 }
 
-void GLIS_sync(GLsync & target) {
-    LOG_INFO("waiting for target to complete");
-    while(target == nullptr) {}
-    LOG_INFO("target has completed");
-    LOG_INFO("synchronizing");
-    GLIS_error_to_string_exec(glWaitSync(target, 0, GL_TIMEOUT_IGNORED));
-    LOG_INFO("synchronized");
-}
+class STATE {
+    public:
+        int no_state = 0;
+        int starting_up = 1;
+        int started_up = 2;
+        int shutting_down = 3;
+        int shutdown = 4;
+        int upload = 5;
+        int render = 6;
+        int rendered = 7;
+} STATE;
+
+int SYNC_STATE = STATE.no_state;
 
 void GLIS_upload_texture(GLuint TEXTURE) {
+    LOG_INFO("uploading texture");
+    GLIS_Sync_GPU();
     GLIS_current_texture = TEXTURE;
+    SYNC_STATE = STATE.upload;
+    LOG_INFO("uploaded texture");
+    LOG_INFO("requesting SERVER to render");
+    SYNC_STATE = STATE.render;
+    while (SYNC_STATE != STATE.rendered) {}
+    LOG_INFO("SERVER has rendered");
 }
 
 #endif //GLNE_GLIS_H
