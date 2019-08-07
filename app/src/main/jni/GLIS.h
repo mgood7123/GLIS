@@ -689,12 +689,10 @@ class GLIS_rect {
 template <typename TYPE>
 class GLIS_rect<TYPE> GLIS_points_to_rect(TYPE TYPE_INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2) {
     class GLIS_rect<TYPE> r(TYPE_INITIALIZER);
-    /* assume origin bottom left */
     r.bottomLeft.x = x1;
     r.bottomLeft.y = y1;
     r.topRight.x = x2;
     r.topRight.y = y2;
-    /* figure out bottomRight and topLeft */
     r.bottomRight.x = x2;
     r.bottomRight.y = y1;
     r.topLeft.x = x1;
@@ -992,6 +990,47 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     return m;
 }
 
+template <typename TYPE>
+void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
+    class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(INITIALIZER, x1, y1, x2, y2);
+    struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, max_x, max_y);
+    class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
+    v.print("%4.1ff");
+
+    GLuint vertex_array_object;
+    GLuint vertex_buffer_object;
+    GLuint element_buffer_object;
+    LOG_INFO("Generating buffers");
+    GLIS_error_to_string_exec_GL(glGenVertexArrays(1, &vertex_array_object));
+    GLIS_error_to_string_exec_GL(glGenBuffers(1, &vertex_buffer_object));
+    GLIS_error_to_string_exec_GL(glGenBuffers(1, &element_buffer_object));
+    LOG_INFO("Binding buffers");
+    GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
+    GLIS_error_to_string_exec_GL(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
+    GLIS_error_to_string_exec_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+    LOG_INFO("Initializing Attributes");
+    v.init_attributes();
+
+    LOG_INFO("Drawing rectangle");
+    GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
+    GLIS_error_to_string_exec_GL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+    GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    GLIS_error_to_string_exec_GL(glDeleteVertexArrays(1, &vertex_array_object));
+    GLIS_error_to_string_exec_GL(glDeleteBuffers(1,&vertex_buffer_object));
+    GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
+}
+
+template <typename TYPE>
+void GLIS_draw_rectangle(GLenum textureUnit, GLuint texture, TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
+    GLIS_error_to_string_exec_GL(glActiveTexture(textureUnit));
+    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, texture));
+    GLIS_draw_rectangle<TYPE>(INITIALIZER, x1, y1, x2, y2, max_x, max_y);
+}
+
 void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & renderedTexture, GLint & texture_width, GLint & texture_height) {
     GLIS_error_to_string_exec_GL(glGenFramebuffers(1, &framebuffer));
     GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
@@ -1038,6 +1077,26 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
     // Set the list of draw buffers.
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     GLIS_error_to_string_exec_GL(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
+}
+
+GLuint GLIS_current_texture = 0;
+
+void GLIS_make_sync(GLsync & target) {
+    target = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
+    if (target == nullptr) LOG_ERROR("glFenceSync failed at workingFunction.");
+}
+
+void GLIS_sync(GLsync & target) {
+    LOG_INFO("waiting for target to complete");
+    while(target == nullptr) {}
+    LOG_INFO("target has completed");
+    LOG_INFO("synchronizing");
+    GLIS_error_to_string_exec(glWaitSync(target, 0, GL_TIMEOUT_IGNORED));
+    LOG_INFO("synchronized");
+}
+
+void GLIS_upload_texture(GLuint TEXTURE) {
+    GLIS_current_texture = TEXTURE;
 }
 
 #endif //GLNE_GLIS_H

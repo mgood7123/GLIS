@@ -97,11 +97,23 @@ out highp vec4 FragColor;
 in highp vec3 ourColor;
 in highp vec2 TexCoord;
 
-uniform sampler2D ourTexture;
+uniform sampler2D texture1;
+//uniform sampler2D texture2;
 
 void main()
 {
-    FragColor = texture(ourTexture, TexCoord);
+    FragColor = texture(texture1, TexCoord);
+/*
+    FragColor = mix(
+        texture(texture1, TexCoord), // texture 1
+        texture(texture2, TexCoord), // texture 2
+        0.2 // interpolation,
+        // If the third value is 0.0 it returns the first input
+        // If it's 1.0 it returns the second input value.
+        // A value of 0.2 will return 80% of the first input color and 20% of the second input color
+        // resulting in a mixture of both our textures.
+    );
+*/
 }
 )glsl";
 
@@ -123,11 +135,7 @@ void main()
 
 const char *CHILDfragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
-
 in highp vec3 ourColor;
-in highp vec2 TexCoord;
-
-uniform sampler2D ourTexture;
 
 void main()
 {
@@ -293,33 +301,15 @@ void * COMPOSITORMAIN(void * arg) {
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
-        class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(0, 400, 300, 1000, 1000);
-        struct GLIS_vertex_map_rectangle<float> vmr = GLIS_build_vertex_data_rect<GLint, float>(0.0F, r, CompositorMain.width, CompositorMain.height);
-        class GLIS_vertex_data<float> v = GLIS_build_vertex_rect<float>(vmr);
-        v.print("%4.1ff");
-
-        GLuint vertex_array_object;
-        GLuint vertex_buffer_object;
-        GLuint element_buffer_object;
-        LOG_INFO("Generating buffers");
-        GLIS_error_to_string_exec_GL(glGenVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec_GL(glGenBuffers(1, &vertex_buffer_object));
-        GLIS_error_to_string_exec_GL(glGenBuffers(1, &element_buffer_object));
-        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
-        GLIS_error_to_string_exec_GL(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
-        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
-        GLIS_error_to_string_exec_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
-        LOG_INFO("Initializing Attributes");
-        v.init_attributes();
-
         LOG_INFO("Using Shader program");
         GLIS_error_to_string_exec_GL(glUseProgram(PARENTshaderProgram));
-
-        glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
-        GLIS_error_to_string_exec_GL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, 1000, 1000, CompositorMain.width, CompositorMain.height);
+        for (int i = 0; i < 10; i++) {
+            GLint ii = i * 100;
+            GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, ii, ii, ii+100, ii+100, CompositorMain.width, CompositorMain.height);
+        }
+//        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
+//        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
         PARENT = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
         assert(PARENT != nullptr);
         // display system framebuffer
@@ -331,12 +321,6 @@ void * COMPOSITORMAIN(void * arg) {
         GLIS_error_to_string_exec_GL(glDeleteShader(PARENTfragmentShader));
         GLIS_error_to_string_exec_GL(glDeleteShader(PARENTvertexShader));
         GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
-        GLIS_error_to_string_exec_GL(glBindVertexArray(0));
-        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-        GLIS_error_to_string_exec_GL(glDeleteVertexArrays(1, &vertex_array_object));
-        GLIS_error_to_string_exec_GL(glDeleteBuffers(1,&vertex_buffer_object));
-        GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
