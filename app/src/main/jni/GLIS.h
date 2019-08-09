@@ -803,8 +803,8 @@ struct GLIS_quater_position {
 template <typename TYPE>
 struct GLIS_quater_color {
     TYPE R;
-    TYPE B;
     TYPE G;
+    TYPE B;
 };
 
 template <typename TYPE>
@@ -912,8 +912,8 @@ void GLIS_fill_vertex_rect(TYPE * vertex, struct GLIS_quater<TYPE> & quater, int
     vertex[offset+1] = quater.position.y;
     vertex[offset+2] = quater.position.z;
     vertex[offset+3] = quater.color.R;
-    vertex[offset+4] = quater.color.B;
-    vertex[offset+5] = quater.color.G;
+    vertex[offset+4] = quater.color.G;
+    vertex[offset+5] = quater.color.B;
     vertex[offset+6] = quater.texture_position.x;
     vertex[offset+7] = quater.texture_position.y;
 };
@@ -955,8 +955,8 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     m.top_left.texture_position.y = 1.0F;
     m.top_left.texture_position.z = 0.0F;
     m.top_left.color.R = 1.0F;
-    m.top_left.color.B = 1.0F;
     m.top_left.color.G = 1.0F;
+    m.top_left.color.B = 1.0F;
     GLIS_coordinates<TYPETO> point2 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.topRight.x,data.topRight.y,max_x,max_y);
     m.top_right.position.x = point2.x;
     m.top_right.position.y = point2.y;
@@ -965,8 +965,8 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     m.top_right.texture_position.y = 1.0F;
     m.top_right.texture_position.z = 0.0F;
     m.top_right.color.R = 0.0F;
-    m.top_right.color.B = 0.0F;
     m.top_right.color.G = 1.0F;
+    m.top_right.color.B = 0.0F;
     GLIS_coordinates<TYPETO> point3 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.bottomLeft.x,data.bottomLeft.y,max_x,max_y);
     m.bottom_left.position.x = point3.x;
     m.bottom_left.position.y = point3.y;
@@ -975,8 +975,8 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     m.bottom_left.texture_position.y = 0.0F;
     m.bottom_left.texture_position.z = 0.0F;
     m.bottom_left.color.R = 1.0F;
-    m.bottom_left.color.B = 0.0F;
     m.bottom_left.color.G = 0.0F;
+    m.bottom_left.color.B = 0.0F;
     GLIS_coordinates<TYPETO> point4 = GLIS_convertPair<TYPEFROM, TYPETO>(TYPETO_INITIALIZER, data.bottomRight.x,data.bottomRight.y,max_x,max_y);
     m.bottom_right.position.x = point4.x;
     m.bottom_right.position.y = point4.y;
@@ -985,8 +985,8 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     m.bottom_right.texture_position.y = 0.0F;
     m.bottom_right.texture_position.z = 0.0F;
     m.bottom_right.color.R = 0.0F;
-    m.bottom_right.color.B = 1.0F;
     m.bottom_right.color.G = 0.0F;
+    m.bottom_right.color.B = 1.0F;
     return m;
 }
 
@@ -1099,27 +1099,62 @@ void GLIS_Sync_GPU() {
 class STATE {
     public:
         int no_state = 0;
-        int starting_up = 1;
-        int started_up = 2;
-        int shutting_down = 3;
-        int shutdown = 4;
-        int upload = 5;
-        int render = 6;
-        int rendered = 7;
+        int request_startup = 1;
+        int response_starting_up = 2;
+        int response_started_up = 3;
+        int request_shutdown = 4;
+        int response_shutting_down = 5;
+        int response_shutdown = 6;
+        int request_upload = 7;
+        int response_uploading = 8;
+        int response_uploaded = 9;
+        int request_render = 10;
+        int response_rendering = 11;
+        int response_rendered = 12;
 } STATE;
 
 int SYNC_STATE = STATE.no_state;
 
-void GLIS_upload_texture(GLuint TEXTURE) {
+class IPC_MODE {
+    public:
+        int thread = 0;
+        int socket = 1;
+        int texture = 2;
+        int hardware_buffer = 3;
+} IPC_MODE;
+
+int IPC = IPC_MODE.thread;
+
+void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_height) {
+    while (SYNC_STATE != STATE.request_upload) {}
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
-    GLIS_current_texture = TEXTURE;
-    SYNC_STATE = STATE.upload;
+    SYNC_STATE = STATE.response_uploading;
+    if (IPC == IPC_MODE.thread) {
+        GLIS_current_texture = TEXTURE;
+    } else if (IPC == IPC_MODE.texture) {
+        GLIS_current_texture = TEXTURE; // if read fails
+//        GLIS_error_to_string_exec(glReadPixels(0, 0, texture_width, texture_height, GL_RGB8, ));
+    }
+    SYNC_STATE = STATE.response_uploaded;
     LOG_INFO("uploaded texture");
     LOG_INFO("requesting SERVER to render");
-    SYNC_STATE = STATE.render;
-    while (SYNC_STATE != STATE.rendered) {}
+    SYNC_STATE = STATE.request_render;
+    while (SYNC_STATE != STATE.response_rendered) {}
     LOG_INFO("SERVER has rendered");
 }
+
+void GLIS_get_texture(GLuint & TEXTURE) {
+    LOG_INFO("uploading texture");
+    GLIS_Sync_GPU();
+    if (IPC == IPC_MODE.thread) {
+        GLIS_current_texture = TEXTURE;
+    } else if (IPC == IPC_MODE.texture) {
+        GLIS_current_texture = TEXTURE; // if read fails
+//        glReadPixels()
+    }
+    LOG_INFO("uploaded texture");
+
+};
 
 #endif //GLNE_GLIS_H

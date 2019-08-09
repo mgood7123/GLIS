@@ -42,11 +42,12 @@
 #include <android/native_window.h> // requires ndk r5 or newer
 #include <android/native_window_jni.h> // requires ndk r5 or newer
 #include <pthread.h>
+#include <vector>
+#include <android/log.h>
 
 #include "compositor.h"
 #include "logger.h"
 #include "GLIS.h"
-#include <vector>
 
 #define LOG_TAG "EglSample"
 
@@ -60,9 +61,13 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurf
     if (surface != nullptr) {
         CompositorMain.native_window = ANativeWindow_fromSurface(jenv, surface);
         LOG_INFO("Got window %p", CompositorMain.native_window);
+        LOG_INFO("requesting SERVER startup");
+        SYNC_STATE = STATE.request_startup;
     } else {
-        SYNC_STATE = STATE.shutting_down;
-        while (SYNC_STATE != STATE.shutdown) {}
+        SYNC_STATE = STATE.request_shutdown;
+        LOG_INFO("requesting SERVER shutdown");
+        while (SYNC_STATE != STATE.response_shutdown) {}
+        LOG_INFO("SERVER has shutdown");
         LOG_INFO("Releasing window");
         ANativeWindow_release(CompositorMain.native_window);
         CompositorMain.native_window = nullptr;
@@ -96,13 +101,13 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
-out vec3 ourColor;
+out vec4 ourColor;
 out vec2 TexCoord;
 
 void main()
 {
     gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
+    ourColor = vec4(aColor, 1.0);
     TexCoord = aTexCoord;
 }
 )glsl";
@@ -110,7 +115,7 @@ void main()
 const char *PARENTfragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
 
-in highp vec3 ourColor;
+in highp vec4 ourColor;
 in highp vec2 TexCoord;
 
 uniform sampler2D texture1;
@@ -141,10 +146,10 @@ void Xmain(struct window *window) {
     if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
         const char * CHILDvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
+layout (location = 1) in vec4 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
-out vec3 ourColor;
+out vec4 ourColor;
 out vec2 TexCoord;
 
 void main()
@@ -157,11 +162,11 @@ void main()
 
         const char *CHILDfragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
-in highp vec3 ourColor;
+in highp vec4 ourColor;
 
 void main()
 {
-    FragColor = vec4(ourColor, 1.0);
+    FragColor = ourColor;
 }
 )glsl";
         GLIS_error_to_string();
@@ -191,7 +196,8 @@ void main()
         GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
 
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, Compositor[window->index].width, Compositor[window->index].height, Compositor[window->index].width, Compositor[window->index].height);
-        GLIS_upload_texture(renderedTexture);
+
+        GLIS_upload_texture(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
 
         LOG_INFO("Cleaning up");
         GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
@@ -215,12 +221,9 @@ void * ptm(void * arg) {
 
 void * COMPOSITORMAIN(void * arg) {
     SYNC_STATE = STATE.no_state;
-    LOG_INFO("waiting for main Compositor to obtain a native window");
-    while (CompositorMain.native_window == nullptr) {}
-    Compositor[1].native_window = CompositorMain.native_window;
-    LOG_INFO("main Compositor has obtained a native window");
+    while (SYNC_STATE != STATE.request_startup) {}
     LOG_INFO("starting up");
-    SYNC_STATE = STATE.starting_up;
+    SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
         LOG_INFO("initialized main Compositor");
@@ -248,7 +251,7 @@ void * COMPOSITORMAIN(void * arg) {
         GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
         GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
 
-        SYNC_STATE = STATE.started_up;
+        SYNC_STATE = STATE.response_started_up;
         LOG_INFO("started up");
 
         long _threadId;
@@ -256,30 +259,35 @@ void * COMPOSITORMAIN(void * arg) {
         *w2 = {1, 0,0,200,200, CompositorMain.context};
         pthread_create(&_threadId, nullptr, ptm, w2);
 
-        while(SYNC_STATE != STATE.shutting_down) {
+        while(SYNC_STATE != STATE.request_shutdown) {
             LOG_INFO("waiting for CLIENT to upload");
-            while (SYNC_STATE != STATE.upload) {}
+            SYNC_STATE = STATE.request_upload;
+            while (SYNC_STATE != STATE.response_uploading) {}
+            while (SYNC_STATE != STATE.response_uploaded) {}
             LOG_INFO("CLIENT has uploaded");
+            GLIS_get_texture(GLIS_current_texture);
             LOG_INFO("waiting for CLIENT to request render");
-            while (SYNC_STATE != STATE.render) {}
+            while (SYNC_STATE != STATE.request_render) {}
             LOG_INFO("CLIENT has requested render");
+            SYNC_STATE = STATE.response_rendering;
             LOG_INFO("rendering");
             GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
             GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
-            GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, 1000, 1000,
+            GLIS_draw_rectangle<GLint>(GL_TEXTURE0, GLIS_current_texture, 0, 0, 0, 1000, 1000,
                                        CompositorMain.width, CompositorMain.height);
             for (int i = 0; i < 10; i++) {
                 GLint ii = i * 100;
-                GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, ii, ii, ii + 100,
+                GLIS_draw_rectangle<GLint>(GL_TEXTURE0, GLIS_current_texture, 0, ii, ii, ii + 100,
                                            ii + 100, CompositorMain.width, CompositorMain.height);
             }
             GLIS_Sync_GPU();
             GLIS_error_to_string_exec_EGL(
                 eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
             GLIS_Sync_GPU();
+            SYNC_STATE = STATE.response_rendered;
             LOG_INFO("rendered");
-            SYNC_STATE = STATE.rendered;
         }
+        SYNC_STATE = STATE.response_shutting_down;
         LOG_INFO("shutting down");
 
         // clean up
@@ -291,8 +299,8 @@ void * COMPOSITORMAIN(void * arg) {
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
-        SYNC_STATE = STATE.shutdown;
         LOG_INFO("shut down");
+        SYNC_STATE = STATE.response_shutdown;
     } else LOG_ERROR("failed to initialize main Compositor");
     return nullptr;
 }
