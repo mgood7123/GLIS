@@ -141,15 +141,16 @@ void main()
 
 
 GLuint renderedTexture;
+GLuint renderedTexture2;
 
 void Xmain(struct window *window) {
     if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
         const char * CHILDvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec4 aColor;
+layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
-out vec4 ourColor;
+out vec3 ourColor;
 out vec2 TexCoord;
 
 void main()
@@ -162,11 +163,11 @@ void main()
 
         const char *CHILDfragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
-in highp vec4 ourColor;
+in highp vec3 ourColor;
 
 void main()
 {
-    FragColor = ourColor;
+    FragColor = vec4(ourColor, 1.0);
 }
 )glsl";
         GLIS_error_to_string();
@@ -197,7 +198,7 @@ void main()
 
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, Compositor[window->index].width, Compositor[window->index].height, Compositor[window->index].width, Compositor[window->index].height);
 
-        GLIS_upload_texture(renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
+        GLIS_upload_texture(renderedTexture2, Compositor[window->index].width, Compositor[window->index].height);
 
         LOG_INFO("Cleaning up");
         GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
@@ -256,7 +257,7 @@ void * COMPOSITORMAIN(void * arg) {
 
         long _threadId;
         auto *w2 = new struct window;
-        *w2 = {1, 0,0,200,200, CompositorMain.context};
+        *w2 = {1, 0 ,0, CompositorMain.width,CompositorMain.height, CompositorMain.context};
         pthread_create(&_threadId, nullptr, ptm, w2);
 
         while(SYNC_STATE != STATE.request_shutdown) {
@@ -265,7 +266,7 @@ void * COMPOSITORMAIN(void * arg) {
             while (SYNC_STATE != STATE.response_uploading) {}
             while (SYNC_STATE != STATE.response_uploaded) {}
             LOG_INFO("CLIENT has uploaded");
-            GLIS_get_texture(GLIS_current_texture);
+            GLIS_get_texture(GLIS_current_texture, CompositorMain.width, CompositorMain.height);
             LOG_INFO("waiting for CLIENT to request render");
             while (SYNC_STATE != STATE.request_render) {}
             LOG_INFO("CLIENT has requested render");

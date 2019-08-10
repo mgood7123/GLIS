@@ -12,9 +12,17 @@
 #include <cassert>
 #include <malloc.h>
 #include <string>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <cerrno>
+#include <unistd.h>
+#include <poll.h>
+
 #include "logger.h"
 
+
 #define LOG_TAG "EglSample"
+
 std::string GLIS_INTERNAL_MESSAGE_PREFIX = "";
 
 #define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT) CASE_NAME: { \
@@ -1040,11 +1048,7 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
     GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
     GLIS_error_to_string_exec_GL(glGenRenderbuffers(1, &renderbuffer));
     GLIS_error_to_string_exec_GL(glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer));
-    GLIS_error_to_string_exec_GL(glRenderbufferStorage(GL_RENDERBUFFER,
-                                                    GL_RGB8,
-                                                    texture_width,
-                                                    texture_height
-    ));
+    GLIS_error_to_string_exec_GL(glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height));
     GLIS_error_to_string_exec_GL(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                                                         GL_COLOR_ATTACHMENT0,
                                                         GL_RENDERBUFFER,
@@ -1062,15 +1066,7 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
     // create a new texture
     GLIS_error_to_string_exec_GL(glGenTextures(1, &renderedTexture));
     GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, renderedTexture));
-    GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D,
-                                           0,
-                                           GL_RGBA,
-                                           texture_width,
-                                           texture_height,
-                                           0,
-                                           GL_RGBA,
-                                           GL_UNSIGNED_BYTE,
-                                           0));
+    GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,0));
     GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
     GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
     GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
@@ -1118,12 +1114,201 @@ int SYNC_STATE = STATE.no_state;
 class IPC_MODE {
     public:
         int thread = 0;
-        int socket = 1;
-        int texture = 2;
-        int hardware_buffer = 3;
+        int texture = 1;
+        int socket = 2;
 } IPC_MODE;
 
-int IPC = IPC_MODE.thread;
+int IPC = IPC_MODE.socket;
+
+bool CAN_CONNECT;
+bool should_close = false;
+
+class SOCKET_SERVER {
+    public:
+        static void* setupServer(void* na) {
+            ssize_t ret;
+            struct sockaddr_un server_addr;
+            int socket_fd;
+            int data_socket;
+            int buffer;
+            // NDK needs abstract namespace by leading with '\0'
+            char socket_name[108]; // 108 sun_path length max
+            memset(&socket_name, 0, 108);
+            char * name = static_cast<char *>(na);
+            if (name == nullptr || name == NULL) name = const_cast<char *>("SOCKET_SERVER");
+            socket_name[0] = '\0';
+            if (strlen(name) > 107) {
+                LOG_ERROR("SERVER: name is longer than 107, conflicts may happen");
+                memcpy(&socket_name[1], name, 107);
+            } else memcpy(&socket_name[1], name, strlen(name));
+
+            LOG_INFO("SERVER: Start server setup: %s", socket_name+1);
+
+            // AF_UNIX for domain unix IPC and SOCK_STREAM since it works for the example
+            socket_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+            if (socket_fd < 0) {
+                LOG_ERROR("SERVER: socket: %s", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("SERVER: Socket made");
+
+            // clear for safty
+            memset(&server_addr, 0, sizeof(struct sockaddr_un));
+            server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
+            memcpy(server_addr.sun_path, socket_name, 108);
+            LOG_INFO("SERVER: binding socket fd %d to name %s", socket_fd, server_addr.sun_path +1);
+            ret = bind(socket_fd, (const struct sockaddr *) &server_addr, sizeof(struct sockaddr_un));
+            if (ret < 0) {
+                LOG_ERROR("SERVER: bind: %s", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("SERVER: Bind made");
+
+            // Open 8 back buffers for this demo
+            ret = listen(socket_fd, 8);
+            if (ret < 0) {
+                LOG_ERROR("SERVER: listen: %s", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("SERVER: Socket listening for packages");
+            CAN_CONNECT = true;
+            LOG_INFO("SERVER: Server setup complete: server name: %s", socket_name+1);
+
+            while (!should_close) {
+                // Wait for incoming connection.
+                LOG_INFO("SERVER: Socket waiting");
+                data_socket = accept(socket_fd, NULL, NULL);
+                if (data_socket < 0) {
+                    LOG_ERROR("SERVER: accept: %s", strerror(errno));
+                    exit(EXIT_FAILURE);
+                }
+                LOG_INFO("SERVER: %s : Accepted data", server_addr.sun_path + 1);
+                // This is the main loop for handling connections
+                struct pollfd pfd;
+                pfd.fd = data_socket;
+                pfd.events = POLLIN | POLLHUP | POLLRDNORM;
+                pfd.revents = 0;
+                // Wait for next data packet
+                // call poll with a timeout of 100 ms
+                if (poll(&pfd, 1, 100) > 0) { // if data_socket has data
+                    // CHECK IF DATA IS VALID
+                    // if result > 0, this means that there is either data available on the
+                    // socket, or the socket has been closed
+                    ret = recv(data_socket, &buffer, sizeof(int), MSG_PEEK | MSG_DONTWAIT);
+                    if (ret == 0) {
+                        // if recv returns zero, that means the connection has been closed
+                        LOG_INFO("SERVER: %s : Client has closed the connection",
+                                 server_addr.sun_path + 1);
+                        break;
+                    } else if (ret < 0) {
+                        LOG_ERROR("SERVER: %s : recv: %s", server_addr.sun_path + 1,
+                                  strerror(errno));
+                        break;
+                    }
+                    // DATA IS VALID
+                    if (recv(data_socket, &buffer, sizeof(int), NULL) < 0) {
+                        LOG_ERROR("SERVER: %s : recv: %s", server_addr.sun_path + 1,
+                                  strerror(errno));
+                        break;
+                    }
+                    LOG_INFO("SERVER: %s : Buffer: %d", server_addr.sun_path + 1, buffer);
+                    // Send back result
+                    buffer = false;
+                    ret = write(data_socket, &buffer, sizeof(int));
+                    if (ret < 0) {
+                        LOG_ERROR("SERVER: %s : write: %s", server_addr.sun_path + 1,
+                                  strerror(errno));
+                        LOG_INFO("SERVER: closing server: %s", server_addr.sun_path + 1);
+                        close(data_socket);
+                        close(socket_fd);
+                        LOG_INFO("SERVER: closed server: %s", server_addr.sun_path + 1);
+                        exit(EXIT_FAILURE);
+                    }
+                    LOG_INFO("SERVER: %s : Return: %d", server_addr.sun_path + 1, buffer);
+                }
+            }
+            LOG_INFO("SERVER: closing server: %s", server_addr.sun_path+1);
+            close(data_socket);
+            close(socket_fd);
+            LOG_INFO("SERVER: closed server: %s", server_addr.sun_path+1);
+            return NULL;
+        }
+
+        SOCKET_SERVER(const char * name) {
+            should_close = false;
+            CAN_CONNECT = false;
+            // Start server daemon on new thread
+            pthread_t server_thread;
+            pthread_create(&server_thread, NULL, setupServer, (void *) name);
+            while(!CAN_CONNECT) {}
+        }
+        ~SOCKET_SERVER() {
+            should_close = true;
+        }
+};
+
+class SOCKET_CLIENT {
+    public:
+        const size_t BUFFER_SIZE = 16;
+
+        int data_socket;
+        struct sockaddr_un server_addr;
+
+        SOCKET_CLIENT(const char * name) {
+            char socket_name[108]; // 108 sun_path length max
+            memset(&socket_name, 0, 108);
+            if (name == nullptr || name == NULL) name = const_cast<char *>("SOCKET_SERVER");
+            socket_name[0] = '\0';
+            if (strlen(name) > 107) {
+                LOG_ERROR("CLIENT: name is longer than 107, conflicts may happen");
+                memcpy(&socket_name[1], name, 107);
+            } else memcpy(&socket_name[1], name, strlen(name));
+            // clear for safty
+            memset(&server_addr, 0, sizeof(struct sockaddr_un));
+            server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
+            memcpy(server_addr.sun_path, socket_name, 108);
+        }
+        void sendTRUE(void) {
+            data_socket = socket(AF_UNIX, SOCK_STREAM, 0);
+            if (data_socket < 0) {
+                LOG_ERROR("CLIENT: socket: %s", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("CLIENT: connecting to server: %s", server_addr.sun_path+1);
+            ssize_t ret = connect(data_socket, (const struct sockaddr *) &server_addr, sizeof(struct sockaddr_un));
+            if (ret < 0) {
+                LOG_ERROR("CLIENT: connect: %s", strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("CLIENT: connected to server: %s", server_addr.sun_path+1);
+            int data = true;
+
+            LOG_INFO("CLIENT: %s : writing Data: %d", server_addr.sun_path+1, data);
+
+            ret = write(data_socket, &data, sizeof(data));
+            if (ret < 0) {
+                LOG_ERROR("CLIENT: %s : write: %s", server_addr.sun_path+1, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            LOG_INFO("CLIENT: %s : wrote Data: %d", server_addr.sun_path+1, data);
+
+            LOG_INFO("CLIENT: %s : reading", server_addr.sun_path+1);
+
+            ret = read(data_socket, &data, sizeof(data));
+            if (ret < 0) {
+                LOG_ERROR("CLIENT: %s : read: %s", server_addr.sun_path+1, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+
+            LOG_INFO("CLIENT: %s : Return: %d", server_addr.sun_path+1, data);
+            LOG_INFO("CLIENT: closing connection to server: %s", server_addr.sun_path+1);
+            close(data_socket);
+            LOG_INFO("CLIENT: closed connection to server: %s", server_addr.sun_path+1);
+        }
+};
+
+GLuint *TEXDATA = nullptr;
+size_t TEXDATA_LEN = 0;
 
 void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_height) {
     while (SYNC_STATE != STATE.request_upload) {}
@@ -1133,8 +1318,58 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
     if (IPC == IPC_MODE.thread) {
         GLIS_current_texture = TEXTURE;
     } else if (IPC == IPC_MODE.texture) {
-        GLIS_current_texture = TEXTURE; // if read fails
-//        GLIS_error_to_string_exec(glReadPixels(0, 0, texture_width, texture_height, GL_RGB8, ));
+        TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
+        TEXDATA = new GLuint[TEXDATA_LEN];
+        GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+    } else if (IPC == IPC_MODE.socket) {
+        TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
+        TEXDATA = new GLuint[TEXDATA_LEN];
+        GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+        SOCKET_SERVER * server = new SOCKET_SERVER("A");
+        SOCKET_CLIENT * clientA = new SOCKET_CLIENT("A");
+        SOCKET_CLIENT * clientB = new SOCKET_CLIENT("A");
+        LOG_INFO("sending clientA 1");
+        clientA->sendTRUE();
+        LOG_INFO("sending clientA 2");
+        clientA->sendTRUE();
+        LOG_INFO("sending clientB 1");
+        clientB->sendTRUE();
+        LOG_INFO("sending clientB 2");
+        clientB->sendTRUE();
+        LOG_INFO("sending shutting down clientA");
+        delete clientA;
+        LOG_INFO("sending shutting down clientB");
+        delete clientB;
+        LOG_INFO("sending shutting down server");
+        delete server;
+        exit(55);
+//LOG_INFO("new socket");
+//X2 = GLIS_new_socket("Compositor");
+//assert(X2 != nullptr);
+//LOG_INFO("created new socket");
+//LOG_INFO("bind socket");
+//assert(X2->bindToSocket());
+//LOG_INFO("binded to socket");
+//LOG_INFO("listen socket");
+//assert(X2->listenToSocket());
+//LOG_INFO("listening to socket");
+//LOG_INFO("new socket");
+//X1 = GLIS_new_socket("Compositor");
+//assert(X1 != nullptr);
+//LOG_INFO("created new socket");
+//LOG_INFO("connect socket");
+//assert(X1->connectToSocket());
+//LOG_INFO("connected to socket");
+//LOG_INFO("accept socket");
+//assert(X2->acceptFromSocket());
+//LOG_INFO("accepted socket");
+//LOG_INFO("send socket");
+//assert(X1->send(TEXDATA, TEXDATA_LEN));
+//LOG_INFO("sent socket");
+//LOG_INFO("receive socket");
+//assert(X2->receive(TEXDATA, TEXDATA_LEN));
+//LOG_INFO("received socket");
+        delete TEXDATA;
     }
     SYNC_STATE = STATE.response_uploaded;
     LOG_INFO("uploaded texture");
@@ -1144,16 +1379,42 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
     LOG_INFO("SERVER has rendered");
 }
 
-void GLIS_get_texture(GLuint & TEXTURE) {
-    LOG_INFO("uploading texture");
+void GLIS_get_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_height) {
+    LOG_INFO("acquiring uploaded texture");
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.thread) {
         GLIS_current_texture = TEXTURE;
     } else if (IPC == IPC_MODE.texture) {
-        GLIS_current_texture = TEXTURE; // if read fails
-//        glReadPixels()
+        GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
+        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
+        GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+        delete TEXDATA;
+        GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+    } else if (IPC == IPC_MODE.socket) {
+        TEXDATA = new GLuint[TEXDATA_LEN];
+//        X2 = GLIS_new_socket("Compositor");
+//        assert(X2 != nullptr);
+//        assert(X2->bindToSocket());
+//        assert(X2->listenToSocket());
+//        assert(X2->acceptFromSocket());
+//        assert(X2->receive(TEXDATA, TEXDATA_LEN));
+        GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
+        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
+        GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+        delete TEXDATA;
+        GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
     }
-    LOG_INFO("uploaded texture");
+    LOG_INFO("acquired uploaded texture");
 
 };
 
