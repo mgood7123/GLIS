@@ -1120,130 +1120,202 @@ class IPC_MODE {
 
 int IPC = IPC_MODE.socket;
 
-bool CAN_CONNECT;
-bool should_close = false;
+class SOCKET_SERVER_DATA {
+    public:
+        bool server_CAN_CONNECT = false;
+        bool server_should_close = false;
+        bool server_should_close_during_accept = false;
+        bool server_closed = false;
+        struct sockaddr_un server_addr = {0};
+        // NDK needs abstract namespace by leading with '\0'
+        char socket_name[108] = {0}; // 108 sun_path length max
+};
+
+void SERVER_SHUTDOWN(SOCKET_SERVER_DATA * internaldata) {
+    if (!internaldata->server_closed) return;
+    internaldata->server_should_close = true;
+    while (!internaldata->server_closed);
+}
+
+void* SERVER_START(void* na) {
+    assert(na != nullptr);
+    SOCKET_SERVER_DATA * internaldata = static_cast<SOCKET_SERVER_DATA*>(na);
+    ssize_t ret;
+    int buffer;
+    int socket_fd;
+    int data_socket;
+    bool has_data_socket = false;
+
+    LOG_INFO("SERVER: Start server setup: %s", internaldata->socket_name+1);
+
+    // AF_UNIX for domain unix IPC and SOCK_STREAM since it works for the example
+    socket_fd = socket(AF_UNIX, SOCK_STREAM|SOCK_NONBLOCK, 0);
+    if (socket_fd < 0) {
+        LOG_ERROR("SERVER: socket: %s", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    LOG_INFO("SERVER: Socket made");
+
+    // clear for safty
+    memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
+    internaldata->server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
+    memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
+    LOG_INFO("SERVER: binding socket fd %d to name %s", socket_fd, internaldata->server_addr.sun_path +1);
+    ret = bind(socket_fd, (const struct sockaddr *) &internaldata->server_addr, sizeof(struct sockaddr_un));
+    if (ret < 0) {
+        LOG_ERROR("SERVER: bind: %s", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    LOG_INFO("SERVER: Bind made");
+
+    // Open 8 back buffers for this demo
+    ret = listen(socket_fd, 8);
+    if (ret < 0) {
+        LOG_ERROR("SERVER: listen: %s", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    LOG_INFO("SERVER: Socket listening for packages");
+    internaldata->server_CAN_CONNECT = true;
+    LOG_INFO("SERVER: Server setup complete: server name: %s", internaldata->socket_name+1);
+
+    while (!internaldata->server_should_close) {
+        // Wait for incoming connection.
+        has_data_socket = false;
+        for(;;) {
+            if (internaldata->server_should_close) {
+                internaldata->server_should_close_during_accept = true;
+                break;
+            }
+            data_socket = accept(socket_fd, NULL, NULL);
+            if (data_socket < 0) {
+                if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                else break;
+            }
+            break;
+        }
+        if (internaldata->server_should_close_during_accept) continue;
+        if (data_socket < 0) {
+            LOG_ERROR("SERVER: accept: %s", strerror(errno));
+            SERVER_SHUTDOWN(internaldata);
+            exit(EXIT_FAILURE);
+        }
+        has_data_socket = true;
+        LOG_INFO("SERVER: %s : Accepted data", internaldata->server_addr.sun_path + 1);
+        // This is the main loop for handling connections
+        struct pollfd pfd;
+        pfd.fd = data_socket;
+        pfd.events = POLLIN | POLLHUP | POLLRDNORM;
+        pfd.revents = 0;
+        // Wait for next data packet
+        // call poll with a timeout of 100 ms
+        if (poll(&pfd, 1, 100) > 0) { // if data_socket has data
+            // CHECK IF DATA IS VALID
+            // if result > 0, this means that there is either data available on the
+            // socket, or the socket has been closed
+            for(;;) {
+                ret = recv(data_socket, &buffer, sizeof(int), MSG_PEEK | MSG_DONTWAIT);
+                if (ret < 0) {
+                    if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                    else break;
+                }
+                break;
+            }
+            if (ret == 0) {
+                // if recv returns zero, that means the connection has been closed
+                LOG_INFO("SERVER: %s : Client has closed the connection",
+                         internaldata->server_addr.sun_path + 1);
+                continue;
+            } else if (ret < 0) {
+                LOG_ERROR("SERVER: %s : recv: %s", internaldata->server_addr.sun_path + 1,
+                          strerror(errno));
+                continue;
+            }
+            // DATA IS VALID
+            for(;;) {
+                ret = recv(data_socket, &buffer, sizeof(int), NULL);
+                if (ret < 0) {
+                    if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                    else break;
+                }
+                break;
+            }
+            if (ret < 0) {
+                LOG_ERROR("SERVER: %s : recv: %s", internaldata->server_addr.sun_path + 1,
+                          strerror(errno));
+                continue;
+            }
+            LOG_INFO("SERVER: %s : Buffer: %d", internaldata->server_addr.sun_path + 1, buffer);
+            // Send back result
+            buffer = false;
+            for(;;) {
+                ret = write(data_socket, &buffer, sizeof(int));
+                if (ret < 0) {
+                    if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                    else break;
+                }
+                break;
+            }
+            if (ret < 0) {
+                LOG_ERROR("SERVER: %s : write: %s", internaldata->server_addr.sun_path + 1,
+                          strerror(errno));
+                continue;
+            }
+            LOG_INFO("SERVER: %s : Return: %d", internaldata->server_addr.sun_path + 1, buffer);
+        }
+    }
+    LOG_INFO("SERVER: closing server: %s", internaldata->server_addr.sun_path+1);
+    if (has_data_socket) close(data_socket);
+    close(socket_fd);
+    internaldata->server_closed = true;
+    LOG_INFO("SERVER: closed server: %s", internaldata->server_addr.sun_path+1);
+    return NULL;
+}
 
 class SOCKET_SERVER {
+    private:
+        pthread_t server_thread = 0;
+        char server_name[107];
+        const char * default_server_name = "SOCKET_SERVER";
+        const size_t default_server_name_length = strlen(default_server_name);
+        SOCKET_SERVER_DATA * internaldata = nullptr;
     public:
-        static void* setupServer(void* na) {
-            ssize_t ret;
-            struct sockaddr_un server_addr;
-            int socket_fd;
-            int data_socket;
-            int buffer;
-            // NDK needs abstract namespace by leading with '\0'
-            char socket_name[108]; // 108 sun_path length max
-            memset(&socket_name, 0, 108);
-            char * name = static_cast<char *>(na);
-            if (name == nullptr || name == NULL) name = const_cast<char *>("SOCKET_SERVER");
-            socket_name[0] = '\0';
-            if (strlen(name) > 107) {
-                LOG_ERROR("SERVER: name is longer than 107, conflicts may happen");
-                memcpy(&socket_name[1], name, 107);
-            } else memcpy(&socket_name[1], name, strlen(name));
-
-            LOG_INFO("SERVER: Start server setup: %s", socket_name+1);
-
-            // AF_UNIX for domain unix IPC and SOCK_STREAM since it works for the example
-            socket_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-            if (socket_fd < 0) {
-                LOG_ERROR("SERVER: socket: %s", strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            LOG_INFO("SERVER: Socket made");
-
-            // clear for safty
-            memset(&server_addr, 0, sizeof(struct sockaddr_un));
-            server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
-            memcpy(server_addr.sun_path, socket_name, 108);
-            LOG_INFO("SERVER: binding socket fd %d to name %s", socket_fd, server_addr.sun_path +1);
-            ret = bind(socket_fd, (const struct sockaddr *) &server_addr, sizeof(struct sockaddr_un));
-            if (ret < 0) {
-                LOG_ERROR("SERVER: bind: %s", strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            LOG_INFO("SERVER: Bind made");
-
-            // Open 8 back buffers for this demo
-            ret = listen(socket_fd, 8);
-            if (ret < 0) {
-                LOG_ERROR("SERVER: listen: %s", strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            LOG_INFO("SERVER: Socket listening for packages");
-            CAN_CONNECT = true;
-            LOG_INFO("SERVER: Server setup complete: server name: %s", socket_name+1);
-
-            while (!should_close) {
-                // Wait for incoming connection.
-                LOG_INFO("SERVER: Socket waiting");
-                data_socket = accept(socket_fd, NULL, NULL);
-                if (data_socket < 0) {
-                    LOG_ERROR("SERVER: accept: %s", strerror(errno));
-                    exit(EXIT_FAILURE);
-                }
-                LOG_INFO("SERVER: %s : Accepted data", server_addr.sun_path + 1);
-                // This is the main loop for handling connections
-                struct pollfd pfd;
-                pfd.fd = data_socket;
-                pfd.events = POLLIN | POLLHUP | POLLRDNORM;
-                pfd.revents = 0;
-                // Wait for next data packet
-                // call poll with a timeout of 100 ms
-                if (poll(&pfd, 1, 100) > 0) { // if data_socket has data
-                    // CHECK IF DATA IS VALID
-                    // if result > 0, this means that there is either data available on the
-                    // socket, or the socket has been closed
-                    ret = recv(data_socket, &buffer, sizeof(int), MSG_PEEK | MSG_DONTWAIT);
-                    if (ret == 0) {
-                        // if recv returns zero, that means the connection has been closed
-                        LOG_INFO("SERVER: %s : Client has closed the connection",
-                                 server_addr.sun_path + 1);
-                        break;
-                    } else if (ret < 0) {
-                        LOG_ERROR("SERVER: %s : recv: %s", server_addr.sun_path + 1,
-                                  strerror(errno));
-                        break;
-                    }
-                    // DATA IS VALID
-                    if (recv(data_socket, &buffer, sizeof(int), NULL) < 0) {
-                        LOG_ERROR("SERVER: %s : recv: %s", server_addr.sun_path + 1,
-                                  strerror(errno));
-                        break;
-                    }
-                    LOG_INFO("SERVER: %s : Buffer: %d", server_addr.sun_path + 1, buffer);
-                    // Send back result
-                    buffer = false;
-                    ret = write(data_socket, &buffer, sizeof(int));
-                    if (ret < 0) {
-                        LOG_ERROR("SERVER: %s : write: %s", server_addr.sun_path + 1,
-                                  strerror(errno));
-                        LOG_INFO("SERVER: closing server: %s", server_addr.sun_path + 1);
-                        close(data_socket);
-                        close(socket_fd);
-                        LOG_INFO("SERVER: closed server: %s", server_addr.sun_path + 1);
-                        exit(EXIT_FAILURE);
-                    }
-                    LOG_INFO("SERVER: %s : Return: %d", server_addr.sun_path + 1, buffer);
-                }
-            }
-            LOG_INFO("SERVER: closing server: %s", server_addr.sun_path+1);
-            close(data_socket);
-            close(socket_fd);
-            LOG_INFO("SERVER: closed server: %s", server_addr.sun_path+1);
-            return NULL;
+        void startServer() {
+            if (internaldata != nullptr) return;
+            internaldata = new SOCKET_SERVER_DATA;
+            internaldata->server_CAN_CONNECT = false;
+            internaldata->server_should_close = false;
+            internaldata->server_closed = false;
+            memset(internaldata->socket_name, 0, 108);
+            internaldata->socket_name[0] = '\0';
+            if (strlen(server_name) > 107) {
+                LOG_ERROR("SERVER: name is longer than 107 characters, truncating, conflicts may happen");
+                memcpy(&internaldata->socket_name[1], server_name, 107);
+            } else memcpy(&internaldata->socket_name[1], server_name, strlen(server_name));
+            pthread_create(&server_thread, NULL, SERVER_START, internaldata);
+            while(!internaldata->server_CAN_CONNECT) {}
         }
-
+        void shutdownServer() {
+            if (internaldata == nullptr) return;
+            if (!internaldata->server_closed) SERVER_SHUTDOWN(internaldata);
+            delete internaldata;
+        }
         SOCKET_SERVER(const char * name) {
-            should_close = false;
-            CAN_CONNECT = false;
-            // Start server daemon on new thread
-            pthread_t server_thread;
-            pthread_create(&server_thread, NULL, setupServer, (void *) name);
-            while(!CAN_CONNECT) {}
+            memset(&server_name, 0, 107);
+            if (name == nullptr || name == NULL) {
+                LOG_ERROR("SERVER: name was not supplied, conflicts are likely to happen");
+                if (strlen(default_server_name) > 107) {
+                    LOG_ERROR("SERVER: default name is longer than 107 characters, truncating");
+                    memcpy(server_name, default_server_name, 107);
+                } else memcpy(server_name, default_server_name, default_server_name_length);
+            }
+            else if (strlen(server_name) > 107) {
+                LOG_ERROR("SERVER: name is longer than 107 characters, truncating, conflicts may happen");
+                memcpy(server_name, name, 107);
+            } else memcpy(server_name, name, strlen(name));
+            startServer();
         }
         ~SOCKET_SERVER() {
-            should_close = true;
+            shutdownServer();
         }
 };
 
@@ -1325,23 +1397,22 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
         GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
-        SOCKET_SERVER * server = new SOCKET_SERVER("A");
-        SOCKET_CLIENT * clientA = new SOCKET_CLIENT("A");
-        SOCKET_CLIENT * clientB = new SOCKET_CLIENT("A");
-        LOG_INFO("sending clientA 1");
-        clientA->sendTRUE();
-        LOG_INFO("sending clientA 2");
-        clientA->sendTRUE();
-        LOG_INFO("sending clientB 1");
-        clientB->sendTRUE();
-        LOG_INFO("sending clientB 2");
-        clientB->sendTRUE();
-        LOG_INFO("sending shutting down clientA");
-        delete clientA;
-        LOG_INFO("sending shutting down clientB");
-        delete clientB;
-        LOG_INFO("sending shutting down server");
-        delete server;
+        SOCKET_SERVER serverA("A");
+        SOCKET_SERVER serverB("B");
+        SOCKET_CLIENT clientA("A");
+        SOCKET_CLIENT clientB("B");
+        serverA.startServer();
+        serverB.startServer();
+        serverA.startServer();
+        serverB.startServer();
+        clientA.sendTRUE();
+        clientA.sendTRUE();
+        clientB.sendTRUE();
+        clientB.sendTRUE();
+        serverA.shutdownServer();
+        serverB.shutdownServer();
+        serverA.shutdownServer();
+        serverB.shutdownServer();
         exit(55);
 //LOG_INFO("new socket");
 //X2 = GLIS_new_socket("Compositor");
