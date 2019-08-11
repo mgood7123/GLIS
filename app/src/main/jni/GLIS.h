@@ -1127,7 +1127,6 @@ class SOCKET_SERVER_DATA {
         bool server_should_close_during_accept = false;
         bool server_closed = false;
         struct sockaddr_un server_addr = {0};
-        // NDK needs abstract namespace by leading with '\0'
         char socket_name[108] = {0}; // 108 sun_path length max
 };
 
@@ -1286,6 +1285,7 @@ class SOCKET_SERVER {
             internaldata->server_should_close = false;
             internaldata->server_closed = false;
             memset(internaldata->socket_name, 0, 108);
+            // NDK needs abstract namespace by leading with '\0'
             internaldata->socket_name[0] = '\0';
             if (strlen(server_name) > 107) {
                 LOG_ERROR("SERVER: name is longer than 107 characters, truncating, conflicts may happen");
