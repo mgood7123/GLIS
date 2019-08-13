@@ -2,22 +2,22 @@
 // Created by konek on 8/13/2019.
 //
 
-#ifndef GLNE_SERVER_CORE_2_H
-#define GLNE_SERVER_CORE_2_H
+#ifndef GLNE_SERVER_CORE_H
+#define GLNE_SERVER_CORE_H
 
-#define SOCKET_HEADER_SIZE (sizeof(int)*4)
+#define SOCKET_HEADER_SIZE (sizeof(size_t)*4)
 
 typedef class SOCKET_MSG {
     public:
         SOCKET_MSG * allocate_header(size_t len) {
             header_length = len;
-            header = static_cast<int *>(malloc(header_length));
+            header = static_cast<size_t *>(malloc(header_length));
             memset(header, 0, header_length);
             return this;
         }
         SOCKET_MSG * allocate_data(size_t len) {
             data_length = len;
-            data = static_cast<int *>(malloc(data_length));
+            data = malloc(data_length);
             memset(data, 0, data_length);
             return this;
         }
@@ -44,7 +44,7 @@ typedef class SOCKET_MSG {
             return deallocate_header()->deallocate_data();
         }
 
-        int * header = nullptr;
+        size_t * header = nullptr;
         size_t header_length = 0;
         void * data = nullptr;
         size_t data_length = 0;
@@ -58,15 +58,15 @@ typedef class SOCKET_MSG {
         }
         class get {
             public:
-                int ** header = nullptr;
+                size_t **header = nullptr;
                 int command() {
-                    return header[0][0];
+                    return static_cast<int>(header[0][0]);
                 }
-                int length() {
+                size_t length() {
                     return header[0][1];
                 }
                 int response() {
-                    return header[0][2];
+                    return static_cast<int>(header[0][2]);
                 }
                 bool expect_data() {
                     return static_cast<bool>(header[0][3]);
@@ -74,18 +74,18 @@ typedef class SOCKET_MSG {
         } get;
         class put {
             public:
-                int ** header = nullptr;
+                size_t **header = nullptr;
                 void command(int command) {
-                    header[0][0] = command;
+                    header[0][0] = static_cast<size_t>(command);
                 }
-                void length(int length) {
+                void length(size_t length) {
                     header[0][1] = length;
                 }
                 void response(int response) {
-                    header[0][2] = response;
+                    header[0][2] = static_cast<size_t>(response);
                 }
                 void expect_data(bool expect) {
-                    header[0][3] = expect;
+                    header[0][3] = static_cast<size_t>(expect);
                 }
         } put;
 } SOCKET_MSG;
@@ -128,8 +128,8 @@ SOCKET_MSG * SOCKET_HEADER() {
     return msg->allocate_header(SOCKET_HEADER_SIZE);
 }
 
-SOCKET_MSG * SOCKET_DATA(int * data, size_t len) {
-    SOCKET_MSG * msg = new SOCKET_MSG;
+SOCKET_MSG * SOCKET_DATA(void * data, size_t len) {
+    SOCKET_MSG * msg = SOCKET_HEADER();
     msg->allocate_data(len);
     memcpy(msg->data, data, len);
     return msg;
@@ -144,6 +144,7 @@ class SERVER_MESSAGES {
     public:
         struct SERVER_MESSAGE_TYPE {
             int boolean = 0;
+            int texture = 1;
         } SERVER_MESSAGE_TYPE;
         struct SERVER_MESSAGE_RESPONSE {
             int OK = 0;
@@ -154,15 +155,24 @@ class SERVER_MESSAGES {
 void SERVER_PROCESS(SOCKET_SERVER_DATA * internaldata) {
     int CMD = internaldata->HEADER->get.command();
     if (internaldata->STATE == SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_header) {
-        if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.boolean) internaldata->HEADER->put.expect_data(true);
-        else internaldata->HEADER->put.expect_data(false);
-        int r = SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK;
-        internaldata->REPLY = SOCKET_DATA(&r, sizeof(int));
+        internaldata->HEADER->put.expect_data(
+            CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.boolean ||
+            CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture
+        );
+        internaldata->REPLY = SOCKET_HEADER();
+        internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
         internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_header;
     } else if (internaldata->STATE == SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_data) {
         if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.boolean) {
             int r = false;
             internaldata->REPLY = SOCKET_DATA(&r, sizeof(int));
+            internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
+            internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_data;
+        }
+        else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
+            // sent the texture back
+            internaldata->REPLY = SOCKET_DATA(internaldata->DATA->data, internaldata->DATA->data_length);
+            internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
             internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_data;
         }
     }
@@ -298,7 +308,7 @@ void* SERVER_START(void* na) {
     }
     LOG_INFO("SERVER: Socket made\n");
 
-    // clear for safty
+    // clear for safety
     memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
     internaldata->server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
     memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
@@ -313,7 +323,7 @@ void* SERVER_START(void* na) {
     // Open 8 back buffers for this demo
     ret = listen(socket_fd, 8);
     if (ret < 0) {
-        LOG_ERROR("SERVER: listen: %s\n", strerror(errno));
+        LOG_ERROR("SERVER: listen: %s", strerror(errno));
         exit(EXIT_FAILURE);
     }
     LOG_INFO("SERVER: Socket listening for packages\n");
@@ -377,7 +387,7 @@ void* SERVER_START(void* na) {
             continue;
         }
         internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_data;
-        internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->header_length);
+        internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
         LOG_INFO("SERVER: %s : waiting for data\n", internaldata->server_addr.sun_path + 1);
         if (!SOCKET_GET_DATA(data_socket, internaldata->DATA, internaldata->server_addr.sun_path+1)) {
             SOCKET_DELETE(&internaldata->DATA);
@@ -416,9 +426,15 @@ class SOCKET_SERVER {
         const char * default_server_name = "SOCKET_SERVER";
         const size_t default_server_name_length = strlen(default_server_name);
         SOCKET_SERVER_DATA * internaldata = nullptr;
+        void (*reply)(SOCKET_SERVER_DATA *) = nullptr;
     public:
-        void set_reply_callback() {
-
+        void set_reply_callback(void (*callback)(SOCKET_SERVER_DATA *)) {
+            if (internaldata == nullptr) {
+                reply = callback;
+            } else {
+                if (reply != nullptr) reply = nullptr;
+                internaldata->reply = callback;
+            }
         }
         void startServer() {
             if (internaldata != nullptr) {
@@ -426,6 +442,10 @@ class SOCKET_SERVER {
                 return;
             }
             internaldata = new SOCKET_SERVER_DATA;
+            if (reply != nullptr) {
+                internaldata->reply = reply;
+                reply = nullptr;
+            }
             internaldata->server_CAN_CONNECT = false;
             internaldata->server_should_close = false;
             internaldata->server_closed = false;
@@ -486,13 +506,13 @@ class SOCKET_CLIENT {
                 LOG_ERROR("CLIENT: name is longer than 107, conflicts may happen\n");
                 memcpy(&socket_name[1], name, 107);
             } else memcpy(&socket_name[1], name, strlen(name));
-            // clear for safty
+            // clear for safety
             memset(&server_addr, 0, sizeof(struct sockaddr_un));
             server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
             memcpy(server_addr.sun_path, socket_name, 108);
         }
 
-        SOCKET_MSG * send(SOCKET_MSG * header, int * data, size_t len) {
+        SOCKET_MSG * send(SOCKET_MSG * header, void * data, size_t len) {
             data_socket = socket(AF_UNIX, SOCK_STREAM, 0);
             if (data_socket < 0) {
                 LOG_ERROR("CLIENT: socket: %s\n", strerror(errno));
@@ -505,17 +525,25 @@ class SOCKET_CLIENT {
                 exit(EXIT_FAILURE);
             }
             LOG_INFO("CLIENT: connected to server: %s\n", server_addr.sun_path+1);
+            header->put.length(len);
 
+            // TODO: server state CANNOT be relied on since this MUST work across machines
+            LOG_INFO("CLIENT: send header\n");
             SOCKET_SEND_HEADER(data_socket, header, server_addr.sun_path+1);
             SOCKET_MSG * response = SOCKET_HEADER();
+            LOG_INFO("CLIENT: get header response\n");
             SOCKET_GET_HEADER(data_socket, response, server_addr.sun_path+1);
+            LOG_INFO("CLIENT: check header response\n");
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
                 SOCKET_DELETE(&response);
                 SOCKET_MSG * data_ = SOCKET_DATA(data, len);
+                LOG_INFO("CLIENT: send data\n");
                 SOCKET_SEND_DATA(data_socket, data_, server_addr.sun_path+1);
                 response = SOCKET_DATA_RESPONSE(header->header_length);
+                LOG_INFO("CLIENT: get data response\n");
                 SOCKET_GET_DATA(data_socket, response, server_addr.sun_path+1);
                 int da = static_cast<int *>(response->data)[0];
+                LOG_INFO("CLIENT: check data response\n");
                 if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
                     LOG_INFO("CLIENT: %s : Obtained response: %d\n", server_addr.sun_path + 1,
                              da);
@@ -541,6 +569,14 @@ class SOCKET_CLIENT {
             SOCKET_DELETE(&header);
             return response;
         }
+#ifdef __ANDROID__
+        SOCKET_MSG *sendTexture(GLuint * texture, size_t texture_length) {
+            SOCKET_MSG * header = SOCKET_COMMAND(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture);
+            SOCKET_MSG * response = send(header, texture, texture_length);
+            SOCKET_DELETE(&header);
+            return response;
+        }
+#endif
 };
 
-#endif //GLNE_SERVER_CORE_2_H
+#endif //GLNE_SERVER_CORE_H
