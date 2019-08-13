@@ -379,6 +379,7 @@ void* SERVER_START(void* na) {
         LOG_INFO("%sProcessed header\n", TAG, internaldata->server_addr.sun_path + 1);
         LOG_INFO("%sSending reply\n", TAG, internaldata->server_addr.sun_path + 1);
         if (!SOCKET_SEND_HEADER(TAG, data_socket, internaldata->REPLY, internaldata->server_addr.sun_path+1)) {
+            SOCKET_DELETE(&internaldata->HEADER);
             SOCKET_DELETE(&internaldata->REPLY);
             continue;
         }
@@ -389,12 +390,14 @@ void* SERVER_START(void* na) {
         // then we obtain the data according to the header
         if (!internaldata->HEADER->get.expect_data()) {
             LOG_INFO("%sno data is expected\n", TAG, internaldata->server_addr.sun_path + 1);
+            SOCKET_DELETE(&internaldata->HEADER);
             continue;
         }
         internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_data;
         internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
         LOG_INFO("%swaiting for data\n", TAG, internaldata->server_addr.sun_path + 1);
         if (!SOCKET_GET_DATA(TAG, data_socket, internaldata->DATA, internaldata->server_addr.sun_path+1)) {
+            SOCKET_DELETE(&internaldata->HEADER);
             SOCKET_DELETE(&internaldata->DATA);
             continue;
         }
@@ -473,7 +476,11 @@ class SOCKET_SERVER {
                 internaldata = nullptr;
             } else SERVER_SHUTDOWN(server_name, internaldata);
         }
-        SOCKET_SERVER(const char * name) {
+        void set_name(const char * name) {
+            if (internaldata != nullptr) {
+                LOG_INFO("%sattempting to change server name while server is running\n", TAG, server_name);
+                return;
+            }
             memset(&server_name, 0, 107);
             if (name == nullptr || name == NULL) {
                 // build default TAG
@@ -492,9 +499,20 @@ class SOCKET_SERVER {
                 TAG = strdup(std::string(std::string("SERVER: ") + server_name + " : ").c_str());
             }
         }
+        void unset_name() {
+            set_name(nullptr);
+        }
+        SOCKET_SERVER() {
+            set_name(nullptr);
+        }
+        SOCKET_SERVER(const char * name) {
+            set_name(name);
+        }
         ~SOCKET_SERVER() {
-            free(TAG);
-            TAG = nullptr;
+            if (TAG != nullptr) {
+                free(TAG);
+                TAG = nullptr;
+            }
         }
 };
 
@@ -507,7 +525,7 @@ class SOCKET_CLIENT {
         const char * default_client_name = "SOCKET_SERVER";
         const size_t default_client_name_length = strlen(default_client_name);
         char * TAG = nullptr;
-        SOCKET_CLIENT(const char * name) {
+        void set_name(const char * name) {
             char socket_name[108]; // 108 sun_path length max
             memset(&socket_name, 0, 108);
             socket_name[0] = '\0';
@@ -532,6 +550,16 @@ class SOCKET_CLIENT {
             memcpy(server_addr.sun_path, socket_name, 108);
         }
 
+        void unset_name() {
+            set_name(nullptr);
+        }
+        SOCKET_CLIENT() {
+            set_name(nullptr);
+        }
+        SOCKET_CLIENT(const char * name) {
+            set_name(name);
+        }
+
         ~SOCKET_CLIENT() {
             free(TAG);
             TAG = nullptr;
@@ -552,7 +580,6 @@ class SOCKET_CLIENT {
             LOG_INFO("%sconnected to server\n", TAG);
             header->put.length(len);
 
-            // TODO: server state CANNOT be relied on since this MUST work across machines
             LOG_INFO("%ssend header\n", TAG);
             SOCKET_SEND_HEADER(TAG, data_socket, header, server_addr.sun_path+1);
             SOCKET_MSG * response = SOCKET_HEADER();
