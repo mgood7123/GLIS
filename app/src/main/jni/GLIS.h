@@ -1150,7 +1150,12 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
         GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
-        SOCKET_test_server();
+        SOCKET_SERVER serverA("A");
+        SOCKET_CLIENT clientA("A");
+        serverA.startServer();
+        SOCKET_MSG * R = clientA.send(TEXDATA, TEXDATA_LEN);
+        SOCKET_DELETE(&R);
+        serverA.shutdownServer();
         exit(55);
 //LOG_INFO("new socket");
 //X2 = GLIS_new_socket("Compositor");
@@ -1224,7 +1229,6 @@ void GLIS_get_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_heigh
         GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
     }
     LOG_INFO("acquired uploaded texture");
-
-};
+}
 
 #endif //GLNE_GLIS_H

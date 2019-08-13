@@ -33,21 +33,4 @@
 
 #include "server_core.h"
 
-void SOCKET_test_server() {
-    SOCKET_SERVER serverA("A");
-    SOCKET_CLIENT clientA("A");
-    serverA.startServer();
-    SOCKET_MSG * R = clientA.sendTRUE();
-//    SOCKET_MSG * R = clientA.sendTexture(TEXDATA, TEXDATA_LEN);
-    SOCKET_DELETE(&R);
-    serverA.shutdownServer();
-}
-
-#ifndef __ANDROID__
-int main() {
-    SOCKET_test_server();
-    return 5;
-}
-#endif
-
 #endif //GLNE_SERVER_H
