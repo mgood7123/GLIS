@@ -1092,6 +1092,7 @@ void GLIS_Sync_GPU() {
     LOG_INFO("synchronized with GPU");
 }
 
+// TODO: convert state machine (SYNC_STATE) into a server otherwise IPC will fail when in non threaded mode
 class STATE {
     public:
         int no_state = 0;
