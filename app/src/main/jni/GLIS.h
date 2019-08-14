@@ -226,6 +226,7 @@ void GLIS_EGL_INFORMATION(EGLDisplay & DISPLAY) {
 }
 
 void GLIS_destroy_GLIS(class GLIS_CLASS & GLIS) {
+    GLIS.server.shutdownServer();
     if (!GLIS.init_GLIS) return;
 
     if (GLIS.init_eglMakeCurrent) {
@@ -1143,21 +1144,22 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
     SYNC_STATE = STATE.response_uploading;
     if (IPC == IPC_MODE.thread) {
         GLIS_current_texture = TEXTURE;
+        SYNC_STATE = STATE.response_uploaded;
     } else if (IPC == IPC_MODE.texture) {
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
         GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+        SYNC_STATE = STATE.response_uploaded;
     } else if (IPC == IPC_MODE.socket) {
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
         GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
         SOCKET_CLIENT clientA;
+        SYNC_STATE = STATE.response_uploaded;
         SOCKET_MSG * R = clientA.send(TEXDATA, TEXDATA_LEN);
         SOCKET_DELETE(&R);
         delete TEXDATA;
-        exit(1);
     }
-    SYNC_STATE = STATE.response_uploaded;
     LOG_INFO("uploaded texture");
     LOG_INFO("requesting SERVER to render");
     SYNC_STATE = STATE.request_render;
@@ -1183,13 +1185,49 @@ void GLIS_get_texture(SOCKET_SERVER &server, GLuint &TEXTURE, GLint texture_widt
         GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
         GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
     } else if (IPC == IPC_MODE.socket) {
-        TEXDATA = new GLuint[TEXDATA_LEN];
-
-//        server.get(TEXDATA);
-        GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
-        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
-        GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
-        delete TEXDATA;
+        SERVER_LOG_INFO("%swaiting for connection", server.TAG);
+        if (server.socket_accept()) {
+            SERVER_LOG_INFO("%sconnection obtained", server.TAG);
+            // OBTAIN AND PROCESS HEADER
+            SERVER_LOG_INFO("%sretrieving header", server.TAG);
+            if (server.socket_get_header()) { // false if fails
+                SERVER_LOG_INFO("%sretrieved header", server.TAG);
+                SERVER_LOG_INFO("%sprocessing header", server.TAG);
+                server.socket_process_header();
+                SERVER_LOG_INFO("%sprocessed header", server.TAG);
+                SERVER_LOG_INFO("%ssending header", server.TAG);
+                if (server.socket_put_header()) { // false if fails
+                    SERVER_LOG_INFO("%ssent header", server.TAG);
+                    // IF WE EXPECT DATA, OBTAIN AND PROCESS IT
+                    if (server.socket_header_expect_data()) { // false if fails
+                        SERVER_LOG_INFO("%sexpecting data", server.TAG);
+                        SERVER_LOG_INFO("%sobtaining data", server.TAG);
+                        if (server.socket_get_data()) { // false if fails
+                            SERVER_LOG_INFO("%sprocessing data", server.TAG);
+                            GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
+                            GLIS_error_to_string_exec_GL(
+                                glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
+                            GLIS_error_to_string_exec_GL(
+                                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width,
+                                             texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                                             static_cast<GLuint *>(server.internaldata->DATA->data)));
+                            server.socket_process_data();
+                            SERVER_LOG_INFO("%sprocessed data", server.TAG);
+                            SERVER_LOG_INFO("%ssending data", server.TAG);
+                            if (server.socket_put_data())
+                                SERVER_LOG_INFO("%ssent data", server.TAG);
+                            else
+                                SERVER_LOG_ERROR("%sfailed to send data", server.TAG);
+                        } else
+                            SERVER_LOG_ERROR("%sfailed to obtain data", server.TAG);
+                    } else
+                        SERVER_LOG_INFO("%sno data is expected", server.TAG);
+                } else
+                    SERVER_LOG_ERROR("%sfailed to send header", server.TAG);
+            } else
+                SERVER_LOG_ERROR("%sfailed to get header", server.TAG);
+        } else
+            SERVER_LOG_ERROR("%sfailed to obtain a connection", server.TAG);
         GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
         GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
         GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));

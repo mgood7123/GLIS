@@ -183,7 +183,7 @@ void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata) {
 
 void SERVER_SHUTDOWN(char * server_name, SOCKET_SERVER_DATA * & internaldata) {
     if (internaldata->server_closed) {
-        SERVER_LOG_INFO(
+        SERVER_LOG_ERROR(
             "SERVER: SERVER_SHUTDOWN attempting to close server %s but server has already been closed\n",
             server_name);
         delete internaldata;
@@ -316,6 +316,8 @@ class SOCKET_SERVER {
     public:
         char *TAG = nullptr;
         SOCKET_SERVER_DATA *internaldata = nullptr;
+        int socket_fd = 0;
+        int socket_data_fd = 0;
 
         void set_reply_callback(void (*callback)(SOCKET_SERVER_DATA *)) {
             if (internaldata == nullptr) {
@@ -328,7 +330,7 @@ class SOCKET_SERVER {
 
         void startServer(void *(*SERVER_MAIN)(void *)) {
             if (internaldata != nullptr) {
-                SERVER_LOG_INFO("%sattempting to start server while running\n", TAG);
+                SERVER_LOG_ERROR("%sattempting to start server while running\n", TAG);
                 return;
             }
             internaldata = new SOCKET_SERVER_DATA;
@@ -349,13 +351,13 @@ class SOCKET_SERVER {
 
         void shutdownServer() {
             if (internaldata == nullptr) {
-                SERVER_LOG_INFO(
+                SERVER_LOG_ERROR(
                     "%sshutdownServer attempting to close server but server has already been closed\n",
                     TAG);
                 return;
             }
             if (internaldata->server_closed) {
-                SERVER_LOG_INFO(
+                SERVER_LOG_ERROR(
                     "%sshutdownServer internaldata->server_closed attempting to close serverbut server has already been closed\n",
                     TAG);
                 delete internaldata;
@@ -365,8 +367,8 @@ class SOCKET_SERVER {
 
         void set_name(const char *name) {
             if (internaldata != nullptr) {
-                SERVER_LOG_INFO("%sattempting to change server name while server is running\n",
-                                TAG);
+                SERVER_LOG_ERROR("%sattempting to change server name while server is running\n",
+                                 TAG);
                 return;
             }
             memset(&server_name, 0, 107);
@@ -490,7 +492,7 @@ class SOCKET_SERVER {
             while (internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_header);
         }
 
-        bool socket_reply_header(int &socket_data_fd) {
+        bool socket_put_header(int &socket_data_fd) {
             if (!SOCKET_SEND_HEADER(TAG, socket_data_fd, internaldata->REPLY,
                                     &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->HEADER);
@@ -528,7 +530,7 @@ class SOCKET_SERVER {
             SOCKET_DELETE(&internaldata->DATA);
         }
 
-        bool socket_reply_data(int &socket_data_fd) {
+        bool socket_put_data(int &socket_data_fd) {
             if (!SOCKET_SEND_DATA(TAG, socket_data_fd, internaldata->REPLY,
                                   &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->REPLY);
@@ -543,12 +545,12 @@ class SOCKET_SERVER {
                 // OBTAIN AND PROCESS HEADER
                 if (socket_get_header(socket_data_fd)) { // false if fails
                     socket_process_header();
-                    if (socket_reply_header(socket_data_fd)) { // false if fails
+                    if (socket_put_header(socket_data_fd)) { // false if fails
                         // IF WE EXPECT DATA, OBTAIN AND PROCESS IT
                         if (socket_header_expect_data()) { // false if fails
                             if (socket_get_data(socket_data_fd)) { // false if fails
                                 socket_process_data();
-                                socket_reply_data(socket_data_fd);
+                                socket_put_data(socket_data_fd);
                             }
                         }
                     }
@@ -561,21 +563,53 @@ class SOCKET_SERVER {
             close(socket_fd);
             internaldata->server_closed = true;
         }
+
+        bool socket_create(__kernel_sa_family_t __af, int __type, int __protocol) {
+            return socket_create(socket_fd, __af, __type, __protocol);
+        }
+
+        bool socket_bind(__kernel_sa_family_t __af) { return socket_bind(socket_fd, __af); }
+
+        bool socket_listen(int pending_connection_queue_size) {
+            return socket_listen(socket_fd, pending_connection_queue_size);
+        }
+
+        bool socket_accept() { return socket_accept(socket_fd, socket_data_fd); }
+
+        bool socket_get_header() { return socket_get_header(socket_data_fd); }
+
+        bool socket_put_header() { return socket_put_header(socket_data_fd); }
+
+        bool socket_get_data() { return socket_get_data(socket_data_fd); }
+
+        bool socket_put_data() { return socket_put_data(socket_data_fd); }
+
+        void socket_loop() { socket_loop(socket_fd, socket_data_fd); }
+
+        void socket_close() { socket_close(socket_fd, socket_data_fd); }
 };
 
-void *SERVER_START(void *na) {
+void *SERVER_START_REPLY_AUTOMATICALLY(void *na) {
     assert(na != nullptr);
     SOCKET_SERVER *server = static_cast<SOCKET_SERVER *>(na);
-    ssize_t ret = 0;
-    int buffer = 0;
-    int socket_fd = 0;
-    int socket_data_fd = 0;
 
-    server->socket_create(socket_fd, AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
-    server->socket_bind(socket_fd, AF_UNIX);
-    server->socket_listen(socket_fd, 1);
-    server->socket_loop(socket_fd, socket_data_fd);
-    server->socket_close(socket_fd, socket_data_fd);
+    server->socket_create(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
+    server->socket_bind(AF_UNIX);
+    server->socket_listen(1);
+    server->socket_loop();
+    server->socket_close();
+    return NULL;
+}
+
+void *SERVER_START_REPLY_MANUALLY(void *na) {
+    assert(na != nullptr);
+    SOCKET_SERVER *server = static_cast<SOCKET_SERVER *>(na);
+
+    server->socket_create(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
+    server->socket_bind(AF_UNIX);
+    server->socket_listen(1);
+    while (!server->internaldata->server_should_close);
+    server->socket_close();
     return NULL;
 }
 
@@ -648,20 +682,20 @@ class SOCKET_CLIENT {
             header->put.length(len);
 
             SERVER_LOG_INFO("%ssend header\n", TAG);
-            SOCKET_SEND_HEADER(TAG, socket_data_fd, header, server_addr.sun_path + 1);
+            SOCKET_SEND_HEADER(TAG, socket_data_fd, header, &server_addr.sun_path[1]);
             SOCKET_MSG * response = SOCKET_HEADER();
             SERVER_LOG_INFO("%sget header response\n", TAG);
-            SOCKET_GET_HEADER(TAG, socket_data_fd, response, server_addr.sun_path + 1);
+            SOCKET_GET_HEADER(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
             SERVER_LOG_INFO("%scheck header response\n", TAG);
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
                 SERVER_LOG_INFO("%sSuccess\n", TAG);
                 SOCKET_DELETE(&response);
                 SOCKET_MSG * data_ = SOCKET_DATA(data, len);
                 SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
-                SOCKET_SEND_DATA(TAG, socket_data_fd, data_, server_addr.sun_path + 1);
+                SOCKET_SEND_DATA(TAG, socket_data_fd, data_, &server_addr.sun_path[1]);
                 response = SOCKET_DATA_RESPONSE(header->get.length());
                 SERVER_LOG_INFO("%sget data response\n", TAG);
-                SOCKET_GET_DATA(TAG, socket_data_fd, response, server_addr.sun_path + 1);
+                SOCKET_GET_DATA(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
                 int da = static_cast<int *>(response->data)[0];
                 SERVER_LOG_INFO("%scheck data response\n", TAG);
                 if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {

@@ -226,7 +226,7 @@ void * COMPOSITORMAIN(void * arg) {
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
-        CompositorMain.server.startServer(SERVER_START);
+        CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
         GLuint PARENTshaderProgram;
         GLuint PARENTvertexShader;
