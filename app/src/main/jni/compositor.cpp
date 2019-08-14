@@ -45,7 +45,6 @@
 #include <vector>
 #include <android/log.h>
 
-#include "compositor.h"
 #include "logger.h"
 #include "GLIS.h"
 
@@ -227,6 +226,7 @@ void * COMPOSITORMAIN(void * arg) {
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
+        CompositorMain.server.startServer(SERVER_START);
         LOG_INFO("initialized main Compositor");
         GLuint PARENTshaderProgram;
         GLuint PARENTvertexShader;
@@ -266,7 +266,8 @@ void * COMPOSITORMAIN(void * arg) {
             while (SYNC_STATE != STATE.response_uploading) {}
             while (SYNC_STATE != STATE.response_uploaded) {}
             LOG_INFO("CLIENT has uploaded");
-            GLIS_get_texture(GLIS_current_texture, CompositorMain.width, CompositorMain.height);
+            GLIS_get_texture(CompositorMain.server, GLIS_current_texture, CompositorMain.width,
+                             CompositorMain.height);
             LOG_INFO("waiting for CLIENT to request render");
             while (SYNC_STATE != STATE.request_render) {}
             LOG_INFO("CLIENT has requested render");

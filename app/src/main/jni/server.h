@@ -17,18 +17,15 @@
 #include <pthread.h>
 
 #ifndef __ANDROID__
-#define LOG_INFO printf
-    #define LOG_ERROR printf
+    #define SERVER_LOG_INFO printf
+    #define SERVER_LOG_ERROR printf
 #else
     #include <strings.h>
     #include <android/log.h>
 
-    #ifndef LOG_INFO
-        #define LOG_INFO(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-    #endif
-    #ifndef LOG_ERROR
-        #define LOG_ERROR(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-    #endif
+    #define SERVER_LOG_TAG "server_core"
+    #define SERVER_LOG_INFO(...) __android_log_print(ANDROID_LOG_INFO, SERVER_LOG_TAG, __VA_ARGS__)
+    #define SERVER_LOG_ERROR(...) __android_log_print(ANDROID_LOG_ERROR, SERVER_LOG_TAG, __VA_ARGS__)
 #endif
 
 #include "server_core.h"

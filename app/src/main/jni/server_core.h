@@ -183,7 +183,9 @@ void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata) {
 
 void SERVER_SHUTDOWN(char * server_name, SOCKET_SERVER_DATA * & internaldata) {
     if (internaldata->server_closed) {
-        LOG_INFO("SERVER: SERVER_SHUTDOWN attempting to close server %s but server has already been closed\n", server_name);
+        SERVER_LOG_INFO(
+            "SERVER: SERVER_SHUTDOWN attempting to close server %s but server has already been closed\n",
+            server_name);
         delete internaldata;
         internaldata = nullptr;
         return;
@@ -213,9 +215,11 @@ SOCKET_MSG * SOCKET_COMMAND(int command) {
 }
 
 // returns false if an error has occurred otherwise true
-bool SOCKET_READ(const char * TAG, ssize_t * ret, int data_socket, void *__buf, size_t __count, char * server_name, int flags, ssize_t total) {
+bool SOCKET_READ(const char *TAG, ssize_t *ret, int socket_data_fd, void *__buf, size_t __count,
+                 char *server_name, int flags, ssize_t total) {
     for (;;) { // implement blocking
-        *ret = recv(data_socket, static_cast<void*>(static_cast<uint8_t*>(__buf)+total), __count-total, flags);
+        *ret = recv(socket_data_fd, static_cast<void *>(static_cast<uint8_t *>(__buf) + total),
+                    __count - total, flags);
         if (*ret < 0) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
             else break;
@@ -224,219 +228,95 @@ bool SOCKET_READ(const char * TAG, ssize_t * ret, int data_socket, void *__buf, 
     }
     if (*ret == 0) {
         // if recv returns zero, that means the connection has been closed
-        LOG_INFO("%sClient has closed the connection\n", TAG, server_name);
+        SERVER_LOG_INFO("%sClient has closed the connection\n", TAG);
         return false;
     } else if (*ret < 0) {
-        LOG_ERROR("%srecv: %s\n", TAG, server_name, strerror(errno));
+        SERVER_LOG_ERROR("%srecv: %s\n", TAG, strerror(errno));
         return false;
     }
     return true;
 }
 
 // returns false if an error has occurred otherwise true
-bool SOCKET_WRITE(const char * TAG, ssize_t * ret, int data_socket, const void *__buf, size_t __count, char * server_name, int flags, ssize_t total) {
+bool
+SOCKET_WRITE(const char *TAG, ssize_t *ret, int socket_data_fd, const void *__buf, size_t __count,
+             char *server_name, int flags, ssize_t total) {
     for (;;) { // implement blocking
-        *ret = send(data_socket, static_cast<const void*>(static_cast<const uint8_t*>(__buf)+total), __count-total, flags);
+        *ret = send(socket_data_fd,
+                    static_cast<const void *>(static_cast<const uint8_t *>(__buf) + total),
+                    __count - total, flags);
         if (*ret < 0) if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
         break;
     }
     if (*ret < 0) {
-        LOG_ERROR("%swrite: %s\n", TAG, strerror(errno));
+        SERVER_LOG_ERROR("%swrite: %s\n", TAG, strerror(errno));
         return false;
     }
     return true;
 }
 
-bool SOCKET_GET(const char * TAG, int data_socket, void *__buf, size_t __count, char * server_name) {
+bool
+SOCKET_GET(const char *TAG, int socket_data_fd, void *__buf, size_t __count, char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
     while(total != __count) {
         ssize_t ret = 0;
-        if (SOCKET_READ(TAG, &ret, data_socket, __buf, __count, server_name, MSG_PEEK | MSG_DONTWAIT, total)) {
-            if (SOCKET_READ(TAG, &ret, data_socket, __buf, __count, server_name, 0, total)) {
+        if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name,
+                        MSG_PEEK | MSG_DONTWAIT, total)) {
+            if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
                 total+=ret;
-                LOG_INFO("%sRECV %zu/%zu size", TAG, total, __count);
+                SERVER_LOG_INFO("%sRECV %zu/%zu size", TAG, total, __count);
             } else return false; // an error occurred
         } else return false; // an error occurred
     }
     return true;
 }
 
-bool SOCKET_SEND(const char * TAG, int data_socket, const void *__buf, size_t __count, char * server_name) {
+bool SOCKET_SEND(const char *TAG, int socket_data_fd, const void *__buf, size_t __count,
+                 char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
     while(total != __count) {
         ssize_t ret = 0;
-        if (SOCKET_WRITE(TAG, &ret, data_socket, __buf, __count, server_name, 0, total)) {
+        if (SOCKET_WRITE(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
             total += ret;
-            LOG_INFO("%sWRITE %zu/%zu size", TAG, total, __count);
+            SERVER_LOG_INFO("%sWRITE %zu/%zu size", TAG, total, __count);
         } else return false; // an error occurred
     }
     return true;
 }
 
-bool SOCKET_GET_HEADER(const char * TAG, int data_socket, SOCKET_MSG * msg, char * server_name) {
-    return SOCKET_GET(TAG, data_socket, msg->header, msg->header_length, server_name);
+bool SOCKET_GET_HEADER(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_GET(TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
-bool SOCKET_SEND_HEADER(const char * TAG, int data_socket, SOCKET_MSG * msg, char * server_name) {
-    return SOCKET_SEND(TAG, data_socket, msg->header, msg->header_length, server_name);
+bool SOCKET_SEND_HEADER(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_SEND(TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
-bool SOCKET_GET_DATA(const char * TAG, int data_socket, SOCKET_MSG * msg, char * server_name) {
-    return SOCKET_GET(TAG, data_socket, msg->data, msg->data_length, server_name);
+bool SOCKET_GET_DATA(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_GET(TAG, socket_data_fd, msg->data, msg->data_length, server_name);
 }
 
-bool SOCKET_SEND_DATA(const char * TAG, int data_socket, SOCKET_MSG * msg, char * server_name) {
-    return SOCKET_SEND(TAG, data_socket, msg->data, msg->data_length, server_name);
+bool SOCKET_SEND_DATA(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_SEND(TAG, socket_data_fd, msg->data, msg->data_length, server_name);
 }
 
-void* SERVER_START(void* na) {
-    assert(na != nullptr);
-    SOCKET_SERVER_DATA * internaldata = static_cast<SOCKET_SERVER_DATA*>(na);
-    ssize_t ret = 0;
-    int buffer = 0;
-    int socket_fd = 0;
-    int data_socket = 0;
-    bool has_data_socket = false;
-
-    // build TAG
-    const char * TAG = std::string(std::string("SERVER: ") + (internaldata->socket_name+1) + " : ").c_str();
-
-    LOG_INFO("%sStart server setup\n", TAG);
-
-    // AF_UNIX for domain unix IPC and SOCK_STREAM since it works for the example
-    socket_fd = socket(AF_UNIX, SOCK_STREAM|SOCK_NONBLOCK, 0);
-    if (socket_fd < 0) {
-        LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-    LOG_INFO("%sSocket made\n", TAG);
-
-    // clear for safety
-    memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
-    internaldata->server_addr.sun_family = AF_UNIX; // Unix Domain instead of AF_INET IP domain
-    memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
-    LOG_INFO("%sbinding socket fd %d to name %s\n", TAG, socket_fd, internaldata->server_addr.sun_path +1);
-    ret = bind(socket_fd, (const struct sockaddr *) &internaldata->server_addr, sizeof(struct sockaddr_un));
-    if (ret < 0) {
-        LOG_ERROR("%sbind: %s\n", TAG, strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-    LOG_INFO("%sBind made\n", TAG);
-
-    // Open 8 back buffers for this demo
-    ret = listen(socket_fd, 8);
-    if (ret < 0) {
-        LOG_ERROR("%slisten: %s", TAG, strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-    LOG_INFO("%sSocket listening for packages\n", TAG);
-    internaldata->server_CAN_CONNECT = true;
-    LOG_INFO("%sServer setup complete\n", TAG);
-
-    while (!internaldata->server_should_close) {
-        // Wait for incoming connection.
-        has_data_socket = false;
-        for(;;) {
-            if (internaldata->server_should_close) {
-                internaldata->server_should_close_during_accept = true;
-                break;
-            }
-            data_socket = accept(socket_fd, NULL, NULL);
-            if (data_socket < 0) {
-                if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
-                else break;
-            }
-            break;
-        }
-        if (internaldata->server_should_close_during_accept) continue;
-        if (data_socket < 0) {
-            LOG_ERROR("%saccept: %s\n", TAG, strerror(errno));
-            char * server_name = SOCKET_SERVER_name_to_server_name(internaldata);
-            SERVER_SHUTDOWN(server_name, internaldata);
-            delete server_name;
-            exit(EXIT_FAILURE);
-        }
-        has_data_socket = true;
-        LOG_INFO("%sAccepted data\n", TAG, internaldata->server_addr.sun_path + 1);
-        // This is the main loop for handling connections
-
-        // first we obtain the header
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_header;
-        internaldata->HEADER = SOCKET_HEADER();
-        LOG_INFO("%swaiting for header\n", TAG, internaldata->server_addr.sun_path + 1);
-        if (!SOCKET_GET_HEADER(TAG, data_socket, internaldata->HEADER, internaldata->server_addr.sun_path+1)) {
-            SOCKET_DELETE(&internaldata->HEADER);
-            continue;
-        }
-        LOG_INFO("%sReceived header\n", TAG, internaldata->server_addr.sun_path + 1);
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.received_header;
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_header;
-        LOG_INFO("%sProcessing header\n", TAG, internaldata->server_addr.sun_path + 1);
-        internaldata->reply(internaldata);
-        while(internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_header);
-        LOG_INFO("%sProcessed header\n", TAG, internaldata->server_addr.sun_path + 1);
-        LOG_INFO("%sSending reply\n", TAG, internaldata->server_addr.sun_path + 1);
-        if (!SOCKET_SEND_HEADER(TAG, data_socket, internaldata->REPLY, internaldata->server_addr.sun_path+1)) {
-            SOCKET_DELETE(&internaldata->HEADER);
-            SOCKET_DELETE(&internaldata->REPLY);
-            continue;
-        }
-        SOCKET_DELETE(&internaldata->REPLY);
-        LOG_INFO("%sSent reply\n", TAG, internaldata->server_addr.sun_path + 1);
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.sent_reply_to_header;
-
-        // then we obtain the data according to the header
-        if (!internaldata->HEADER->get.expect_data()) {
-            LOG_INFO("%sno data is expected\n", TAG, internaldata->server_addr.sun_path + 1);
-            SOCKET_DELETE(&internaldata->HEADER);
-            continue;
-        }
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_data;
-        internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
-        LOG_INFO("%swaiting for data\n", TAG, internaldata->server_addr.sun_path + 1);
-        if (!SOCKET_GET_DATA(TAG, data_socket, internaldata->DATA, internaldata->server_addr.sun_path+1)) {
-            SOCKET_DELETE(&internaldata->HEADER);
-            SOCKET_DELETE(&internaldata->DATA);
-            continue;
-        }
-        LOG_INFO("%sReceived data\n", TAG, internaldata->server_addr.sun_path + 1);
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.received_data;
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_data;
-        // do not delete the header as we can use it to determine the reply type
-        internaldata->reply(internaldata);
-        while(internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_data);
-        // we no longer need the header and data
-        SOCKET_DELETE(&internaldata->HEADER);
-        SOCKET_DELETE(&internaldata->DATA);
-        LOG_INFO("%sSending reply\n", TAG, internaldata->server_addr.sun_path + 1);
-        if (!SOCKET_SEND_DATA(TAG, data_socket, internaldata->REPLY, internaldata->server_addr.sun_path+1)) {
-            SOCKET_DELETE(&internaldata->REPLY);
-            continue;
-        }
-        SOCKET_DELETE(&internaldata->REPLY);
-        LOG_INFO("%sSent data\n", TAG, internaldata->server_addr.sun_path + 1);
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.sent_reply_to_data;
-    }
-    LOG_INFO("%sclosing server\n", TAG);
-    if (has_data_socket) close(data_socket);
-    close(socket_fd);
-    internaldata->server_closed = true;
-    LOG_INFO("%sclosed server\n", TAG);
-    return NULL;
-}
+void *SERVER_START(void *na);
 
 class SOCKET_SERVER {
     private:
         pthread_t server_thread = 0;
         char server_name[107];
-        const char * default_server_name = "SOCKET_SERVER";
+        const char *default_server_name = "SOCKET_SERVER";
         const size_t default_server_name_length = strlen(default_server_name);
-        char * TAG = nullptr;
-        SOCKET_SERVER_DATA * internaldata = nullptr;
+
         void (*reply)(SOCKET_SERVER_DATA *) = nullptr;
+
     public:
+        char *TAG = nullptr;
+        SOCKET_SERVER_DATA *internaldata = nullptr;
+
         void set_reply_callback(void (*callback)(SOCKET_SERVER_DATA *)) {
             if (internaldata == nullptr) {
                 reply = callback;
@@ -445,9 +325,10 @@ class SOCKET_SERVER {
                 internaldata->reply = callback;
             }
         }
-        void startServer() {
+
+        void startServer(void *(*SERVER_MAIN)(void *)) {
             if (internaldata != nullptr) {
-                LOG_INFO("%sattempting to start server %s but server has already been started\n", TAG, server_name);
+                SERVER_LOG_INFO("%sattempting to start server while running\n", TAG);
                 return;
             }
             internaldata = new SOCKET_SERVER_DATA;
@@ -462,65 +343,247 @@ class SOCKET_SERVER {
             // NDK needs abstract namespace by leading with '\0'
             internaldata->socket_name[0] = '\0';
             memcpy(&internaldata->socket_name[1], server_name, 107);
-            pthread_create(&server_thread, NULL, SERVER_START, internaldata);
-            while(!internaldata->server_CAN_CONNECT) {}
+            pthread_create(&server_thread, NULL, SERVER_MAIN, this);
+            while (!internaldata->server_CAN_CONNECT) {}
         }
+
         void shutdownServer() {
             if (internaldata == nullptr) {
-                LOG_INFO("%sshutdownServer attempting to close server %s but server has already been closed\n", TAG, server_name);
+                SERVER_LOG_INFO(
+                    "%sshutdownServer attempting to close server but server has already been closed\n",
+                    TAG);
                 return;
             }
             if (internaldata->server_closed) {
-                LOG_INFO("%sshutdownServer internaldata->server_closed attempting to close server %s but server has already been closed\n", TAG, server_name);
+                SERVER_LOG_INFO(
+                    "%sshutdownServer internaldata->server_closed attempting to close serverbut server has already been closed\n",
+                    TAG);
                 delete internaldata;
                 internaldata = nullptr;
             } else SERVER_SHUTDOWN(server_name, internaldata);
         }
-        void set_name(const char * name) {
+
+        void set_name(const char *name) {
             if (internaldata != nullptr) {
-                LOG_INFO("%sattempting to change server name while server is running\n", TAG, server_name);
+                SERVER_LOG_INFO("%sattempting to change server name while server is running\n",
+                                TAG);
                 return;
             }
             memset(&server_name, 0, 107);
             if (name == nullptr || name == NULL) {
                 // build default TAG
-                TAG = strdup(std::string(std::string("SERVER: ") + (default_server_name) + " : ").c_str());
-                LOG_ERROR("%sname was not supplied, conflicts are likely to happen\n", TAG);
+                TAG = strdup(
+                    std::string(std::string("SERVER: ") + (default_server_name) + " : ").c_str());
+                SERVER_LOG_ERROR("%sname was not supplied, conflicts are likely to happen\n", TAG);
                 if (strlen(default_server_name) > 107) {
-                    LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n", TAG);
+                    SERVER_LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n",
+                                     TAG);
                     memcpy(server_name, default_server_name, 107);
                 } else memcpy(server_name, default_server_name, default_server_name_length);
             } else {
                 if (strlen(server_name) > 107) {
-                    LOG_ERROR("%sname is longer than 107 characters, truncating, conflicts may happen\n", TAG);
+                    SERVER_LOG_ERROR(
+                        "%sname is longer than 107 characters, truncating, conflicts may happen\n",
+                        TAG);
                     memcpy(server_name, name, 107);
                 } else memcpy(server_name, name, strlen(name));
                 // build new TAG
                 TAG = strdup(std::string(std::string("SERVER: ") + server_name + " : ").c_str());
             }
         }
+
         void unset_name() {
             set_name(nullptr);
         }
+
         SOCKET_SERVER() {
             set_name(nullptr);
         }
-        SOCKET_SERVER(const char * name) {
+
+        SOCKET_SERVER(const char *name) {
             set_name(name);
         }
+
         ~SOCKET_SERVER() {
             if (TAG != nullptr) {
                 free(TAG);
                 TAG = nullptr;
             }
         }
+
+        bool socket_create(int &socket_fd, __kernel_sa_family_t __af, int __type, int __protocol) {
+            socket_fd = socket(__af, __type, __protocol);
+            if (socket_fd < 0) {
+                SERVER_LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
+                return false;
+            }
+            SERVER_LOG_INFO("%sSocket made\n", TAG);
+            return true;
+        }
+
+        bool socket_bind(int &socket_fd, __kernel_sa_family_t __af) {
+            memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
+            internaldata->server_addr.sun_family = __af;
+            memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
+            SERVER_LOG_INFO("%sbinding socket fd %d to name %s\n", TAG, socket_fd,
+                            &internaldata->server_addr.sun_path[1]);
+            if (bind(socket_fd, (const struct sockaddr *) &internaldata->server_addr,
+                     sizeof(struct sockaddr_un)) < 0) {
+                SERVER_LOG_ERROR("%sbind: %s\n", TAG, strerror(errno));
+                return false;
+            }
+            SERVER_LOG_INFO("%sBind made\n", TAG);
+            return true;
+        }
+
+        //       The pending_connection_queue_size argument defines the maximum length to which the
+        //       queue of pending connections for socket_fd may grow.
+        //       If a connection request arrives when the queue is full, the client may receive an
+        //       error with an indication of ECONNREFUSED or, if the underlying protocol supports
+        //       retransmission, the request may be ignored so that a later reattempt at connection
+        //       succeeds.
+        //
+        // sets internaldata->server_CAN_CONNECT to true on success
+        bool socket_listen(int &socket_fd, int pending_connection_queue_size) {
+            if (listen(socket_fd, pending_connection_queue_size) < 0) {
+                SERVER_LOG_ERROR("%slisten: %s", TAG, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+            SERVER_LOG_INFO("%sSocket listening for packages\n", TAG);
+            internaldata->server_CAN_CONNECT = true;
+            return true;
+        }
+
+        // returns false if internaldata->server_should_close is true or if an error has occured
+        // otherwise returns true upon a successful accept attempt
+        bool socket_accept(int &socket_fd, int &socket_data_fd) {
+            for (;;) {
+                if (internaldata->server_should_close) return false;
+                socket_data_fd = accept(socket_fd, NULL, NULL);
+                if (socket_data_fd < 0) {
+                    if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                    else break;
+                }
+                break;
+            }
+            if (socket_data_fd < 0) {
+                SERVER_LOG_ERROR("%saccept: %s\n", TAG, strerror(errno));
+                return false;
+            }
+            return true;
+        }
+
+        bool socket_get_header(int &socket_data_fd) {
+            internaldata->HEADER = SOCKET_HEADER();
+            if (!SOCKET_GET_HEADER(TAG, socket_data_fd, internaldata->HEADER,
+                                   &internaldata->server_addr.sun_path[1])) {
+                SOCKET_DELETE(&internaldata->HEADER);
+                return false;
+            }
+            return true;
+        }
+
+        void socket_process_header() {
+            internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_header;
+            internaldata->reply(internaldata);
+            // in case reply callback pthreads then returns, forking is Undefined Behaviour
+            while (internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_header);
+        }
+
+        bool socket_reply_header(int &socket_data_fd) {
+            if (!SOCKET_SEND_HEADER(TAG, socket_data_fd, internaldata->REPLY,
+                                    &internaldata->server_addr.sun_path[1])) {
+                SOCKET_DELETE(&internaldata->HEADER);
+                SOCKET_DELETE(&internaldata->REPLY);
+                return false;
+            }
+            SOCKET_DELETE(&internaldata->REPLY);
+            return true;
+        }
+
+        bool socket_header_expect_data() {
+            if (!internaldata->HEADER->get.expect_data()) {
+                SOCKET_DELETE(&internaldata->HEADER);
+                return false;
+            }
+            return true;
+        }
+
+        bool socket_get_data(int &socket_data_fd) {
+            internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
+            if (!SOCKET_GET_DATA(TAG, socket_data_fd, internaldata->DATA,
+                                 &internaldata->server_addr.sun_path[1])) {
+                SOCKET_DELETE(&internaldata->HEADER);
+                SOCKET_DELETE(&internaldata->DATA);
+                return false;
+            }
+            return true;
+        }
+
+        void socket_process_data() {
+            internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_data;
+            internaldata->reply(internaldata);
+            while (internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_data);
+            SOCKET_DELETE(&internaldata->HEADER);
+            SOCKET_DELETE(&internaldata->DATA);
+        }
+
+        bool socket_reply_data(int &socket_data_fd) {
+            if (!SOCKET_SEND_DATA(TAG, socket_data_fd, internaldata->REPLY,
+                                  &internaldata->server_addr.sun_path[1])) {
+                SOCKET_DELETE(&internaldata->REPLY);
+                return false;
+            }
+            SOCKET_DELETE(&internaldata->REPLY);
+            return true;
+        }
+
+        void socket_loop(int &socket_fd, int &socket_data_fd) {
+            while (socket_accept(socket_fd, socket_data_fd)) {
+                // OBTAIN AND PROCESS HEADER
+                if (socket_get_header(socket_data_fd)) { // false if fails
+                    socket_process_header();
+                    if (socket_reply_header(socket_data_fd)) { // false if fails
+                        // IF WE EXPECT DATA, OBTAIN AND PROCESS IT
+                        if (socket_header_expect_data()) { // false if fails
+                            if (socket_get_data(socket_data_fd)) { // false if fails
+                                socket_process_data();
+                                socket_reply_data(socket_data_fd);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void socket_close(int &socket_fd, int &socket_data_fd) {
+            if (socket_data_fd) close(socket_data_fd);
+            close(socket_fd);
+            internaldata->server_closed = true;
+        }
 };
+
+void *SERVER_START(void *na) {
+    assert(na != nullptr);
+    SOCKET_SERVER *server = static_cast<SOCKET_SERVER *>(na);
+    ssize_t ret = 0;
+    int buffer = 0;
+    int socket_fd = 0;
+    int socket_data_fd = 0;
+
+    server->socket_create(socket_fd, AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
+    server->socket_bind(socket_fd, AF_UNIX);
+    server->socket_listen(socket_fd, 1);
+    server->socket_loop(socket_fd, socket_data_fd);
+    server->socket_close(socket_fd, socket_data_fd);
+    return NULL;
+}
 
 class SOCKET_CLIENT {
     public:
         const size_t BUFFER_SIZE = 16;
 
-        int data_socket;
+        int socket_data_fd;
         struct sockaddr_un server_addr;
         const char * default_client_name = "SOCKET_SERVER";
         const size_t default_client_name_length = strlen(default_client_name);
@@ -533,12 +596,15 @@ class SOCKET_CLIENT {
                 // build default TAG
                 TAG = strdup(std::string(std::string("CLIENT: ") + (default_client_name) + " : ").c_str());
                 if (strlen(default_client_name) > 107) {
-                    LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n", TAG);
+                    SERVER_LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n",
+                                     TAG);
                     memcpy(&socket_name[1], default_client_name, 107);
                 } else memcpy(&socket_name[1], default_client_name, default_client_name_length);
             } else {
                 if (strlen(name) > 107) {
-                    LOG_ERROR("%sname is longer than 107 characters, truncating, conflicts may happen\n", TAG);
+                    SERVER_LOG_ERROR(
+                        "%sname is longer than 107 characters, truncating, conflicts may happen\n",
+                        TAG);
                     memcpy(&socket_name[1], name, 107);
                 } else memcpy(&socket_name[1], name, strlen(name));
                 // build new TAG
@@ -566,51 +632,52 @@ class SOCKET_CLIENT {
         }
 
         SOCKET_MSG * send(SOCKET_MSG * header, void * data, size_t len) {
-            data_socket = socket(AF_UNIX, SOCK_STREAM, 0);
-            if (data_socket < 0) {
-                LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
+            socket_data_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+            if (socket_data_fd < 0) {
+                SERVER_LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
-            LOG_INFO("%sconnecting to server\n", TAG);
-            ssize_t ret = connect(data_socket, (const struct sockaddr *) &server_addr, sizeof(struct sockaddr_un));
+            SERVER_LOG_INFO("%sconnecting to server\n", TAG);
+            ssize_t ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
+                                  sizeof(struct sockaddr_un));
             if (ret < 0) {
-                LOG_ERROR("%sconnect: %s\n", TAG, strerror(errno));
+                SERVER_LOG_ERROR("%sconnect: %s\n", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
-            LOG_INFO("%sconnected to server\n", TAG);
+            SERVER_LOG_INFO("%sconnected to server\n", TAG);
             header->put.length(len);
 
-            LOG_INFO("%ssend header\n", TAG);
-            SOCKET_SEND_HEADER(TAG, data_socket, header, server_addr.sun_path+1);
+            SERVER_LOG_INFO("%ssend header\n", TAG);
+            SOCKET_SEND_HEADER(TAG, socket_data_fd, header, server_addr.sun_path + 1);
             SOCKET_MSG * response = SOCKET_HEADER();
-            LOG_INFO("%sget header response\n", TAG);
-            SOCKET_GET_HEADER(TAG, data_socket, response, server_addr.sun_path+1);
-            LOG_INFO("%scheck header response\n", TAG);
+            SERVER_LOG_INFO("%sget header response\n", TAG);
+            SOCKET_GET_HEADER(TAG, socket_data_fd, response, server_addr.sun_path + 1);
+            SERVER_LOG_INFO("%scheck header response\n", TAG);
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                LOG_INFO("%sSuccess\n", TAG);
+                SERVER_LOG_INFO("%sSuccess\n", TAG);
                 SOCKET_DELETE(&response);
                 SOCKET_MSG * data_ = SOCKET_DATA(data, len);
-                LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
-                SOCKET_SEND_DATA(TAG, data_socket, data_, server_addr.sun_path+1);
+                SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
+                SOCKET_SEND_DATA(TAG, socket_data_fd, data_, server_addr.sun_path + 1);
                 response = SOCKET_DATA_RESPONSE(header->get.length());
-                LOG_INFO("%sget data response\n", TAG);
-                SOCKET_GET_DATA(TAG, data_socket, response, server_addr.sun_path+1);
+                SERVER_LOG_INFO("%sget data response\n", TAG);
+                SOCKET_GET_DATA(TAG, socket_data_fd, response, server_addr.sun_path + 1);
                 int da = static_cast<int *>(response->data)[0];
-                LOG_INFO("%scheck data response\n", TAG);
+                SERVER_LOG_INFO("%scheck data response\n", TAG);
                 if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                    LOG_INFO("%sSuccess\n", TAG);
-                    LOG_INFO("%sclosing connection to server\n", TAG);
-                    close(data_socket);
-                    LOG_INFO("%sclosed connection to server\n", TAG);
-                    LOG_INFO("%sReturning response\n", TAG);
+                    SERVER_LOG_INFO("%sSuccess\n", TAG);
+                    SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
+                    close(socket_data_fd);
+                    SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
+                    SERVER_LOG_INFO("%sReturning response\n", TAG);
                     return response;
                 }
             }
             SOCKET_DELETE(&response);
-            LOG_INFO("%sclosing connection to server\n", TAG);
-            close(data_socket);
-            LOG_INFO("%sclosed connection to server\n", TAG);
-            LOG_INFO("%sReturning response\n", TAG);
+            SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
+            close(socket_data_fd);
+            SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
+            SERVER_LOG_INFO("%sReturning response\n", TAG);
             return SOCKET_HEADER();
         }
 

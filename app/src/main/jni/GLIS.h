@@ -19,6 +19,7 @@
 #include <poll.h>
 
 #include "logger.h"
+#include "server.h"
 
 
 #define LOG_TAG "EglSample"
@@ -210,6 +211,7 @@ class GLIS_CLASS {
         GLint
             width = 0,
             height = 0;
+        SOCKET_SERVER server;
 };
 
 void GLIS_EGL_INFORMATION(EGLDisplay & DISPLAY) {
@@ -1131,8 +1133,6 @@ class IPC_MODE {
 
 int IPC = IPC_MODE.socket;
 
-#include "server.h"
-
 GLuint *TEXDATA = nullptr;
 size_t TEXDATA_LEN = 0;
 
@@ -1151,40 +1151,11 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
         GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
-        SOCKET_SERVER serverA("A");
-        SOCKET_CLIENT clientA("A");
-        serverA.startServer();
+        SOCKET_CLIENT clientA;
         SOCKET_MSG * R = clientA.send(TEXDATA, TEXDATA_LEN);
         SOCKET_DELETE(&R);
-        serverA.shutdownServer();
-        exit(55);
-//LOG_INFO("new socket");
-//X2 = GLIS_new_socket("Compositor");
-//assert(X2 != nullptr);
-//LOG_INFO("created new socket");
-//LOG_INFO("bind socket");
-//assert(X2->bindToSocket());
-//LOG_INFO("binded to socket");
-//LOG_INFO("listen socket");
-//assert(X2->listenToSocket());
-//LOG_INFO("listening to socket");
-//LOG_INFO("new socket");
-//X1 = GLIS_new_socket("Compositor");
-//assert(X1 != nullptr);
-//LOG_INFO("created new socket");
-//LOG_INFO("connect socket");
-//assert(X1->connectToSocket());
-//LOG_INFO("connected to socket");
-//LOG_INFO("accept socket");
-//assert(X2->acceptFromSocket());
-//LOG_INFO("accepted socket");
-//LOG_INFO("send socket");
-//assert(X1->send(TEXDATA, TEXDATA_LEN));
-//LOG_INFO("sent socket");
-//LOG_INFO("receive socket");
-//assert(X2->receive(TEXDATA, TEXDATA_LEN));
-//LOG_INFO("received socket");
         delete TEXDATA;
+        exit(1);
     }
     SYNC_STATE = STATE.response_uploaded;
     LOG_INFO("uploaded texture");
@@ -1194,7 +1165,8 @@ void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_he
     LOG_INFO("SERVER has rendered");
 }
 
-void GLIS_get_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_height) {
+void GLIS_get_texture(SOCKET_SERVER &server, GLuint &TEXTURE, GLint texture_width,
+                      GLint texture_height) {
     LOG_INFO("acquiring uploaded texture");
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.thread) {
@@ -1212,12 +1184,8 @@ void GLIS_get_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_heigh
         GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
     } else if (IPC == IPC_MODE.socket) {
         TEXDATA = new GLuint[TEXDATA_LEN];
-//        X2 = GLIS_new_socket("Compositor");
-//        assert(X2 != nullptr);
-//        assert(X2->bindToSocket());
-//        assert(X2->listenToSocket());
-//        assert(X2->acceptFromSocket());
-//        assert(X2->receive(TEXDATA, TEXDATA_LEN));
+
+//        server.get(TEXDATA);
         GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
         GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
         GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
