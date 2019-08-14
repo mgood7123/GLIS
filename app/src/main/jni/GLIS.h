@@ -24,6 +24,17 @@
 
 #define LOG_TAG "EglSample"
 
+void GLIS_FORK(const char *__file, char *const *__argv) {
+    errno = 0;
+    pid_t pid = fork();
+    LOG_ERROR("pid: %d", pid);
+    if (pid == 0) {
+        execvp(__file, __argv);
+        LOG_ERROR("Cannot exec(%s) - %s\n", __file, strerror(errno));
+        exit(1);
+    }
+}
+
 std::string GLIS_INTERNAL_MESSAGE_PREFIX = "";
 
 #define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT) CASE_NAME: { \
@@ -226,7 +237,6 @@ void GLIS_EGL_INFORMATION(EGLDisplay & DISPLAY) {
 }
 
 void GLIS_destroy_GLIS(class GLIS_CLASS & GLIS) {
-    GLIS.server.shutdownServer();
     if (!GLIS.init_GLIS) return;
 
     if (GLIS.init_eglMakeCurrent) {
@@ -1137,39 +1147,47 @@ int IPC = IPC_MODE.socket;
 GLuint *TEXDATA = nullptr;
 size_t TEXDATA_LEN = 0;
 
-void GLIS_upload_texture(GLuint & TEXTURE, GLint texture_width, GLint texture_height) {
-    while (SYNC_STATE != STATE.request_upload) {}
+void
+GLIS_upload_texture(GLIS_CLASS GLIS, GLuint &TEXTURE, GLint texture_width, GLint texture_height) {
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
-    SYNC_STATE = STATE.response_uploading;
-    if (IPC == IPC_MODE.thread) {
-        GLIS_current_texture = TEXTURE;
-        SYNC_STATE = STATE.response_uploaded;
-    } else if (IPC == IPC_MODE.texture) {
+    GLIS_error_to_string_exec_EGL(eglSwapBuffers(GLIS.display, GLIS.surface));
+    GLIS_Sync_GPU();
+    if (IPC == IPC_MODE.socket) {
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN];
-        GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
-        SYNC_STATE = STATE.response_uploaded;
-    } else if (IPC == IPC_MODE.socket) {
-        TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
-        TEXDATA = new GLuint[TEXDATA_LEN];
-        GLIS_error_to_string_exec_GL(glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+        GLIS_error_to_string_exec_GL(
+            glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
         SOCKET_CLIENT clientA;
-        SYNC_STATE = STATE.response_uploaded;
-        SOCKET_MSG * R = clientA.send(TEXDATA, TEXDATA_LEN);
+        SOCKET_MSG *R = clientA.send(TEXDATA, TEXDATA_LEN);
         SOCKET_DELETE(&R);
         delete TEXDATA;
+        LOG_INFO("uploaded texture");
+    } else {
+        while (SYNC_STATE != STATE.request_upload) {}
+        SYNC_STATE = STATE.response_uploading;
+        if (IPC == IPC_MODE.thread) {
+            GLIS_current_texture = TEXTURE;
+            SYNC_STATE = STATE.response_uploaded;
+        } else if (IPC == IPC_MODE.texture) {
+            TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
+            TEXDATA = new GLuint[TEXDATA_LEN];
+            GLIS_error_to_string_exec_GL(
+                glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
+                             TEXDATA));
+            SYNC_STATE = STATE.response_uploaded;
+        }
+        LOG_INFO("uploaded texture");
+        LOG_INFO("requesting SERVER to render");
+        SYNC_STATE = STATE.request_render;
+        while (SYNC_STATE != STATE.response_rendered) {}
+        LOG_INFO("SERVER has rendered");
     }
-    LOG_INFO("uploaded texture");
-    LOG_INFO("requesting SERVER to render");
-    SYNC_STATE = STATE.request_render;
-    while (SYNC_STATE != STATE.response_rendered) {}
-    LOG_INFO("SERVER has rendered");
 }
 
 void GLIS_get_texture(SOCKET_SERVER &server, GLuint &TEXTURE, GLint texture_width,
                       GLint texture_height) {
-    LOG_INFO("acquiring uploaded texture");
+    if (IPC != IPC_MODE.socket) LOG_INFO("acquiring uploaded texture");
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.thread) {
         GLIS_current_texture = TEXTURE;

@@ -51,7 +51,8 @@
 #define LOG_TAG "EglSample"
 
 class GLIS_CLASS CompositorMain;
-class GLIS_CLASS Compositor[2];
+
+char *executableDir;
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
                                                                                     jclass type,
@@ -73,29 +74,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurf
     }
 }
 
-bool makeWindow(int index, int x, int y, int w, int h) {
-    auto X = static_cast<GLint>(x);
-    auto Y = static_cast<GLint>(y);
-    auto W = static_cast<GLsizei>(w);
-    auto H = static_cast<GLsizei>(h);
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(X,Y,W,H);
-    glClearColor(0.0F, 1.0F, 1.0F, 1.0F);
-    glClear(GL_COLOR_BUFFER_BIT);
-    GLIS_error_to_string_exec_EGL(eglSwapBuffers(Compositor[index].display, Compositor[index].surface));
-    return true;
-}
-
-struct window{
-    int index;
-    int x;
-    int y;
-    int w;
-    int h;
-    EGLContext MainContext;
-};
-
-const char *PARENTvertexSource = R"glsl( #version 320 es
+const char *vertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
@@ -111,7 +90,7 @@ void main()
 }
 )glsl";
 
-const char *PARENTfragmentSource = R"glsl( #version 320 es
+const char *fragmentSource = R"glsl( #version 320 es
 out highp vec4 FragColor;
 
 in highp vec4 ourColor;
@@ -137,89 +116,15 @@ void main()
 }
 )glsl";
 
-
-
-GLuint renderedTexture;
-GLuint renderedTexture2;
-
-void Xmain(struct window *window) {
-    if (GLIS_setupOffScreenRendering(Compositor[window->index], window->w, window->h, window->MainContext)) {
-        const char * CHILDvertexSource = R"glsl( #version 320 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-        const char *CHILDfragmentSource = R"glsl( #version 320 es
-out highp vec4 FragColor;
-in highp vec3 ourColor;
-
-void main()
-{
-    FragColor = vec4(ourColor, 1.0);
-}
-)glsl";
-        GLIS_error_to_string();
-        // create a new texture
-        GLuint FB;
-        GLuint RB;
-        GLIS_texture_buffer(FB, RB, renderedTexture, Compositor[window->index].width, Compositor[window->index].height);
-
-        GLuint CHILDshaderProgram;
-        GLuint CHILDvertexShader;
-        GLuint CHILDfragmentShader;
-        CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
-        CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
-        LOG_INFO("Creating Shader program");
-        CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
-        LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
-        LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
-        LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
-        LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
-        assert(ProgramIsValid == GL_TRUE);
-
-        LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
-
-        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, Compositor[window->index].width, Compositor[window->index].height, Compositor[window->index].width, Compositor[window->index].height);
-
-        GLIS_upload_texture(renderedTexture2, Compositor[window->index].width, Compositor[window->index].height);
-
-        LOG_INFO("Cleaning up");
-        GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
-        GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
-        GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
-        GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
-        GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
-        GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
-        GLIS_destroy_GLIS(Compositor[window->index]);
-        LOG_INFO("Destroyed sub Compositor GLIS");
-        LOG_INFO("Cleaned up");
-    }
-}
-
-void * ptm(void * arg) {
-    auto * window = static_cast<struct window*>(arg);
-    Xmain(window);
-    GLIS_destroy_GLIS(Compositor[window->index]);
-    return nullptr;
-}
-
 void * COMPOSITORMAIN(void * arg) {
+
+    system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
+    char *exe =
+        const_cast<char *>(std::string(std::string(executableDir) + "/MYPRIVATEAPP").c_str());
+    char *args[2] = {exe, 0};
+    GLIS_FORK(args[0], args);
+
+
     SYNC_STATE = STATE.no_state;
     while (SYNC_STATE != STATE.request_startup) {}
     LOG_INFO("starting up");
@@ -228,50 +133,48 @@ void * COMPOSITORMAIN(void * arg) {
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
-        GLuint PARENTshaderProgram;
-        GLuint PARENTvertexShader;
-        GLuint PARENTfragmentShader;
-        PARENTvertexShader = GLIS_createShader(GL_VERTEX_SHADER, PARENTvertexSource);
-        PARENTfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, PARENTfragmentSource);
+        GLuint shaderProgram;
+        GLuint vertexShader;
+        GLuint fragmentShader;
+        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("Creating Shader program");
-        PARENTshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+        shaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(PARENTshaderProgram, PARENTvertexShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, vertexShader));
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(PARENTshaderProgram, PARENTfragmentShader));
+        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, fragmentShader));
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec_GL(glLinkProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec_GL(glLinkProgram(shaderProgram));
         LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_validate_program(PARENTshaderProgram);
+        GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec_GL(glUseProgram(PARENTshaderProgram));
+        GLIS_error_to_string_exec_GL(glUseProgram(shaderProgram));
         GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
         GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
 
         SYNC_STATE = STATE.response_started_up;
         LOG_INFO("started up");
-
-        long _threadId;
-        auto *w2 = new struct window;
-        *w2 = {1, 0 ,0, CompositorMain.width,CompositorMain.height, CompositorMain.context};
-        pthread_create(&_threadId, nullptr, ptm, w2);
-
         while(SYNC_STATE != STATE.request_shutdown) {
-            LOG_INFO("waiting for CLIENT to upload");
-            SYNC_STATE = STATE.request_upload;
-            while (SYNC_STATE != STATE.response_uploading) {}
-            while (SYNC_STATE != STATE.response_uploaded) {}
-            LOG_INFO("CLIENT has uploaded");
+            if (IPC != IPC_MODE.socket) {
+                LOG_INFO("waiting for CLIENT to upload");
+                SYNC_STATE = STATE.request_upload;
+                while (SYNC_STATE != STATE.response_uploading) {}
+                while (SYNC_STATE != STATE.response_uploaded) {}
+            }
             GLIS_get_texture(CompositorMain.server, GLIS_current_texture, CompositorMain.width,
                              CompositorMain.height);
-            LOG_INFO("waiting for CLIENT to request render");
-            while (SYNC_STATE != STATE.request_render) {}
-            LOG_INFO("CLIENT has requested render");
-            SYNC_STATE = STATE.response_rendering;
+            LOG_INFO("CLIENT has uploaded");
+            if (IPC != IPC_MODE.socket) {
+                LOG_INFO("waiting for CLIENT to request render");
+                while (SYNC_STATE != STATE.request_render) {}
+                LOG_INFO("CLIENT has requested render");
+                SYNC_STATE = STATE.response_rendering;
+            }
             LOG_INFO("rendering");
             GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
             GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
@@ -286,18 +189,18 @@ void * COMPOSITORMAIN(void * arg) {
             GLIS_error_to_string_exec_EGL(
                 eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
             GLIS_Sync_GPU();
-            SYNC_STATE = STATE.response_rendered;
+            if (IPC != IPC_MODE.socket) SYNC_STATE = STATE.response_rendered;
             LOG_INFO("rendered");
         }
         SYNC_STATE = STATE.response_shutting_down;
         LOG_INFO("shutting down");
+        CompositorMain.server.shutdownServer();
 
         // clean up
         LOG_INFO("Cleaning up");
-        GLIS_error_to_string_exec_GL(glDeleteProgram(PARENTshaderProgram));
-        GLIS_error_to_string_exec_GL(glDeleteShader(PARENTfragmentShader));
-        GLIS_error_to_string_exec_GL(glDeleteShader(PARENTvertexShader));
-        GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
+        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
+        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
+        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
@@ -309,8 +212,15 @@ void * COMPOSITORMAIN(void * arg) {
 
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
-                                                                                    jclass type)
-{
+                                                                                 jclass type,
+                                                                                 jstring
+                                                                                 ExecutablesDir) {
+    jboolean val;
+    const char *a = jenv->GetStringUTFChars(ExecutablesDir, &val);
+    size_t len = (strlen(a) + 1) * sizeof(char);
+    executableDir = static_cast<char *>(malloc(len));
+    memcpy(executableDir, a, len);
+    jenv->ReleaseStringUTFChars(ExecutablesDir, a);
     long _threadId;
     LOG_INFO("starting main Compositor");
     pthread_create(&_threadId, nullptr, COMPOSITORMAIN, nullptr);

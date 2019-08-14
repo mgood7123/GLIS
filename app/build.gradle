@@ -23,6 +23,11 @@ android {
 
     }
     ndkVersion = '20.0.5594570'
+    sourceSets {
+        main {
+            assets.srcDir('src/main/jni/executables')
+        }
+    }
 }
 
 dependencies {

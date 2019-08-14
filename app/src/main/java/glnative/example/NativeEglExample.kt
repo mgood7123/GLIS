@@ -1,27 +1,23 @@
 package glnative.example
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
-import android.widget.Toast
-import android.view.Surface
-import android.view.SurfaceView
-import android.view.SurfaceHolder
-import android.view.View
-import android.view.View.OnClickListener
 import android.util.Log
 import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.Toast
 
 
 class NativeEglExample : Activity() {
 
-    var n: NativeView? = null;
+    var n: NativeView? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (n == null) n = NativeView(applicationContext);
+        Log.i("Assets", "copying assets folder")
+        AssetsManager().copyAssetFolder(assets, filesDir.absolutePath + "/ASSETS")
+
+        if (n == null) n = NativeView(applicationContext)
 
         Log.i(n!!.TAG, "onCreate()")
 
@@ -45,6 +41,6 @@ class NativeEglExample : Activity() {
     override fun onStart() {
         super.onStart()
         Log.i(n!!.TAG, "onStart()")
-        n!!.nativeOnStart()
+        n!!.nativeOnStart(filesDir.absolutePath + "/ASSETS")
     }
 }
