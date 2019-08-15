@@ -40,7 +40,4 @@ class Kernel {
 
 };
 
-extern Kernel KERNEL;
-
-
 #endif //MEDIA_PLAYER_PRO_WINDOWSAPIKERNEL_H

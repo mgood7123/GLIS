@@ -183,7 +183,7 @@ void * COMPOSITORMAIN(void * arg) {
                     size_t send_length = 0;
                     if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) send_length = 0;
                     else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window)
-                        send_length = sizeof(int);
+                        send_length = sizeof(size_t);
                     CompositorMain.server.internaldata->REPLY->put.length(send_length);
                     CompositorMain.server.internaldata->REPLY->put.response(
                         SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
@@ -251,6 +251,8 @@ void * COMPOSITORMAIN(void * arg) {
                                     size_t len = send_length;
                                     CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&id,
                                                                                             len);
+                                    SERVER_LOG_INFO("%ssending id %zu", CompositorMain.server.TAG,
+                                                    id);
                                     SERVER_LOG_INFO("%ssending data", CompositorMain.server.TAG);
                                     if (CompositorMain.server.socket_put_data())
                                         SERVER_LOG_INFO("%ssent data", CompositorMain.server.TAG);

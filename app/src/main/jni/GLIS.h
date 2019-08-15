@@ -1160,7 +1160,7 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
 // give plenty of room to support larger sizes
 #define GLIS_TEXTURE_OFFSET ((sizeof(uint64_t)*sizeof(uint64_t))+1)
 void
-GLIS_upload_texture(GLIS_CLASS GLIS, int window_id, GLuint &TEXTURE, GLint texture_width,
+GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &TEXTURE, GLint texture_width,
                     GLint texture_height) {
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
@@ -1169,6 +1169,7 @@ GLIS_upload_texture(GLIS_CLASS GLIS, int window_id, GLuint &TEXTURE, GLint textu
     if (IPC == IPC_MODE.socket) {
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
         TEXDATA = new GLuint[TEXDATA_LEN + GLIS_TEXTURE_OFFSET];
+        memset(TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
         memcpy(TEXDATA, &window_id, sizeof(window_id));
         GLIS_error_to_string_exec_GL(
             glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
@@ -1179,6 +1180,7 @@ GLIS_upload_texture(GLIS_CLASS GLIS, int window_id, GLuint &TEXTURE, GLint textu
         SOCKET_DELETE(&R);
         delete TEXDATA;
         LOG_INFO("uploaded texture");
+        return;
     } else {
         while (SYNC_STATE != STATE.request_upload) {}
         SYNC_STATE = STATE.response_uploading;
@@ -1198,6 +1200,7 @@ GLIS_upload_texture(GLIS_CLASS GLIS, int window_id, GLuint &TEXTURE, GLint textu
         SYNC_STATE = STATE.request_render;
         while (SYNC_STATE != STATE.response_rendered) {}
         LOG_INFO("SERVER has rendered");
+        return;
     }
 }
 
