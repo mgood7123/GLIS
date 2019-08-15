@@ -352,11 +352,15 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, c
 
 bool SOCKET_GET_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
                        SOCKET_MSG *msg, char *server_name) {
+    assert(SOCKET_HEADER_SIZE == 32);
+    assert(msg->header_length == 32);
     return SOCKET_GET(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
 bool SOCKET_SEND_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
                         SOCKET_MSG *msg, char *server_name) {
+    assert(SOCKET_HEADER_SIZE == 32);
+    assert(msg->header_length == 32);
     return SOCKET_SEND(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
