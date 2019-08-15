@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.4.1)
+add_subdirectory(WINAPI)
 add_library(nativeegl SHARED compositor.cpp)
-target_link_libraries(nativeegl android log EGL GLESv3)
+target_link_libraries(nativeegl android log EGL GLESv3 WinKernel)
 
 add_executable(MYPRIVATEAPP MYPRIVATEAPP.cpp)
-target_link_libraries(MYPRIVATEAPP log EGL GLESv3)
+target_link_libraries(MYPRIVATEAPP log EGL GLESv3 WinKernel)
 add_custom_command(
         TARGET MYPRIVATEAPP
         POST_BUILD

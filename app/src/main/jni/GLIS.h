@@ -20,6 +20,7 @@
 
 #include "logger.h"
 #include "server.h"
+#include "WINAPI/SDK/include/Windows/windows.h"
 
 
 #define LOG_TAG "EglSample"
@@ -223,6 +224,7 @@ class GLIS_CLASS {
             width = 0,
             height = 0;
         SOCKET_SERVER server;
+        Kernel KERNEL;
 };
 
 void GLIS_EGL_INFORMATION(EGLDisplay & DISPLAY) {
@@ -1097,9 +1099,9 @@ GLuint GLIS_current_texture = 0;
 void GLIS_Sync_GPU() {
     LOG_INFO("synchronizing with GPU");
     GLsync GPU = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
-    if (GPU == nullptr) LOG_ERROR("glFenceSync failed at workingFunction.");
+    if (GPU == nullptr) LOG_ERROR("glFenceSync failed");
     LOG_INFO("synchronizing");
-    GLIS_error_to_string_exec(glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED));
+    GLIS_error_to_string_exec_GL(glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED));
     LOG_INFO("synchronized");
     glDeleteSync(GPU);
     LOG_INFO("synchronized with GPU");
@@ -1147,19 +1149,33 @@ int IPC = IPC_MODE.socket;
 GLuint *TEXDATA = nullptr;
 size_t TEXDATA_LEN = 0;
 
+size_t GLIS_new_window(int x, int y, int w, int h) {
+    int win[4] = {x, y, w, h};
+    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window, win,
+                                              sizeof(int) * 4);
+    size_t id = reinterpret_cast<size_t *>(socket->data)[0];
+    SOCKET_DELETE(&socket);
+    return id;
+}
+// give plenty of room to support larger sizes
+#define GLIS_TEXTURE_OFFSET ((sizeof(uint64_t)*sizeof(uint64_t))+1)
 void
-GLIS_upload_texture(GLIS_CLASS GLIS, GLuint &TEXTURE, GLint texture_width, GLint texture_height) {
+GLIS_upload_texture(GLIS_CLASS GLIS, int window_id, GLuint &TEXTURE, GLint texture_width,
+                    GLint texture_height) {
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
     GLIS_error_to_string_exec_EGL(eglSwapBuffers(GLIS.display, GLIS.surface));
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.socket) {
         TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
-        TEXDATA = new GLuint[TEXDATA_LEN];
+        TEXDATA = new GLuint[TEXDATA_LEN + GLIS_TEXTURE_OFFSET];
+        memcpy(TEXDATA, &window_id, sizeof(window_id));
         GLIS_error_to_string_exec_GL(
-            glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, TEXDATA));
+            glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
+                         &TEXDATA[GLIS_TEXTURE_OFFSET]));
         SOCKET_CLIENT clientA;
-        SOCKET_MSG *R = clientA.send(TEXDATA, TEXDATA_LEN);
+        SOCKET_MSG *R = clientA.send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture, TEXDATA,
+                                     TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
         SOCKET_DELETE(&R);
         delete TEXDATA;
         LOG_INFO("uploaded texture");
@@ -1228,7 +1244,8 @@ void GLIS_get_texture(SOCKET_SERVER &server, GLuint &TEXTURE, GLint texture_widt
                             GLIS_error_to_string_exec_GL(
                                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width,
                                              texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                                             static_cast<GLuint *>(server.internaldata->DATA->data)));
+                                             static_cast<GLuint *>(server.internaldata->DATA->data)
+                                ));
                             server.socket_process_data();
                             SERVER_LOG_INFO("%sprocessed data", server.TAG);
                             SERVER_LOG_INFO("%ssending data", server.TAG);

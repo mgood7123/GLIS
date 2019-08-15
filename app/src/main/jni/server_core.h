@@ -145,6 +145,8 @@ class SERVER_MESSAGES {
         struct SERVER_MESSAGE_TYPE {
             int texture = 1;
             int mirror = 2;
+            int new_window = 3;
+            int close_window = 4;
         } SERVER_MESSAGE_TYPE;
         struct SERVER_MESSAGE_RESPONSE {
             int OK = 0;
@@ -159,6 +161,7 @@ void SERVER_PROCESS(SOCKET_SERVER_DATA * internaldata) {
             CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture ||
             CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.mirror
         );
+        internaldata->REPLY->put.expect_data(internaldata->REPLY->get.expect_data());
         internaldata->REPLY = SOCKET_HEADER();
         internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
         internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_header;
@@ -204,8 +207,9 @@ char *SOCKET_SERVER_name_to_server_name(SOCKET_SERVER_DATA * internaldata) {
 }
 
 void SOCKET_DELETE(SOCKET_MSG ** msg) {
+    if (msg[0] == nullptr) return;
     delete msg[0]->deallocate();
-    *msg = nullptr;
+    msg[0] = nullptr;
 }
 
 SOCKET_MSG * SOCKET_COMMAND(int command) {
@@ -672,15 +676,19 @@ class SOCKET_CLIENT {
                 exit(EXIT_FAILURE);
             }
             SERVER_LOG_INFO("%sconnecting to server\n", TAG);
-            ssize_t ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
-                                  sizeof(struct sockaddr_un));
+            ssize_t ret = 0;
+            for (;;) {
+                ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
+                              sizeof(struct sockaddr_un));
+                if (ret >= 0) break;
+            }
             if (ret < 0) {
                 SERVER_LOG_ERROR("%sconnect: %s\n", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
             SERVER_LOG_INFO("%sconnected to server\n", TAG);
-            header->put.length(len);
 
+            header->put.length(len);
             SERVER_LOG_INFO("%ssend header\n", TAG);
             SOCKET_SEND_HEADER(TAG, socket_data_fd, header, &server_addr.sun_path[1]);
             SOCKET_MSG * response = SOCKET_HEADER();
@@ -689,23 +697,30 @@ class SOCKET_CLIENT {
             SERVER_LOG_INFO("%scheck header response\n", TAG);
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
                 SERVER_LOG_INFO("%sSuccess\n", TAG);
-                SOCKET_DELETE(&response);
-                SOCKET_MSG * data_ = SOCKET_DATA(data, len);
-                SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
-                SOCKET_SEND_DATA(TAG, socket_data_fd, data_, &server_addr.sun_path[1]);
-                response = SOCKET_DATA_RESPONSE(header->get.length());
-                SERVER_LOG_INFO("%sget data response\n", TAG);
-                SOCKET_GET_DATA(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
-                int da = static_cast<int *>(response->data)[0];
-                SERVER_LOG_INFO("%scheck data response\n", TAG);
-                if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                    SERVER_LOG_INFO("%sSuccess\n", TAG);
-                    SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
-                    close(socket_data_fd);
-                    SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
-                    SERVER_LOG_INFO("%sReturning response\n", TAG);
-                    return response;
-                }
+                if (response->get.expect_data()) {
+                    size_t response_len = response->get.length();
+                    SOCKET_DELETE(&response);
+                    SOCKET_MSG *data_ = SOCKET_DATA(data, len);
+                    SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
+                    SOCKET_SEND_DATA(TAG, socket_data_fd, data_, &server_addr.sun_path[1]);
+                    SERVER_LOG_INFO("%ssent data, size of data: %zu\n", TAG, len);
+                    if (response_len != 0) {
+                        SERVER_LOG_INFO("%sget data response, expect %zu\n", TAG, response_len);
+                        response = SOCKET_DATA_RESPONSE(response_len);
+                        SOCKET_GET_DATA(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
+                        SERVER_LOG_INFO("%scheck data response\n", TAG);
+                        if (response->get.response() ==
+                            SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
+                            SERVER_LOG_INFO("%sSuccess\n", TAG);
+                            SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
+                            close(socket_data_fd);
+                            SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
+                            SERVER_LOG_INFO("%sReturning response\n", TAG);
+                            return response;
+                        }
+                    }
+                } else
+                    SERVER_LOG_INFO("%sServer is not expecting data\n", TAG);
             }
             SOCKET_DELETE(&response);
             SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
@@ -715,8 +730,8 @@ class SOCKET_CLIENT {
             return SOCKET_HEADER();
         }
 
-        SOCKET_MSG *send(void * data, size_t data_length) {
-            SOCKET_MSG * header = SOCKET_COMMAND(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.mirror);
+        SOCKET_MSG *send(int type, void *data, size_t data_length) {
+            SOCKET_MSG *header = SOCKET_COMMAND(type);
             SOCKET_MSG * response = send(header, data, data_length);
             SOCKET_DELETE(&header);
             return response;
