@@ -62,23 +62,25 @@ int main() {
 
         LOG_INFO("Using Shader program");
         GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+//        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+//        glClear(GL_COLOR);
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
 
-        LOG_INFO("creating 10 windows");
+        LOG_INFO("creating 100 windows");
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = GLIS_new_window(0, 0, 1000, 1000);
         LOG_INFO("window id: %zu", win_id1);
-        GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
         LOG_INFO("created window %d", 0);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             LOG_INFO("creating window %d", i + 1);
-            GLint ii = i * 100;
-            size_t win_id2 = GLIS_new_window(ii, ii, ii + 100, ii + 100);
+            GLint ii = i * 10;
+            size_t win_id2 = GLIS_new_window(ii, ii, ii + 10, ii + 10);
             LOG_INFO("window id: %zu", win_id2);
-            GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
+//            GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
             LOG_INFO("creating window %d", i + 1);
         }
-        LOG_INFO("created 10 windows");
+        GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
+        LOG_INFO("created 100 windows");
 
         LOG_INFO("Cleaning up");
         GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));

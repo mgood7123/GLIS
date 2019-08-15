@@ -285,7 +285,9 @@ void * COMPOSITORMAIN(void * arg) {
                     for (; index < page_size * page; index++)
                         if (CompositorMain.KERNEL.table->table[index] != nullptr) {
                             struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[index]->resource);
-                            GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE, 0, CW->x,
+                            GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
+                                                       static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[0]->resource)->TEXTURE,
+                                                       0, CW->x,
                                                        CW->y, CW->w, CW->h,
                                                        CompositorMain.width, CompositorMain.height);
                         }
