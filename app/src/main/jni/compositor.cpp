@@ -171,10 +171,13 @@ void * COMPOSITORMAIN(void * arg) {
             int CMD = 0;
             if (CompositorMain.server.socket_accept()) {
                 SERVER_LOG_INFO("%sconnection obtained", CompositorMain.server.TAG);
-                SERVER_LOG_INFO("%sretrieving header", CompositorMain.server.TAG);
+                if (SERVER_LOG_TRANSFER_INFO)
+                    SERVER_LOG_INFO("%sretrieving header", CompositorMain.server.TAG);
                 if (CompositorMain.server.socket_get_header()) { // false if fails
-                    SERVER_LOG_INFO("%sretrieved header", CompositorMain.server.TAG);
-                    SERVER_LOG_INFO("%sprocessing header", CompositorMain.server.TAG);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%sretrieved header", CompositorMain.server.TAG);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%sprocessing header", CompositorMain.server.TAG);
                     CMD = CompositorMain.server.internaldata->HEADER->get.command();
                     SERVER_LOG_INFO("%sCMD: %d", CompositorMain.server.TAG, CMD);
                     CompositorMain.server.internaldata->HEADER->put.expect_data(true);
@@ -187,22 +190,36 @@ void * COMPOSITORMAIN(void * arg) {
                     CompositorMain.server.internaldata->REPLY->put.length(send_length);
                     CompositorMain.server.internaldata->REPLY->put.response(
                         SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
-                    SERVER_LOG_INFO("%sprocessed header", CompositorMain.server.TAG);
-                    SERVER_LOG_INFO("%ssending header", CompositorMain.server.TAG);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%sprocessed header", CompositorMain.server.TAG);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%ssending header", CompositorMain.server.TAG);
                     if (CompositorMain.server.socket_put_header()) { // false if fails
-                        SERVER_LOG_INFO("%ssent header", CompositorMain.server.TAG);
+                        if (SERVER_LOG_TRANSFER_INFO)
+                            SERVER_LOG_INFO("%ssent header", CompositorMain.server.TAG);
                         if (CompositorMain.server.socket_header_expect_data()) { // false if fails
-                            SERVER_LOG_INFO("%sexpecting data", CompositorMain.server.TAG);
-                            SERVER_LOG_INFO("%sobtaining data", CompositorMain.server.TAG);
+                            if (SERVER_LOG_TRANSFER_INFO)
+                                SERVER_LOG_INFO("%sexpecting data", CompositorMain.server.TAG);
+                            if (SERVER_LOG_TRANSFER_INFO)
+                                SERVER_LOG_INFO("%sobtaining data", CompositorMain.server.TAG);
                             if (CompositorMain.server.socket_get_data()) { // false if fails
-                                SERVER_LOG_INFO("%sprocessing data", CompositorMain.server.TAG);
+                                if (SERVER_LOG_TRANSFER_INFO)
+                                    SERVER_LOG_INFO("%sprocessing data", CompositorMain.server.TAG);
                                 size_t id;
                                 if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
-                                    size_t Client_id;
-                                    memcpy(&Client_id,
-                                           CompositorMain.server.internaldata->DATA->data,
-                                           sizeof(Client_id));
+                                    size_t Client_id = reinterpret_cast<size_t *>(
+                                        CompositorMain.server.internaldata->DATA->data
+                                    )[0];
                                     LOG_INFO("received id: %zu", Client_id);
+                                    GLsizei w = static_cast<GLsizei>(reinterpret_cast<size_t *>(
+                                        CompositorMain.server.internaldata->DATA->data
+                                    )[1]);
+                                    LOG_INFO("received w: %d", w);
+                                    GLsizei h = static_cast<GLsizei>(
+                                        reinterpret_cast<size_t *>(
+                                            CompositorMain.server.internaldata->DATA->data
+                                        )[2]);
+                                    LOG_INFO("received h: %d", h);
                                     struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[Client_id]->resource);
                                     GLIS_error_to_string_exec_GL(
                                         glGenTextures(1, &CW->TEXTURE));
@@ -210,8 +227,8 @@ void * COMPOSITORMAIN(void * arg) {
                                         glBindTexture(GL_TEXTURE_2D, CW->TEXTURE));
                                     GLIS_error_to_string_exec_GL(
                                         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                                                     CompositorMain.width,
-                                                     CompositorMain.height, 0, GL_RGBA,
+                                                     w,
+                                                     h, 0, GL_RGBA,
                                                      GL_UNSIGNED_BYTE,
                                                      &reinterpret_cast<GLuint *>(
                                                          CompositorMain.server.internaldata->DATA->data
@@ -246,16 +263,23 @@ void * COMPOSITORMAIN(void * arg) {
                                                     CompositorMain.server.TAG, win[0], win[1],
                                                     win[2], win[3]);
                                 }
-                                SERVER_LOG_INFO("%sprocessed data", CompositorMain.server.TAG);
+                                if (SERVER_LOG_TRANSFER_INFO)
+                                    SERVER_LOG_INFO("%sprocessed data", CompositorMain.server.TAG);
                                 if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window) {
                                     size_t len = send_length;
                                     CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&id,
                                                                                             len);
-                                    SERVER_LOG_INFO("%ssending id %zu", CompositorMain.server.TAG,
-                                                    id);
-                                    SERVER_LOG_INFO("%ssending data", CompositorMain.server.TAG);
+                                    if (SERVER_LOG_TRANSFER_INFO)
+                                        SERVER_LOG_INFO("%ssending id %zu",
+                                                        CompositorMain.server.TAG,
+                                                        id);
+                                    if (SERVER_LOG_TRANSFER_INFO)
+                                        SERVER_LOG_INFO("%ssending data",
+                                                        CompositorMain.server.TAG);
                                     if (CompositorMain.server.socket_put_data())
-                                        SERVER_LOG_INFO("%ssent data", CompositorMain.server.TAG);
+                                        if (SERVER_LOG_TRANSFER_INFO)
+                                            SERVER_LOG_INFO("%ssent data",
+                                                            CompositorMain.server.TAG);
                                     else
                                         SERVER_LOG_ERROR("%sfailed to send data",
                                                          CompositorMain.server.TAG);
@@ -274,36 +298,40 @@ void * COMPOSITORMAIN(void * arg) {
                 SERVER_LOG_ERROR("%sfailed to obtain a connection", CompositorMain.server.TAG);
             LOG_INFO("CLIENT has uploaded");
             if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
+                double start = now_ms();
                 LOG_INFO("rendering");
                 GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
                 GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
                 int page = 1;
                 size_t index = 0;
                 size_t page_size = CompositorMain.KERNEL.table->page_size;
+                int drawn = 0;
+                double startK = now_ms();
                 for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
                     index = ((page_size * page) - page_size);
                     for (; index < page_size * page; index++)
                         if (CompositorMain.KERNEL.table->table[index] != nullptr) {
                             struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[index]->resource);
+                            double startR = now_ms();
                             GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
-                                                       static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[0]->resource)->TEXTURE,
+                                                       CW->TEXTURE,
                                                        0, CW->x,
                                                        CW->y, CW->w, CW->h,
                                                        CompositorMain.width, CompositorMain.height);
+                            drawn++;
+                            double endR = now_ms();
+//                            LOG_INFO("Draw window in %G milliseconds", endR - startR);
                         }
-//                for (int i = 0; i < 10; i++) {
-//                    GLint ii = i * 100;
-//                    GLIS_draw_rectangle<GLint>(GL_TEXTURE0, GLIS_current_texture, 0, ii, ii,
-//                                               ii + 100,
-//                                               ii + 100, CompositorMain.width,
-//                                               CompositorMain.height);
-//                }
                 }
+                double endK = now_ms();
+                LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
+                         drawn == 1 ? "window" : "windows", endK - startK);
                 GLIS_Sync_GPU();
                 GLIS_error_to_string_exec_EGL(
                     eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
                 GLIS_Sync_GPU();
-                LOG_INFO("rendered");
+                double end = now_ms();
+                LOG_INFO("rendered in %G milliseconds", end - start);
             }
         }
         SYNC_STATE = STATE.response_shutting_down;

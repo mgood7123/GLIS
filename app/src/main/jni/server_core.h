@@ -5,6 +5,8 @@
 #ifndef GLNE_SERVER_CORE_H
 #define GLNE_SERVER_CORE_H
 
+bool SERVER_LOG_TRANSFER_INFO = false;
+
 #define SOCKET_HEADER_SIZE (sizeof(size_t)*4)
 
 typedef class SOCKET_MSG {
@@ -108,6 +110,12 @@ class SOCKET_SERVER_DATA_STATE {
 class SOCKET_SERVER_DATA;
 void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata);
 
+class SOCKET_DATA_TRANSFER_INFO {
+    public:
+        size_t total_wrote = 0;
+        size_t total_sent = 0;
+};
+
 class SOCKET_SERVER_DATA {
     public:
         bool server_CAN_CONNECT = false;
@@ -121,6 +129,8 @@ class SOCKET_SERVER_DATA {
         SOCKET_MSG * DATA = nullptr;
         SOCKET_MSG * REPLY = nullptr;
         void (*reply)(SOCKET_SERVER_DATA * internaldata) = SERVER_DEFAULT_REPLY;
+
+        SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
 };
 
 SOCKET_MSG * SOCKET_HEADER() {
@@ -259,51 +269,107 @@ SOCKET_WRITE(const char *TAG, ssize_t *ret, int socket_data_fd, const void *__bu
     return true;
 }
 
+/* Return current time in milliseconds */
+double now_ms(void) {
+    struct timeval tv = {0};
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000. + tv.tv_usec / 1000.;
+}
+
+char *str_humanise_bytes(off_t bytes) {
+    char *data = new char[1024];
+    if (bytes > 1 << 30) {
+        sprintf(data, "%u.%2.2u Gigabytes",
+                (int) (bytes >> 30),
+                (int) (bytes & ((1 << 30) - 1)) / 10737419);
+    } else if (bytes > 1 << 20) {
+        int x = bytes + 5243;  /* for rounding */
+        sprintf(data, "%u.%2.2u Megabytes",
+                x >> 20, ((x & ((1 << 20) - 1)) * 100) >> 20);
+    } else if (bytes > 1 << 10) {
+        int x = bytes + 5;  /* for rounding */
+        sprintf(data, "%u.%2.2u Kilobytes",
+                x >> 10, ((x & ((1 << 10) - 1)) * 100) >> 10);
+    } else {
+        sprintf(data, "%u bytes", (int) bytes);
+    }
+    return data;
+}
+
 bool
-SOCKET_GET(const char *TAG, int socket_data_fd, void *__buf, size_t __count, char *server_name) {
+SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, void *__buf,
+           size_t __count, char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
-    while(total != __count) {
+    double start = now_ms();
+    while (total != __count) {
         ssize_t ret = 0;
         if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name,
                         MSG_PEEK | MSG_DONTWAIT, total)) {
             if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
-                total+=ret;
-                SERVER_LOG_INFO("%sRECV %zu/%zu size", TAG, total, __count);
+                total += ret;
+                if (SERVER_LOG_TRANSFER_INFO)
+                    SERVER_LOG_INFO("%sRECV %zu/%zu size", TAG, total, __count);
             } else return false; // an error occurred
         } else return false; // an error occurred
     }
+    double end = now_ms();
+    s.total_wrote += __count;
+    char *n = str_humanise_bytes(__count);
+    char *t = str_humanise_bytes(s.total_wrote);
+    SERVER_LOG_INFO("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
+                    end - start, t);
+    delete n;
+    delete t;
     return true;
 }
 
-bool SOCKET_SEND(const char *TAG, int socket_data_fd, const void *__buf, size_t __count,
-                 char *server_name) {
+bool
+SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, const void *__buf,
+            size_t __count,
+            char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
+    double start = now_ms();
     while(total != __count) {
         ssize_t ret = 0;
         if (SOCKET_WRITE(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
             total += ret;
-            SERVER_LOG_INFO("%sWRITE %zu/%zu size", TAG, total, __count);
+            if (SERVER_LOG_TRANSFER_INFO)
+                SERVER_LOG_INFO("%sWRITE %zu/%zu size", TAG, total, __count);
         } else return false; // an error occurred
     }
+    double end = now_ms();
+    s.total_wrote += __count;
+    char *n = str_humanise_bytes(__count);
+    char *t = str_humanise_bytes(s.total_wrote);
+    SERVER_LOG_INFO("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
+                    end - start, t);
+    delete n;
+    delete t;
     return true;
 }
 
-bool SOCKET_GET_HEADER(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
-    return SOCKET_GET(TAG, socket_data_fd, msg->header, msg->header_length, server_name);
+bool SOCKET_GET_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
+                       SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_GET(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
-bool SOCKET_SEND_HEADER(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
-    return SOCKET_SEND(TAG, socket_data_fd, msg->header, msg->header_length, server_name);
+bool SOCKET_SEND_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
+                        SOCKET_MSG *msg, char *server_name) {
+    return SOCKET_SEND(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
 }
 
-bool SOCKET_GET_DATA(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
-    return SOCKET_GET(TAG, socket_data_fd, msg->data, msg->data_length, server_name);
+bool
+SOCKET_GET_DATA(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, SOCKET_MSG *msg,
+                char *server_name) {
+    return SOCKET_GET(s, TAG, socket_data_fd, msg->data, msg->data_length, server_name);
 }
 
-bool SOCKET_SEND_DATA(const char *TAG, int socket_data_fd, SOCKET_MSG *msg, char *server_name) {
-    return SOCKET_SEND(TAG, socket_data_fd, msg->data, msg->data_length, server_name);
+bool
+SOCKET_SEND_DATA(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, SOCKET_MSG *msg,
+                 char *server_name) {
+    return SOCKET_SEND(s, TAG, socket_data_fd, msg->data, msg->data_length, server_name);
 }
 
 void *SERVER_START(void *na);
@@ -481,7 +547,8 @@ class SOCKET_SERVER {
 
         bool socket_get_header(int &socket_data_fd) {
             internaldata->HEADER = SOCKET_HEADER();
-            if (!SOCKET_GET_HEADER(TAG, socket_data_fd, internaldata->HEADER,
+            if (!SOCKET_GET_HEADER(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
+                                   internaldata->HEADER,
                                    &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->HEADER);
                 return false;
@@ -497,7 +564,8 @@ class SOCKET_SERVER {
         }
 
         bool socket_put_header(int &socket_data_fd) {
-            if (!SOCKET_SEND_HEADER(TAG, socket_data_fd, internaldata->REPLY,
+            if (!SOCKET_SEND_HEADER(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
+                                    internaldata->REPLY,
                                     &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->HEADER);
                 SOCKET_DELETE(&internaldata->REPLY);
@@ -517,7 +585,8 @@ class SOCKET_SERVER {
 
         bool socket_get_data(int &socket_data_fd) {
             internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
-            if (!SOCKET_GET_DATA(TAG, socket_data_fd, internaldata->DATA,
+            if (!SOCKET_GET_DATA(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
+                                 internaldata->DATA,
                                  &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->HEADER);
                 SOCKET_DELETE(&internaldata->DATA);
@@ -535,7 +604,8 @@ class SOCKET_SERVER {
         }
 
         bool socket_put_data(int &socket_data_fd) {
-            if (!SOCKET_SEND_DATA(TAG, socket_data_fd, internaldata->REPLY,
+            if (!SOCKET_SEND_DATA(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
+                                  internaldata->REPLY,
                                   &internaldata->server_addr.sun_path[1])) {
                 SOCKET_DELETE(&internaldata->REPLY);
                 return false;
@@ -626,6 +696,7 @@ class SOCKET_CLIENT {
         const char * default_client_name = "SOCKET_SERVER";
         const size_t default_client_name_length = strlen(default_client_name);
         char * TAG = nullptr;
+        SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
         void set_name(const char * name) {
             char socket_name[108]; // 108 sun_path length max
             memset(&socket_name, 0, 108);
@@ -689,44 +760,53 @@ class SOCKET_CLIENT {
             SERVER_LOG_INFO("%sconnected to server\n", TAG);
 
             header->put.length(len);
-            SERVER_LOG_INFO("%ssend header\n", TAG);
-            SOCKET_SEND_HEADER(TAG, socket_data_fd, header, &server_addr.sun_path[1]);
+            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%ssend header\n", TAG);
+            SOCKET_SEND_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, header,
+                               &server_addr.sun_path[1]);
             SOCKET_MSG * response = SOCKET_HEADER();
-            SERVER_LOG_INFO("%sget header response\n", TAG);
-            SOCKET_GET_HEADER(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
-            SERVER_LOG_INFO("%scheck header response\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sget header response\n", TAG);
+            SOCKET_GET_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
+                              &server_addr.sun_path[1]);
+            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%scheck header response\n", TAG);
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                SERVER_LOG_INFO("%sSuccess\n", TAG);
+                if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sSuccess\n", TAG);
                 if (response->get.expect_data()) {
                     size_t response_len = response->get.length();
                     SOCKET_DELETE(&response);
                     SOCKET_MSG *data_ = SOCKET_DATA(data, len);
-                    SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
-                    SOCKET_SEND_DATA(TAG, socket_data_fd, data_, &server_addr.sun_path[1]);
-                    SERVER_LOG_INFO("%ssent data, size of data: %zu\n", TAG, len);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
+                    SOCKET_SEND_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, data_,
+                                     &server_addr.sun_path[1]);
+                    if (SERVER_LOG_TRANSFER_INFO)
+                        SERVER_LOG_INFO("%ssent data, size of data: %zu\n", TAG, len);
                     if (response_len != 0) {
-                        SERVER_LOG_INFO("%sget data response, expect %zu\n", TAG, response_len);
+                        if (SERVER_LOG_TRANSFER_INFO)
+                            SERVER_LOG_INFO("%sget data response, expect %zu\n", TAG, response_len);
                         response = SOCKET_DATA_RESPONSE(response_len);
-                        SOCKET_GET_DATA(TAG, socket_data_fd, response, &server_addr.sun_path[1]);
-                        SERVER_LOG_INFO("%scheck data response\n", TAG);
+                        SOCKET_GET_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
+                                        &server_addr.sun_path[1]);
+                        if (SERVER_LOG_TRANSFER_INFO)
+                            SERVER_LOG_INFO("%scheck data response\n", TAG);
                         if (response->get.response() ==
                             SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                            SERVER_LOG_INFO("%sSuccess\n", TAG);
+                            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sSuccess\n", TAG);
                             SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
                             close(socket_data_fd);
                             SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
-                            SERVER_LOG_INFO("%sReturning response\n", TAG);
+                            if (SERVER_LOG_TRANSFER_INFO)
+                                SERVER_LOG_INFO("%sReturning response\n", TAG);
                             return response;
                         }
                     }
-                } else
+                } else if (SERVER_LOG_TRANSFER_INFO)
                     SERVER_LOG_INFO("%sServer is not expecting data\n", TAG);
             }
             SOCKET_DELETE(&response);
             SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
             close(socket_data_fd);
             SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
-            SERVER_LOG_INFO("%sReturning response\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sReturning response\n", TAG);
             return SOCKET_HEADER();
         }
 
