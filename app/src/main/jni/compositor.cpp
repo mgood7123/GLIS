@@ -276,11 +276,11 @@ void * COMPOSITORMAIN(void * arg) {
                                     if (SERVER_LOG_TRANSFER_INFO)
                                         SERVER_LOG_INFO("%ssending data",
                                                         CompositorMain.server.TAG);
-                                    if (CompositorMain.server.socket_put_data())
+                                    if (CompositorMain.server.socket_put_data()) {
                                         if (SERVER_LOG_TRANSFER_INFO)
                                             SERVER_LOG_INFO("%ssent data",
                                                             CompositorMain.server.TAG);
-                                    else
+                                    } else
                                         SERVER_LOG_ERROR("%sfailed to send data",
                                                          CompositorMain.server.TAG);
                                 }
@@ -320,7 +320,6 @@ void * COMPOSITORMAIN(void * arg) {
                                                        CompositorMain.width, CompositorMain.height);
                             drawn++;
                             double endR = now_ms();
-//                            LOG_INFO("Draw window in %G milliseconds", endR - startR);
                         }
                 }
                 double endK = now_ms();

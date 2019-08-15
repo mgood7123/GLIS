@@ -1200,7 +1200,6 @@ GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &TEXTURE, GLint t
         reinterpret_cast<size_t *>(TEXDATA)[0] = window_id;
         reinterpret_cast<size_t *>(TEXDATA)[1] = static_cast<size_t>(texture_width);
         reinterpret_cast<size_t *>(TEXDATA)[2] = static_cast<size_t>(texture_height);
-//        memcpy(TEXDATA, &window_id, sizeof(window_id));
         GLIS_error_to_string_exec_GL(
             glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
                          &TEXDATA[GLIS_TEXTURE_OFFSET]));
