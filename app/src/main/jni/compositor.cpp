@@ -120,7 +120,8 @@ void * COMPOSITORMAIN(void * arg) {
 
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
-        const_cast<char *>(std::string(std::string(executableDir) + "/MYPRIVATEAPP").c_str());
+        const_cast<char *>(std::string(
+            std::string(executableDir) + "/Arch/arm64-v8a/MYPRIVATEAPP").c_str());
     char *args[2] = {exe, 0};
     GLIS_FORK(args[0], args);
 

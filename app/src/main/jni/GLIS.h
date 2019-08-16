@@ -104,9 +104,13 @@ std::string GLIS_INTERNAL_MESSAGE_PREFIX = "";
 #define GLIS_SHADER_SOURCE__(S, source, E) S source E
 #define GLIS_SHADER_SOURCE(source) GLIS_SHADER_SOURCE__(GLIS_SHADER_SOURCE__BEGIN, source, GLIS_SHADER_SOURCE__END)
 
-#define GLIS_error_to_string_exec(x) x; GLIS_error_to_string(#x)
-#define GLIS_error_to_string_exec_GL(x) x; GLIS_error_to_string_GL(#x)
-#define GLIS_error_to_string_exec_EGL(x) x; GLIS_error_to_string_EGL(#x)
+int GLIS_ERROR_PRINTING_TYPE_FORMAL = 1;
+int GLIS_ERROR_PRINTING_TYPE_CODE = 2;
+int GLIS_ERROR_PRINTING_TYPE = GLIS_ERROR_PRINTING_TYPE_FORMAL;
+
+#define GLIS_error_to_string_exec(x) x; if (GLIS_ERROR_PRINTING_TYPE == GLIS_ERROR_PRINTING_TYPE_FORMAL) { GLIS_error_to_string(#x); } else { LOG_INFO("%s", std::string(std::string(#x) + ";").c_str()); }
+#define GLIS_error_to_string_exec_GL(x) x; if (GLIS_ERROR_PRINTING_TYPE == GLIS_ERROR_PRINTING_TYPE_FORMAL) { GLIS_error_to_string_GL(#x); } else { LOG_INFO("%s", std::string(std::string(#x) + ";").c_str()); }
+#define GLIS_error_to_string_exec_EGL(x) x; if (GLIS_ERROR_PRINTING_TYPE == GLIS_ERROR_PRINTING_TYPE_FORMAL) { GLIS_error_to_string_EGL(#x); } else { LOG_INFO("%s", std::string(std::string(#x) + ";").c_str()); }
 
 void GLIS_error_to_string_GL(const char * name, GLint err) {
     GLIS_INTERNAL_MESSAGE_PREFIX = "OpenGL:          ";
@@ -1038,6 +1042,97 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     return m;
 }
 
+class GLIS_BACKUP {
+    public:
+        struct {
+            GLint __GL_READ_FRAMEBUFFER_BINDING, __GL_DRAW_FRAMEBUFFER_BINDING;
+        } framebuffer;
+        struct {
+            GLint __GL_RENDERBUFFER_BINDING, __GL_RENDERBUFFER_WIDTH, __GL_RENDERBUFFER_HEIGHT,
+                __GL_RENDERBUFFER_INTERNAL_FORMAT, __GL_RENDERBUFFER_RED_SIZE,
+                __GL_RENDERBUFFER_GREEN_SIZE, __GL_RENDERBUFFER_BLUE_SIZE,
+                __GL_RENDERBUFFER_ALPHA_SIZE, __GL_RENDERBUFFER_DEPTH_SIZE,
+                __GL_RENDERBUFFER_STENCIL_SIZE, __GL_RENDERBUFFER_SAMPLES;
+        } renderbuffer;
+        struct {
+            GLint __GL_ACTIVE_TEXTURE, __GL_TEXTURE_BUFFER_BINDING, __GL_VERTEX_ARRAY_BINDING,
+                __GL_ARRAY_BUFFER_BINDING, __GL_ELEMENT_ARRAY_BUFFER_BINDING;
+        } texture;
+        struct {
+            GLint __GL_CURRENT_PROGRAM;
+        } program;
+};
+
+void GLIS_backup_framebuffer(GLIS_BACKUP &backup) {
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
+//    GLIS_error_to_string_exec_GL(glGetFramebufferAttachmentParameteriv(GL_READ_FRAMEBUFFER, GL_BACK, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
+}
+
+void GLIS_backup_renderbuffer(GLIS_BACKUP &backup) {
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_WIDTH));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_HEIGHT));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_INTERNAL_FORMAT));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_RED_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_RED_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_GREEN_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_GREEN_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_BLUE_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_BLUE_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_ALPHA_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_ALPHA_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_DEPTH_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_STENCIL_SIZE,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_STENCIL_SIZE));
+    GLIS_error_to_string_exec_GL(
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_SAMPLES,
+                                     &backup.renderbuffer.__GL_RENDERBUFFER_SAMPLES));
+}
+
+void GLIS_backup_texture(GLIS_BACKUP &backup) {
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
+}
+
+void GLIS_backup_program(GLIS_BACKUP &backup) {
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM));
+}
+
+void GLIS_backup(GLIS_BACKUP &backup) {
+    GLIS_backup_framebuffer(backup);
+    GLIS_backup_renderbuffer(backup);
+    GLIS_backup_texture(backup);
+    GLIS_backup_program(backup);
+};
+
 template <typename TYPE>
 void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
     class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(INITIALIZER, x1, y1, x2, y2);
@@ -1089,10 +1184,9 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
     GLIS_error_to_string_exec_GL(glGenRenderbuffers(1, &renderbuffer));
     GLIS_error_to_string_exec_GL(glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer));
     GLIS_error_to_string_exec_GL(glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height));
-    GLIS_error_to_string_exec_GL(glFramebufferRenderbuffer(GL_FRAMEBUFFER,
-                                                        GL_COLOR_ATTACHMENT0,
-                                                        GL_RENDERBUFFER,
-                                                        renderbuffer));
+    GLIS_error_to_string_exec_GL(
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
+                                  renderbuffer));
     GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
 
     GLenum FramebufferStatus = GLIS_error_to_string_exec_GL(
@@ -1191,8 +1285,28 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
 
 
 void
-GLIS_RESIZE(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,
+GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,
             int height_to) {
+    GLIS_BACKUP backup;
+    // save
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
+    GLIS_error_to_string_exec_GL(
+        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM));
     const char *CHILDvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -1255,6 +1369,23 @@ void main()
     GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
     GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
     GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
+    // restore
+    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_READ_FRAMEBUFFER,
+                                                   static_cast<GLuint>(backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING)));
+    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_DRAW_FRAMEBUFFER,
+                                                   static_cast<GLuint>(backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING)));
+    GLIS_error_to_string_exec_GL(glBindRenderbuffer(GL_RENDERBUFFER,
+                                                    static_cast<GLuint>(backup.renderbuffer.__GL_RENDERBUFFER_BINDING)));
+    GLIS_error_to_string_exec_GL(
+        glActiveTexture(static_cast<GLenum>(backup.texture.__GL_ACTIVE_TEXTURE)));
+    GLIS_error_to_string_exec_GL(
+        glBindVertexArray(static_cast<GLuint>(backup.texture.__GL_VERTEX_ARRAY_BINDING)));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER,
+                                              static_cast<GLuint>(backup.texture.__GL_ARRAY_BUFFER_BINDING)));
+    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
+                                              static_cast<GLuint>(backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING)));
+    GLIS_error_to_string_exec_GL(
+        glUseProgram(static_cast<GLuint>(backup.program.__GL_CURRENT_PROGRAM)));
 }
 
 void
@@ -1270,7 +1401,7 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
         if (texture_width_to != 0 && texture_height_to != 0) {
             LOG_ERROR("resizing from %dx%d to %dx%d",
                       texture_width, texture_height, texture_width_to, texture_height_to);
-            GLIS_RESIZE(&TEXDATA, TEXDATA_LEN, texture_width, texture_height, texture_width_to,
+            GLIS_resize(&TEXDATA, TEXDATA_LEN, texture_width, texture_height, texture_width_to,
                         texture_height_to);
             LOG_ERROR("resized from %dx%d to %dx%d",
                       texture_width, texture_height, texture_width_to, texture_height_to);

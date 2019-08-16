@@ -32,11 +32,12 @@ void main()
 
 class GLIS_CLASS G;
 int main() {
-    SERVER_LOG_TRANSFER_INFO = true;
-    GLIS_LOG_PRINT_SHAPE_INFO = true;
-    GLIS_LOG_PRINT_VERTEX = true;
-    GLIS_LOG_PRINT_CONVERSIONS = true;
-    GLIS_LOG_PRINT_NON_ERRORS = true;
+//    SERVER_LOG_TRANSFER_INFO = true;
+//    GLIS_LOG_PRINT_SHAPE_INFO = true;
+//    GLIS_LOG_PRINT_VERTEX = true;
+//    GLIS_LOG_PRINT_CONVERSIONS = true;
+//    GLIS_LOG_PRINT_NON_ERRORS = true;
+//    GLIS_ERROR_PRINTING_TYPE = GLIS_ERROR_PRINTING_TYPE_CODE;
     int W = 1080;
     int H = 2031;
     if (GLIS_setupOffScreenRendering(G, W, H)) {
