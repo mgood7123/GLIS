@@ -31,8 +31,12 @@ void main()
 )glsl";
 
 class GLIS_CLASS G;
-
 int main() {
+    SERVER_LOG_TRANSFER_INFO = true;
+    GLIS_LOG_PRINT_SHAPE_INFO = true;
+    GLIS_LOG_PRINT_VERTEX = true;
+    GLIS_LOG_PRINT_CONVERSIONS = true;
+    GLIS_LOG_PRINT_NON_ERRORS = true;
     int W = 1080;
     int H = 2031;
     if (GLIS_setupOffScreenRendering(G, W, H)) {
@@ -70,6 +74,7 @@ int main() {
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);
+        SERVER_LOG_TRANSFER_INFO = true;
         GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
         LOG_INFO("created window %d", 0);
         for (int i = 0; i < 20; i++) {
@@ -78,7 +83,7 @@ int main() {
             GLint ii = i * s;
             size_t win_id2 = GLIS_new_window(ii, ii, ii + s, ii + s);
             LOG_INFO("window id: %zu", win_id2);
-            GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
+            GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, s, s);
             LOG_INFO("creating window %d", i + 1);
         }
         LOG_INFO("created 201 windows");

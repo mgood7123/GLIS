@@ -1107,7 +1107,8 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
     GLIS_error_to_string_exec_GL(glGenTextures(1, &renderedTexture));
     GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, renderedTexture));
     GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,0));
-    GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
+    GLIS_error_to_string_exec_GL(
+        glGenerateMipmap(GL_TEXTURE_2D)); // this DOES NOT affect the total size of read pixels
     GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
     GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
@@ -1184,25 +1185,109 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
     SOCKET_DELETE(&socket);
     return id;
 }
+
 // give plenty of room to support larger sizes
 #define GLIS_TEXTURE_OFFSET ((sizeof(uint64_t)*sizeof(uint64_t))+1)
+
+
 void
-GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &TEXTURE, GLint texture_width,
-                    GLint texture_height) {
+GLIS_RESIZE(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,
+            int height_to) {
+    const char *CHILDvertexSource = R"glsl( #version 320 es
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
+
+out vec3 ourColor;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+)glsl";
+
+    const char *CHILDfragmentSource = R"glsl( #version 320 es
+out highp vec4 FragColor;
+in highp vec3 ourColor;
+
+void main()
+{
+    FragColor = vec4(ourColor, 1.0);
+}
+)glsl";
+    // RESIZE TEXTURE
+    GLuint FB;
+    GLuint RB;
+    GLuint renderedTexture;
+    GLIS_texture_buffer(FB, RB, renderedTexture, width_to, height_to);
+    GLuint CHILDshaderProgram;
+    GLuint CHILDvertexShader;
+    GLuint CHILDfragmentShader;
+    CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
+    CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
+    LOG_INFO("Creating Shader program");
+    CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+    LOG_INFO("Attaching vertex Shader to program");
+    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+    LOG_INFO("Attaching fragment Shader to program");
+    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+    LOG_INFO("Linking Shader program");
+    GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
+    LOG_INFO("Validating Shader program");
+    GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
+    assert(ProgramIsValid == GL_TRUE);
+    LOG_INFO("Using Shader program");
+    GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+    GLIS_draw_rectangle<GLint>(
+        GL_TEXTURE0, renderedTexture, 0, 0, 0, width_to, height_to, width_from, height_from);
+    TEXDATA_LEN = width_to * height_to * sizeof(GLuint);
+    *TEXDATA = new GLuint[TEXDATA_LEN * GLIS_TEXTURE_OFFSET];
+    memset(*TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
+    GLIS_error_to_string_exec_GL(
+        glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
+                     &(*TEXDATA)[GLIS_TEXTURE_OFFSET]));
+    GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
+    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
+    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
+    GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
+    GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
+    GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
+}
+
+void
+GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
+                           GLint texture_width,
+                           GLint texture_height, GLint texture_width_to,
+                           GLint texture_height_to) {
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
     GLIS_error_to_string_exec_EGL(eglSwapBuffers(GLIS.display, GLIS.surface));
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.socket) {
-        TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
-        TEXDATA = new GLuint[TEXDATA_LEN + GLIS_TEXTURE_OFFSET];
-        memset(TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
+        if (texture_width_to != 0 && texture_height_to != 0) {
+            LOG_ERROR("resizing from %dx%d to %dx%d",
+                      texture_width, texture_height, texture_width_to, texture_height_to);
+            GLIS_RESIZE(&TEXDATA, TEXDATA_LEN, texture_width, texture_height, texture_width_to,
+                        texture_height_to);
+            LOG_ERROR("resized from %dx%d to %dx%d",
+                      texture_width, texture_height, texture_width_to, texture_height_to);
+            assert(TEXDATA != nullptr);
+        } else {
+            TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
+            TEXDATA = new GLuint[TEXDATA_LEN + GLIS_TEXTURE_OFFSET];
+            memset(TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
+            GLIS_error_to_string_exec_GL(
+                glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
+                             &TEXDATA[GLIS_TEXTURE_OFFSET]));
+        }
         reinterpret_cast<size_t *>(TEXDATA)[0] = window_id;
-        reinterpret_cast<size_t *>(TEXDATA)[1] = static_cast<size_t>(texture_width);
-        reinterpret_cast<size_t *>(TEXDATA)[2] = static_cast<size_t>(texture_height);
-        GLIS_error_to_string_exec_GL(
-            glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
-                         &TEXDATA[GLIS_TEXTURE_OFFSET]));
+        reinterpret_cast<size_t *>(TEXDATA)[1] = static_cast<size_t>(
+            texture_width_to != 0 ? texture_width_to : texture_width);
+        reinterpret_cast<size_t *>(TEXDATA)[2] = static_cast<size_t>(
+            texture_height_to != 0 ? texture_height_to : texture_height);
         SOCKET_CLIENT clientA;
         SOCKET_MSG *R = clientA.send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture, TEXDATA,
                                      TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
@@ -1214,7 +1299,7 @@ GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &TEXTURE, GLint t
         while (SYNC_STATE != STATE.request_upload) {}
         SYNC_STATE = STATE.response_uploading;
         if (IPC == IPC_MODE.thread) {
-            GLIS_current_texture = TEXTURE;
+            GLIS_current_texture = texture_id;
             SYNC_STATE = STATE.response_uploaded;
         } else if (IPC == IPC_MODE.texture) {
             TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
@@ -1233,12 +1318,18 @@ GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &TEXTURE, GLint t
     }
 }
 
-void GLIS_get_texture(SOCKET_SERVER &server, GLuint &TEXTURE, GLint texture_width,
+void
+GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, GLint texture_width,
+                    GLint texture_height) {
+    GLIS_upload_texture_resize(GLIS, window_id, texture_id, texture_width, texture_height, 0, 0);
+}
+
+void GLIS_get_texture(SOCKET_SERVER &server, GLuint &texture_id, GLint texture_width,
                       GLint texture_height) {
     if (IPC != IPC_MODE.socket) LOG_INFO("acquiring uploaded texture");
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.thread) {
-        GLIS_current_texture = TEXTURE;
+        GLIS_current_texture = texture_id;
     } else if (IPC == IPC_MODE.texture) {
         GLIS_error_to_string_exec_GL(glGenTextures(1, &GLIS_current_texture));
         GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, GLIS_current_texture));
