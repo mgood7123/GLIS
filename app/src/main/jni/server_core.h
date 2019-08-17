@@ -156,7 +156,8 @@ class SERVER_MESSAGES {
             int texture = 1;
             int mirror = 2;
             int new_window = 3;
-            int close_window = 4;
+            int modify_window = 4;
+            int close_window = 5;
         } SERVER_MESSAGE_TYPE;
         struct SERVER_MESSAGE_RESPONSE {
             int OK = 0;

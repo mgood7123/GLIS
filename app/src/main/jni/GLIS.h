@@ -1272,7 +1272,7 @@ GLuint *TEXDATA = nullptr;
 size_t TEXDATA_LEN = 0;
 
 size_t GLIS_new_window(int x, int y, int w, int h) {
-    int win[4] = {x, y, w, h};
+    int win[4] = {x, y, x + w, y + h};
     SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window, win,
                                               sizeof(int) * 4);
     size_t id = reinterpret_cast<size_t *>(socket->data)[0];
@@ -1280,9 +1280,31 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
     return id;
 }
 
+struct GLIS_Client_Window {
+    size_t window_id;
+    int x;
+    int y;
+    int w;
+    int h;
+};
+
+void GLIS_modify_window(size_t window_id, int x, int y, int w, int h) {
+    struct GLIS_Client_Window ww = {window_id, x, y, x + w, y + h};
+    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.modify_window,
+                                              &ww,
+                                              sizeof(ww));
+    SOCKET_DELETE(&socket);
+}
+
+void GLIS_close_window(size_t window_id) {
+    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.close_window,
+                                              &window_id,
+                                              sizeof(window_id));
+    SOCKET_DELETE(&socket);
+}
+
 // give plenty of room to support larger sizes
 #define GLIS_TEXTURE_OFFSET ((sizeof(uint64_t)*sizeof(uint64_t))+1)
-
 
 void
 GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,

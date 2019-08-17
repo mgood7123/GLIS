@@ -124,6 +124,11 @@ void * COMPOSITORMAIN(void * arg) {
             std::string(executableDir) + "/Arch/arm64-v8a/MYPRIVATEAPP").c_str());
     char *args[2] = {exe, 0};
     GLIS_FORK(args[0], args);
+    char *exe2 =
+        const_cast<char *>(std::string(
+            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
+    char *args2[2] = {exe2, 0};
+    GLIS_FORK(args2[0], args2);
 
 
     SYNC_STATE = STATE.no_state;
@@ -170,6 +175,7 @@ void * COMPOSITORMAIN(void * arg) {
         while(SYNC_STATE != STATE.request_shutdown) {
             SERVER_LOG_INFO("%swaiting for connection", CompositorMain.server.TAG);
             int CMD = 0;
+            bool redraw = false;
             if (CompositorMain.server.socket_accept()) {
                 SERVER_LOG_INFO("%sconnection obtained", CompositorMain.server.TAG);
                 if (SERVER_LOG_TRANSFER_INFO)
@@ -185,9 +191,15 @@ void * COMPOSITORMAIN(void * arg) {
                     CompositorMain.server.internaldata->REPLY = SOCKET_HEADER();
                     CompositorMain.server.internaldata->REPLY->put.expect_data(true);
                     size_t send_length = 0;
-                    if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) send_length = 0;
-                    else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window)
+                    if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture ||
+                        CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.modify_window ||
+                        CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.close_window) {
+                        send_length = 0;
+                        redraw = true;
+                    } else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window) {
                         send_length = sizeof(size_t);
+                        redraw = true;
+                    }
                     CompositorMain.server.internaldata->REPLY->put.length(send_length);
                     CompositorMain.server.internaldata->REPLY->put.response(
                         SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
@@ -260,9 +272,36 @@ void * COMPOSITORMAIN(void * arg) {
                                     x->h = win[3];
                                     id = CompositorMain.KERNEL.table->findObject(
                                         CompositorMain.KERNEL.newObject(0, 0, x));
-                                    SERVER_LOG_INFO("%swindow: %d,%d,%d,%d",
-                                                    CompositorMain.server.TAG, win[0], win[1],
+                                    SERVER_LOG_INFO("%swindow %zu: %d,%d,%d,%d",
+                                                    CompositorMain.server.TAG, id, win[0], win[1],
                                                     win[2], win[3]);
+                                } else if (CMD ==
+                                           SERVER_MESSAGES.SERVER_MESSAGE_TYPE.modify_window) {
+                                    struct GLIS_Client_Window *win =
+                                        reinterpret_cast<struct GLIS_Client_Window *>(
+                                            CompositorMain.server.internaldata->DATA->data
+                                        );
+                                    assert(win != 0);
+                                    assert(win != nullptr);
+                                    assert(win->window_id >= 0);
+                                    assert(
+                                        CompositorMain.KERNEL.table->table[win->window_id] !=
+                                        nullptr
+                                    );
+                                    struct Client_Window *c = reinterpret_cast<Client_Window *>(
+                                        CompositorMain.KERNEL.table->table[win->window_id]->resource
+                                    );
+                                    c->x = win->x;
+                                    c->y = win->y;
+                                    c->w = win->w;
+                                    c->h = win->h;
+                                } else if (CMD ==
+                                           SERVER_MESSAGES.SERVER_MESSAGE_TYPE.close_window) {
+                                    CompositorMain.KERNEL.table->DELETE(
+                                        *reinterpret_cast<size_t *>(
+                                            CompositorMain.server.internaldata->DATA->data
+                                        )
+                                    );
                                 }
                                 if (SERVER_LOG_TRANSFER_INFO)
                                     SERVER_LOG_INFO("%sprocessed data", CompositorMain.server.TAG);
@@ -298,7 +337,7 @@ void * COMPOSITORMAIN(void * arg) {
             } else
                 SERVER_LOG_ERROR("%sfailed to obtain a connection", CompositorMain.server.TAG);
             LOG_INFO("CLIENT has uploaded");
-            if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
+            if (redraw) {
                 double start = now_ms();
                 LOG_INFO("rendering");
                 GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
