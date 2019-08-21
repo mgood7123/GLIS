@@ -8,8 +8,8 @@
 #include "header.h"
 
 #ifndef __ANDROID__
-    #define SERVER_LOG_INFO printf
-    #define SERVER_LOG_ERROR printf
+    #define LOG_INFO_SERVER printf
+    #define LOG_ERROR_SERVER printf
 #else
     #include <strings.h>
     #include <android/log.h>

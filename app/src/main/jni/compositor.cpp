@@ -48,6 +48,7 @@
 #include "logger.h"
 #include "GLIS.h"
 #include "shm.h"
+#include "serializer.h"
 
 #define LOG_TAG "EglSample"
 
@@ -129,7 +130,7 @@ int COMPOSITORMAIN__() {
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/shm").c_str());
     char *args2[2] = {exe2, 0};
-//    GLIS_FORK(args2[0], args2);
+    GLIS_FORK(args2[0], args2);
     int fd = 0;
     void * data = nullptr;
     assert(SHM_create(fd, &data, 512));
@@ -208,12 +209,13 @@ int COMPOSITORMAIN__() {
                         redraw = true;
                     } else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.shm) { // get
                         CompositorMain.server.internaldata->HEADER->put.expect_data(false);
-                        CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&fd, sizeof(int));
-                        CompositorMain.server.internaldata->REPLY->put.expect_data(false);
                         if (SERVER_LOG_TRANSFER_INFO)
                             LOG_INFO_SERVER("%ssending fd %d",
                                             CompositorMain.server.TAG,
                                             fd);
+                        send_length = sizeof(int);
+                        CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&fd, send_length);
+                        CompositorMain.server.internaldata->REPLY->put.expect_data(false);
                     }
                     CompositorMain.server.internaldata->REPLY->put.length(send_length);
                     CompositorMain.server.internaldata->REPLY->put.response(
@@ -425,8 +427,8 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
     memcpy(executableDir, a, len);
     jenv->ReleaseStringUTFChars(ExecutablesDir, a);
     LOG_INFO("starting main Compositor");
-    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
-
+    ser();
+//    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
 }
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,

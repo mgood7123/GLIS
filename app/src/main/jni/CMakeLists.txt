@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 add_subdirectory(WINAPI)
-add_library(nativeegl SHARED compositor.cpp shm.cpp ashmem.cpp)
+add_library(nativeegl SHARED compositor.cpp shm.cpp ashmem.cpp serializer.cpp)
 target_link_libraries(nativeegl android log EGL GLESv3 WinKernel)
 
 add_executable(MYPRIVATEAPP compositor_examples/MYPRIVATEAPP.cpp)
