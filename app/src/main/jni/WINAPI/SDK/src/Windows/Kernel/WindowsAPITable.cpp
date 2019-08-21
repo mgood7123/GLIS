@@ -9,6 +9,10 @@ Table::Table() {
     assert(this->table.size() == 0 && this->Page.count() == 0);
 }
 
+Table::~Table() {
+    this->Page.removeAll();
+}
+
 bool Table::hasFreeIndex() {
     int page = 1;
     size_t index = 0;

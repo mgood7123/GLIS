@@ -5,16 +5,7 @@
 #ifndef GLNE_SERVER_H
 #define GLNE_SERVER_H
 
-#include <cstdlib>
-#include <cassert>
-#include <malloc.h>
-#include <string>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <cerrno>
-#include <unistd.h>
-#include <poll.h>
-#include <pthread.h>
+#include "header.h"
 
 #ifndef __ANDROID__
     #define SERVER_LOG_INFO printf
@@ -23,9 +14,9 @@
     #include <strings.h>
     #include <android/log.h>
 
-    #define SERVER_LOG_TAG "server_core"
-    #define SERVER_LOG_INFO(...) __android_log_print(ANDROID_LOG_INFO, SERVER_LOG_TAG, __VA_ARGS__)
-    #define SERVER_LOG_ERROR(...) __android_log_print(ANDROID_LOG_ERROR, SERVER_LOG_TAG, __VA_ARGS__)
+    #define LOG_TAG_SERVER "server_core"
+    #define LOG_INFO_SERVER(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG_SERVER, __VA_ARGS__)
+    #define LOG_ERROR_SERVER(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG_SERVER, __VA_ARGS__)
 #endif
 
 #include "server_core.h"

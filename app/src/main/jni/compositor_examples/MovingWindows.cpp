@@ -71,25 +71,10 @@ int main() {
         GLIS_upload_texture_resize(G, win_id1, renderedTexture, W, H, 200, 200);
         LOG_INFO("win_id1 = %zu", win_id1);
         while (true) {
-            GLIS_modify_window(win_id1, 500, 450, 200, 200);
-            GLIS_modify_window(win_id2, 550, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 500, 200, 200);
-            assert(win_id1 == 0);
-            assert(win_id2 == 1);
-            GLIS_modify_window(win_id2, 600, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 550, 200, 200);
-            GLIS_modify_window(win_id2, 650, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 600, 200, 200);
-            GLIS_modify_window(win_id2, 700, 600, 200, 200);
-
-            GLIS_modify_window(win_id1, 500, 600, 200, 200);
-            GLIS_modify_window(win_id2, 700, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 550, 200, 200);
-            GLIS_modify_window(win_id2, 650, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 500, 200, 200);
-            GLIS_modify_window(win_id2, 600, 600, 200, 200);
-            GLIS_modify_window(win_id1, 500, 450, 200, 200);
-            GLIS_modify_window(win_id2, 550, 600, 200, 200);
+            for (int i = 450; i <= 600; i++) GLIS_modify_window(win_id1, 500, i, 200, 200);
+            for (int i = 500; i <= 700; i++) GLIS_modify_window(win_id2, i, 600, 200, 200);
+            for (int i = 599; i >= 451; i--) GLIS_modify_window(win_id1, 500, i, 200, 200);
+            for (int i = 699; i >= 501; i--) GLIS_modify_window(win_id2, i, 600, 200, 200);
         }
 
         LOG_INFO("Cleaning up");

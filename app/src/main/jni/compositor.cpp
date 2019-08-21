@@ -47,6 +47,7 @@
 
 #include "logger.h"
 #include "GLIS.h"
+#include "shm.h"
 
 #define LOG_TAG "EglSample"
 
@@ -116,19 +117,22 @@ void main()
 }
 )glsl";
 
-void * COMPOSITORMAIN(void * arg) {
+int COMPOSITORMAIN__() {
 
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/MYPRIVATEAPP").c_str());
     char *args[2] = {exe, 0};
-    GLIS_FORK(args[0], args);
+//    GLIS_FORK(args[0], args);
     char *exe2 =
         const_cast<char *>(std::string(
-            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
+            std::string(executableDir) + "/Arch/arm64-v8a/shm").c_str());
     char *args2[2] = {exe2, 0};
-    GLIS_FORK(args2[0], args2);
+//    GLIS_FORK(args2[0], args2);
+    int fd = 0;
+    void * data = nullptr;
+    assert(SHM_create(fd, &data, 512));
 
 
     SYNC_STATE = STATE.no_state;
@@ -173,51 +177,62 @@ void * COMPOSITORMAIN(void * arg) {
             GLuint TEXTURE;
         };
         while(SYNC_STATE != STATE.request_shutdown) {
-            SERVER_LOG_INFO("%swaiting for connection", CompositorMain.server.TAG);
+            LOG_INFO_SERVER("%swaiting for connection", CompositorMain.server.TAG);
             int CMD = 0;
             bool redraw = false;
             if (CompositorMain.server.socket_accept()) {
-                SERVER_LOG_INFO("%sconnection obtained", CompositorMain.server.TAG);
+                LOG_INFO_SERVER("%sconnection obtained", CompositorMain.server.TAG);
                 if (SERVER_LOG_TRANSFER_INFO)
-                    SERVER_LOG_INFO("%sretrieving header", CompositorMain.server.TAG);
+                    LOG_INFO_SERVER("%sretrieving header", CompositorMain.server.TAG);
                 if (CompositorMain.server.socket_get_header()) { // false if fails
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%sretrieved header", CompositorMain.server.TAG);
+                        LOG_INFO_SERVER("%sretrieved header", CompositorMain.server.TAG);
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%sprocessing header", CompositorMain.server.TAG);
+                        LOG_INFO_SERVER("%sprocessing header", CompositorMain.server.TAG);
                     CMD = CompositorMain.server.internaldata->HEADER->get.command();
-                    SERVER_LOG_INFO("%sCMD: %d", CompositorMain.server.TAG, CMD);
-                    CompositorMain.server.internaldata->HEADER->put.expect_data(true);
-                    CompositorMain.server.internaldata->REPLY = SOCKET_HEADER();
-                    CompositorMain.server.internaldata->REPLY->put.expect_data(true);
+                    LOG_INFO_SERVER("%sCMD: %d", CompositorMain.server.TAG, CMD);
                     size_t send_length = 0;
                     if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture ||
                         CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.modify_window ||
                         CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.close_window) {
+                        CompositorMain.server.internaldata->HEADER->put.expect_data(true);
+                        CompositorMain.server.internaldata->REPLY = SOCKET_HEADER();
+                        CompositorMain.server.internaldata->REPLY->put.expect_data(true);
                         send_length = 0;
                         redraw = true;
                     } else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window) {
+                        CompositorMain.server.internaldata->HEADER->put.expect_data(true);
+                        CompositorMain.server.internaldata->REPLY = SOCKET_HEADER();
+                        CompositorMain.server.internaldata->REPLY->put.expect_data(true);
                         send_length = sizeof(size_t);
                         redraw = true;
+                    } else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.shm) { // get
+                        CompositorMain.server.internaldata->HEADER->put.expect_data(false);
+                        CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&fd, sizeof(int));
+                        CompositorMain.server.internaldata->REPLY->put.expect_data(false);
+                        if (SERVER_LOG_TRANSFER_INFO)
+                            LOG_INFO_SERVER("%ssending fd %d",
+                                            CompositorMain.server.TAG,
+                                            fd);
                     }
                     CompositorMain.server.internaldata->REPLY->put.length(send_length);
                     CompositorMain.server.internaldata->REPLY->put.response(
                         SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%sprocessed header", CompositorMain.server.TAG);
+                        LOG_INFO_SERVER("%sprocessed header", CompositorMain.server.TAG);
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%ssending header", CompositorMain.server.TAG);
+                        LOG_INFO_SERVER("%ssending header", CompositorMain.server.TAG);
                     if (CompositorMain.server.socket_put_header()) { // false if fails
                         if (SERVER_LOG_TRANSFER_INFO)
-                            SERVER_LOG_INFO("%ssent header", CompositorMain.server.TAG);
+                            LOG_INFO_SERVER("%ssent header", CompositorMain.server.TAG);
                         if (CompositorMain.server.socket_header_expect_data()) { // false if fails
                             if (SERVER_LOG_TRANSFER_INFO)
-                                SERVER_LOG_INFO("%sexpecting data", CompositorMain.server.TAG);
+                                LOG_INFO_SERVER("%sexpecting data", CompositorMain.server.TAG);
                             if (SERVER_LOG_TRANSFER_INFO)
-                                SERVER_LOG_INFO("%sobtaining data", CompositorMain.server.TAG);
+                                LOG_INFO_SERVER("%sobtaining data", CompositorMain.server.TAG);
                             if (CompositorMain.server.socket_get_data()) { // false if fails
                                 if (SERVER_LOG_TRANSFER_INFO)
-                                    SERVER_LOG_INFO("%sprocessing data", CompositorMain.server.TAG);
+                                    LOG_INFO_SERVER("%sprocessing data", CompositorMain.server.TAG);
                                 size_t id;
                                 if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
                                     size_t Client_id = reinterpret_cast<size_t *>(
@@ -272,7 +287,7 @@ void * COMPOSITORMAIN(void * arg) {
                                     x->h = win[3];
                                     id = CompositorMain.KERNEL.table->findObject(
                                         CompositorMain.KERNEL.newObject(0, 0, x));
-                                    SERVER_LOG_INFO("%swindow %zu: %d,%d,%d,%d",
+                                    LOG_INFO_SERVER("%swindow %zu: %d,%d,%d,%d",
                                                     CompositorMain.server.TAG, id, win[0], win[1],
                                                     win[2], win[3]);
                                 } else if (CMD ==
@@ -304,38 +319,39 @@ void * COMPOSITORMAIN(void * arg) {
                                     );
                                 }
                                 if (SERVER_LOG_TRANSFER_INFO)
-                                    SERVER_LOG_INFO("%sprocessed data", CompositorMain.server.TAG);
+                                    LOG_INFO_SERVER("%sprocessed data", CompositorMain.server.TAG);
                                 if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window) {
                                     size_t len = send_length;
                                     CompositorMain.server.internaldata->REPLY = SOCKET_DATA(&id,
                                                                                             len);
                                     if (SERVER_LOG_TRANSFER_INFO)
-                                        SERVER_LOG_INFO("%ssending id %zu",
+                                        LOG_INFO_SERVER("%ssending id %zu",
                                                         CompositorMain.server.TAG,
                                                         id);
                                     if (SERVER_LOG_TRANSFER_INFO)
-                                        SERVER_LOG_INFO("%ssending data",
+                                        LOG_INFO_SERVER("%ssending data",
                                                         CompositorMain.server.TAG);
                                     if (CompositorMain.server.socket_put_data()) {
                                         if (SERVER_LOG_TRANSFER_INFO)
-                                            SERVER_LOG_INFO("%ssent data",
+                                            LOG_INFO_SERVER("%ssent data",
                                                             CompositorMain.server.TAG);
                                     } else
-                                        SERVER_LOG_ERROR("%sfailed to send data",
+                                        LOG_ERROR_SERVER("%sfailed to send data",
                                                          CompositorMain.server.TAG);
                                 }
                                 SOCKET_DELETE(&CompositorMain.server.internaldata->HEADER);
                                 SOCKET_DELETE(&CompositorMain.server.internaldata->DATA);
                             } else
-                                SERVER_LOG_ERROR("%sfailed to obtain data",
+                                LOG_ERROR_SERVER("%sfailed to obtain data",
                                                  CompositorMain.server.TAG);
                         }
                     } else
-                        SERVER_LOG_ERROR("%sfailed to send header", CompositorMain.server.TAG);
+                        LOG_ERROR_SERVER("%sfailed to send header", CompositorMain.server.TAG);
                 } else
-                    SERVER_LOG_ERROR("%sfailed to get header", CompositorMain.server.TAG);
+                    LOG_ERROR_SERVER("%sfailed to get header", CompositorMain.server.TAG);
+                assert(CompositorMain.server.socket_unaccept());
             } else
-                SERVER_LOG_ERROR("%sfailed to obtain a connection", CompositorMain.server.TAG);
+                LOG_ERROR_SERVER("%sfailed to obtain a connection", CompositorMain.server.TAG);
             LOG_INFO("CLIENT has uploaded");
             if (redraw) {
                 double start = now_ms();
@@ -388,10 +404,16 @@ void * COMPOSITORMAIN(void * arg) {
         LOG_INFO("shut down");
         SYNC_STATE = STATE.response_shutdown;
     } else LOG_ERROR("failed to initialize main Compositor");
-    return nullptr;
+    return 0;
 }
 
+void * COMPOSITORMAIN(void * arg) {
+    int * ret = new int;
+    *ret = COMPOSITORMAIN__();
+    return ret;
+}
 
+long COMPOSITORMAIN_threadId;
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
                                                                                  jclass type,
                                                                                  jstring
@@ -402,7 +424,16 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
     executableDir = static_cast<char *>(malloc(len));
     memcpy(executableDir, a, len);
     jenv->ReleaseStringUTFChars(ExecutablesDir, a);
-    long _threadId;
     LOG_INFO("starting main Compositor");
-    pthread_create(&_threadId, nullptr, COMPOSITORMAIN, nullptr);
+    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
+
+}
+
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,
+                                                                                 jclass type) {
+    LOG_INFO("waiting for main Compositor to stop");
+    int * ret;
+    pthread_join(COMPOSITORMAIN_threadId, reinterpret_cast<void **>(&ret));
+    LOG_INFO("main Compositor has stopped: return code: %d", *ret);
+    delete ret;
 }

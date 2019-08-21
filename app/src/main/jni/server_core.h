@@ -153,17 +153,23 @@ SOCKET_MSG * SOCKET_DATA_RESPONSE(size_t len) {
 class SERVER_MESSAGES {
     public:
         struct SERVER_MESSAGE_TYPE {
+            int ping = 0;
             int texture = 1;
             int mirror = 2;
             int new_window = 3;
             int modify_window = 4;
             int close_window = 5;
+            int shm = 6;
         } SERVER_MESSAGE_TYPE;
         struct SERVER_MESSAGE_RESPONSE {
             int OK = 0;
             int FAIL = 1;
         } SERVER_MESSAGE_RESPONSE;
 } SERVER_MESSAGES;
+
+bool SOCKET_PING() {
+
+}
 
 void SERVER_PROCESS(SOCKET_SERVER_DATA * internaldata) {
     int CMD = internaldata->HEADER->get.command();
@@ -197,7 +203,7 @@ void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata) {
 
 void SERVER_SHUTDOWN(char * server_name, SOCKET_SERVER_DATA * & internaldata) {
     if (internaldata->server_closed) {
-        SERVER_LOG_ERROR(
+        LOG_ERROR_SERVER(
             "SERVER: SERVER_SHUTDOWN attempting to close server %s but server has already been closed\n",
             server_name);
         delete internaldata;
@@ -243,10 +249,10 @@ bool SOCKET_READ(const char *TAG, ssize_t *ret, int socket_data_fd, void *__buf,
     }
     if (*ret == 0) {
         // if recv returns zero, that means the connection has been closed
-        SERVER_LOG_INFO("%sClient has closed the connection\n", TAG);
+        LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
         return false;
     } else if (*ret < 0) {
-        SERVER_LOG_ERROR("%srecv: %s\n", TAG, strerror(errno));
+        LOG_ERROR_SERVER("%srecv: %s\n", TAG, strerror(errno));
         return false;
     }
     return true;
@@ -264,7 +270,7 @@ SOCKET_WRITE(const char *TAG, ssize_t *ret, int socket_data_fd, const void *__bu
         break;
     }
     if (*ret < 0) {
-        SERVER_LOG_ERROR("%swrite: %s\n", TAG, strerror(errno));
+        LOG_ERROR_SERVER("%swrite: %s\n", TAG, strerror(errno));
         return false;
     }
     return true;
@@ -310,7 +316,7 @@ SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, vo
             if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
                 total += ret;
                 if (SERVER_LOG_TRANSFER_INFO)
-                    SERVER_LOG_INFO("%sRECV %zu/%zu size", TAG, total, __count);
+                    LOG_INFO_SERVER("%sRECV %zu/%zu size", TAG, total, __count);
             } else return false; // an error occurred
         } else return false; // an error occurred
     }
@@ -318,7 +324,7 @@ SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, vo
     s.total_wrote += __count;
     char *n = str_humanise_bytes(__count);
     char *t = str_humanise_bytes(s.total_wrote);
-    SERVER_LOG_INFO("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
+    LOG_INFO_SERVER("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
                     end - start, t);
     delete n;
     delete t;
@@ -337,14 +343,14 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, c
         if (SOCKET_WRITE(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
             total += ret;
             if (SERVER_LOG_TRANSFER_INFO)
-                SERVER_LOG_INFO("%sWRITE %zu/%zu size", TAG, total, __count);
+                LOG_INFO_SERVER("%sWRITE %zu/%zu size", TAG, total, __count);
         } else return false; // an error occurred
     }
     double end = now_ms();
     s.total_wrote += __count;
     char *n = str_humanise_bytes(__count);
     char *t = str_humanise_bytes(s.total_wrote);
-    SERVER_LOG_INFO("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
+    LOG_INFO_SERVER("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
                     end - start, t);
     delete n;
     delete t;
@@ -377,6 +383,23 @@ SOCKET_SEND_DATA(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_
     return SOCKET_SEND(s, TAG, socket_data_fd, msg->data, msg->data_length, server_name);
 }
 
+bool SOCKET_CLOSE(const char *TAG, int & socket_fd) {
+    int ret;
+    for (;;) { // implement blocking
+        ret = close(socket_fd);
+        if (ret < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+            if (errno == EBADF) return true;
+        }
+        break;
+    }
+    if (ret < 0) {
+        LOG_ERROR_SERVER("%sclose: %s\n", TAG, strerror(errno));
+        return false;
+    }
+    return true;
+}
+
 void *SERVER_START(void *na);
 
 class SOCKET_SERVER {
@@ -405,7 +428,7 @@ class SOCKET_SERVER {
 
         void startServer(void *(*SERVER_MAIN)(void *)) {
             if (internaldata != nullptr) {
-                SERVER_LOG_ERROR("%sattempting to start server while running\n", TAG);
+                LOG_ERROR_SERVER("%sattempting to start server while running\n", TAG);
                 return;
             }
             internaldata = new SOCKET_SERVER_DATA;
@@ -426,13 +449,13 @@ class SOCKET_SERVER {
 
         void shutdownServer() {
             if (internaldata == nullptr) {
-                SERVER_LOG_ERROR(
+                LOG_ERROR_SERVER(
                     "%sshutdownServer attempting to close server but server has already been closed\n",
                     TAG);
                 return;
             }
             if (internaldata->server_closed) {
-                SERVER_LOG_ERROR(
+                LOG_ERROR_SERVER(
                     "%sshutdownServer internaldata->server_closed attempting to close serverbut server has already been closed\n",
                     TAG);
                 delete internaldata;
@@ -442,7 +465,7 @@ class SOCKET_SERVER {
 
         void set_name(const char *name) {
             if (internaldata != nullptr) {
-                SERVER_LOG_ERROR("%sattempting to change server name while server is running\n",
+                LOG_ERROR_SERVER("%sattempting to change server name while server is running\n",
                                  TAG);
                 return;
             }
@@ -451,15 +474,15 @@ class SOCKET_SERVER {
                 // build default TAG
                 TAG = strdup(
                     std::string(std::string("SERVER: ") + (default_server_name) + " : ").c_str());
-                SERVER_LOG_ERROR("%sname was not supplied, conflicts are likely to happen\n", TAG);
+                LOG_ERROR_SERVER("%sname was not supplied, conflicts are likely to happen\n", TAG);
                 if (strlen(default_server_name) > 107) {
-                    SERVER_LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n",
+                    LOG_ERROR_SERVER("%sdefault name is longer than 107 characters, truncating\n",
                                      TAG);
                     memcpy(server_name, default_server_name, 107);
                 } else memcpy(server_name, default_server_name, default_server_name_length);
             } else {
                 if (strlen(server_name) > 107) {
-                    SERVER_LOG_ERROR(
+                    LOG_ERROR_SERVER(
                         "%sname is longer than 107 characters, truncating, conflicts may happen\n",
                         TAG);
                     memcpy(server_name, name, 107);
@@ -491,10 +514,10 @@ class SOCKET_SERVER {
         bool socket_create(int &socket_fd, __kernel_sa_family_t __af, int __type, int __protocol) {
             socket_fd = socket(__af, __type, __protocol);
             if (socket_fd < 0) {
-                SERVER_LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
                 return false;
             }
-            SERVER_LOG_INFO("%sSocket made\n", TAG);
+            LOG_INFO_SERVER("%sSocket made\n", TAG);
             return true;
         }
 
@@ -502,14 +525,14 @@ class SOCKET_SERVER {
             memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
             internaldata->server_addr.sun_family = __af;
             memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
-            SERVER_LOG_INFO("%sbinding socket fd %d to name %s\n", TAG, socket_fd,
+            LOG_INFO_SERVER("%sbinding socket fd %d to name %s\n", TAG, socket_fd,
                             &internaldata->server_addr.sun_path[1]);
             if (bind(socket_fd, (const struct sockaddr *) &internaldata->server_addr,
                      sizeof(struct sockaddr_un)) < 0) {
-                SERVER_LOG_ERROR("%sbind: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%sbind: %s\n", TAG, strerror(errno));
                 return false;
             }
-            SERVER_LOG_INFO("%sBind made\n", TAG);
+            LOG_INFO_SERVER("%sBind made\n", TAG);
             return true;
         }
 
@@ -523,10 +546,10 @@ class SOCKET_SERVER {
         // sets internaldata->server_CAN_CONNECT to true on success
         bool socket_listen(int &socket_fd, int pending_connection_queue_size) {
             if (listen(socket_fd, pending_connection_queue_size) < 0) {
-                SERVER_LOG_ERROR("%slisten: %s", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%slisten: %s", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
-            SERVER_LOG_INFO("%sSocket listening for packages\n", TAG);
+            LOG_INFO_SERVER("%sSocket listening for packages\n", TAG);
             internaldata->server_CAN_CONNECT = true;
             return true;
         }
@@ -544,10 +567,14 @@ class SOCKET_SERVER {
                 break;
             }
             if (socket_data_fd < 0) {
-                SERVER_LOG_ERROR("%saccept: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%saccept: %s\n", TAG, strerror(errno));
                 return false;
             }
             return true;
+        }
+
+        bool socket_unaccept(int &socket_data_fd) {
+            return SOCKET_CLOSE(TAG, socket_data_fd);
         }
 
         bool socket_get_header(int &socket_data_fd) {
@@ -630,6 +657,7 @@ class SOCKET_SERVER {
                             if (socket_get_data(socket_data_fd)) { // false if fails
                                 socket_process_data();
                                 socket_put_data(socket_data_fd);
+                                socket_unaccept(socket_data_fd);
                             }
                         }
                     }
@@ -638,9 +666,8 @@ class SOCKET_SERVER {
         }
 
         void socket_close(int &socket_fd, int &socket_data_fd) {
-            if (socket_data_fd) close(socket_data_fd);
-            close(socket_fd);
-            internaldata->server_closed = true;
+            if (SOCKET_CLOSE(TAG, socket_data_fd) && SOCKET_CLOSE(TAG, socket_fd))
+                internaldata->server_closed = true;
         }
 
         bool socket_create(__kernel_sa_family_t __af, int __type, int __protocol) {
@@ -655,6 +682,8 @@ class SOCKET_SERVER {
 
         bool socket_accept() { return socket_accept(socket_fd, socket_data_fd); }
 
+        bool socket_unaccept() { return socket_unaccept(socket_data_fd); }
+
         bool socket_get_header() { return socket_get_header(socket_data_fd); }
 
         bool socket_put_header() { return socket_put_header(socket_data_fd); }
@@ -667,18 +696,6 @@ class SOCKET_SERVER {
 
         void socket_close() { socket_close(socket_fd, socket_data_fd); }
 };
-
-void *SERVER_START_REPLY_AUTOMATICALLY(void *na) {
-    assert(na != nullptr);
-    SOCKET_SERVER *server = static_cast<SOCKET_SERVER *>(na);
-
-    server->socket_create(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
-    server->socket_bind(AF_UNIX);
-    server->socket_listen(1);
-    server->socket_loop();
-    server->socket_close();
-    return NULL;
-}
 
 void *SERVER_START_REPLY_MANUALLY(void *na) {
     assert(na != nullptr);
@@ -710,13 +727,13 @@ class SOCKET_CLIENT {
                 // build default TAG
                 TAG = strdup(std::string(std::string("CLIENT: ") + (default_client_name) + " : ").c_str());
                 if (strlen(default_client_name) > 107) {
-                    SERVER_LOG_ERROR("%sdefault name is longer than 107 characters, truncating\n",
+                    LOG_ERROR_SERVER("%sdefault name is longer than 107 characters, truncating\n",
                                      TAG);
                     memcpy(&socket_name[1], default_client_name, 107);
                 } else memcpy(&socket_name[1], default_client_name, default_client_name_length);
             } else {
                 if (strlen(name) > 107) {
-                    SERVER_LOG_ERROR(
+                    LOG_ERROR_SERVER(
                         "%sname is longer than 107 characters, truncating, conflicts may happen\n",
                         TAG);
                     memcpy(&socket_name[1], name, 107);
@@ -748,10 +765,10 @@ class SOCKET_CLIENT {
         SOCKET_MSG * send(SOCKET_MSG * header, void * data, size_t len) {
             socket_data_fd = socket(AF_UNIX, SOCK_STREAM, 0);
             if (socket_data_fd < 0) {
-                SERVER_LOG_ERROR("%ssocket: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
-            SERVER_LOG_INFO("%sconnecting to server\n", TAG);
+            LOG_INFO_SERVER("%sconnecting to server\n", TAG);
             ssize_t ret = 0;
             for (;;) {
                 ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
@@ -759,60 +776,53 @@ class SOCKET_CLIENT {
                 if (ret >= 0) break;
             }
             if (ret < 0) {
-                SERVER_LOG_ERROR("%sconnect: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%sconnect: %s\n", TAG, strerror(errno));
                 exit(EXIT_FAILURE);
             }
-            SERVER_LOG_INFO("%sconnected to server\n", TAG);
+            LOG_INFO_SERVER("%sconnected to server\n", TAG);
 
             header->put.length(len);
-            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%ssend header\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%ssend header\n", TAG);
             SOCKET_SEND_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, header,
                                &server_addr.sun_path[1]);
             SOCKET_MSG * response = SOCKET_HEADER();
-            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sget header response\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sget header response\n", TAG);
             SOCKET_GET_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
                               &server_addr.sun_path[1]);
-            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%scheck header response\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%scheck header response\n", TAG);
             if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sSuccess\n", TAG);
+                if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sSuccess\n", TAG);
                 if (response->get.expect_data()) {
                     size_t response_len = response->get.length();
                     SOCKET_DELETE(&response);
                     SOCKET_MSG *data_ = SOCKET_DATA(data, len);
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%ssending data, size of data: %zu\n", TAG, len);
+                        LOG_INFO_SERVER("%ssending data, size of data: %zu\n", TAG, len);
                     SOCKET_SEND_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, data_,
                                      &server_addr.sun_path[1]);
                     if (SERVER_LOG_TRANSFER_INFO)
-                        SERVER_LOG_INFO("%ssent data, size of data: %zu\n", TAG, len);
+                        LOG_INFO_SERVER("%ssent data, size of data: %zu\n", TAG, len);
                     if (response_len != 0) {
                         if (SERVER_LOG_TRANSFER_INFO)
-                            SERVER_LOG_INFO("%sget data response, expect %zu\n", TAG, response_len);
+                            LOG_INFO_SERVER("%sget data response, expect %zu\n", TAG, response_len);
                         response = SOCKET_DATA_RESPONSE(response_len);
                         SOCKET_GET_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
                                         &server_addr.sun_path[1]);
                         if (SERVER_LOG_TRANSFER_INFO)
-                            SERVER_LOG_INFO("%scheck data response\n", TAG);
+                            LOG_INFO_SERVER("%scheck data response\n", TAG);
                         if (response->get.response() ==
                             SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sSuccess\n", TAG);
-                            SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
-                            close(socket_data_fd);
-                            SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
-                            if (SERVER_LOG_TRANSFER_INFO)
-                                SERVER_LOG_INFO("%sReturning response\n", TAG);
-                            return response;
-                        }
+                            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sSuccess\n", TAG);
+                        } else if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sFailure\n", TAG);
                     }
                 } else if (SERVER_LOG_TRANSFER_INFO)
-                    SERVER_LOG_INFO("%sServer is not expecting data\n", TAG);
+                    LOG_INFO_SERVER("%sServer is not expecting data\n", TAG);
             }
-            SOCKET_DELETE(&response);
-            SERVER_LOG_INFO("%sclosing connection to server\n", TAG);
-            close(socket_data_fd);
-            SERVER_LOG_INFO("%sclosed connection to server\n", TAG);
-            if (SERVER_LOG_TRANSFER_INFO) SERVER_LOG_INFO("%sReturning response\n", TAG);
-            return SOCKET_HEADER();
+            LOG_INFO_SERVER("%sclosing connection to server\n", TAG);
+            assert(SOCKET_CLOSE(TAG, socket_data_fd));
+            LOG_INFO_SERVER("%sclosed connection to server\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sReturning response\n", TAG);
+            return response;
         }
 
         SOCKET_MSG *send(int type, void *data, size_t data_length) {

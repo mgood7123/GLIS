@@ -43,4 +43,10 @@ class NativeEglExample : Activity() {
         Log.i(n!!.TAG, "onStart()")
         n!!.nativeOnStart(filesDir.absolutePath + "/ASSETS")
     }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(n!!.TAG, "onStop()")
+        n!!.nativeOnStop()
+    }
 }

@@ -11,14 +11,11 @@
 
 typedef class Table {
     public:
-        ~Table() {
-            this->Page.removeAll();
-        }
-
         std::vector<Object *> table;
         const size_t page_size = 1_kilobyte;
 
         Table();
+        ~Table();
 
         bool hasFreeIndex();
 
