@@ -84,6 +84,10 @@ class serializer_stream {
             resize(data_len - len);
             return data_;
         }
+
+        ~serializer_stream() {
+            resize(0);
+        }
 };
 
 typedef std::deque<struct serializer_data> Serial;
@@ -247,6 +251,11 @@ class serializer {
                 out.pop_front();
                 LOG_INFO_serializer("out.empty() is %s\n", out.empty() ? "true" : "false");
             }
+        }
+
+        ~serializer() {
+            free__();
+            // stream has its own deconstructor
         }
 };
 
