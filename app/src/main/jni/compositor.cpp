@@ -42,13 +42,12 @@
 #include <android/native_window.h> // requires ndk r5 or newer
 #include <android/native_window_jni.h> // requires ndk r5 or newer
 #include <pthread.h>
-#include <vector>
+#include <vector>s
 #include <android/log.h>
 
 #include "logger.h"
 #include "GLIS.h"
 #include "shm.h"
-#include "serializer.h"
 
 #define LOG_TAG "EglSample"
 
@@ -183,6 +182,26 @@ int COMPOSITORMAIN__() {
             bool redraw = false;
             if (CompositorMain.server.socket_accept()) {
                 LOG_INFO_SERVER("%sconnection obtained", CompositorMain.server.TAG);
+                serializer X;
+                CompositorMain.server.socket_get_serial(X);
+                X.deconstruct();
+                size_t V1;
+                X.get<size_t>(&V1);
+                uint64_t V2;
+                X.get<uint64_t>(&V2);
+                assert(V2 == UINT64_MAX);
+                double V3;
+                X.get<double>(&V3);
+                size_t *V4;
+                size_t indexes = X.get_pointer<size_t>(&V4);
+                LOG_INFO_serializer("V1 = %zu\n", V1);
+                LOG_INFO_serializer("UINT64_MAX = %lu\n", UINT64_MAX);
+                LOG_INFO_serializer("V2 =         %lu\n", V2);
+                LOG_INFO_serializer("V3 = %G\n", V3);
+                LOG_INFO_serializer("indexes = %zu\n", indexes);
+                LOG_INFO_serializer("V4[0] = %zu\n", V4[0]);
+                LOG_INFO_serializer("V4[1] = %zu\n", V4[1]);
+/*
                 if (SERVER_LOG_TRANSFER_INFO)
                     LOG_INFO_SERVER("%sretrieving header", CompositorMain.server.TAG);
                 if (CompositorMain.server.socket_get_header()) { // false if fails
@@ -351,6 +370,7 @@ int COMPOSITORMAIN__() {
                         LOG_ERROR_SERVER("%sfailed to send header", CompositorMain.server.TAG);
                 } else
                     LOG_ERROR_SERVER("%sfailed to get header", CompositorMain.server.TAG);
+*/
                 assert(CompositorMain.server.socket_unaccept());
             } else
                 LOG_ERROR_SERVER("%sfailed to obtain a connection", CompositorMain.server.TAG);
@@ -427,8 +447,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
     memcpy(executableDir, a, len);
     jenv->ReleaseStringUTFChars(ExecutablesDir, a);
     LOG_INFO("starting main Compositor");
-    ser();
-//    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
+    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
 }
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,

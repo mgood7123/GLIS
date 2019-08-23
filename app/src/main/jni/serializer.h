@@ -12,6 +12,7 @@
 #include <inttypes.h>
 #include <cerrno> // errno, errors
 #include <stdlib.h> // malloc/realloc/free
+#include <limits.h>
 
 #ifndef __ANDROID__
 #define LOG_INFO_serializer printf
@@ -55,12 +56,15 @@ class serializer_stream {
             if (data_tmp == NULL) if (errno == ENOMEM) return false;
             data = data_tmp;
             data_len = len;
+            if (data_len == 0 && data != NULL) {
+                free(data);
+                data = nullptr;
+            }
             return true;
         }
 
         bool deallocate() {
-            if (data == nullptr) return true;
-            else free(data);
+            return resize(0);
         }
 
         bool append(size_t len) {
@@ -68,7 +72,7 @@ class serializer_stream {
         }
 
         bool retract(size_t len) {
-            resize(data_len - len);
+            return resize(data_len - len);
         }
 
         serializer_stream retract_from_front(size_t len) {
@@ -103,12 +107,14 @@ class serializer {
 
         template<typename type, typename matches>
         bool remove_if_matches(type *data) {
+            if (out.empty()) return 0;
             int ts = sizeof(type);
             if (ts == sizeof(matches)) {
                 struct serializer_data data_ = out.front();
                 out.pop_front();
                 memcpy(data, reinterpret_cast<matches *>(data_.data),
                        sizeof(matches) * data_.data_len);
+                delete[] data_.data;
                 return true;
             }
             return false;
@@ -116,12 +122,14 @@ class serializer {
 
         template<typename type, typename matches>
         size_t remove_pointer_if_matches(type **data) {
+            if (out.empty()) return 0;
             int ts = sizeof(type);
             if (ts == sizeof(matches)) {
                 struct serializer_data data_ = out.front();
                 out.pop_front();
                 *static_cast<type **>(data) = new type[data_.data_len];
                 memcpy(*data, reinterpret_cast<type *>(data_.data), sizeof(type) * data_.data_len);
+                delete[] data_.data;
                 return data_.data_len;
             }
             return 0;
@@ -197,6 +205,7 @@ class serializer {
                 stream.append(data_.type_size * data_.data_len);
                 memcpy(&stream.data[index], data_.data, data_.type_size * data_.data_len);
                 index += data_.type_size * data_.data_len;
+                delete[] data_.data;
             }
         }
 
@@ -206,56 +215,39 @@ class serializer {
                 // type_size (1), data length (8), data (*)
                 serializer_stream type = stream.retract_from_front(sizeof(int8_t) * 1);
                 memcpy(&data2.type_size, type.data, type.data_len);
+                type.deallocate();
                 serializer_stream len = stream.retract_from_front(sizeof(size_t) * 1);
                 memcpy(&data2.data_len, len.data, len.data_len);
+                len.deallocate();
                 serializer_stream data = stream.retract_from_front(
                     data2.type_size * data2.data_len);
-                data2.data = static_cast<char *>(malloc(data2.type_size * data.data_len));
-                memcpy(data2.data, data.data, data2.type_size * data.data_len);
+                data2.data = new char[data2.type_size * data2.data_len];
+                memcpy(data2.data, data.data, data2.type_size * data2.data_len);
+                data.deallocate();
                 out.push_back(data2);
             }
         }
-};
 
-void ser() {
-    serializer X;
-    size_t size2[2] = {55, 58};
-    X.add_pointer<size_t>(size2, 2);
-    LOG_INFO_serializer("X.in[0].type_size %d\n", X.in[0].type_size);
-    LOG_INFO_serializer("X.in[0].data_len %zu\n", X.in[0].data_len);
-    LOG_INFO_serializer("X.in[0].data[0] %d\n", X.in[0].data[0]);
-    LOG_INFO_serializer("X.in[0].data[8] %d\n", X.in[0].data[8]);
-    X.construct();
-    LOG_INFO_serializer("stream length: %zu\n", X.stream.data_len);
-    LOG_INFO_serializer("stream index:");
-    for (int i = 0; i < X.stream.data_len; i++) LOG_INFO_serializer("|%2d", i);
-    LOG_INFO_serializer("|\n");
-    LOG_INFO_serializer("stream data :");
-    for (int i = 0; i < X.stream.data_len; i++) LOG_INFO_serializer("|%2d", X.stream.data[i]);
-    LOG_INFO_serializer("|\n");
-    serializer XX;
-    XX.add<size_t>(5);
-    XX.add<uint64_t>(UINT64_MAX);
-    XX.add<double>(6.8);
-    XX.add_pointer<size_t>(size2, 2);
-    XX.construct();
-    XX.deconstruct();
-    size_t V1;
-    XX.get<size_t>(&V1);
-    LOG_INFO_serializer("V1 = %zu\n", V1);
-    uint64_t V2;
-    XX.get<uint64_t>(&V2);
-    LOG_INFO_serializer("UINT64_MAX = %llu\n", UINT64_MAX);
-    LOG_INFO_serializer("V2 =         %llu\n", V2);
-    assert(V2 == UINT64_MAX);
-    double V3;
-    XX.get<double>(&V3);
-    LOG_INFO_serializer("V3 = %G\n", V3);
-    size_t *V4;
-    size_t indexes = XX.get_pointer<size_t>(&V4);
-    LOG_INFO_serializer("indexes = %zu\n", indexes);
-    LOG_INFO_serializer("V4[0] = %zu\n", V4[0]);
-    LOG_INFO_serializer("V4[1] = %zu\n", V4[1]);
-}
+        void free__() {
+            while (!in.empty()) {
+                LOG_INFO_serializer("in.size() is %zu\n", in.size());
+                LOG_INFO_serializer("in.empty() is %s\n", in.empty() ? "true" : "false");
+                assert(in.size() != 0);
+                assert(in.size() > 0);
+                free(in.front().data);
+                in.pop_front();
+                LOG_INFO_serializer("in.empty() is %s\n", in.empty() ? "true" : "false");
+            }
+            while (!out.empty()) {
+                LOG_INFO_serializer("out.size() is %zu\n", out.size());
+                LOG_INFO_serializer("out.empty() is %s\n", out.empty() ? "true" : "false");
+                assert(out.size() != 0);
+                assert(out.size() > 0);
+                free(out.front().data);
+                out.pop_front();
+                LOG_INFO_serializer("out.empty() is %s\n", out.empty() ? "true" : "false");
+            }
+        }
+};
 
 #endif //GLNE_SERIALIZER_H

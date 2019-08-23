@@ -1,6 +1,7 @@
 //
 // Created by konek on 8/13/2019.
 //
+#include "serializer.h"
 
 #ifndef GLNE_SERVER_CORE_H
 #define GLNE_SERVER_CORE_H
@@ -129,7 +130,6 @@ class SOCKET_SERVER_DATA {
         SOCKET_MSG * DATA = nullptr;
         SOCKET_MSG * REPLY = nullptr;
         void (*reply)(SOCKET_SERVER_DATA * internaldata) = SERVER_DEFAULT_REPLY;
-
         SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
 };
 
@@ -252,7 +252,46 @@ bool SOCKET_READ(const char *TAG, ssize_t *ret, int socket_data_fd, void *__buf,
         LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
         return false;
     } else if (*ret < 0) {
-        LOG_ERROR_SERVER("%srecv: %s\n", TAG, strerror(errno));
+        LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
+        switch (errno) {
+            case EBADF:
+                LOG_ERROR_SERVER("%sEBADF: The argument sockfd is an invalid file descriptor.",
+                                 TAG);
+                break;
+            case ECONNREFUSED:
+                LOG_ERROR_SERVER(
+                    "%sECONNREFUSED:  A remote host refused to allow the network connection (typically because it is not running the requested service).",
+                    TAG);
+                break;
+            case EFAULT:
+                LOG_ERROR_SERVER(
+                    "%sEFAULT:  The receive buffer pointer(s) point outside the process's address space.",
+                    TAG);
+                break;
+            case EINTR:
+                LOG_ERROR_SERVER(
+                    "%sEINTR: The receive was interrupted by delivery of a signal before any data were available; see signal(7).",
+                    TAG);
+                break;
+            case EINVAL:
+                LOG_ERROR_SERVER("%sEINVAL: Invalid argument passed.", TAG);
+                break;
+            case ENOMEM:
+                LOG_ERROR_SERVER("%sENOMEM: Could not allocate memory for recvmsg().", TAG);
+                break;
+            case ENOTCONN:
+                LOG_ERROR_SERVER(
+                    "%sENOTCONN: The socket is associated with a connection-oriented protocol and has not been connected (see connect(2) and accept(2)).",
+                    TAG);
+                break;
+            case ENOTSOCK:
+                LOG_ERROR_SERVER(
+                    "%sENOTSOCK: The file descriptor sockfd does not refer to a socket.", TAG);
+                break;
+            default:
+                LOG_ERROR_SERVER("%sUNKNOWN", TAG);
+                break;
+        }
         return false;
     }
     return true;
@@ -357,6 +396,29 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, c
     return true;
 }
 
+bool
+SOCKET_SEND_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, serializer &S,
+                   char *server_name) {
+    S.construct();
+    SOCKET_SEND(s, TAG, socket_data_fd, &S.stream.data_len, sizeof(size_t), server_name);
+    SOCKET_SEND(s, TAG, socket_data_fd, S.stream.data, S.stream.data_len, server_name);
+    S.stream.deallocate();
+    return true;
+}
+
+bool
+SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, serializer &S,
+                  char *server_name) {
+    if (SOCKET_GET(s, TAG, socket_data_fd, &S.stream.data_len, sizeof(size_t), server_name)) {
+        S.stream.allocate(S.stream.data_len);
+        if (SOCKET_GET(s, TAG, socket_data_fd, S.stream.data, S.stream.data_len, server_name)) {
+            S.deconstruct();
+            return true;
+        } else S.stream.deallocate();
+    }
+    return false;
+}
+
 bool SOCKET_GET_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
                        SOCKET_MSG *msg, char *server_name) {
     assert(SOCKET_HEADER_SIZE == 32);
@@ -405,7 +467,6 @@ void *SERVER_START(void *na);
 class SOCKET_SERVER {
     private:
         pthread_t server_thread = 0;
-        char server_name[107];
         const char *default_server_name = "SOCKET_SERVER";
         const size_t default_server_name_length = strlen(default_server_name);
 
@@ -695,6 +756,18 @@ class SOCKET_SERVER {
         void socket_loop() { socket_loop(socket_fd, socket_data_fd); }
 
         void socket_close() { socket_close(socket_fd, socket_data_fd); }
+
+        bool socket_put_serial(serializer &S) {
+            return SOCKET_SEND_SERIAL(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
+                                      server_name);
+        }
+
+        bool socket_get_serial(serializer &S) {
+            return SOCKET_GET_SERIAL(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
+                                     server_name);
+        }
+
+        char server_name[107];
 };
 
 void *SERVER_START_REPLY_MANUALLY(void *na) {
@@ -780,8 +853,14 @@ class SOCKET_CLIENT {
                 exit(EXIT_FAILURE);
             }
             LOG_INFO_SERVER("%sconnected to server\n", TAG);
-
-            header->put.length(len);
+            serializer X;
+            X.add<size_t>(5);
+            X.add<uint64_t>(UINT64_MAX);
+            X.add<double>(6.8);
+            size_t size2[2] = {55, 58};
+            X.add_pointer<size_t>(size2, 2);
+            socket_put_serial(X);
+/*
             if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%ssend header\n", TAG);
             SOCKET_SEND_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, header,
                                &server_addr.sun_path[1]);
@@ -818,11 +897,22 @@ class SOCKET_CLIENT {
                 } else if (SERVER_LOG_TRANSFER_INFO)
                     LOG_INFO_SERVER("%sServer is not expecting data\n", TAG);
             }
+*/
             LOG_INFO_SERVER("%sclosing connection to server\n", TAG);
             assert(SOCKET_CLOSE(TAG, socket_data_fd));
             LOG_INFO_SERVER("%sclosed connection to server\n", TAG);
             if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sReturning response\n", TAG);
-            return response;
+            return nullptr;
+        }
+
+        bool socket_put_serial(serializer &S) {
+            return SOCKET_SEND_SERIAL(DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
+                                      &server_addr.sun_path[1]);
+        }
+
+        bool socket_get_serial(serializer &S) {
+            return SOCKET_GET_SERIAL(DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
+                                     &server_addr.sun_path[1]);
         }
 
         SOCKET_MSG *send(int type, void *data, size_t data_length) {
