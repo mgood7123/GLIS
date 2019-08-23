@@ -29,7 +29,7 @@
 
 struct serializer_data {
     int8_t type_size;
-    char *data; // gar
+    char *data;
     size_t data_len;
 };
 
@@ -206,8 +206,7 @@ class serializer {
                 // type_size (1), data length (8), data (*)
                 serializer_stream type = stream.retract_from_front(sizeof(int8_t) * 1);
                 memcpy(&data2.type_size, type.data, type.data_len);
-                serializer_stream len = stream.retract_from_front(
-                    static_cast<size_t>(data2.type_size));
+                serializer_stream len = stream.retract_from_front(sizeof(size_t) * 1);
                 memcpy(&data2.data_len, len.data, len.data_len);
                 serializer_stream data = stream.retract_from_front(
                     data2.type_size * data2.data_len);
@@ -219,11 +218,25 @@ class serializer {
 };
 
 void ser() {
+    serializer X;
+    size_t size2[2] = {55, 58};
+    X.add_pointer<size_t>(size2, 2);
+    LOG_INFO_serializer("X.in[0].type_size %d\n", X.in[0].type_size);
+    LOG_INFO_serializer("X.in[0].data_len %zu\n", X.in[0].data_len);
+    LOG_INFO_serializer("X.in[0].data[0] %d\n", X.in[0].data[0]);
+    LOG_INFO_serializer("X.in[0].data[8] %d\n", X.in[0].data[8]);
+    X.construct();
+    LOG_INFO_serializer("stream length: %zu\n", X.stream.data_len);
+    LOG_INFO_serializer("stream index:");
+    for (int i = 0; i < X.stream.data_len; i++) LOG_INFO_serializer("|%2d", i);
+    LOG_INFO_serializer("|\n");
+    LOG_INFO_serializer("stream data :");
+    for (int i = 0; i < X.stream.data_len; i++) LOG_INFO_serializer("|%2d", X.stream.data[i]);
+    LOG_INFO_serializer("|\n");
     serializer XX;
     XX.add<size_t>(5);
     XX.add<uint64_t>(UINT64_MAX);
     XX.add<double>(6.8);
-    size_t size2[2] = {55, 55};
     XX.add_pointer<size_t>(size2, 2);
     XX.construct();
     XX.deconstruct();
