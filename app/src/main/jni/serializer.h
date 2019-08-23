@@ -29,7 +29,7 @@
 
 struct serializer_data {
     int8_t type_size;
-    int8_t *data;
+    char *data; // gar
     size_t data_len;
 };
 
@@ -90,11 +90,10 @@ class serializer {
         bool add_if_matches(type *data, size_t data_len) {
             int8_t ts = sizeof(type);
             if (ts == sizeof(matches)) {
-                matches *x = new matches[data_len];
-                memcpy(x, data, sizeof(matches) * data_len);
                 struct serializer_data s;
                 s.type_size = ts;
-                reinterpret_cast<matches **>(&s.data)[0] = x; // lvalue assign not allowed
+                s.data = new char[sizeof(matches) * data_len];
+                memcpy(s.data, data, sizeof(matches) * data_len);
                 s.data_len = data_len;
                 in.push_back(s);
                 return true;
@@ -210,9 +209,10 @@ class serializer {
                 serializer_stream len = stream.retract_from_front(
                     static_cast<size_t>(data2.type_size));
                 memcpy(&data2.data_len, len.data, len.data_len);
-                serializer_stream data = stream.retract_from_front(type.data[0] * data2.data_len);
-                data2.data = static_cast<int8_t *>(malloc(type.data[0] * data.data_len));
-                memcpy(data2.data, data.data, type.data[0] * data.data_len);
+                serializer_stream data = stream.retract_from_front(
+                    data2.type_size * data2.data_len);
+                data2.data = static_cast<char *>(malloc(data2.type_size * data.data_len));
+                memcpy(data2.data, data.data, data2.type_size * data.data_len);
                 out.push_back(data2);
             }
         }
@@ -221,7 +221,7 @@ class serializer {
 void ser() {
     serializer XX;
     XX.add<size_t>(5);
-    XX.add<int>(3);
+    XX.add<uint64_t>(UINT64_MAX);
     XX.add<double>(6.8);
     size_t size2[2] = {55, 55};
     XX.add_pointer<size_t>(size2, 2);
@@ -230,9 +230,11 @@ void ser() {
     size_t V1;
     XX.get<size_t>(&V1);
     LOG_INFO_serializer("V1 = %zu\n", V1);
-    int V2;
-    XX.get<int>(&V2);
-    LOG_INFO_serializer("V2 = %d\n", V2);
+    uint64_t V2;
+    XX.get<uint64_t>(&V2);
+    LOG_INFO_serializer("UINT64_MAX = %llu\n", UINT64_MAX);
+    LOG_INFO_serializer("V2 =         %llu\n", V2);
+    assert(V2 == UINT64_MAX);
     double V3;
     XX.get<double>(&V3);
     LOG_INFO_serializer("V3 = %G\n", V3);
