@@ -5,15 +5,6 @@
 #ifndef GLNE_SERIALIZER_H
 #define GLNE_SERIALIZER_H
 
-#include <deque> // std::deque
-#include <cassert> // assert
-#include <stdio.h> // printf
-#include <memory.h> // mem*
-#include <inttypes.h>
-#include <cerrno> // errno, errors
-#include <stdlib.h> // malloc/realloc/free
-#include <limits.h>
-
 #ifndef __ANDROID__
 #define LOG_INFO_serializer printf
     #define LOG_ERROR_serializer printf
@@ -27,6 +18,16 @@
     #define LOG_ERROR_serializer(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG_serializer, __VA_ARGS__)
 #endif
 
+#include <deque> // std::deque
+#include <vector> // std::vector
+#include <memory> // std::unique_ptr
+#include <cassert> // assert
+#include <stdio.h> // printf
+#include <memory.h> // mem*
+#include <inttypes.h> // fixes size types
+#include <cerrno> // errno, errors
+#include <stdlib.h> // malloc/realloc/free
+#include <limits.h> // *_MAX
 
 struct serializer_data {
     int8_t type_size;
@@ -50,13 +51,13 @@ class serializer_stream {
         }
 
         bool resize(size_t len) {
-            if (data == nullptr) return allocate(len);
-            if (data_len == len) return true;
+            if (data == nullptr && len != 0) return allocate(len);
+            if (data_len == len && data != nullptr && len != 0) return true;
             int8_t *data_tmp = static_cast<int8_t *>(realloc(data, len));
             if (data_tmp == NULL) if (errno == ENOMEM) return false;
             data = data_tmp;
             data_len = len;
-            if (data_len == 0 && data != NULL) {
+            if (data_len == 0 && data != 0) {
                 free(data);
                 data = nullptr;
             }
@@ -64,7 +65,7 @@ class serializer_stream {
         }
 
         bool deallocate() {
-            return resize(0);
+            return resize(static_cast<size_t>(0));
         }
 
         bool append(size_t len) {
@@ -86,7 +87,7 @@ class serializer_stream {
         }
 
         ~serializer_stream() {
-            resize(0);
+            deallocate();
         }
 };
 
@@ -125,7 +126,7 @@ class serializer {
         }
 
         template<typename type, typename matches>
-        size_t remove_pointer_if_matches(type **data) {
+        size_t remove_raw_pointer_if_matches(type **data) {
             if (out.empty()) return 0;
             int ts = sizeof(type);
             if (ts == sizeof(matches)) {
@@ -138,13 +139,29 @@ class serializer {
             }
             return 0;
         }
+
+        template<typename type, typename matches>
+        size_t remove_vector_pointer_if_matches(std::vector<type> &data) {
+            if (out.empty()) return 0;
+            int ts = sizeof(type);
+            if (ts == sizeof(matches)) {
+                struct serializer_data data_ = out.front();
+                out.pop_front();
+                data.resize(data_.data_len);
+                memcpy(data.data(), reinterpret_cast<type *>(data_.data),
+                       sizeof(type) * data_.data_len);
+                delete[] data_.data;
+                return data_.data_len;
+            }
+            return 0;
+        }
     public:
         Serial in;
         struct serializer_stream stream;
         Serial out;
         template<typename TYPE>
         bool add(TYPE data) {
-            return add_pointer<TYPE>(&data, 1);
+            return add_pointer<TYPE>(&data, static_cast<size_t>(1));
         }
 
         template<typename TYPE>
@@ -153,6 +170,9 @@ class serializer {
             if (remove_if_matches<TYPE, int16_t>(data)) return true;
             if (remove_if_matches<TYPE, int32_t>(data)) return true;
             if (remove_if_matches<TYPE, int64_t>(data)) return true;
+            #ifdef __SIZEOF_INT128__
+            if (remove_if_matches<TYPE, __int128_t>(data)) return true;
+            #endif
             return false;
         }
 
@@ -162,20 +182,45 @@ class serializer {
             if (add_if_matches<TYPE, int16_t>(data, data_len)) return true;
             if (add_if_matches<TYPE, int32_t>(data, data_len)) return true;
             if (add_if_matches<TYPE, int64_t>(data, data_len)) return true;
+            #ifdef __SIZEOF_INT128__
+            if (add_if_matches<TYPE, __int128_t>(data, data_len)) return true;
+            #endif
             return false;
         }
 
         template<typename TYPE>
-        size_t get_pointer(TYPE **data) {
+        size_t get_raw_pointer(TYPE **data) {
             size_t s;
-            s = remove_pointer_if_matches<TYPE, int8_t>(data);
+            s = remove_raw_pointer_if_matches<TYPE, int8_t>(data);
             if (s != 0) return s;
-            s = remove_pointer_if_matches<TYPE, int16_t>(data);
+            s = remove_raw_pointer_if_matches<TYPE, int16_t>(data);
             if (s != 0) return s;
-            s = remove_pointer_if_matches<TYPE, int32_t>(data);
+            s = remove_raw_pointer_if_matches<TYPE, int32_t>(data);
             if (s != 0) return s;
-            s = remove_pointer_if_matches<TYPE, int64_t>(data);
+            s = remove_raw_pointer_if_matches<TYPE, int64_t>(data);
             if (s != 0) return s;
+            #ifdef __SIZEOF_INT128__
+            s = remove_raw_pointer_if_matches<TYPE, __int128_t>(data);
+            if (s != 0) return s;
+            #endif
+            return 0;
+        }
+
+        template<typename TYPE>
+        size_t get_vector_pointer(std::vector<TYPE> &data) {
+            size_t s;
+            s = remove_vector_pointer_if_matches<TYPE, int8_t>(data);
+            if (s != 0) return s;
+            s = remove_vector_pointer_if_matches<TYPE, int16_t>(data);
+            if (s != 0) return s;
+            s = remove_vector_pointer_if_matches<TYPE, int32_t>(data);
+            if (s != 0) return s;
+            s = remove_vector_pointer_if_matches<TYPE, int64_t>(data);
+            if (s != 0) return s;
+            #ifdef __SIZEOF_INT128__
+            s = remove_vector_pointer_if_matches<TYPE, __int128_t>(data);
+            if (s != 0) return s;
+            #endif
             return 0;
         }
 
@@ -187,25 +232,9 @@ class serializer {
                 in.pop_front();
                 stream.append(sizeof(int8_t) * 1);
                 stream.data[index++] = data_.type_size;
-                if (data_.type_size == sizeof(int8_t)) {
-                    stream.append(sizeof(int8_t) * sizeof(int8_t));
-                    reinterpret_cast<int8_t *>(stream.data +
-                                               index)[0] = static_cast<int8_t>(data_.data_len);
-                    index += sizeof(int8_t);
-                } else if (data_.type_size == sizeof(int16_t)) {
-                    stream.append(sizeof(int8_t) * sizeof(int16_t));
-                    reinterpret_cast<int16_t *>(stream.data +
-                                                index)[0] = static_cast<int16_t>(data_.data_len);
-                    index += sizeof(int16_t);
-                } else if (data_.type_size == sizeof(int32_t)) {
-                    stream.append(sizeof(int8_t) * sizeof(int32_t));
-                    reinterpret_cast<int32_t *>(stream.data + index)[0] = data_.data_len;
-                    index += sizeof(int32_t);
-                } else if (data_.type_size == sizeof(int64_t)) {
-                    stream.append(sizeof(int8_t) * sizeof(int64_t));
-                    reinterpret_cast<int64_t *>(stream.data + index)[0] = data_.data_len;
-                    index += sizeof(int64_t);
-                }
+                stream.append(sizeof(int8_t) * sizeof(size_t));
+                reinterpret_cast<size_t *>(stream.data + index)[0] = data_.data_len;
+                index += sizeof(size_t);
                 stream.append(data_.type_size * data_.data_len);
                 memcpy(&stream.data[index], data_.data, data_.type_size * data_.data_len);
                 index += data_.type_size * data_.data_len;
@@ -234,29 +263,114 @@ class serializer {
 
         void free__() {
             while (!in.empty()) {
-                LOG_INFO_serializer("in.size() is %zu\n", in.size());
-                LOG_INFO_serializer("in.empty() is %s\n", in.empty() ? "true" : "false");
                 assert(in.size() != 0);
                 assert(in.size() > 0);
-                free(in.front().data);
+                delete[] in.front().data;
                 in.pop_front();
-                LOG_INFO_serializer("in.empty() is %s\n", in.empty() ? "true" : "false");
             }
             while (!out.empty()) {
-                LOG_INFO_serializer("out.size() is %zu\n", out.size());
-                LOG_INFO_serializer("out.empty() is %s\n", out.empty() ? "true" : "false");
                 assert(out.size() != 0);
                 assert(out.size() > 0);
-                free(out.front().data);
+                delete[] out.front().data;
                 out.pop_front();
-                LOG_INFO_serializer("out.empty() is %s\n", out.empty() ? "true" : "false");
             }
         }
 
         ~serializer() {
             free__();
-            // stream has its own deconstructor
+        }
+
+        void info() {
+            LOG_INFO_serializer("stream length: %zu\n", stream.data_len);
+            LOG_INFO_serializer("stream index:");
+            for (int i = 0; i < stream.data_len; i++) LOG_INFO_serializer("|%3u", i);
+            LOG_INFO_serializer("|\n");
+            LOG_INFO_serializer("stream data :");
+            for (int i = 0; i < stream.data_len; i++) LOG_INFO_serializer("|%3u", stream.data[i]);
+            LOG_INFO_serializer("|\n");
         }
 };
+
+void serializer_demo() {
+    serializer X;
+    X.add<size_t>(5); // allocates vector index
+    X.add<uint64_t>(UINT64_MAX); // allocates vector index
+    X.add<double>(6.8); // allocates vector index
+    size_t size2[2] = {55, 58};
+    X.add_pointer<size_t>(size2, 2); // allocates vector index
+    X.construct(); // consumes all vector indexes
+    serializer XX;
+    XX.stream.allocate(X.stream.data_len);
+    memcpy(XX.stream.data, X.stream.data, XX.stream.data_len);
+    X.stream.deallocate();
+    size_t V1;
+    uint64_t V2;
+    double V3;
+    size_t *V4;
+    XX.deconstruct(); // allocates vector indexes, MUST be followed by a free__()
+    XX.get<size_t>(&V1); // consumes vector index
+    XX.get<uint64_t>(&V2); // consumes vector index
+    XX.get<double>(&V3); // consumes vector index
+    size_t indexes = XX.get_raw_pointer<size_t>(&V4); // consumes vector index, allocates a pointer
+    LOG_INFO_serializer("V1 = %zu\n", V1);
+    LOG_INFO_serializer("UINT64_MAX = %llu\n", UINT64_MAX);
+    LOG_INFO_serializer("V2 =         %llu\n", V2);
+    assert(V2 == UINT64_MAX);
+    LOG_INFO_serializer("V3 = %G\n", V3);
+    LOG_INFO_serializer("indexes = %zu\n", indexes);
+    LOG_INFO_serializer("V4[0] = %zu\n", V4[0]);
+    LOG_INFO_serializer("V4[1] = %zu\n", V4[1]);
+    delete[] V4; // free pointer that was allocated on get_raw_pointer
+    XX.free__(); // free unused vectors, normally we do not know if all vectors add's are matched by
+    // get even though we should, for example, we mey preserve indexes for future use or we may exit
+    // early before all vectors are getted, NOTE: this is called in the deconstructor aswell
+
+    serializer ARG;
+    int argc = 2;
+    const char *argv[argc];
+    argv[0] = "argv1";
+    argv[1] = "argv2";
+    ARG.add<int>(argc);
+    ARG.add_pointer<const char>(argv[0], strlen(argv[0]) + 1); // copy the null aswell
+    ARG.add_pointer<const char>(argv[1], strlen(argv[1]) + 1); // copy the null aswell
+    ARG.construct();
+
+    serializer ARG_COPY_raw_pointer;
+    serializer ARG_COPY_vector;
+
+    // transfer ARG to ARG_COPY
+    ARG_COPY_raw_pointer.stream.allocate(ARG.stream.data_len);
+    ARG_COPY_vector.stream.allocate(ARG.stream.data_len);
+    memcpy(ARG_COPY_raw_pointer.stream.data, ARG.stream.data, ARG_COPY_raw_pointer.stream.data_len);
+    memcpy(ARG_COPY_vector.stream.data, ARG.stream.data, ARG_COPY_vector.stream.data_len);
+    ARG.stream.deallocate();
+
+    // process raw pointer
+    ARG_COPY_raw_pointer.deconstruct();
+    int argc_raw_pointer;
+    ARG_COPY_raw_pointer.get<int>(&argc_raw_pointer);
+    char *argv_raw_pointer[argc_raw_pointer];
+    ARG_COPY_raw_pointer.get_raw_pointer<char>(&argv_raw_pointer[0]);
+    ARG_COPY_raw_pointer.get_raw_pointer<char>(&argv_raw_pointer[1]);
+    LOG_INFO_serializer(
+        "ARG_COPY_raw_pointer: argc_raw_pointer: %d, argv_raw_pointer[0]: %s, argv_raw_pointer[1]: %s\n",
+        argc_raw_pointer, argv_raw_pointer[0], argv_raw_pointer[1]);
+    // raw pointers must be deleted
+    delete[] argv_raw_pointer[0];
+    delete[] argv_raw_pointer[1];
+
+    // process vector
+    ARG_COPY_vector.deconstruct();
+    int argc_vector;
+    ARG_COPY_vector.get<int>(&argc_vector);
+    std::vector<char> argv_vector[argc_vector];
+    ARG_COPY_vector.get_vector_pointer<char>(argv_vector[0]);
+    ARG_COPY_vector.get_vector_pointer<char>(argv_vector[1]);
+    LOG_INFO_serializer(
+        "ARG_COPY_vector: argc_vector: %d, argv_vector[0]: %s, argv_vector[1]: %s\n", argc_vector,
+        argv_vector[0].data(), argv_vector[1].data());
+    // vectors get deleted automatically
+}
+
 
 #endif //GLNE_SERIALIZER_H

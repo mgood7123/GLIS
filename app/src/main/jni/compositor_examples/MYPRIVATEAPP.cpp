@@ -32,8 +32,8 @@ void main()
 
 class GLIS_CLASS G;
 int main() {
-    int W = 1080;
-    int H = 2031;
+    int W = 1000;
+    int H = 1000;
     if (GLIS_setupOffScreenRendering(G, W, H)) {
         GLIS_error_to_string();
         // create a new texture
@@ -78,7 +78,7 @@ int main() {
             size_t win_id2 = GLIS_new_window(i * s, i * s, s, s);
             LOG_INFO("window id: %zu", win_id2);
             GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, s, s);
-            LOG_INFO("creating window %d", i + 1);
+            LOG_INFO("created window %d", i + 1);
         }
         LOG_INFO("created 201 windows");
 

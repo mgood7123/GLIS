@@ -1273,47 +1273,90 @@ size_t TEXDATA_LEN = 0;
 
 //size_t GLIS_connect() {
 //    getpid();
-//    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window, ,
+//    SOCKET_MSG *socket = SOCKET_CLIENT().send(GLIS_SERVER_COMMANDS.new_window, ,
 //                                              sizeof(int) * 4);
 //    size_t id = reinterpret_cast<size_t *>(socket->data)[0];
 //    SOCKET_DELETE(&socket);
 //    return id;
 //}
 
+struct {
+    int texture = 1;
+    int new_window = 2;
+    int modify_window = 3;
+    int close_window = 4;
+    int shm = 5;
+} GLIS_SERVER_COMMANDS;
+
+const char *GLIS_command_to_string(int &command) {
+    if (command == 0) return "unknown";
+    else if (command == GLIS_SERVER_COMMANDS.texture) return "texture";
+    else if (command == GLIS_SERVER_COMMANDS.new_window) return "texture";
+    else if (command == GLIS_SERVER_COMMANDS.modify_window) return "texture";
+    else if (command == GLIS_SERVER_COMMANDS.close_window) return "texture";
+    else if (command == GLIS_SERVER_COMMANDS.shm) return "texture";
+}
+
 size_t GLIS_new_window(int x, int y, int w, int h) {
+    serializer window;
+    serializer id;
     int win[4] = {x, y, x + w, y + h};
-    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.new_window, win,
-                                              sizeof(int) * 4);
-    size_t id = reinterpret_cast<size_t *>(socket->data)[0];
-    SOCKET_DELETE(&socket);
-    return id;
+    window.add<int>(GLIS_SERVER_COMMANDS.new_window);
+    window.add_pointer<int>(win, 4);
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.socket_get_serial(id)) {
+                if (client.disconnect_from_server()) {
+                    size_t window_id;
+                    id.get<size_t>(&window_id);
+                    return window_id;
+                } else
+                    LOG_ERROR("failed to disconnect from the server");
+            } else
+                LOG_ERROR("failed to get serial from the server");
+        } else
+            LOG_ERROR("failed to send window to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return static_cast<size_t>(-1);
 }
 
-struct GLIS_Client_Window {
-    size_t window_id;
-    int x;
-    int y;
-    int w;
-    int h;
-};
-
-void GLIS_modify_window(size_t window_id, int x, int y, int w, int h) {
-    struct GLIS_Client_Window ww = {window_id, x, y, x + w, y + h};
-    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.modify_window,
-                                              &ww,
-                                              sizeof(ww));
-    SOCKET_DELETE(&socket);
+bool GLIS_modify_window(size_t window_id, int x, int y, int w, int h) {
+    serializer window;
+    int win[4] = {x, y, x + w, y + h};
+    window.add<int>(GLIS_SERVER_COMMANDS.modify_window);
+    window.add<size_t>(window_id);
+    window.add_pointer<int>(win, 4);
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.disconnect_from_server()) return true;
+            else
+                LOG_ERROR("failed to disconnect from the server");
+        } else
+            LOG_ERROR("failed to send window to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return false;
 }
 
-void GLIS_close_window(size_t window_id) {
-    SOCKET_MSG *socket = SOCKET_CLIENT().send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.close_window,
-                                              &window_id,
-                                              sizeof(window_id));
-    SOCKET_DELETE(&socket);
+bool GLIS_close_window(size_t window_id) {
+    serializer window;
+    window.add<int>(GLIS_SERVER_COMMANDS.close_window);
+    window.add<size_t>(window_id);
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.disconnect_from_server()) return true;
+            else
+                LOG_ERROR("failed to disconnect from the server");
+        } else
+            LOG_ERROR("failed to send window to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return false;
 }
-
-// give plenty of room to support larger sizes
-#define GLIS_TEXTURE_OFFSET ((sizeof(uint64_t)*sizeof(uint64_t))+1)
 
 void
 GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,
@@ -1386,14 +1429,15 @@ void main()
     assert(ProgramIsValid == GL_TRUE);
     LOG_INFO("Using Shader program");
     GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+    LOG_INFO("drawing rectangle");
     GLIS_draw_rectangle<GLint>(
         GL_TEXTURE0, renderedTexture, 0, 0, 0, width_to, height_to, width_from, height_from);
+    LOG_INFO("drawn rectangle");
     TEXDATA_LEN = width_to * height_to * sizeof(GLuint);
-    *TEXDATA = new GLuint[TEXDATA_LEN * GLIS_TEXTURE_OFFSET];
-    memset(*TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
-    GLIS_error_to_string_exec_GL(
-        glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
-                     &(*TEXDATA)[GLIS_TEXTURE_OFFSET]));
+    *TEXDATA = new GLuint[TEXDATA_LEN];
+    memset(*TEXDATA, 0, TEXDATA_LEN);
+    GLIS_error_to_string_exec_GL(glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
+                                              *TEXDATA));
     GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
     GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
     GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
@@ -1439,21 +1483,30 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
             assert(TEXDATA != nullptr);
         } else {
             TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
-            TEXDATA = new GLuint[TEXDATA_LEN + GLIS_TEXTURE_OFFSET];
-            memset(TEXDATA, 0, TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
+            TEXDATA = new GLuint[TEXDATA_LEN];
+            memset(TEXDATA, 0, TEXDATA_LEN);
             GLIS_error_to_string_exec_GL(
                 glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
-                             &TEXDATA[GLIS_TEXTURE_OFFSET]));
+                             TEXDATA)
+            );
         }
-        reinterpret_cast<size_t *>(TEXDATA)[0] = window_id;
-        reinterpret_cast<size_t *>(TEXDATA)[1] = static_cast<size_t>(
-            texture_width_to != 0 ? texture_width_to : texture_width);
-        reinterpret_cast<size_t *>(TEXDATA)[2] = static_cast<size_t>(
-            texture_height_to != 0 ? texture_height_to : texture_height);
-        SOCKET_CLIENT clientA;
-        SOCKET_MSG *R = clientA.send(SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture, TEXDATA,
-                                     TEXDATA_LEN + GLIS_TEXTURE_OFFSET);
-        SOCKET_DELETE(&R);
+        serializer tex;
+        tex.add<int>(GLIS_SERVER_COMMANDS.texture);
+        tex.add<size_t>(window_id);
+        GLint tex_dimens[2] = {
+            texture_width_to != 0 ? texture_width_to : texture_width,
+            texture_height_to != 0 ? texture_height_to : texture_height
+        };
+        tex.add_pointer<GLint>(tex_dimens, 2);
+        tex.add_pointer<GLuint>(TEXDATA, TEXDATA_LEN);
+        SOCKET_CLIENT client;
+        if (client.connect_to_server()) {
+            if (client.socket_put_serial(tex)) {
+                if (!client.disconnect_from_server()) LOG_ERROR("failed to disconnect from server");
+            } else
+                LOG_ERROR("failed to send texture to server");
+        } else
+            LOG_ERROR("failed to connect to server");
         delete TEXDATA;
         LOG_INFO("uploaded texture");
         return;

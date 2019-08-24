@@ -156,10 +156,6 @@ class SERVER_MESSAGES {
             int ping = 0;
             int texture = 1;
             int mirror = 2;
-            int new_window = 3;
-            int modify_window = 4;
-            int close_window = 5;
-            int shm = 6;
         } SERVER_MESSAGE_TYPE;
         struct SERVER_MESSAGE_RESPONSE {
             int OK = 0;
@@ -853,14 +849,6 @@ class SOCKET_CLIENT {
                 exit(EXIT_FAILURE);
             }
             LOG_INFO_SERVER("%sconnected to server\n", TAG);
-            serializer X;
-            X.add<size_t>(5);
-            X.add<uint64_t>(UINT64_MAX);
-            X.add<double>(6.8);
-            size_t size2[2] = {55, 58};
-            X.add_pointer<size_t>(size2, 2);
-            socket_put_serial(X);
-/*
             if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%ssend header\n", TAG);
             SOCKET_SEND_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, header,
                                &server_addr.sun_path[1]);
@@ -897,7 +885,6 @@ class SOCKET_CLIENT {
                 } else if (SERVER_LOG_TRANSFER_INFO)
                     LOG_INFO_SERVER("%sServer is not expecting data\n", TAG);
             }
-*/
             LOG_INFO_SERVER("%sclosing connection to server\n", TAG);
             assert(SOCKET_CLOSE(TAG, socket_data_fd));
             LOG_INFO_SERVER("%sclosed connection to server\n", TAG);
@@ -913,6 +900,35 @@ class SOCKET_CLIENT {
         bool socket_get_serial(serializer &S) {
             return SOCKET_GET_SERIAL(DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
                                      &server_addr.sun_path[1]);
+        }
+
+        bool connect_to_server() {
+            socket_data_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+            if (socket_data_fd < 0) {
+                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
+                return false;
+            }
+            LOG_INFO_SERVER("%sconnecting to server\n", TAG);
+            ssize_t ret = 0;
+            for (;;) {
+                ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
+                              sizeof(struct sockaddr_un));
+                if (ret >= 0) break;
+            }
+            if (ret < 0) {
+                LOG_ERROR_SERVER("%sconnect: %s\n", TAG, strerror(errno));
+                return false;
+            }
+            LOG_INFO_SERVER("%sconnected to server\n", TAG);
+            return true;
+        }
+
+        bool disconnect_from_server() {
+            LOG_INFO_SERVER("%sclosing connection to server\n", TAG);
+            assert(SOCKET_CLOSE(TAG, socket_data_fd));
+            LOG_INFO_SERVER("%sclosed connection to server\n", TAG);
+            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sReturning response\n", TAG);
+            return true;
         }
 
         SOCKET_MSG *send(int type, void *data, size_t data_length) {
