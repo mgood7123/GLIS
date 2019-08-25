@@ -1232,7 +1232,8 @@ void GLIS_Sync_GPU() {
 // TODO: convert state machine (SYNC_STATE) into a server otherwise IPC will fail when in socket mode
 class STATE {
     public:
-        int no_state = 0;
+        int no_state = -1;
+        int initialized = 0;
         int request_startup = 1;
         int response_starting_up = 2;
         int response_started_up = 3;

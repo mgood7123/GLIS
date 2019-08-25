@@ -62,9 +62,12 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurf
     if (surface != nullptr) {
         CompositorMain.native_window = ANativeWindow_fromSurface(jenv, surface);
         LOG_INFO("Got window %p", CompositorMain.native_window);
+        LOG_INFO("waiting for Compositor to initialize");
+        while (SYNC_STATE != STATE.initialized) {}
         LOG_INFO("requesting SERVER startup");
         SYNC_STATE = STATE.request_startup;
     } else {
+        CompositorMain.server.shutdownServer();
         SYNC_STATE = STATE.request_shutdown;
         LOG_INFO("requesting SERVER shutdown");
         while (SYNC_STATE != STATE.response_shutdown) {}
@@ -118,7 +121,7 @@ void main()
 )glsl";
 
 int COMPOSITORMAIN__() {
-
+    LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
         const_cast<char *>(std::string(
@@ -134,9 +137,12 @@ int COMPOSITORMAIN__() {
     void * data = nullptr;
 //    assert(SHM_create(fd, &data, 512));
 
-
-    SYNC_STATE = STATE.no_state;
-    while (SYNC_STATE != STATE.request_startup) {}
+    SYNC_STATE = STATE.initialized;
+    LOG_INFO("while (SYNC_STATE != STATE.request_startup) {}");
+    while (SYNC_STATE != STATE.request_startup) {
+        LOG_INFO("waiting for startup request: SYNC_STATE: %d", SYNC_STATE);
+    }
+    LOG_INFO("while (SYNC_STATE != STATE.request_startup) {} complete");
     LOG_INFO("starting up");
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
@@ -176,6 +182,11 @@ int COMPOSITORMAIN__() {
             int h;
             GLuint TEXTURE;
         };
+        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
+        GLIS_error_to_string_exec_EGL(
+            eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
+        GLIS_Sync_GPU();
         while(SYNC_STATE != STATE.request_shutdown) {
             LOG_INFO_SERVER("%swaiting for connection", CompositorMain.server.TAG);
             bool redraw = false;
@@ -309,7 +320,6 @@ int COMPOSITORMAIN__() {
         }
         SYNC_STATE = STATE.response_shutting_down;
         LOG_INFO("shutting down");
-        CompositorMain.server.shutdownServer();
 
         // clean up
         LOG_INFO("Cleaning up");
@@ -327,6 +337,7 @@ int COMPOSITORMAIN__() {
 
 void * COMPOSITORMAIN(void * arg) {
     int * ret = new int;
+    LOG_INFO("calling COMPOSITORMAIN__()");
     *ret = COMPOSITORMAIN__();
     return ret;
 }
@@ -343,14 +354,23 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
     memcpy(executableDir, a, len);
     jenv->ReleaseStringUTFChars(ExecutablesDir, a);
     LOG_INFO("starting main Compositor");
-    pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
+    int e = pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
+    if (e != 0)
+        LOG_ERROR("pthread_create(): errno: %d (%s) | return: %d (%s)", errno, strerror(errno), e,
+                  strerror(e));
+    else
+        LOG_INFO("Compositor thread successfully started");
 }
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,
                                                                                  jclass type) {
     LOG_INFO("waiting for main Compositor to stop");
     int * ret;
-    pthread_join(COMPOSITORMAIN_threadId, reinterpret_cast<void **>(&ret));
-    LOG_INFO("main Compositor has stopped: return code: %d", *ret);
+    int e = pthread_join(COMPOSITORMAIN_threadId, reinterpret_cast<void **>(&ret));
+    if (e != 0)
+        LOG_ERROR("pthread_join(): errno: %d (%s) | return: %d (%s)", errno, strerror(errno), e,
+                  strerror(e));
+    else
+        LOG_INFO("main Compositor has stopped: return code: %d", *ret);
     delete ret;
 }
