@@ -64,12 +64,16 @@ int main() {
         GLIS_error_to_string_exec_GL(glUseProgram(shaderProgram));
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
 
-        size_t win_id2 = GLIS_new_window(600, 600, 200, 200);
-        GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, 200, 200);
-        LOG_INFO("win_id2 = %zu", win_id2);
         size_t win_id1 = GLIS_new_window(500, 500, 200, 200);
         GLIS_upload_texture_resize(G, win_id1, renderedTexture, W, H, 200, 200);
         LOG_INFO("win_id1 = %zu", win_id1);
+        size_t win_id2 = GLIS_new_window(600, 600, 200, 200);
+        GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, 200, 200);
+        LOG_INFO("win_id2 = %zu", win_id2);
+        for (int i = 500; i <= 600; i++) GLIS_modify_window(win_id1, 500, i, 200, 200);
+        for (int i = 600; i <= 700; i++) GLIS_modify_window(win_id2, i, 600, 200, 200);
+        for (int i = 599; i >= 451; i--) GLIS_modify_window(win_id1, 500, i, 200, 200);
+        for (int i = 699; i >= 501; i--) GLIS_modify_window(win_id2, i, 600, 200, 200);
         while (true) {
             for (int i = 450; i <= 600; i++) GLIS_modify_window(win_id1, 500, i, 200, 200);
             for (int i = 500; i <= 700; i++) GLIS_modify_window(win_id2, i, 600, 200, 200);

@@ -112,7 +112,7 @@ class serializer {
 
         template<typename type, typename matches>
         bool remove_if_matches(type *data) {
-            if (out.empty()) return 0;
+            if (out.empty()) return false;
             int ts = sizeof(type);
             if (ts == sizeof(matches)) {
                 struct serializer_data data_ = out.front();
@@ -177,13 +177,13 @@ class serializer {
         }
 
         template<typename TYPE>
-        bool add_pointer(TYPE *data, size_t data_len) {
-            if (add_if_matches<TYPE, int8_t>(data, data_len)) return true;
-            if (add_if_matches<TYPE, int16_t>(data, data_len)) return true;
-            if (add_if_matches<TYPE, int32_t>(data, data_len)) return true;
-            if (add_if_matches<TYPE, int64_t>(data, data_len)) return true;
+        bool add_pointer(TYPE *data, size_t index_count) {
+            if (add_if_matches<TYPE, int8_t>(data, index_count)) return true;
+            if (add_if_matches<TYPE, int16_t>(data, index_count)) return true;
+            if (add_if_matches<TYPE, int32_t>(data, index_count)) return true;
+            if (add_if_matches<TYPE, int64_t>(data, index_count)) return true;
             #ifdef __SIZEOF_INT128__
-            if (add_if_matches<TYPE, __int128_t>(data, data_len)) return true;
+            if (add_if_matches<TYPE, __int128_t>(data, index_count)) return true;
             #endif
             return false;
         }
@@ -282,12 +282,22 @@ class serializer {
 
         void info() {
             LOG_INFO_serializer("stream length: %zu\n", stream.data_len);
-            LOG_INFO_serializer("stream index:");
-            for (int i = 0; i < stream.data_len; i++) LOG_INFO_serializer("|%3u", i);
-            LOG_INFO_serializer("|\n");
-            LOG_INFO_serializer("stream data :");
-            for (int i = 0; i < stream.data_len; i++) LOG_INFO_serializer("|%3u", stream.data[i]);
-            LOG_INFO_serializer("|\n");
+            std::string si("stream index:");
+            for (int i = 0; i < stream.data_len; i++) {
+                if (i < 10) si += "|  " + std::to_string(i);
+                else if (i < 100) si += "| " + std::to_string(i);
+                else si += "|" + std::to_string(i);
+            }
+            si += "|";
+            LOG_INFO_serializer("%s", si.c_str());
+            std::string sd("stream data :");
+            for (int i = 0; i < stream.data_len; i++) {
+                if (stream.data[i] < 10) sd += "|  " + std::to_string(stream.data[i]);
+                else if (stream.data[i] < 100) sd += "| " + std::to_string(stream.data[i]);
+                else sd += "|" + std::to_string(stream.data[i]);
+            }
+            sd += "|";
+            LOG_INFO_serializer("%s", sd.c_str());
         }
 };
 

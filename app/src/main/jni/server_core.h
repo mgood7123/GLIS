@@ -2,114 +2,12 @@
 // Created by konek on 8/13/2019.
 //
 #include "serializer.h"
+#include "WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h"
 
 #ifndef GLNE_SERVER_CORE_H
 #define GLNE_SERVER_CORE_H
 
 bool SERVER_LOG_TRANSFER_INFO = false;
-
-#define SOCKET_HEADER_SIZE (sizeof(size_t)*4)
-
-typedef class SOCKET_MSG {
-    public:
-        SOCKET_MSG * allocate_header(size_t len) {
-            header_length = len;
-            header = static_cast<size_t *>(malloc(header_length));
-            memset(header, 0, header_length);
-            return this;
-        }
-        SOCKET_MSG * allocate_data(size_t len) {
-            data_length = len;
-            data = malloc(data_length);
-            memset(data, 0, data_length);
-            return this;
-        }
-        SOCKET_MSG * deallocate_header() {
-            if (header != nullptr) {
-                free(header);
-                header = nullptr;
-            }
-            header_length = 0;
-            return this;
-        }
-        SOCKET_MSG * deallocate_data() {
-            if (data != nullptr) {
-                free(data);
-                data = nullptr;
-            }
-            data_length = 0;
-            return this;
-        }
-        SOCKET_MSG * allocate(size_t len) {
-            return allocate_header(len)->allocate_data(len);
-        }
-        SOCKET_MSG * deallocate() {
-            return deallocate_header()->deallocate_data();
-        }
-
-        size_t * header = nullptr;
-        size_t header_length = 0;
-        void * data = nullptr;
-        size_t data_length = 0;
-        SOCKET_MSG() {
-            header = nullptr;
-            header_length = 0;
-            data = nullptr;
-            data_length = 0;
-            get.header = &header;
-            put.header = &header;
-        }
-        class get {
-            public:
-                size_t **header = nullptr;
-                int command() {
-                    return static_cast<int>(header[0][0]);
-                }
-                size_t length() {
-                    return header[0][1];
-                }
-                int response() {
-                    return static_cast<int>(header[0][2]);
-                }
-                bool expect_data() {
-                    return static_cast<bool>(header[0][3]);
-                }
-        } get;
-        class put {
-            public:
-                size_t **header = nullptr;
-                void command(int command) {
-                    header[0][0] = static_cast<size_t>(command);
-                }
-                void length(size_t length) {
-                    header[0][1] = length;
-                }
-                void response(int response) {
-                    header[0][2] = static_cast<size_t>(response);
-                }
-                void expect_data(bool expect) {
-                    header[0][3] = static_cast<size_t>(expect);
-                }
-        } put;
-} SOCKET_MSG;
-
-class SOCKET_SERVER_DATA_STATE {
-    public:
-        int NO_STATE = -1;
-        int waiting_for_header = 0;
-        int received_header = 1;
-        int waiting_for_reply_to_header = 2;
-        int processed_reply_to_header = 3;
-        int sent_reply_to_header = 4;
-        int waiting_for_data = 5;
-        int received_data = 6;
-        int waiting_for_reply_to_data = 7;
-        int processed_reply_to_data = 8;
-        int sent_reply_to_data = 9;
-} SOCKET_SERVER_DATA_STATE;
-
-class SOCKET_SERVER_DATA;
-void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata);
 
 class SOCKET_DATA_TRANSFER_INFO {
     public:
@@ -121,34 +19,11 @@ class SOCKET_SERVER_DATA {
     public:
         bool server_CAN_CONNECT = false;
         bool server_should_close = false;
-        bool server_should_close_during_accept = false;
         bool server_closed = false;
         struct sockaddr_un server_addr = {0};
         char socket_name[108] = {0}; // 108 sun_path length max
-        int STATE = SOCKET_SERVER_DATA_STATE.NO_STATE;
-        SOCKET_MSG * HEADER = nullptr;
-        SOCKET_MSG * DATA = nullptr;
-        SOCKET_MSG * REPLY = nullptr;
-        void (*reply)(SOCKET_SERVER_DATA * internaldata) = SERVER_DEFAULT_REPLY;
         SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
 };
-
-SOCKET_MSG * SOCKET_HEADER() {
-    SOCKET_MSG *msg = new SOCKET_MSG;
-    return msg->allocate_header(SOCKET_HEADER_SIZE);
-}
-
-SOCKET_MSG * SOCKET_DATA(void * data, size_t len) {
-    SOCKET_MSG * msg = SOCKET_HEADER();
-    msg->allocate_data(len);
-    memcpy(msg->data, data, len);
-    return msg;
-}
-
-SOCKET_MSG * SOCKET_DATA_RESPONSE(size_t len) {
-    SOCKET_MSG * msg = new SOCKET_MSG;
-    return msg->allocate(len);
-}
 
 class SERVER_MESSAGES {
     public:
@@ -162,40 +37,6 @@ class SERVER_MESSAGES {
             int FAIL = 1;
         } SERVER_MESSAGE_RESPONSE;
 } SERVER_MESSAGES;
-
-bool SOCKET_PING() {
-
-}
-
-void SERVER_PROCESS(SOCKET_SERVER_DATA * internaldata) {
-    int CMD = internaldata->HEADER->get.command();
-    if (internaldata->STATE == SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_header) {
-        internaldata->HEADER->put.expect_data(
-            CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture ||
-            CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.mirror
-        );
-        internaldata->REPLY->put.expect_data(internaldata->REPLY->get.expect_data());
-        internaldata->REPLY = SOCKET_HEADER();
-        internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
-        internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_header;
-    } else if (internaldata->STATE == SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_data) {
-        if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.texture) {
-            // sent the texture back
-            internaldata->REPLY = SOCKET_DATA(internaldata->DATA->data, internaldata->DATA->data_length);
-            internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_data;
-        }
-        else if (CMD == SERVER_MESSAGES.SERVER_MESSAGE_TYPE.mirror) {
-            // sent data back
-            internaldata->REPLY = SOCKET_DATA(internaldata->DATA->data, internaldata->DATA->data_length);
-            internaldata->STATE = SOCKET_SERVER_DATA_STATE.processed_reply_to_data;
-        }
-        internaldata->REPLY->put.response(SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK);
-    }
-}
-
-void SERVER_DEFAULT_REPLY(SOCKET_SERVER_DATA * internaldata) {
-    SERVER_PROCESS(internaldata);
-}
 
 void SERVER_SHUTDOWN(char * server_name, SOCKET_SERVER_DATA * & internaldata) {
     if (internaldata->server_closed) {
@@ -217,98 +58,6 @@ char *SOCKET_SERVER_name_to_server_name(SOCKET_SERVER_DATA * internaldata) {
     memset(server_name, 0, 107);
     mempcpy(server_name, internaldata->socket_name+1, 107);
     return server_name;
-}
-
-void SOCKET_DELETE(SOCKET_MSG ** msg) {
-    if (msg[0] == nullptr) return;
-    delete msg[0]->deallocate();
-    msg[0] = nullptr;
-}
-
-SOCKET_MSG * SOCKET_COMMAND(int command) {
-    SOCKET_MSG * msg = SOCKET_HEADER();
-    msg->put.command(command);
-    return msg;
-}
-
-// returns false if an error has occurred otherwise true
-bool SOCKET_READ(const char *TAG, ssize_t *ret, int socket_data_fd, void *__buf, size_t __count,
-                 char *server_name, int flags, ssize_t total) {
-    for (;;) { // implement blocking
-        *ret = recv(socket_data_fd, static_cast<void *>(static_cast<uint8_t *>(__buf) + total),
-                    __count - total, flags);
-        if (*ret < 0) {
-            if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
-            else break;
-        }
-        break;
-    }
-    if (*ret == 0) {
-        // if recv returns zero, that means the connection has been closed
-        LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
-        return false;
-    } else if (*ret < 0) {
-        LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
-        switch (errno) {
-            case EBADF:
-                LOG_ERROR_SERVER("%sEBADF: The argument sockfd is an invalid file descriptor.",
-                                 TAG);
-                break;
-            case ECONNREFUSED:
-                LOG_ERROR_SERVER(
-                    "%sECONNREFUSED:  A remote host refused to allow the network connection (typically because it is not running the requested service).",
-                    TAG);
-                break;
-            case EFAULT:
-                LOG_ERROR_SERVER(
-                    "%sEFAULT:  The receive buffer pointer(s) point outside the process's address space.",
-                    TAG);
-                break;
-            case EINTR:
-                LOG_ERROR_SERVER(
-                    "%sEINTR: The receive was interrupted by delivery of a signal before any data were available; see signal(7).",
-                    TAG);
-                break;
-            case EINVAL:
-                LOG_ERROR_SERVER("%sEINVAL: Invalid argument passed.", TAG);
-                break;
-            case ENOMEM:
-                LOG_ERROR_SERVER("%sENOMEM: Could not allocate memory for recvmsg().", TAG);
-                break;
-            case ENOTCONN:
-                LOG_ERROR_SERVER(
-                    "%sENOTCONN: The socket is associated with a connection-oriented protocol and has not been connected (see connect(2) and accept(2)).",
-                    TAG);
-                break;
-            case ENOTSOCK:
-                LOG_ERROR_SERVER(
-                    "%sENOTSOCK: The file descriptor sockfd does not refer to a socket.", TAG);
-                break;
-            default:
-                LOG_ERROR_SERVER("%sUNKNOWN", TAG);
-                break;
-        }
-        return false;
-    }
-    return true;
-}
-
-// returns false if an error has occurred otherwise true
-bool
-SOCKET_WRITE(const char *TAG, ssize_t *ret, int socket_data_fd, const void *__buf, size_t __count,
-             char *server_name, int flags, ssize_t total) {
-    for (;;) { // implement blocking
-        *ret = send(socket_data_fd,
-                    static_cast<const void *>(static_cast<const uint8_t *>(__buf) + total),
-                    __count - total, flags);
-        if (*ret < 0) if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
-        break;
-    }
-    if (*ret < 0) {
-        LOG_ERROR_SERVER("%swrite: %s\n", TAG, strerror(errno));
-        return false;
-    }
-    return true;
 }
 
 /* Return current time in milliseconds */
@@ -338,20 +87,62 @@ char *str_humanise_bytes(off_t bytes) {
     return data;
 }
 
+// returns false if an error has occurred otherwise true
+bool SOCKET_READ(const char *TAG, ssize_t *ret, int &socket_data_fd, void *__buf, size_t __count,
+                 int flags, ssize_t total) {
+    for (;;) { // implement blocking
+        *ret = recv(socket_data_fd, static_cast<void *>(static_cast<uint8_t *>(__buf) + total),
+                    __count - total, flags);
+        if (*ret < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
+            else break;
+        }
+        break;
+    }
+    if (*ret == 0) {
+        // if recv returns zero, that means the connection has been closed
+        LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
+        return false;
+    } else if (*ret < 0) {
+        LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
+        return false;
+    }
+    return true;
+}
+
+// returns false if an error has occurred otherwise true
 bool
-SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, void *__buf,
+SOCKET_WRITE(const char *TAG, ssize_t *ret, int &socket_data_fd, const void *__buf, size_t __count,
+             int flags, ssize_t total) {
+    for (;;) { // implement blocking
+        LOG_INFO_SERVER("sending message to fd %d", socket_data_fd);
+        *ret = send(socket_data_fd,
+                    static_cast<const void *>(static_cast<const uint8_t *>(__buf) + total),
+                    __count - total, flags);
+        if (*ret < 0) if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
+        break;
+    }
+    if (*ret < 0) {
+        LOG_ERROR_SERVER("%ssend: %d (%s)\n", TAG, errno, strerror(errno));
+        return false;
+    }
+    return true;
+}
+
+bool
+SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, void *__buf,
            size_t __count, char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
     double start = now_ms();
     while (total != __count) {
         ssize_t ret = 0;
-        if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name,
-                        MSG_PEEK | MSG_DONTWAIT, total)) {
-            if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
+        if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, MSG_PEEK | MSG_DONTWAIT,
+                        total)) {
+            if (SOCKET_READ(TAG, &ret, socket_data_fd, __buf, __count, 0, total)) {
                 total += ret;
                 if (SERVER_LOG_TRANSFER_INFO)
-                    LOG_INFO_SERVER("%sRECV %zu/%zu size", TAG, total, __count);
+                    LOG_INFO_SERVER("%srecv %zu/%zu size", TAG, total, __count);
             } else return false; // an error occurred
         } else return false; // an error occurred
     }
@@ -367,18 +158,122 @@ SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, vo
 }
 
 bool
-SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, const void *__buf,
-            size_t __count,
-            char *server_name) {
+SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, const void *__buf,
+            size_t __count, char *server_name) {
+    assert(__count != 0);
+    ssize_t total = 0;
+    double start = now_ms();
+    while (total != __count) {
+        ssize_t ret = 0;
+        if (SOCKET_WRITE(TAG, &ret, socket_data_fd, __buf, __count, 0, total)) {
+            total += ret;
+            if (SERVER_LOG_TRANSFER_INFO)
+                LOG_INFO_SERVER("%ssend %zu/%zu size", TAG, total, __count);
+        } else return false; // an error occurred
+    }
+    double end = now_ms();
+    s.total_wrote += __count;
+    char *n = str_humanise_bytes(__count);
+    char *t = str_humanise_bytes(s.total_wrote);
+    LOG_INFO_SERVER("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
+                    end - start, t);
+    delete n;
+    delete t;
+    return true;
+}
+
+// returns false if an error has occurred otherwise true
+bool SOCKET_READ_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, msghdr *__msg,
+                         int flags, ssize_t total) {
+    for (;;) { // implement blocking
+        if (total > 0) {
+            struct msghdr msg = {0};
+            memcpy(&msg, __msg, sizeof(*__msg));
+//            msg.msg_control = static_cast<void *>(static_cast<uint8_t *>(__msg->msg_control) +
+//                                                  total);
+//            msg.msg_controllen -= total;
+            *ret = recvmsg(socket_data_fd, &msg, flags);
+        } else *ret = recvmsg(socket_data_fd, __msg, flags);
+        if (*ret < 0) {
+            if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
+            else break;
+        }
+        break;
+    }
+    if (*ret == 0) {
+        // if recv returns zero, that means the connection has been closed
+        LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
+        return false;
+    } else if (*ret < 0) {
+        LOG_ERROR_SERVER("%srecvmsg: (errno: %2d) %s\n", TAG, errno, strerror(errno));
+        return false;
+    }
+    return true;
+}
+
+// returns false if an error has occurred otherwise true
+bool SOCKET_WRITE_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, const msghdr *__msg,
+                          int flags, ssize_t total) {
+    for (;;) { // implement blocking
+        if (total > 0) {
+            struct msghdr msg = {0};
+            memcpy(&msg, __msg, sizeof(*__msg));
+//            msg.msg_control = static_cast<void *>(static_cast<uint8_t *>(__msg->msg_control) +
+//                                                  total);
+//            msg.msg_controllen -= total;
+            *ret = sendmsg(socket_data_fd, &msg, flags);
+        } else *ret = sendmsg(socket_data_fd, __msg, flags);
+        if (*ret < 0) if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
+        break;
+    }
+    if (*ret < 0) {
+        LOG_ERROR_SERVER("%ssendmsg: %d (%s)\n", TAG, errno, strerror(errno));
+        return false;
+    }
+    return true;
+}
+
+bool
+SOCKET_GET_MESSAGE(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd,
+                   msghdr *__msg,
+                   size_t __count, char *server_name) {
+    assert(__count != 0);
+    ssize_t total = 0;
+    double start = now_ms();
+    while (total != __count) {
+        ssize_t ret = 0;
+        if (SOCKET_READ_MESSAGE(TAG, &ret, socket_data_fd, __msg, MSG_PEEK | MSG_DONTWAIT, total)) {
+            if (SOCKET_READ_MESSAGE(TAG, &ret, socket_data_fd, __msg, 0, total)) {
+                total += ret;
+                if (SERVER_LOG_TRANSFER_INFO)
+                    LOG_INFO_SERVER("%srecvmsg %zu/%zu size", TAG, total, __count);
+            } else return false; // an error occurred
+        } else return false; // an error occurred
+    }
+    double end = now_ms();
+    s.total_wrote += __count;
+    char *n = str_humanise_bytes(__count);
+    char *t = str_humanise_bytes(s.total_wrote);
+    LOG_INFO_SERVER("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
+                    end - start, t);
+    delete n;
+    delete t;
+    return true;
+}
+
+bool
+SOCKET_SEND_MESSAGE(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd,
+                    const msghdr *__msg,
+                    size_t __count, char *server_name) {
     assert(__count != 0);
     ssize_t total = 0;
     double start = now_ms();
     while(total != __count) {
         ssize_t ret = 0;
-        if (SOCKET_WRITE(TAG, &ret, socket_data_fd, __buf, __count, server_name, 0, total)) {
+        if (SOCKET_WRITE_MESSAGE(TAG, &ret, socket_data_fd, __msg, 0, total)) {
             total += ret;
             if (SERVER_LOG_TRANSFER_INFO)
-                LOG_INFO_SERVER("%sWRITE %zu/%zu size", TAG, total, __count);
+                LOG_INFO_SERVER("%ssendmsg %zu/%zu size", TAG, total, __count);
         } else return false; // an error occurred
     }
     double end = now_ms();
@@ -393,7 +288,8 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, c
 }
 
 bool
-SOCKET_SEND_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, serializer &S,
+SOCKET_SEND_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd,
+                   serializer &S,
                    char *server_name) {
     S.construct();
     SOCKET_SEND(s, TAG, socket_data_fd, &S.stream.data_len, sizeof(size_t), server_name);
@@ -403,7 +299,7 @@ SOCKET_SEND_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_dat
 }
 
 bool
-SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, serializer &S,
+SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, serializer &S,
                   char *server_name) {
     if (SOCKET_GET(s, TAG, socket_data_fd, &S.stream.data_len, sizeof(size_t), server_name)) {
         S.stream.allocate(S.stream.data_len);
@@ -415,30 +311,63 @@ SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data
     return false;
 }
 
-bool SOCKET_GET_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
-                       SOCKET_MSG *msg, char *server_name) {
-    assert(SOCKET_HEADER_SIZE == 32);
-    assert(msg->header_length == 32);
-    return SOCKET_GET(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
+void SOCKET_SEND_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
+                    char *server_name)  // send fd by socket
+{
+    struct msghdr msg = {0};
+    char buf[CMSG_SPACE(sizeof(fd))];
+    memset(buf, '\0', sizeof(buf));
+
+    /* On Mac OS X, the struct iovec is needed, even if it points to minimal data */
+    struct iovec io;
+    io.iov_base = (void *) "";
+    io.iov_len = 1;
+
+    msg.msg_iov = &io;
+    msg.msg_iovlen = 1;
+    msg.msg_control = buf;
+    msg.msg_controllen = sizeof(buf);
+
+    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
+    cmsg->cmsg_level = SOL_SOCKET;
+    cmsg->cmsg_type = SCM_RIGHTS;
+    cmsg->cmsg_len = CMSG_LEN(sizeof(fd));
+
+    memmove(CMSG_DATA(cmsg), &fd, sizeof(fd));
+
+    msg.msg_controllen = CMSG_SPACE(sizeof(fd));
+
+    serializer m;
+    m.add<size_t>(sizeof(msg));
+    SOCKET_SEND_SERIAL(s, TAG, socket_data_fd, m, server_name);
+    SOCKET_SEND_MESSAGE(s, TAG, socket_data_fd, &msg, sizeof(msg), server_name);
 }
 
-bool SOCKET_SEND_HEADER(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd,
-                        SOCKET_MSG *msg, char *server_name) {
-    assert(SOCKET_HEADER_SIZE == 32);
-    assert(msg->header_length == 32);
-    return SOCKET_SEND(s, TAG, socket_data_fd, msg->header, msg->header_length, server_name);
-}
+void SOCKET_GET_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
+                   char *server_name)  // receive fd from socket
+{
+    struct msghdr msg = {0};
 
-bool
-SOCKET_GET_DATA(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, SOCKET_MSG *msg,
-                char *server_name) {
-    return SOCKET_GET(s, TAG, socket_data_fd, msg->data, msg->data_length, server_name);
-}
+    /* On Mac OS X, the struct iovec is needed, even if it points to minimal data */
+    char m_buffer[1];
+    struct iovec io = {.iov_base = m_buffer, .iov_len = sizeof(m_buffer)};
+    msg.msg_iov = &io;
+    msg.msg_iovlen = 1;
 
-bool
-SOCKET_SEND_DATA(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int socket_data_fd, SOCKET_MSG *msg,
-                 char *server_name) {
-    return SOCKET_SEND(s, TAG, socket_data_fd, msg->data, msg->data_length, server_name);
+    char c_buffer[256];
+    msg.msg_control = c_buffer;
+    msg.msg_controllen = sizeof(c_buffer);
+    serializer m;
+    SOCKET_GET_SERIAL(s, TAG, socket_data_fd, m, server_name);
+    size_t __count;
+    m.get<size_t>(&__count);
+    SOCKET_GET_MESSAGE(s, TAG, socket_data_fd, &msg, __count, server_name);
+
+    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
+
+    LOG_INFO_SERVER("About to extract fd\n");
+    memmove(&fd, CMSG_DATA(cmsg), sizeof(fd));
+    LOG_INFO_SERVER("Extracted fd %d\n", fd);
 }
 
 bool SOCKET_CLOSE(const char *TAG, int & socket_fd) {
@@ -446,19 +375,17 @@ bool SOCKET_CLOSE(const char *TAG, int & socket_fd) {
     for (;;) { // implement blocking
         ret = close(socket_fd);
         if (ret < 0) {
-            if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+            if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
             if (errno == EBADF) return true;
         }
         break;
     }
     if (ret < 0) {
-        LOG_ERROR_SERVER("%sclose: %s\n", TAG, strerror(errno));
+        LOG_ERROR_SERVER("%sclose: %d (%s)\n", TAG, errno, strerror(errno));
         return false;
     }
     return true;
 }
-
-void *SERVER_START(void *na);
 
 class SOCKET_SERVER {
     private:
@@ -466,22 +393,11 @@ class SOCKET_SERVER {
         const char *default_server_name = "SOCKET_SERVER";
         const size_t default_server_name_length = strlen(default_server_name);
 
-        void (*reply)(SOCKET_SERVER_DATA *) = nullptr;
-
     public:
         char *TAG = nullptr;
         SOCKET_SERVER_DATA *internaldata = nullptr;
         int socket_fd = 0;
         int socket_data_fd = 0;
-
-        void set_reply_callback(void (*callback)(SOCKET_SERVER_DATA *)) {
-            if (internaldata == nullptr) {
-                reply = callback;
-            } else {
-                if (reply != nullptr) reply = nullptr;
-                internaldata->reply = callback;
-            }
-        }
 
         void startServer(void *(*SERVER_MAIN)(void *)) {
             if (internaldata != nullptr) {
@@ -489,10 +405,6 @@ class SOCKET_SERVER {
                 return;
             }
             internaldata = new SOCKET_SERVER_DATA;
-            if (reply != nullptr) {
-                internaldata->reply = reply;
-                reply = nullptr;
-            }
             internaldata->server_CAN_CONNECT = false;
             internaldata->server_should_close = false;
             internaldata->server_closed = false;
@@ -571,7 +483,7 @@ class SOCKET_SERVER {
         bool socket_create(int &socket_fd, __kernel_sa_family_t __af, int __type, int __protocol) {
             socket_fd = socket(__af, __type, __protocol);
             if (socket_fd < 0) {
-                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%ssocket: %d (%s)\n", TAG, errno, strerror(errno));
                 return false;
             }
             LOG_INFO_SERVER("%sSocket made\n", TAG);
@@ -586,7 +498,7 @@ class SOCKET_SERVER {
                             &internaldata->server_addr.sun_path[1]);
             if (bind(socket_fd, (const struct sockaddr *) &internaldata->server_addr,
                      sizeof(struct sockaddr_un)) < 0) {
-                LOG_ERROR_SERVER("%sbind: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%sbind: %d (%s)\n", TAG, errno, strerror(errno));
                 return false;
             }
             LOG_INFO_SERVER("%sBind made\n", TAG);
@@ -618,13 +530,27 @@ class SOCKET_SERVER {
                 if (internaldata->server_should_close) return false;
                 socket_data_fd = accept(socket_fd, NULL, NULL);
                 if (socket_data_fd < 0) {
-                    if (errno == EAGAIN || errno == EWOULDBLOCK) continue;
+                    if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
                     else break;
                 }
                 break;
             }
             if (socket_data_fd < 0) {
-                LOG_ERROR_SERVER("%saccept: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%saccept: %d (%s)\n", TAG, errno, strerror(errno));
+                return false;
+            }
+            return true;
+        }
+
+        // returns false if internaldata->server_should_close is true, if an error has occured,
+        // or upon a failure to connect
+        // otherwise returns true upon a successful accept attempt
+        bool socket_accept_non_blocking(int &socket_fd, int &socket_data_fd) {
+            if (internaldata->server_should_close) return false;
+            socket_data_fd = accept(socket_fd, NULL, NULL);
+            if (socket_data_fd < 0) {
+                if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) return false;
+                LOG_ERROR_SERVER("%saccept: %d (%s)\n", TAG, errno, strerror(errno));
                 return false;
             }
             return true;
@@ -634,92 +560,54 @@ class SOCKET_SERVER {
             return SOCKET_CLOSE(TAG, socket_data_fd);
         }
 
-        bool socket_get_header(int &socket_data_fd) {
-            internaldata->HEADER = SOCKET_HEADER();
-            if (!SOCKET_GET_HEADER(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
-                                   internaldata->HEADER,
-                                   &internaldata->server_addr.sun_path[1])) {
-                SOCKET_DELETE(&internaldata->HEADER);
-                return false;
-            }
-            return true;
-        }
-
-        void socket_process_header() {
-            internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_header;
-            internaldata->reply(internaldata);
-            // in case reply callback pthreads then returns, forking is Undefined Behaviour
-            while (internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_header);
-        }
-
-        bool socket_put_header(int &socket_data_fd) {
-            if (!SOCKET_SEND_HEADER(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
-                                    internaldata->REPLY,
-                                    &internaldata->server_addr.sun_path[1])) {
-                SOCKET_DELETE(&internaldata->HEADER);
-                SOCKET_DELETE(&internaldata->REPLY);
-                return false;
-            }
-            SOCKET_DELETE(&internaldata->REPLY);
-            return true;
-        }
-
-        bool socket_header_expect_data() {
-            if (!internaldata->HEADER->get.expect_data()) {
-                SOCKET_DELETE(&internaldata->HEADER);
-                return false;
-            }
-            return true;
-        }
-
-        bool socket_get_data(int &socket_data_fd) {
-            internaldata->DATA = SOCKET_DATA_RESPONSE(internaldata->HEADER->get.length());
-            if (!SOCKET_GET_DATA(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
-                                 internaldata->DATA,
-                                 &internaldata->server_addr.sun_path[1])) {
-                SOCKET_DELETE(&internaldata->HEADER);
-                SOCKET_DELETE(&internaldata->DATA);
-                return false;
-            }
-            return true;
-        }
-
-        void socket_process_data() {
-            internaldata->STATE = SOCKET_SERVER_DATA_STATE.waiting_for_reply_to_data;
-            internaldata->reply(internaldata);
-            while (internaldata->STATE != SOCKET_SERVER_DATA_STATE.processed_reply_to_data);
-            SOCKET_DELETE(&internaldata->HEADER);
-            SOCKET_DELETE(&internaldata->DATA);
-        }
-
-        bool socket_put_data(int &socket_data_fd) {
-            if (!SOCKET_SEND_DATA(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd,
-                                  internaldata->REPLY,
-                                  &internaldata->server_addr.sun_path[1])) {
-                SOCKET_DELETE(&internaldata->REPLY);
-                return false;
-            }
-            SOCKET_DELETE(&internaldata->REPLY);
-            return true;
-        }
-
-        void socket_loop(int &socket_fd, int &socket_data_fd) {
-            while (socket_accept(socket_fd, socket_data_fd)) {
-                // OBTAIN AND PROCESS HEADER
-                if (socket_get_header(socket_data_fd)) { // false if fails
-                    socket_process_header();
-                    if (socket_put_header(socket_data_fd)) { // false if fails
-                        // IF WE EXPECT DATA, OBTAIN AND PROCESS IT
-                        if (socket_header_expect_data()) { // false if fails
-                            if (socket_get_data(socket_data_fd)) { // false if fails
-                                socket_process_data();
-                                socket_put_data(socket_data_fd);
-                                socket_unaccept(socket_data_fd);
-                            }
-                        }
-                    }
+        bool connection_is_alive(int &socket_data_fd) {
+            int ret;
+            for (;;) { // implement blocking
+                // users may use this in sockets that send data
+                // do not remove any data that may be queued
+                void *nothing = malloc(1);
+                ret = recv(socket_data_fd, nothing, 1, MSG_PEEK | MSG_DONTWAIT);
+                free(nothing);
+                if (ret < 0) {
+                    if (errno == EINTR) continue;
+                    else break;
                 }
+                break;
             }
+            if (ret == 0) {
+                // if recv returns zero, that means the connection has been closed
+                LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
+                return false;
+            } else if (ret < 0) {
+                LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
+                return true;
+            }
+            return true;
+        }
+
+        bool connection_wait_until_disconnect(int &socket_data_fd) {
+            int ret;
+            for (;;) { // implement blocking
+                // users may use this in sockets that send data
+                // do not remove any data that may be queued
+                void *nothing = malloc(1);
+                ret = recv(socket_data_fd, nothing, 1, MSG_PEEK);
+                free(nothing);
+                if (ret < 0) {
+                    if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
+                    else break;
+                }
+                break;
+            }
+            if (ret == 0) {
+                // if recv returns zero, that means the connection has been closed
+                LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
+                return false;
+            } else if (ret < 0) {
+                LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
+                return true;
+            }
+            return true;
         }
 
         void socket_close(int &socket_fd, int &socket_data_fd) {
@@ -733,23 +621,36 @@ class SOCKET_SERVER {
 
         bool socket_bind(__kernel_sa_family_t __af) { return socket_bind(socket_fd, __af); }
 
+        //       The pending_connection_queue_size argument defines the maximum length to which the
+        //       queue of pending connections for socket_fd may grow.
+        //       If a connection request arrives when the queue is full, the client may receive an
+        //       error with an indication of ECONNREFUSED or, if the underlying protocol supports
+        //       retransmission, the request may be ignored so that a later reattempt at connection
+        //       succeeds.
+        //
+        // sets internaldata->server_CAN_CONNECT to true on success
         bool socket_listen(int pending_connection_queue_size) {
             return socket_listen(socket_fd, pending_connection_queue_size);
         }
 
+        // returns false if internaldata->server_should_close is true or if an error has occured
+        // otherwise returns true upon a successful accept attempt
         bool socket_accept() { return socket_accept(socket_fd, socket_data_fd); }
+
+        // returns false if internaldata->server_should_close is true, if an error has occured,
+        // or upon a failure to connect
+        // otherwise returns true upon a successful accept attempt
+        bool socket_accept_non_blocking() {
+            return socket_accept_non_blocking(socket_fd, socket_data_fd);
+        }
 
         bool socket_unaccept() { return socket_unaccept(socket_data_fd); }
 
-        bool socket_get_header() { return socket_get_header(socket_data_fd); }
+        bool connection_is_alive() { return connection_is_alive(socket_data_fd); }
 
-        bool socket_put_header() { return socket_put_header(socket_data_fd); }
-
-        bool socket_get_data() { return socket_get_data(socket_data_fd); }
-
-        bool socket_put_data() { return socket_put_data(socket_data_fd); }
-
-        void socket_loop() { socket_loop(socket_fd, socket_data_fd); }
+        bool connection_wait_until_disconnect() {
+            return connection_wait_until_disconnect(socket_data_fd);
+        }
 
         void socket_close() { socket_close(socket_fd, socket_data_fd); }
 
@@ -763,13 +664,29 @@ class SOCKET_SERVER {
                                      server_name);
         }
 
+        void socket_put_fd(int &fd) {
+            SOCKET_SEND_FD(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd, fd, server_name);
+        }
+
         char server_name[107];
 };
+
+Kernel SERVER_KERNEL;
+
+char *SERVER_allocate_new_server(void *(*SERVER_MAIN)(void *), size_t &id) {
+    Object *o = SERVER_KERNEL.newObject(0, 0, new SOCKET_SERVER);
+    id = SERVER_KERNEL.table->findObject(o);
+    static_cast<SOCKET_SERVER *>(o->resource)->set_name(std::to_string(id).c_str());
+    if (SERVER_MAIN != nullptr) static_cast<SOCKET_SERVER *>(o->resource)->startServer(SERVER_MAIN);
+    return static_cast<SOCKET_SERVER *>(o->resource)->server_name;
+}
+
+char *SERVER_allocate_new_server(size_t &id) { return SERVER_allocate_new_server(nullptr, id); }
+
 
 void *SERVER_START_REPLY_MANUALLY(void *na) {
     assert(na != nullptr);
     SOCKET_SERVER *server = static_cast<SOCKET_SERVER *>(na);
-
     server->socket_create(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
     server->socket_bind(AF_UNIX);
     server->socket_listen(1);
@@ -778,12 +695,14 @@ void *SERVER_START_REPLY_MANUALLY(void *na) {
     return NULL;
 }
 
+SOCKET_SERVER *SERVER_get(size_t id) {
+    return static_cast<SOCKET_SERVER *>(SERVER_KERNEL.table->table[id]->resource);
+}
+
 class SOCKET_CLIENT {
     public:
-        const size_t BUFFER_SIZE = 16;
-
-        int socket_data_fd;
-        struct sockaddr_un server_addr;
+        int socket_data_fd = 0;
+        struct sockaddr_un server_addr = {0};
         const char * default_client_name = "SOCKET_SERVER";
         const size_t default_client_name_length = strlen(default_client_name);
         char * TAG = nullptr;
@@ -831,67 +750,6 @@ class SOCKET_CLIENT {
             TAG = nullptr;
         }
 
-        SOCKET_MSG * send(SOCKET_MSG * header, void * data, size_t len) {
-            socket_data_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-            if (socket_data_fd < 0) {
-                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            LOG_INFO_SERVER("%sconnecting to server\n", TAG);
-            ssize_t ret = 0;
-            for (;;) {
-                ret = connect(socket_data_fd, (const struct sockaddr *) &server_addr,
-                              sizeof(struct sockaddr_un));
-                if (ret >= 0) break;
-            }
-            if (ret < 0) {
-                LOG_ERROR_SERVER("%sconnect: %s\n", TAG, strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            LOG_INFO_SERVER("%sconnected to server\n", TAG);
-            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%ssend header\n", TAG);
-            SOCKET_SEND_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, header,
-                               &server_addr.sun_path[1]);
-            SOCKET_MSG * response = SOCKET_HEADER();
-            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sget header response\n", TAG);
-            SOCKET_GET_HEADER(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
-                              &server_addr.sun_path[1]);
-            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%scheck header response\n", TAG);
-            if (response->get.response() == SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sSuccess\n", TAG);
-                if (response->get.expect_data()) {
-                    size_t response_len = response->get.length();
-                    SOCKET_DELETE(&response);
-                    SOCKET_MSG *data_ = SOCKET_DATA(data, len);
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%ssending data, size of data: %zu\n", TAG, len);
-                    SOCKET_SEND_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, data_,
-                                     &server_addr.sun_path[1]);
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%ssent data, size of data: %zu\n", TAG, len);
-                    if (response_len != 0) {
-                        if (SERVER_LOG_TRANSFER_INFO)
-                            LOG_INFO_SERVER("%sget data response, expect %zu\n", TAG, response_len);
-                        response = SOCKET_DATA_RESPONSE(response_len);
-                        SOCKET_GET_DATA(DATA_TRANSFER_INFO, TAG, socket_data_fd, response,
-                                        &server_addr.sun_path[1]);
-                        if (SERVER_LOG_TRANSFER_INFO)
-                            LOG_INFO_SERVER("%scheck data response\n", TAG);
-                        if (response->get.response() ==
-                            SERVER_MESSAGES.SERVER_MESSAGE_RESPONSE.OK) {
-                            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sSuccess\n", TAG);
-                        } else if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sFailure\n", TAG);
-                    }
-                } else if (SERVER_LOG_TRANSFER_INFO)
-                    LOG_INFO_SERVER("%sServer is not expecting data\n", TAG);
-            }
-            LOG_INFO_SERVER("%sclosing connection to server\n", TAG);
-            assert(SOCKET_CLOSE(TAG, socket_data_fd));
-            LOG_INFO_SERVER("%sclosed connection to server\n", TAG);
-            if (SERVER_LOG_TRANSFER_INFO) LOG_INFO_SERVER("%sReturning response\n", TAG);
-            return nullptr;
-        }
-
         bool socket_put_serial(serializer &S) {
             return SOCKET_SEND_SERIAL(DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
                                       &server_addr.sun_path[1]);
@@ -902,10 +760,14 @@ class SOCKET_CLIENT {
                                      &server_addr.sun_path[1]);
         }
 
+        void socket_get_fd(int &fd) {
+            SOCKET_GET_FD(DATA_TRANSFER_INFO, TAG, socket_data_fd, fd, &server_addr.sun_path[1]);
+        }
+
         bool connect_to_server() {
             socket_data_fd = socket(AF_UNIX, SOCK_STREAM, 0);
             if (socket_data_fd < 0) {
-                LOG_ERROR_SERVER("%ssocket: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%ssocket: %d (%s)\n", TAG, errno, strerror(errno));
                 return false;
             }
             LOG_INFO_SERVER("%sconnecting to server\n", TAG);
@@ -916,7 +778,7 @@ class SOCKET_CLIENT {
                 if (ret >= 0) break;
             }
             if (ret < 0) {
-                LOG_ERROR_SERVER("%sconnect: %s\n", TAG, strerror(errno));
+                LOG_ERROR_SERVER("%sconnect: %d (%s)\n", TAG, errno, strerror(errno));
                 return false;
             }
             LOG_INFO_SERVER("%sconnected to server\n", TAG);
@@ -931,12 +793,6 @@ class SOCKET_CLIENT {
             return true;
         }
 
-        SOCKET_MSG *send(int type, void *data, size_t data_length) {
-            SOCKET_MSG *header = SOCKET_COMMAND(type);
-            SOCKET_MSG * response = send(header, data, data_length);
-            SOCKET_DELETE(&header);
-            return response;
-        }
 };
 
 #endif //GLNE_SERVER_CORE_H

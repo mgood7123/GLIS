@@ -3,7 +3,7 @@ add_subdirectory(WINAPI)
 add_library(nativeegl SHARED compositor.cpp shm.cpp ashmem.cpp)
 target_link_libraries(nativeegl android log EGL GLESv3 WinKernel)
 
-add_executable(MYPRIVATEAPP compositor_examples/MYPRIVATEAPP.cpp)
+add_executable(MYPRIVATEAPP compositor_examples/MYPRIVATEAPP.cpp shm.cpp ashmem.cpp)
 target_link_libraries(MYPRIVATEAPP log EGL GLESv3 WinKernel)
 add_custom_command(
         TARGET MYPRIVATEAPP
@@ -11,7 +11,7 @@ add_custom_command(
         COMMAND cp -v MYPRIVATEAPP \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
 )
 
-add_executable(MovingWindows compositor_examples/MovingWindows.cpp)
+add_executable(MovingWindows compositor_examples/MovingWindows.cpp shm.cpp ashmem.cpp)
 target_link_libraries(MovingWindows log EGL GLESv3 WinKernel)
 add_custom_command(
         TARGET MovingWindows
@@ -19,7 +19,7 @@ add_custom_command(
         COMMAND cp -v MovingWindows \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
 )
 
-add_executable(DefaultFramebuffer compositor_examples/DefaultFramebuffer.cpp)
+add_executable(DefaultFramebuffer compositor_examples/DefaultFramebuffer.cpp shm.cpp ashmem.cpp)
 target_link_libraries(DefaultFramebuffer log EGL GLESv3 WinKernel)
 add_custom_command(
         TARGET DefaultFramebuffer
@@ -27,7 +27,7 @@ add_custom_command(
         COMMAND cp -v DefaultFramebuffer \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
 )
 
-add_executable(shm compositor_examples/shm.cpp)
+add_executable(shm compositor_examples/shm.cpp shm.cpp ashmem.cpp)
 target_link_libraries(shm log EGL GLESv3 WinKernel)
 add_custom_command(
         TARGET shm

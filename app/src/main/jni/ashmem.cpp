@@ -136,6 +136,7 @@ static int __ashmem_is_ashmem(int fd, int fatal)
     return -1;
 }
 
+/* returns true on success, false on error */
 int ashmem_valid(int fd)
 {
     return __ashmem_is_ashmem(fd, 0) >= 0;

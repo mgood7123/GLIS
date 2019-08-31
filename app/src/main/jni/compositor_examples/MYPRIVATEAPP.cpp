@@ -65,7 +65,8 @@ int main() {
 //        glClear(GL_COLOR);
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
 
-        LOG_INFO("creating 201 windows");
+        double program_start = now_ms();
+        LOG_INFO("creating 21 windows");
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);
@@ -80,7 +81,8 @@ int main() {
             GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, s, s);
             LOG_INFO("created window %d", i + 1);
         }
-        LOG_INFO("created 201 windows");
+        double end = now_ms();
+        LOG_INFO("created 21 windows in %G milliseconds", end - program_start);
 
         LOG_INFO("Cleaning up");
         GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
