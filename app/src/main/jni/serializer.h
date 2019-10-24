@@ -242,6 +242,58 @@ class serializer {
             }
         }
 
+        bool constructAndMerge(int8_t ** out, size_t * out_length) {
+            size_t index = 0;
+            size_t offset_index = 0;
+            struct serializer_data first;
+            bool first_set = false;
+            while (in.size() != 0) {
+                // type_size (1), data length (8), data (*)
+                struct serializer_data data_ = in.front();
+                in.pop_front();
+                if (!first_set) {
+                    memcpy(&first.type_size, &data_.type_size, sizeof(int8_t));
+                    memcpy(&first.data_len, &data_.data_len, sizeof(size_t));
+                    first_set = true;
+                    stream.append(sizeof(int8_t) * 1);
+                    stream.data[index++] = data_.type_size;
+                    stream.append(sizeof(int8_t) * sizeof(size_t));
+                    reinterpret_cast<size_t *>(stream.data + index)[0] = data_.data_len;
+                    index += sizeof(size_t);
+                    offset_index += index;
+                }
+                bool cont = true;
+                bool first_pass = memcmp(&first.type_size, &data_.type_size, sizeof(int8_t)) == 0;
+                if (!first_pass) {
+                    LOG_ERROR_serializer(
+                        "first pass failed: type size mismatch, expected %d, got %d",
+                        first.type_size, data_.type_size
+                    );
+                    cont = false;
+                }
+                if (cont) {
+                    bool second_pass = memcmp(&first.data_len, &data_.data_len, sizeof(size_t)) == 0;
+                    if (!second_pass) {
+                        LOG_ERROR_serializer(
+                            "second pass failed: length mismatch, expected %zu, got %zu",
+                            first.data_len, data_.data_len
+                        );
+                        cont = false;
+                    }
+                    if (cont) {
+                        stream.append(data_.type_size * data_.data_len);
+                        memcpy(&stream.data[index], data_.data, data_.type_size * data_.data_len);
+                        index += data_.type_size * data_.data_len;
+                    }
+                }
+                delete[] data_.data;
+                if (!cont) return cont;
+            }
+            *out_length = index - offset_index;
+            *out = new int8_t[first.type_size * (index - offset_index)];
+            return true;
+        }
+
         void deconstruct() {
             while (stream.data_len != 0) {
                 struct serializer_data data2;
