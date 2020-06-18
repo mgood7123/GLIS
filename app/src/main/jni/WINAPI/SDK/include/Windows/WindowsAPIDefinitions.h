@@ -261,7 +261,7 @@ SIZE roundUp(SIZE value, SIZE size) {
 
 #undef UNICODE
 
-#include <Android/log.h>
+#include <android/log.h>
 #include <EGL/egl.h>
 #include <GLES3/gl32.h>
 

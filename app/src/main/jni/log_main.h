@@ -362,7 +362,7 @@ int __android_log_is_loggable(int prio, const char* tag, int default_prio);
 
 #if __ANDROID_USE_LIBLOG_LOGGABLE_INTERFACE > 1
 #include <sys/types.h>
-#include "../../../../../../AppData/Local/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/stdint.h"
+#include <stdint.h>
 
 int __android_log_is_loggable_len(int prio, const char* tag, size_t len,
                                   int default_prio);

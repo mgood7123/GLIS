@@ -22,7 +22,7 @@ android {
         }
 
     }
-    ndkVersion = '20.0.5594570'
+    ndkVersion = '21.2.6472646'
     sourceSets {
         main {
             assets.srcDir('src/main/jni/executables')
