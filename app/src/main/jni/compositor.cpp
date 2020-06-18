@@ -132,7 +132,7 @@ int COMPOSITORMAIN__() {
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
     char *args2[2] = {exe2, 0};
-    GLIS_FORK(args2[0], args2);
+//    GLIS_FORK(args2[0], args2);
 
     SYNC_STATE = STATE.initialized;
     while (SYNC_STATE != STATE.request_startup);
@@ -191,6 +191,7 @@ int COMPOSITORMAIN__() {
             eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
         GLIS_Sync_GPU();
         double program_start = now_ms();
+        bool stop_drawing = false;
         while(SYNC_STATE != STATE.request_shutdown) {
             double loop_start = now_ms();
             bool redraw = false;
@@ -398,6 +399,18 @@ int COMPOSITORMAIN__() {
                     LOG_INFO("KEEP_ALIVE_MAIN_NOTIFIER thread successfully started");
                 out.add_pointer<char>(s, 107);
                 CompositorMain.server.socket_put_serial(out);
+            } else if (command == GLIS_SERVER_COMMANDS.start_drawing) {
+                stop_drawing = false;
+                redraw = true;
+                LOG_INFO("drawing started");
+                out.add<bool>(true);
+                CompositorMain.server.socket_put_serial(out);
+            } else if (command == GLIS_SERVER_COMMANDS.stop_drawing) {
+                stop_drawing = true;
+                redraw = true;
+                LOG_INFO("drawing stopped");
+                out.add<bool>(true);
+                CompositorMain.server.socket_put_serial(out);
             }
             if (IPC == IPC_MODE.socket) assert(CompositorMain.server.socket_unaccept());
             LOG_INFO("CLIENT has uploaded");
@@ -408,30 +421,33 @@ int COMPOSITORMAIN__() {
                 LOG_INFO("rendering");
                 GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
                 GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
-                int page = 1;
-                size_t index = 0;
-                size_t page_size = CompositorMain.KERNEL.table->page_size;
-                int drawn = 0;
-                double startK = now_ms();
-                for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
-                    index = ((page_size * page) - page_size);
-                    for (; index < page_size * page; index++)
-                        if (CompositorMain.KERNEL.table->table[index] != nullptr) {
-                            struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[index]->resource);
-                            struct Client_Window *CWT = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[0]->resource);
-                            double startR = now_ms();
-                            GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
-                                                       CWT->TEXTURE,
-                                                       0, CW->x,
-                                                       CW->y, CW->w, CW->h,
-                                                       CompositorMain.width, CompositorMain.height);
-                            drawn++;
-                            double endR = now_ms();
-                        }
+                if (!stop_drawing) {
+                    int page = 1;
+                    size_t index = 0;
+                    size_t page_size = CompositorMain.KERNEL.table->page_size;
+                    int drawn = 0;
+                    double startK = now_ms();
+                    for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
+                        index = ((page_size * page) - page_size);
+                        for (; index < page_size * page; index++)
+                            if (CompositorMain.KERNEL.table->table[index] != nullptr) {
+                                struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[index]->resource);
+                                struct Client_Window *CWT = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[0]->resource);
+                                double startR = now_ms();
+                                GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
+                                                           CWT->TEXTURE,
+                                                           0, CW->x,
+                                                           CW->y, CW->w, CW->h,
+                                                           CompositorMain.width,
+                                                           CompositorMain.height);
+                                drawn++;
+                                double endR = now_ms();
+                            }
+                    }
+                    double endK = now_ms();
+                    LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
+                             drawn == 1 ? "window" : "windows", endK - startK);
                 }
-                double endK = now_ms();
-                LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
-                         drawn == 1 ? "window" : "windows", endK - startK);
                 GLIS_Sync_GPU();
                 GLIS_error_to_string_exec_EGL(
                     eglSwapBuffers(CompositorMain.display, CompositorMain.surface));

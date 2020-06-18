@@ -13,6 +13,8 @@ struct {
     int shm_texture = 5;
     int shm_params = 6;
     int new_connection = 7;
+    int start_drawing = 8;
+    int stop_drawing = 9;
 } GLIS_SERVER_COMMANDS;
 
 const char *GLIS_command_to_string(int &command) {
@@ -23,6 +25,8 @@ const char *GLIS_command_to_string(int &command) {
     else if (command == GLIS_SERVER_COMMANDS.shm_texture) return "Shared Memory Texture";
     else if (command == GLIS_SERVER_COMMANDS.shm_params) return "Shared Memory Parameters";
     else if (command == GLIS_SERVER_COMMANDS.new_connection) return "New Server Connection";
+    else if (command == GLIS_SERVER_COMMANDS.start_drawing) return "Start Drawing";
+    else if (command == GLIS_SERVER_COMMANDS.stop_drawing) return "Stop Drawing";
     else return "unknown";
 }
 
@@ -63,7 +67,7 @@ int8_t shared_memory_transfer_complete = -4;
 int8_t shared_memory_allocated = -5;
 int8_t shared_memory_waiting_for_allocation = -6;
 
-bool LOG_SHARED_MEMORY_TRANSFER_INFO = false;
+bool LOG_SHARED_MEMORY_TRANSFER_INFO = true;
 
 void GLIS_unsigned_underflow_check(size_t len, size_t subtract_by, size_t &out) {
     if ((len - subtract_by) > len) out = len;
@@ -121,8 +125,11 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
     size_t buffer = sh.size - indexdata;
-    while (sh.data[indexstate] != shared_memory_waiting_for_allocation)
-        if (sh.reference_count == 0)return;
+    while (sh.data[indexstate] != shared_memory_waiting_for_allocation) {
+        if (sh.reference_count == 0) {
+            return;
+        }
+    }
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
         LOG_INFO_SHM("total to read: %zu", reinterpret_cast<size_t *>(sh.data)[indexsize]);
         LOG_INFO_SHM("buffer: %zu", buffer);
@@ -374,6 +381,54 @@ bool GLIS_INIT_SHARED_MEMORY(GLIS_shared_memory &shared_memory, GLIS_shared_memo
         LOG_ERROR("failed to connect to server");
     return false;
 };
+
+bool GLIS_start_drawing() {
+    SERVER_LOG_TRANSFER_INFO = true;
+    SOCKET_CLIENT client;
+    serializer cmd;
+    serializer server;
+    cmd.add<int>(GLIS_SERVER_COMMANDS.start_drawing);
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(cmd)) {
+            if (client.socket_get_serial(server)) {
+                if (client.disconnect_from_server()) {
+                    bool ret = false;
+                    server.get<bool>(&ret);
+                    return ret == true;
+                } else
+                    LOG_ERROR("failed to disconnect from the server");
+            } else
+                LOG_ERROR("failed to get serial from the server");
+        } else
+            LOG_ERROR("failed to send command to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return false;
+}
+
+bool GLIS_stop_drawing() {
+    SERVER_LOG_TRANSFER_INFO = true;
+    SOCKET_CLIENT client;
+    serializer cmd;
+    serializer server;
+    cmd.add<int>(GLIS_SERVER_COMMANDS.stop_drawing);
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(cmd)) {
+            if (client.socket_get_serial(server)) {
+                if (client.disconnect_from_server()) {
+                    bool ret = false;
+                    server.get<bool>(&ret);
+                    return ret == true;
+                } else
+                    LOG_ERROR("failed to disconnect from the server");
+            } else
+                LOG_ERROR("failed to get serial from the server");
+        } else
+            LOG_ERROR("failed to send command to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return false;
+}
 
 bool GLIS_INIT_SHARED_MEMORY() {
     return GLIS_INIT_SHARED_MEMORY(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,

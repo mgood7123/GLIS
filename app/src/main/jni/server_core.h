@@ -7,7 +7,7 @@
 #ifndef GLNE_SERVER_CORE_H
 #define GLNE_SERVER_CORE_H
 
-bool SERVER_LOG_TRANSFER_INFO = false;
+bool SERVER_LOG_TRANSFER_INFO = true;
 
 class SOCKET_DATA_TRANSFER_INFO {
     public:
