@@ -1370,6 +1370,8 @@ void main()
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+// TODO: container GLIS_font and related
+
 FT_Library GLIS_font;
 
 bool GLIS_font_init() {
@@ -1383,8 +1385,6 @@ bool GLIS_font_init() {
 FT_Face GLIS_font_face;
 
 bool GLIS_font_load(const char * font) {
-    // load font from asset manager
-
     if (FT_New_Face(GLIS_font, font, 0, &GLIS_font_face)) {
         LOG_ERROR("ERROR::FREETYPE: Failed to load font");
         return false;
@@ -1481,6 +1481,8 @@ bool GLIS_load_font(const char * font, int width, int height) {
     }
     return true;
 }
+
+// TODO: remove these
 
 unsigned int GLIS_VAO, GLIS_VBO;
 
