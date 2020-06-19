@@ -1420,9 +1420,9 @@ bool GLIS_font_store_ascii() {
         loaded++;
         // Generate texture
         GLuint texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(
+        GLIS_error_to_string_exec_GL(glGenTextures(1, &texture));
+        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, texture));
+        GLIS_error_to_string_exec_GL(glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
                 GL_R8,
@@ -1432,12 +1432,12 @@ bool GLIS_font_store_ascii() {
                 GL_RED,
                 GL_UNSIGNED_BYTE,
                 GLIS_font_face->glyph->bitmap.buffer
-        );
+        ));
         // Set texture options
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
         // Now store character for later use
         Character character = {
                 texture,
@@ -1447,7 +1447,7 @@ bool GLIS_font_store_ascii() {
         };
         sCharacters.insert(std::pair<GLchar, Character>(c, character));
     }
-    glBindTexture(GL_TEXTURE_2D, 0);
+    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
     return loaded != 0;
 }
 
@@ -1456,12 +1456,110 @@ void GLIS_font_free() {
     FT_Done_FreeType(GLIS_font);
 }
 
+bool GLIS_FONT_INITIALIZED = false;
+
+bool GLIS_load_font(const char * font, int width, int height) {
+    // TODO: smart load
+    if (!GLIS_font_init()) return false;
+    if (!GLIS_font_load(font)) {
+        FT_Done_FreeType(GLIS_font);
+        return false;
+    }
+    GLIS_font_set_size(width, height);
+
+    // disable byte-alignment restriction
+    GLIS_error_to_string_exec_GL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+
+    bool r = GLIS_font_store_ascii();
+
+    // enable byte-alignment restriction
+    GLIS_error_to_string_exec_GL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));
+
+    if (!r) {
+        GLIS_font_free();
+        return false;
+    }
+    return true;
+}
+
 unsigned int GLIS_VAO, GLIS_VBO;
 
-void GLIS_font_RenderText(GLuint * program, std::string text, float x, float y, float scale, glm::vec3 color) {
+void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float y, float scale, glm::vec3 color) {
 
-    GLint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(*program, "textColor"));
+    const char *CHILDvertexSource = R"glsl( #version 300 es
+
+layout (location = 0) in vec4 vertex;
+out vec2 TexCoords;
+
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
+    TexCoords = vertex.zw;
+}
+)glsl";
+
+    const char *CHILDfragmentSource = R"glsl( #version 300 es
+precision mediump float;
+
+in vec2 TexCoords;
+out vec4 color;
+
+uniform sampler2D text;
+uniform vec3 textColor;
+
+void main()
+{
+    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+    color = vec4(textColor, 1.0) * sampled;
+}
+)glsl";
+
+    GLuint CHILDshaderProgram;
+    GLuint CHILDvertexShader;
+    GLuint CHILDfragmentShader;
+    CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
+    CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
+    LOG_INFO("Creating Shader program");
+    CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+    LOG_INFO("Attaching vertex Shader to program");
+    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+    LOG_INFO("Attaching fragment Shader to program");
+    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+    LOG_INFO("Linking Shader program");
+    GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
+    LOG_INFO("Validating Shader program");
+    GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
+    assert(ProgramIsValid == GL_TRUE);
+
+    if (CHILDshaderProgram) {
+        // Configure VAO/VBO for texture quads
+        glGenVertexArrays(1, &GLIS_VAO);
+        glGenBuffers(1, &GLIS_VBO);
+        glBindVertexArray(GLIS_VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, GLIS_VAO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+
+    LOG_INFO("Using Shader program");
+    GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+
+    glm::mat4 projection = glm::ortho(0.0f, w, 0.0f, h);
+
+    GLuint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "projection"));
+    GLIS_error_to_string_exec_GL(glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection)));
+
+    loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "textColor"));
     GLIS_error_to_string_exec_GL(glUniform3f(loc, color.x, color.y, color.z));
+
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     GLIS_error_to_string_exec_GL(glActiveTexture(GL_TEXTURE0));
     GLIS_error_to_string_exec_GL(glBindVertexArray(GLIS_VAO));
@@ -1519,6 +1617,13 @@ void GLIS_font_RenderText(GLuint * program, std::string text, float x, float y, 
     }
     GLIS_error_to_string_exec_GL(glBindVertexArray(0));
     GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+
+    glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
+
+    GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
+    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
+    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
 }
 
 #include "GLIS_COMMANDS.h"

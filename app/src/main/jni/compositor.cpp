@@ -121,151 +121,41 @@ void main()
 )glsl";
 
 void testFont() {
+
+    // OpenGL code cannot be called yet as OpenGL is not yet initialized
+
     SYNC_STATE = STATE.initialized;
     while (SYNC_STATE != STATE.request_startup);
     LOG_INFO("starting up");
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
+        // OpenGL code can now be called
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
 
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        if (!GLIS_font_init()) {
-            SYNC_STATE = STATE.response_shutting_down;
-            LOG_INFO("shutting down");
-
-            // clean up
-            LOG_INFO("Cleaning up");
-//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
-            GLIS_destroy_GLIS(CompositorMain);
-            LOG_INFO("Destroyed main Compositor GLIS");
-            LOG_INFO("Cleaned up");
-            LOG_INFO("shut down");
-            SYNC_STATE = STATE.response_shutdown;
-            return;
-        }
-
         std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
-        if (!GLIS_font_load(f.c_str())) {
+
+        if (!GLIS_load_font(f.c_str(), 0, 128)) {
             SYNC_STATE = STATE.response_shutting_down;
             LOG_INFO("shutting down");
 
             // clean up
-            LOG_INFO("Cleaning up");
-//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
             GLIS_destroy_GLIS(CompositorMain);
             LOG_INFO("Destroyed main Compositor GLIS");
-            LOG_INFO("Cleaned up");
             LOG_INFO("shut down");
             SYNC_STATE = STATE.response_shutdown;
             return;
-        }
-
-        GLIS_font_set_size(0, 128);
-
-        // disable byte-alignment restriction
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        if (!GLIS_font_store_ascii()) {
-            SYNC_STATE = STATE.response_shutting_down;
-            LOG_INFO("shutting down");
-
-            // clean up
-            LOG_INFO("Cleaning up");
-//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
-            GLIS_destroy_GLIS(CompositorMain);
-            LOG_INFO("Destroyed main Compositor GLIS");
-            LOG_INFO("Cleaned up");
-            LOG_INFO("shut down");
-            SYNC_STATE = STATE.response_shutdown;
-            return;
-        }
-        GLIS_font_free();
-
-        const char *CHILDvertexSource = R"glsl( #version 300 es
-
-layout (location = 0) in vec4 vertex;
-out vec2 TexCoords;
-
-uniform mat4 projection;
-
-void main()
-{
-    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-    TexCoords = vertex.zw;
-}
-)glsl";
-
-        const char *CHILDfragmentSource = R"glsl( #version 300 es
-precision mediump float;
-
-in vec2 TexCoords;
-out vec4 color;
-
-uniform sampler2D text;
-uniform vec3 textColor;
-
-void main()
-{
-    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-    color = vec4(textColor, 1.0) * sampled;
-}
-)glsl";
-
-        GLuint CHILDshaderProgram;
-        GLuint CHILDvertexShader;
-        GLuint CHILDfragmentShader;
-        CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
-        CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
-        LOG_INFO("Creating Shader program");
-        CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
-        LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
-        LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
-        LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
-        LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
-        assert(ProgramIsValid == GL_TRUE);
-
-        if (CHILDshaderProgram) {
-            // Configure VAO/VBO for texture quads
-            glGenVertexArrays(1, &GLIS_VAO);
-            glGenBuffers(1, &GLIS_VBO);
-            glBindVertexArray(GLIS_VAO);
-            glBindBuffer(GL_ARRAY_BUFFER, GLIS_VAO);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
         }
 
         SYNC_STATE = STATE.response_started_up;
 
         GLIS_error_to_string_exec_GL(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
         GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
-
-        LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
-
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(CompositorMain.width), 0.0f, static_cast<GLfloat>(CompositorMain.height));
-
-        GLuint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "projection"));
-        GLIS_error_to_string_exec_GL(glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection)));
-
-        GLIS_font_RenderText(&CHILDshaderProgram, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        GLIS_font_RenderText(&CHILDshaderProgram, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+        GLfloat w = static_cast<GLfloat>(CompositorMain.width);
+        GLfloat h = static_cast<GLfloat>(CompositorMain.height);
+        GLIS_font_RenderText(w, h, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+        GLIS_font_RenderText(w, h, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
 
         GLIS_error_to_string_exec_EGL(
                 eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
@@ -278,9 +168,6 @@ void main()
 
         // clean up
         LOG_INFO("Cleaning up");
-//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
