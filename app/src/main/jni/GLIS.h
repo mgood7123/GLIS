@@ -1361,6 +1361,166 @@ void main()
         glUseProgram(static_cast<GLuint>(backup.program.__GL_CURRENT_PROGRAM)));
 }
 
+// fonts
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+FT_Library GLIS_font;
+
+bool GLIS_font_init() {
+    if (FT_Init_FreeType(&GLIS_font)) {
+        LOG_ERROR("ERROR::FREETYPE: Could not init FreeType Library");
+        return false;
+    }
+    return true;
+}
+
+FT_Face GLIS_font_face;
+
+bool GLIS_font_load(const char * font) {
+    // load font from asset manager
+
+    if (FT_New_Face(GLIS_font, font, 0, &GLIS_font_face)) {
+        LOG_ERROR("ERROR::FREETYPE: Failed to load font");
+        return false;
+    }
+    return true;
+}
+
+void GLIS_font_set_size(int width, int height) {
+    FT_Set_Pixel_Sizes(GLIS_font_face, width, height);
+}
+
+struct Character {
+    GLuint textureID;   // ID handle of the glyph texture
+    glm::ivec2 size;    // Size of glyph
+    glm::ivec2 bearing;  // Offset from baseline to left/top of glyph
+    GLuint advance;    // Horizontal offset to advance to next glyph
+};
+
+#include <map>
+
+std::map<GLchar, Character> sCharacters;
+
+bool GLIS_font_store_ascii() {
+
+    // Load first 128 characters of ASCII set
+    int loaded = 0;
+    for (GLubyte c = 0; c < 128; c++) {
+        // Load character glyph
+        if (FT_Load_Char(GLIS_font_face, c, FT_LOAD_RENDER)) {
+            LOG_ERROR("ERROR::FREETYTPE: Failed to load Glyph");
+            continue;
+        }
+        loaded++;
+        // Generate texture
+        GLuint texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_R8,
+                GLIS_font_face->glyph->bitmap.width,
+                GLIS_font_face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                GLIS_font_face->glyph->bitmap.buffer
+        );
+        // Set texture options
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // Now store character for later use
+        Character character = {
+                texture,
+                glm::ivec2(GLIS_font_face->glyph->bitmap.width, GLIS_font_face->glyph->bitmap.rows),
+                glm::ivec2(GLIS_font_face->glyph->bitmap_left, GLIS_font_face->glyph->bitmap_top),
+                (GLuint) GLIS_font_face->glyph->advance.x
+        };
+        sCharacters.insert(std::pair<GLchar, Character>(c, character));
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return loaded != 0;
+}
+
+void GLIS_font_free() {
+    FT_Done_Face(GLIS_font_face);
+    FT_Done_FreeType(GLIS_font);
+}
+
+unsigned int GLIS_VAO, GLIS_VBO;
+
+void GLIS_font_RenderText(GLuint * program, std::string text, float x, float y, float scale, glm::vec3 color) {
+
+    GLint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(*program, "textColor"));
+    GLIS_error_to_string_exec_GL(glUniform3f(loc, color.x, color.y, color.z));
+
+    GLIS_error_to_string_exec_GL(glActiveTexture(GL_TEXTURE0));
+    GLIS_error_to_string_exec_GL(glBindVertexArray(GLIS_VAO));
+
+    // Iterate through all characters
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++) {
+
+        if (sCharacters.count(*c) > 0) {
+
+            Character ch = sCharacters[*c];
+
+            GLfloat xpos = x + ch.bearing.x * scale;
+            GLfloat ypos = y - (ch.size.y - ch.bearing.y) * scale;
+
+            GLfloat w = ch.size.x * scale;
+            GLfloat h = ch.size.y * scale;
+            // Update VBO for each character
+            GLfloat vertices[6][4] = {
+                    {xpos,     ypos + h, 0.0f, 0.0f},
+                    {xpos,     ypos,     0.0f, 1.0f},
+                    {xpos + w, ypos,     1.0f, 1.0f},
+
+                    {xpos,     ypos + h, 0.0f, 0.0f},
+                    {xpos + w, ypos,     1.0f, 1.0f},
+                    {xpos + w, ypos + h, 1.0f, 0.0f}
+            };
+
+            //#################debug#################
+//            static bool debug = false;
+//            if (!debug) {
+//                glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(sWidth), 0.0f,
+//                                                  static_cast<GLfloat>(sHeight));
+//                glm::vec4 v(xpos, ypos + h, 0.0f, 0.0f);
+//                v = projection * v;
+//                base_LOG("%f,%f,%f,%f", v.x, v.y, v.z, v.w);
+//                debug = true;
+//            }
+            //#############end debug#################
+
+            // Render glyph texture over quad
+            GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, ch.textureID));
+            // Update content of VBO memory
+            GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, GLIS_VBO));
+            GLIS_error_to_string_exec_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices),
+                            vertices)); // Be sure to use glBufferSubData and not glBufferData
+
+            GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+            // Render quad
+            GLIS_error_to_string_exec_GL(glDrawArrays(GL_TRIANGLES, 0, 6));
+            // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+            x += (ch.advance >> 6) *
+                 scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        }
+    }
+    GLIS_error_to_string_exec_GL(glBindVertexArray(0));
+    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
 #include "GLIS_COMMANDS.h"
 
 #endif //GLNE_GLIS_H

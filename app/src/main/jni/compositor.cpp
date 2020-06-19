@@ -120,7 +120,180 @@ void main()
 }
 )glsl";
 
+void testFont() {
+    SYNC_STATE = STATE.initialized;
+    while (SYNC_STATE != STATE.request_startup);
+    LOG_INFO("starting up");
+    SYNC_STATE = STATE.response_starting_up;
+    LOG_INFO("initializing main Compositor");
+    if (GLIS_setupOnScreenRendering(CompositorMain)) {
+        CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
+        LOG_INFO("initialized main Compositor");
+
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        if (!GLIS_font_init()) {
+            SYNC_STATE = STATE.response_shutting_down;
+            LOG_INFO("shutting down");
+
+            // clean up
+            LOG_INFO("Cleaning up");
+//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
+            GLIS_destroy_GLIS(CompositorMain);
+            LOG_INFO("Destroyed main Compositor GLIS");
+            LOG_INFO("Cleaned up");
+            LOG_INFO("shut down");
+            SYNC_STATE = STATE.response_shutdown;
+            return;
+        }
+
+        std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
+        if (!GLIS_font_load(f.c_str())) {
+            SYNC_STATE = STATE.response_shutting_down;
+            LOG_INFO("shutting down");
+
+            // clean up
+            LOG_INFO("Cleaning up");
+//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
+            GLIS_destroy_GLIS(CompositorMain);
+            LOG_INFO("Destroyed main Compositor GLIS");
+            LOG_INFO("Cleaned up");
+            LOG_INFO("shut down");
+            SYNC_STATE = STATE.response_shutdown;
+            return;
+        }
+
+        GLIS_font_set_size(0, 128);
+
+        // disable byte-alignment restriction
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        if (!GLIS_font_store_ascii()) {
+            SYNC_STATE = STATE.response_shutting_down;
+            LOG_INFO("shutting down");
+
+            // clean up
+            LOG_INFO("Cleaning up");
+//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
+            GLIS_destroy_GLIS(CompositorMain);
+            LOG_INFO("Destroyed main Compositor GLIS");
+            LOG_INFO("Cleaned up");
+            LOG_INFO("shut down");
+            SYNC_STATE = STATE.response_shutdown;
+            return;
+        }
+        GLIS_font_free();
+
+        const char *CHILDvertexSource = R"glsl( #version 300 es
+
+layout (location = 0) in vec4 vertex;
+out vec2 TexCoords;
+
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
+    TexCoords = vertex.zw;
+}
+)glsl";
+
+        const char *CHILDfragmentSource = R"glsl( #version 300 es
+precision mediump float;
+
+in vec2 TexCoords;
+out vec4 color;
+
+uniform sampler2D text;
+uniform vec3 textColor;
+
+void main()
+{
+    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+    color = vec4(textColor, 1.0) * sampled;
+}
+)glsl";
+
+        GLuint CHILDshaderProgram;
+        GLuint CHILDvertexShader;
+        GLuint CHILDfragmentShader;
+        CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
+        CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
+        LOG_INFO("Creating Shader program");
+        CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+        LOG_INFO("Attaching vertex Shader to program");
+        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+        LOG_INFO("Attaching fragment Shader to program");
+        GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+        LOG_INFO("Linking Shader program");
+        GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
+        LOG_INFO("Validating Shader program");
+        GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
+        assert(ProgramIsValid == GL_TRUE);
+
+        if (CHILDshaderProgram) {
+            // Configure VAO/VBO for texture quads
+            glGenVertexArrays(1, &GLIS_VAO);
+            glGenBuffers(1, &GLIS_VBO);
+            glBindVertexArray(GLIS_VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, GLIS_VAO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
+        }
+
+        SYNC_STATE = STATE.response_started_up;
+
+        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
+        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
+
+        LOG_INFO("Using Shader program");
+        GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+
+        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(CompositorMain.width), 0.0f, static_cast<GLfloat>(CompositorMain.height));
+
+        GLuint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "projection"));
+        GLIS_error_to_string_exec_GL(glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection)));
+
+        GLIS_font_RenderText(&CHILDshaderProgram, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+        GLIS_font_RenderText(&CHILDshaderProgram, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+
+        GLIS_error_to_string_exec_EGL(
+                eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
+        GLIS_Sync_GPU();
+        while(SYNC_STATE != STATE.request_shutdown) {
+
+        }
+        SYNC_STATE = STATE.response_shutting_down;
+        LOG_INFO("shutting down");
+
+        // clean up
+        LOG_INFO("Cleaning up");
+//        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
+//        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
+        GLIS_destroy_GLIS(CompositorMain);
+        LOG_INFO("Destroyed main Compositor GLIS");
+        LOG_INFO("Cleaned up");
+        LOG_INFO("shut down");
+        SYNC_STATE = STATE.response_shutdown;
+    } else LOG_ERROR("failed to initialize main Compositor");
+    return;
+}
+
 int COMPOSITORMAIN__() {
+    testFont();
+    return 0;
+
     LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
@@ -190,48 +363,62 @@ int COMPOSITORMAIN__() {
         GLIS_error_to_string_exec_EGL(
             eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
         GLIS_Sync_GPU();
-        double program_start = now_ms();
         bool stop_drawing = false;
+        unsigned int fps_frames = 0;
+        double fps_start = now_ms();
+        double program_start = now_ms();
         while(SYNC_STATE != STATE.request_shutdown) {
+
+            // TODO: migrate to texture buffers:
+            //  draw(texture[0]);
+            //  draw[texture[1]);
+            //  /* ... */
+
+
             double loop_start = now_ms();
             bool redraw = false;
             bool accepted = false;
             serializer in;
             serializer out;
             int command = -1;
-            if (IPC == IPC_MODE.socket) {
-                LOG_INFO_SERVER("%swaiting for connection", CompositorMain.server.TAG);
-                if (CompositorMain.server.socket_accept()) {
-                    LOG_INFO_SERVER("%sconnection obtained", CompositorMain.server.TAG);
+//            if (IPC == IPC_MODE.socket) {
+//                LOG_INFO_SERVER("%swaiting for connection", CompositorMain.server.TAG);
+//                if (CompositorMain.server.socket_accept()) {
+//                    LOG_INFO_SERVER("%sconnection obtained", CompositorMain.server.TAG);
+//                    CompositorMain.server.socket_get_serial(in);
+//                } else {
+//                    LOG_ERROR_SERVER("%sfailed to obtain a connection", CompositorMain.server.TAG);
+//                    goto draw;
+//                }
+//            }
+            if (IPC == IPC_MODE.shared_memory) {
+                // try to connect
+                if (CompositorMain.server.socket_accept_non_blocking()) {
+                    // connected
+                    double start = now_ms();
                     CompositorMain.server.socket_get_serial(in);
+                    double end = now_ms();
+                    LOG_INFO("read serial in %G milliseconds", end - start);
                 } else {
-                    LOG_ERROR_SERVER("%sfailed to obtain a connection", CompositorMain.server.TAG);
-                    goto draw;
-                }
-            } else if (IPC == IPC_MODE.shared_memory) {
-                if (!CompositorMain.server.socket_accept_non_blocking()) {
-                    if (CompositorMain.server.internaldata->server_should_close) continue;
+                    // already connected, an error occured, or failed to connect
+                    if (CompositorMain.server.internaldata->server_should_close) goto draw;
                     if (GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0) {
                         LOG_INFO("reference_count != 0 , waiting for parameter");
                         double start = now_ms();
                         GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in);
                         double end = now_ms();
                         LOG_INFO("read parameters in %G milliseconds", end - start);
-                    } else continue;
-                } else {
-                    double start = now_ms();
-                    CompositorMain.server.socket_get_serial(in);
-                    double end = now_ms();
-                    LOG_INFO("read serial in %G milliseconds", end - start);
+                    } else goto draw;
                 }
             }
             in.get<int>(&command);
-            if (IPC == IPC_MODE.socket)
-                LOG_INFO_SERVER("%scommand: %d (%s)",
-                                CompositorMain.server.TAG, command,
-                                GLIS_command_to_string(command));
-            else
+//            if (IPC == IPC_MODE.socket)
+//                LOG_INFO_SERVER("%scommand: %d (%s)",
+//                                CompositorMain.server.TAG, command,
+//                                GLIS_command_to_string(command));
+            if (IPC == IPC_MODE.shared_memory) {
                 LOG_INFO("command: %d (%s)", command, GLIS_command_to_string(command));
+            }
             if (command == GLIS_SERVER_COMMANDS.new_window) {
                 redraw = true;
                 int *win;
@@ -243,18 +430,19 @@ int COMPOSITORMAIN__() {
                 x->h = win[3];
                 size_t id = CompositorMain.KERNEL.table->findObject(
                     CompositorMain.KERNEL.newObject(0, 0, x));
-                if (IPC == IPC_MODE.socket) {
-                    LOG_INFO_SERVER("%swindow %zu: %d,%d,%d,%d",
-                                    CompositorMain.server.TAG, id, win[0], win[1], win[2], win[3]);
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%ssending id %zu", CompositorMain.server.TAG, id);
-                } else {
+//                if (IPC == IPC_MODE.socket) {
+//                    LOG_INFO_SERVER("%swindow %zu: %d,%d,%d,%d",
+//                                    CompositorMain.server.TAG, id, win[0], win[1], win[2], win[3]);
+//                    if (SERVER_LOG_TRANSFER_INFO)
+//                        LOG_INFO_SERVER("%ssending id %zu", CompositorMain.server.TAG, id);
+//                }
+                if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("window %zu: %d,%d,%d,%d", id, win[0], win[1], win[2], win[3]);
                     LOG_INFO("sending id %zu", id);
                 }
                 out.add<int>(id);
-                if (IPC == IPC_MODE.socket) CompositorMain.server.socket_put_serial(out);
-                else if (IPC == IPC_MODE.shared_memory)
+//                if (IPC == IPC_MODE.socket) CompositorMain.server.socket_put_serial(out);
+                if (IPC == IPC_MODE.shared_memory)
                     GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, out);
                 redraw = true;
             } else if (command == GLIS_SERVER_COMMANDS.modify_window) {
@@ -283,19 +471,20 @@ int COMPOSITORMAIN__() {
                 redraw = true;
                 size_t Client_id;
                 in.get<size_t>(&Client_id);
-                if (IPC == IPC_MODE.socket) {
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%sreceived id: %zu", CompositorMain.server.TAG, Client_id);
-                } else {
+//                if (IPC == IPC_MODE.socket) {
+//                    if (SERVER_LOG_TRANSFER_INFO)
+//                        LOG_INFO_SERVER("%sreceived id: %zu", CompositorMain.server.TAG, Client_id);
+                if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("received id: %zu", Client_id);
                 }
                 GLint *tex_dimens;
                 assert(in.get_raw_pointer<GLint>(&tex_dimens) == 2);
-                if (IPC == IPC_MODE.socket) {
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%sreceived w: %d, h: %d",
-                                        CompositorMain.server.TAG, tex_dimens[0], tex_dimens[1]);
-                } else {
+//                if (IPC == IPC_MODE.socket) {
+//                    if (SERVER_LOG_TRANSFER_INFO)
+//                        LOG_INFO_SERVER("%sreceived w: %d, h: %d",
+//                                        CompositorMain.server.TAG, tex_dimens[0], tex_dimens[1]);
+//                } else {
+                if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("received w: %d, h: %d", tex_dimens[0], tex_dimens[1]);
                 }
                 struct Client_Window *CW = static_cast<Client_Window *>(
@@ -305,13 +494,14 @@ int COMPOSITORMAIN__() {
                 GLIS_error_to_string_exec_GL(
                     glBindTexture(GL_TEXTURE_2D, CW->TEXTURE));
                 GLuint *texdata = nullptr;
+//                if (IPC == IPC_MODE.socket) {
+//                    in.get_raw_pointer<GLuint>(&texdata);
+//                }
                 if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("reading texture");
                     GLIS_shared_memory_read_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
                                                     reinterpret_cast<int8_t **>(&texdata));
                     LOG_INFO("read texture");
-                } else if (IPC == IPC_MODE.socket) {
-                    in.get_raw_pointer<GLuint>(&texdata);
                 }
                 GLIS_error_to_string_exec_GL(
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_dimens[0], tex_dimens[1], 0,
@@ -340,13 +530,14 @@ int COMPOSITORMAIN__() {
                 GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
                 out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
                 out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
-                if (IPC == IPC_MODE.socket) {
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
-                                        CompositorMain.server.TAG,
-                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
-                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
-                } else {
+//                if (IPC == IPC_MODE.socket) {
+//                    if (SERVER_LOG_TRANSFER_INFO)
+//                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
+//                                        CompositorMain.server.TAG,
+//                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
+//                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+//                }
+                if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("sending id %d, sise: %zu",
                              GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
                              GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
@@ -365,13 +556,14 @@ int COMPOSITORMAIN__() {
                 GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
                 out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
                 out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-                if (IPC == IPC_MODE.socket) {
-                    if (SERVER_LOG_TRANSFER_INFO)
-                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
-                                        CompositorMain.server.TAG,
-                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
-                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-                } else {
+//                if (IPC == IPC_MODE.socket) {
+//                    if (SERVER_LOG_TRANSFER_INFO)
+//                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
+//                                        CompositorMain.server.TAG,
+//                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
+//                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+//                }
+                if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("sending id %d, sise: %zu", GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
                              GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
                 }
@@ -418,6 +610,7 @@ int COMPOSITORMAIN__() {
             draw:
             if (redraw) {
                 double start = now_ms();
+                fps_frames++;
                 LOG_INFO("rendering");
                 GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
                 GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
@@ -456,6 +649,13 @@ int COMPOSITORMAIN__() {
                 LOG_INFO("rendered in %G milliseconds", end - start);
                 LOG_INFO("since loop start: %G milliseconds", end - loop_start);
                 LOG_INFO("since start: %G milliseconds", end - program_start);
+            }
+            double delta_t = now_ms() - fps_start;
+            double fps = delta_t - static_cast<double>(fps_frames);
+            if (delta_t > 1000) {
+                LOG_INFO("FPS: %G", fps);
+                fps_frames = 0;
+                fps_start = now_ms();
             }
         }
         SYNC_STATE = STATE.response_shutting_down;
