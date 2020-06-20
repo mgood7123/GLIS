@@ -56,7 +56,7 @@ class GLIS_CLASS CompositorMain;
 char *executableDir;
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
-                                                                                    jclass type,
+                                                                                    jobject type,
                                                                                     jobject surface)
 {
     if (surface != nullptr) {
@@ -150,18 +150,22 @@ void testFont() {
 
         SYNC_STATE = STATE.response_started_up;
 
-        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 1.0F, 1.0F, 1.0F));
-        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
+        glClearColor(0.0F, 1.0F, 1.0F, 1.0F);
+        glClear(GL_COLOR_BUFFER_BIT);
         GLfloat w = static_cast<GLfloat>(CompositorMain.width);
         GLfloat h = static_cast<GLfloat>(CompositorMain.height);
-        GLIS_font_RenderText(w, h, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        GLIS_font_RenderText(w, h, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+        glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
 
-        GLIS_error_to_string_exec_EGL(
-                eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
+        GLIS_font_RenderText(w, h, "This is sample text", 0, 20, 1.0f, black);
+        GLIS_font_RenderText(w, h, "(C) LearnOpenGL.com", 0, h-20, 1.0f, black);
+
+        glDeleteProgram(GLIS_FONT_SHADER_PROGRAM);
+        glDeleteShader(GLIS_FONT_FRAGMENT_SHADER);
+        glDeleteShader(GLIS_FONT_VERTEX_SHADER);
+        eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
         GLIS_Sync_GPU();
         while(SYNC_STATE != STATE.request_shutdown) {
-
+            sleep(5);
         }
         SYNC_STATE = STATE.response_shutting_down;
         LOG_INFO("shutting down");
@@ -174,7 +178,6 @@ void testFont() {
         LOG_INFO("shut down");
         SYNC_STATE = STATE.response_shutdown;
     } else LOG_ERROR("failed to initialize main Compositor");
-    return;
 }
 
 int COMPOSITORMAIN__() {
@@ -218,13 +221,13 @@ int COMPOSITORMAIN__() {
         vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
         fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("Creating Shader program");
-        shaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+        shaderProgram = glCreateProgram();
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, vertexShader));
+        glAttachShader(shaderProgram, vertexShader);
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, fragmentShader));
+        glAttachShader(shaderProgram, fragmentShader);
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec_GL(glLinkProgram(shaderProgram));
+        glLinkProgram(shaderProgram);
         LOG_INFO("Validating Shader program");
         GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
@@ -232,9 +235,9 @@ int COMPOSITORMAIN__() {
         // ------------------------------------------------------------------
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec_GL(glUseProgram(shaderProgram));
-        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
-        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
+        glUseProgram(shaderProgram);
+        glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
+        glClear(GL_COLOR_BUFFER_BIT);
         SERVER_LOG_TRANSFER_INFO = true;
         SYNC_STATE = STATE.response_started_up;
         LOG_INFO("started up");
@@ -245,10 +248,10 @@ int COMPOSITORMAIN__() {
             int h;
             GLuint TEXTURE;
         };
-        GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
-        GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
-        GLIS_error_to_string_exec_EGL(
-            eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
+        glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+            eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
         GLIS_Sync_GPU();
         bool stop_drawing = false;
         unsigned int fps_frames = 0;
@@ -376,10 +379,10 @@ int COMPOSITORMAIN__() {
                 }
                 struct Client_Window *CW = static_cast<Client_Window *>(
                     CompositorMain.KERNEL.table->table[Client_id]->resource);
-                GLIS_error_to_string_exec_GL(
-                    glGenTextures(1, &CW->TEXTURE));
-                GLIS_error_to_string_exec_GL(
-                    glBindTexture(GL_TEXTURE_2D, CW->TEXTURE));
+
+                    glGenTextures(1, &CW->TEXTURE);
+
+                    glBindTexture(GL_TEXTURE_2D, CW->TEXTURE);
                 GLuint *texdata = nullptr;
 //                if (IPC == IPC_MODE.socket) {
 //                    in.get_raw_pointer<GLuint>(&texdata);
@@ -390,25 +393,25 @@ int COMPOSITORMAIN__() {
                                                     reinterpret_cast<int8_t **>(&texdata));
                     LOG_INFO("read texture");
                 }
-                GLIS_error_to_string_exec_GL(
+
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_dimens[0], tex_dimens[1], 0,
                                  GL_RGBA, GL_UNSIGNED_BYTE, texdata)
-                );
+                ;
                 if (texdata != nullptr) free(texdata);
-                GLIS_error_to_string_exec_GL(glGenerateMipmap(GL_TEXTURE_2D));
-                GLIS_error_to_string_exec_GL(
+                glGenerateMipmap(GL_TEXTURE_2D);
+
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                                    GL_NEAREST));
-                GLIS_error_to_string_exec_GL(
+                                    GL_NEAREST);
+
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                                    GL_LINEAR));
-                GLIS_error_to_string_exec_GL(
+                                    GL_LINEAR);
+
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                                    GL_CLAMP_TO_BORDER));
-                GLIS_error_to_string_exec_GL(
+                                    GL_CLAMP_TO_BORDER);
+
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                                    GL_CLAMP_TO_BORDER));
-                GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+                                    GL_CLAMP_TO_BORDER);
+                glBindTexture(GL_TEXTURE_2D, 0);
             } else if (command == GLIS_SERVER_COMMANDS.shm_texture) {
                 double start = now_ms();
                 assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
@@ -499,8 +502,8 @@ int COMPOSITORMAIN__() {
                 double start = now_ms();
                 fps_frames++;
                 LOG_INFO("rendering");
-                GLIS_error_to_string_exec_GL(glClearColor(0.0F, 0.0F, 1.0F, 1.0F));
-                GLIS_error_to_string_exec_GL(glClear(GL_COLOR_BUFFER_BIT));
+                glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
+                glClear(GL_COLOR_BUFFER_BIT);
                 if (!stop_drawing) {
                     int page = 1;
                     size_t index = 0;
@@ -529,8 +532,8 @@ int COMPOSITORMAIN__() {
                              drawn == 1 ? "window" : "windows", endK - startK);
                 }
                 GLIS_Sync_GPU();
-                GLIS_error_to_string_exec_EGL(
-                    eglSwapBuffers(CompositorMain.display, CompositorMain.surface));
+
+                    eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
                 GLIS_Sync_GPU();
                 double end = now_ms();
                 LOG_INFO("rendered in %G milliseconds", end - start);
@@ -550,9 +553,9 @@ int COMPOSITORMAIN__() {
 
         // clean up
         LOG_INFO("Cleaning up");
-        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
+        glDeleteProgram(shaderProgram);
+        glDeleteShader(fragmentShader);
+        glDeleteShader(vertexShader);
         GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");

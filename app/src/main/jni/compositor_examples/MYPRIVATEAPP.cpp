@@ -35,7 +35,6 @@ int main() {
     int W = 1000;
     int H = 1000;
     if (GLIS_setupOffScreenRendering(G, W, H)) {
-        GLIS_error_to_string();
         // create a new texture
         GLuint FB;
         GLuint RB;
@@ -48,19 +47,19 @@ int main() {
         vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
         fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("Creating Shader program");
-        shaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+        shaderProgram = glCreateProgram();
         LOG_INFO("Attaching vertex Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, vertexShader));
+        glAttachShader(shaderProgram, vertexShader);
         LOG_INFO("Attaching fragment Shader to program");
-        GLIS_error_to_string_exec_GL(glAttachShader(shaderProgram, fragmentShader));
+        glAttachShader(shaderProgram, fragmentShader);
         LOG_INFO("Linking Shader program");
-        GLIS_error_to_string_exec_GL(glLinkProgram(shaderProgram));
+        glLinkProgram(shaderProgram);
         LOG_INFO("Validating Shader program");
         GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
 
         LOG_INFO("Using Shader program");
-        GLIS_error_to_string_exec_GL(glUseProgram(shaderProgram));
+        glUseProgram(shaderProgram);
 //        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 //        glClear(GL_COLOR);
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
@@ -85,12 +84,12 @@ int main() {
         LOG_INFO("created 21 windows in %G milliseconds", end - program_start);
 
         LOG_INFO("Cleaning up");
-        GLIS_error_to_string_exec_GL(glDeleteProgram(shaderProgram));
-        GLIS_error_to_string_exec_GL(glDeleteShader(fragmentShader));
-        GLIS_error_to_string_exec_GL(glDeleteShader(vertexShader));
-        GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
-        GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
-        GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
+        glDeleteProgram(shaderProgram);
+        glDeleteShader(fragmentShader);
+        glDeleteShader(vertexShader);
+        glDeleteTextures(1, &renderedTexture);
+        glDeleteRenderbuffers(1, &RB);
+        glDeleteFramebuffers(1, &FB);
         GLIS_destroy_GLIS(G);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");

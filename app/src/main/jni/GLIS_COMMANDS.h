@@ -521,7 +521,7 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
                            GLint texture_height_to) {
     LOG_INFO("uploading texture");
     GLIS_Sync_GPU();
-    GLIS_error_to_string_exec_EGL(eglSwapBuffers(GLIS.display, GLIS.surface));
+    eglSwapBuffers(GLIS.display, GLIS.surface);
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.socket || IPC == IPC_MODE.shared_memory) {
         if (texture_width_to != 0 && texture_height_to != 0) {
@@ -536,10 +536,10 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
             TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
             TEXDATA = new GLuint[TEXDATA_LEN];
             memset(TEXDATA, 0, TEXDATA_LEN);
-            GLIS_error_to_string_exec_GL(
+
                 glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
                              TEXDATA)
-            );
+            ;
         }
         serializer tex;
         tex.add<int>(GLIS_SERVER_COMMANDS.texture);
@@ -577,9 +577,9 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
         } else if (IPC == IPC_MODE.texture) {
             TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
             TEXDATA = new GLuint[TEXDATA_LEN];
-            GLIS_error_to_string_exec_GL(
+
                 glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
-                             TEXDATA));
+                             TEXDATA);
             SYNC_STATE = STATE.response_uploaded;
         }
         LOG_INFO("uploaded texture");

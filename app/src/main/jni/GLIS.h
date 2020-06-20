@@ -5,6 +5,9 @@
 #ifndef GLNE_GLIS_H
 #define GLNE_GLIS_H
 
+// GLIS_error_to_string_exec\(([\s\S]*?)\);
+// $1;
+
 #include <android/native_window.h> // requires ndk r5 or newer
 #include <EGL/egl.h> // requires ndk r5 or newer
 #include <GLES3/gl32.h>
@@ -18,12 +21,14 @@
 #include <unistd.h>
 #include <poll.h>
 
+#include <sstream>
+
 #include "logger.h"
 #include "server.h"
 #include "WINAPI/SDK/include/Windows/windows.h"
 #include "GLIS_IPC.h"
 
-#define LOG_TAG "EglSample"
+#define LOG_TAG "GLIS"
 
 bool GLIS_LOG_PRINT_NON_ERRORS = false;
 bool GLIS_LOG_PRINT_VERTEX = false;
@@ -82,7 +87,7 @@ std::string GLIS_INTERNAL_MESSAGE_PREFIX = "";
 
 #define GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING_DONT_PRINT_ERROR(LOGGER, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
     GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, nullptr, UNNAMED_STRING, nullptr, NAMED_STRING, false)
-    
+
 #define GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING(LOGGER, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
     GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, UNNAMED_STRING, nullptr, NAMED_STRING, nullptr, true)
 
@@ -294,7 +299,6 @@ void GLIS_destroy_GLIS(class GLIS_CLASS & GLIS) {
     GLIS.init_GLIS = false;
 }
 
-
 bool GLIS_initialize_display(class GLIS_CLASS & GLIS) {
     GLIS.display = GLIS_error_to_string_exec_EGL(eglGetDisplay(EGL_DEFAULT_DISPLAY));
     if (GLIS.display == EGL_NO_DISPLAY) return false;
@@ -351,13 +355,78 @@ bool GLIS_get_width_height(class GLIS_CLASS & GLIS) {
     return true;
 }
 
-bool GLIS_initialize(class GLIS_CLASS & GLIS, GLint surface_type) {
+static void on_gl_error(GLenum        source,
+                        GLenum        type,
+                        GLuint        id,
+                        GLenum        severity,
+                        GLsizei       length,
+                        const GLchar* message,
+                        const void*   userParam) {
+    std::stringstream MessageSS;
+
+    MessageSS << "OpenGL debug message " << id << " (";
+    switch (source)
+    {
+        // clang-format off
+        case GL_DEBUG_SOURCE_API:             MessageSS << "Source: API.";             break;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   MessageSS << "Source: Window System.";   break;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER: MessageSS << "Source: Shader Compiler."; break;
+        case GL_DEBUG_SOURCE_THIRD_PARTY:     MessageSS << "Source: Third Party.";     break;
+        case GL_DEBUG_SOURCE_APPLICATION:     MessageSS << "Source: Application.";     break;
+        case GL_DEBUG_SOURCE_OTHER:           MessageSS << "Source: Other.";           break;
+        default:                              MessageSS << "Source: Unknown (" << source << ").";
+            // clang-format on
+    }
+
+    switch (type)
+    {
+        // clang-format off
+        case GL_DEBUG_TYPE_ERROR:               MessageSS << " Type: ERROR.";                break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: MessageSS << " Type: Deprecated Behaviour."; break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  MessageSS << " Type: UNDEFINED BEHAVIOUR.";  break;
+        case GL_DEBUG_TYPE_PORTABILITY:         MessageSS << " Type: Portability.";          break;
+        case GL_DEBUG_TYPE_PERFORMANCE:         MessageSS << " Type: PERFORMANCE.";          break;
+        case GL_DEBUG_TYPE_MARKER:              MessageSS << " Type: Marker.";               break;
+        case GL_DEBUG_TYPE_PUSH_GROUP:          MessageSS << " Type: Push Group.";           break;
+        case GL_DEBUG_TYPE_POP_GROUP:           MessageSS << " Type: Pop Group.";            break;
+        case GL_DEBUG_TYPE_OTHER:               MessageSS << " Type: Other.";                break;
+        default:                                MessageSS << " Type: Unknown (" << type << ").";
+            // clang-format on
+    }
+
+    switch (severity)
+    {
+        // clang-format off
+        case GL_DEBUG_SEVERITY_HIGH:         MessageSS << " Severity: HIGH";         break;
+        case GL_DEBUG_SEVERITY_MEDIUM:       MessageSS << " Severity: Medium";       break;
+        case GL_DEBUG_SEVERITY_LOW:          MessageSS << " Severity: Low";          break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION: MessageSS << " Severity: Notification"; break;
+        default:                             MessageSS << " Severity: Unknown (" << severity << ")"; break;
+            // clang-format on
+    }
+
+    MessageSS << "): " << message;
+
+    auto x = MessageSS.str();
+    LOG_ERROR("%s", x.c_str());
+}
+
+static void enable_debug_callbacks(void) {
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(on_gl_error, nullptr);
+    if (glGetError() != GL_NO_ERROR) {
+        LOG_ERROR("Failed to enable debug messages");
+    }
+}
+
+bool GLIS_initialize(class GLIS_CLASS & GLIS, GLint surface_type, bool debug) {
     if (GLIS.init_GLIS) return true;
 
     LOG_INFO("Initializing");
 
-    if ( eglBindAPI(EGL_OPENGL_ES_API) == EGL_FALSE) return false;
-    
+    if (eglBindAPI(EGL_OPENGL_ES_API) == EGL_FALSE) return false;
+
     LOG_INFO("Initializing display");
     if (!GLIS_initialize_display(GLIS)) {
         LOG_ERROR("Failed to initialize display");
@@ -365,6 +434,25 @@ bool GLIS_initialize(class GLIS_CLASS & GLIS, GLint surface_type) {
         return false;
     }
     LOG_INFO("Initialized display");
+
+    if (debug) {
+        if (GLIS.eglMajVers == 1 && GLIS.eglMinVers == 5) {
+            LOG_INFO("debug mode enabled");
+            const EGLint context_attributes[] = {
+                    EGL_CONTEXT_CLIENT_VERSION, 3, EGL_CONTEXT_OPENGL_DEBUG, EGL_TRUE, EGL_NONE
+            };
+            GLIS.context_attributes = context_attributes;
+        }
+        LOG_INFO("debug mode requested however EGL 1.5 or higher is required");
+        LOG_INFO("you have EGL %d.%d", GLIS.eglMajVers, GLIS.eglMinVers);
+        LOG_INFO("debug mode will be disabled");
+        const EGLint context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+        GLIS.context_attributes = context_attributes;
+    } else {
+        const EGLint context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+        GLIS.context_attributes = context_attributes;
+    }
+
     LOG_INFO("Initializing configuration");
     if (!GLIS_initialize_configuration(GLIS)) {
         LOG_ERROR("Failed to initialize configuration");
@@ -422,13 +510,10 @@ bool GLIS_setupOnScreenRendering(class GLIS_CLASS & GLIS, EGLContext shared_cont
     const EGLint config[] = { EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT, EGL_NONE };
     GLIS.configuration_attributes = config;
 
-    const EGLint context[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
-    GLIS.context_attributes = context;
-
     const EGLint surface[] = { EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT, EGL_BLUE_SIZE, 8, EGL_GREEN_SIZE, 8, EGL_RED_SIZE, 8, EGL_ALPHA_SIZE, 8, EGL_DEPTH_SIZE, 16, EGL_NONE };
     GLIS.surface_attributes = surface;
 
-    return GLIS_initialize(GLIS, EGL_WINDOW_BIT);
+    return GLIS_initialize(GLIS, EGL_WINDOW_BIT, true);
 }
 
 bool GLIS_setupOnScreenRendering(class GLIS_CLASS & GLIS) {
@@ -444,13 +529,10 @@ bool GLIS_setupOffScreenRendering(class GLIS_CLASS & GLIS, int w, int h, EGLCont
     const EGLint config[] = { EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT, EGL_NONE };
     GLIS.configuration_attributes = config;
 
-    const EGLint context[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
-    GLIS.context_attributes = context;
-
     const EGLint surface[] = { EGL_WIDTH, w, EGL_HEIGHT, h, EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGB, EGL_TEXTURE_TARGET, EGL_TEXTURE_2D, EGL_NONE };
     GLIS.surface_attributes = surface;
 
-    return GLIS_initialize(GLIS, EGL_PBUFFER_BIT);
+    return GLIS_initialize(GLIS, EGL_PBUFFER_BIT, true);
 }
 
 bool GLIS_setupOffScreenRendering(class GLIS_CLASS & GLIS, int w, int h) {
@@ -459,7 +541,7 @@ bool GLIS_setupOffScreenRendering(class GLIS_CLASS & GLIS, int w, int h) {
 
 GLboolean GLIS_ShaderCompilerSupported() {
     GLboolean GLSC_supported;
-    GLIS_error_to_string_exec_GL(glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported));
+    glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported);
     LOG_INFO("Supports Shader Compiler: %s", GLSC_supported == GL_TRUE ? "true" : "false");
     return GLSC_supported;
 }
@@ -485,28 +567,28 @@ GLuint GLIS_createShader(GLenum shaderType, const char * & src) {
                 break;
         }
         LOG_INFO("Creating %s Shader", SHADER_TYPE);
-        GLuint shader = GLIS_error_to_string_exec_GL(glCreateShader(shaderType));
+        GLuint shader = glCreateShader(shaderType);
         if (!shader) {
             return 0;
         }
-        GLIS_error_to_string_exec_GL(glShaderSource(shader, 1, &src, nullptr));
+        glShaderSource(shader, 1, &src, nullptr);
         GLint compiled = GL_FALSE;
         LOG_INFO("Compiling %s Shader", SHADER_TYPE);
-        GLIS_error_to_string_exec_GL(glCompileShader(shader));
-        GLIS_error_to_string_exec_GL(glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled));
+        glCompileShader(shader);
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
         if (compiled != GL_TRUE) {
             GLint infoLogLen = 0;
-            GLIS_error_to_string_exec_GL(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLen));
+            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLen);
             if (infoLogLen > 0) {
                 GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
                 if (infoLog) {
-                    GLIS_error_to_string_exec_GL(
-                            glGetShaderInfoLog(shader, infoLogLen, nullptr, infoLog));
+
+                            glGetShaderInfoLog(shader, infoLogLen, nullptr, infoLog);
                     LOG_ERROR("Could not compile %s shader:\n%s\n", SHADER_TYPE, infoLog);
                     free(infoLog);
                 }
             }
-            GLIS_error_to_string_exec_GL(glDeleteShader(shader));
+            glDeleteShader(shader);
             return 0;
         }
         assert(glIsShader(shader) == GL_TRUE);
@@ -516,20 +598,20 @@ GLuint GLIS_createShader(GLenum shaderType, const char * & src) {
 
 GLboolean GLIS_validate_program_link(GLuint & Program) {
     GLint linked = GL_FALSE;
-    GLIS_error_to_string_exec_GL(glGetProgramiv(Program, GL_LINK_STATUS, &linked));
+    glGetProgramiv(Program, GL_LINK_STATUS, &linked);
     if (linked != GL_TRUE) {
         GLint infoLogLen = 0;
-        GLIS_error_to_string_exec_GL(glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen));
+        glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen);
         if (infoLogLen > 0) {
             GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
             if (infoLog) {
-                GLIS_error_to_string_exec_GL(
-                        glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog));
+
+                        glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
                 LOG_ERROR("Could not link program:\n%s\n", infoLog);
                 free(infoLog);
             }
         }
-        GLIS_error_to_string_exec_GL(glDeleteProgram(Program));
+        glDeleteProgram(Program);
         return GL_FALSE;
     }
     return GL_TRUE;
@@ -537,21 +619,21 @@ GLboolean GLIS_validate_program_link(GLuint & Program) {
 
 GLboolean GLIS_validate_program_valid(GLuint & Program) {
     GLint validated = GL_FALSE;
-    GLIS_error_to_string_exec_GL(glValidateProgram(Program));
-    GLIS_error_to_string_exec_GL(glGetProgramiv(Program, GL_VALIDATE_STATUS, &validated));
+    glValidateProgram(Program);
+    glGetProgramiv(Program, GL_VALIDATE_STATUS, &validated);
     if (validated != GL_TRUE) {
         GLint infoLogLen = 0;
-        GLIS_error_to_string_exec_GL(glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen));
+        glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen);
         if (infoLogLen > 0) {
             GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
             if (infoLog) {
-                GLIS_error_to_string_exec_GL(
-                        glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog));
+
+                        glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
                 LOG_ERROR("Could not validate program:\n%s\n", infoLog);
                 free(infoLog);
             }
         }
-        GLIS_error_to_string_exec_GL(glDeleteProgram(Program));
+        glDeleteProgram(Program);
         return GL_FALSE;
     }
     return GL_TRUE;
@@ -560,7 +642,7 @@ GLboolean GLIS_validate_program_valid(GLuint & Program) {
 GLboolean GLIS_validate_program(GLuint & Program) {
     if (GLIS_validate_program_link(Program) == GL_TRUE)
         if (GLIS_validate_program_valid(Program) == GL_TRUE) {
-            GLboolean v = GLIS_error_to_string_exec_GL(glIsProgram(Program));
+            GLboolean v = glIsProgram(Program);
             return v;
         }
     return GL_FALSE;
@@ -951,14 +1033,14 @@ class GLIS_vertex_data {
 
         void init_attributes() {
             // position attribute
-            GLIS_error_to_string_exec_GL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
-            GLIS_error_to_string_exec_GL(glEnableVertexAttribArray(0));
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
             // color attribute
-            GLIS_error_to_string_exec_GL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))));
-            GLIS_error_to_string_exec_GL(glEnableVertexAttribArray(1));
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
             // texture coord attribute
-            GLIS_error_to_string_exec_GL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))));
-            GLIS_error_to_string_exec_GL(glEnableVertexAttribArray(2));
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+            glEnableVertexAttribArray(2);
         }
 };
 
@@ -1046,97 +1128,6 @@ struct GLIS_vertex_map_rectangle<TYPETO> GLIS_build_vertex_data_rect(TYPETO TYPE
     return m;
 }
 
-class GLIS_BACKUP {
-    public:
-        struct {
-            GLint __GL_READ_FRAMEBUFFER_BINDING, __GL_DRAW_FRAMEBUFFER_BINDING;
-        } framebuffer;
-        struct {
-            GLint __GL_RENDERBUFFER_BINDING, __GL_RENDERBUFFER_WIDTH, __GL_RENDERBUFFER_HEIGHT,
-                __GL_RENDERBUFFER_INTERNAL_FORMAT, __GL_RENDERBUFFER_RED_SIZE,
-                __GL_RENDERBUFFER_GREEN_SIZE, __GL_RENDERBUFFER_BLUE_SIZE,
-                __GL_RENDERBUFFER_ALPHA_SIZE, __GL_RENDERBUFFER_DEPTH_SIZE,
-                __GL_RENDERBUFFER_STENCIL_SIZE, __GL_RENDERBUFFER_SAMPLES;
-        } renderbuffer;
-        struct {
-            GLint __GL_ACTIVE_TEXTURE, __GL_TEXTURE_BUFFER_BINDING, __GL_VERTEX_ARRAY_BINDING,
-                __GL_ARRAY_BUFFER_BINDING, __GL_ELEMENT_ARRAY_BUFFER_BINDING;
-        } texture;
-        struct {
-            GLint __GL_CURRENT_PROGRAM;
-        } program;
-};
-
-void GLIS_backup_framebuffer(GLIS_BACKUP &backup) {
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
-//    GLIS_error_to_string_exec_GL(glGetFramebufferAttachmentParameteriv(GL_READ_FRAMEBUFFER, GL_BACK, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
-}
-
-void GLIS_backup_renderbuffer(GLIS_BACKUP &backup) {
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_WIDTH));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_HEIGHT));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_INTERNAL_FORMAT));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_RED_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_RED_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_GREEN_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_GREEN_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_BLUE_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_BLUE_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_ALPHA_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_ALPHA_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_DEPTH_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_STENCIL_SIZE,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_STENCIL_SIZE));
-    GLIS_error_to_string_exec_GL(
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_SAMPLES,
-                                     &backup.renderbuffer.__GL_RENDERBUFFER_SAMPLES));
-}
-
-void GLIS_backup_texture(GLIS_BACKUP &backup) {
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
-}
-
-void GLIS_backup_program(GLIS_BACKUP &backup) {
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM));
-}
-
-void GLIS_backup(GLIS_BACKUP &backup) {
-    GLIS_backup_framebuffer(backup);
-    GLIS_backup_renderbuffer(backup);
-    GLIS_backup_texture(backup);
-    GLIS_backup_program(backup);
-};
-
 template <typename TYPE>
 void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, TYPE max_x, TYPE max_y) {
     class GLIS_rect<GLint> r = GLIS_points_to_rect<GLint>(INITIALIZER, x1, y1, x2, y2);
@@ -1148,32 +1139,32 @@ void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, T
     GLuint vertex_buffer_object;
     GLuint element_buffer_object;
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Generating buffers");
-    GLIS_error_to_string_exec_GL(glGenVertexArrays(1, &vertex_array_object));
-    GLIS_error_to_string_exec_GL(glGenBuffers(1, &vertex_buffer_object));
-    GLIS_error_to_string_exec_GL(glGenBuffers(1, &element_buffer_object));
+    glGenVertexArrays(1, &vertex_array_object);
+    glGenBuffers(1, &vertex_buffer_object);
+    glGenBuffers(1, &element_buffer_object);
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Binding buffers");
-    GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object));
-    GLIS_error_to_string_exec_GL(glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object));
-    GLIS_error_to_string_exec_GL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW));
+    glBindVertexArray(vertex_array_object);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+    glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW);
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Initializing Attributes");
     v.init_attributes();
 
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Drawing rectangle");
-    GLIS_error_to_string_exec_GL(glBindVertexArray(vertex_array_object));
-    GLIS_error_to_string_exec_GL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-    GLIS_error_to_string_exec_GL(glBindVertexArray(0));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-    GLIS_error_to_string_exec_GL(glDeleteVertexArrays(1, &vertex_array_object));
-    GLIS_error_to_string_exec_GL(glDeleteBuffers(1,&vertex_buffer_object));
-    GLIS_error_to_string_exec_GL(glDeleteBuffers(1, &element_buffer_object));
+    glBindVertexArray(vertex_array_object);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteVertexArrays(1, &vertex_array_object);
+    glDeleteBuffers(1,&vertex_buffer_object);
+    glDeleteBuffers(1, &element_buffer_object);
 }
 
 void GLIS_set_texture(GLenum textureUnit, GLuint texture) {
-    GLIS_error_to_string_exec_GL(glActiveTexture(textureUnit));
-    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, texture));
+    glActiveTexture(textureUnit);
+    glBindTexture(GL_TEXTURE_2D, texture);
 }
 
 template <typename TYPE>
@@ -1183,18 +1174,18 @@ void GLIS_draw_rectangle(GLenum textureUnit, GLuint texture, TYPE INITIALIZER, T
 }
 
 void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & renderedTexture, GLint & texture_width, GLint & texture_height) {
-    GLIS_error_to_string_exec_GL(glGenFramebuffers(1, &framebuffer));
-    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
-    GLIS_error_to_string_exec_GL(glGenRenderbuffers(1, &renderbuffer));
-    GLIS_error_to_string_exec_GL(glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer));
-    GLIS_error_to_string_exec_GL(glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height));
-    GLIS_error_to_string_exec_GL(
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
-                                  renderbuffer));
-    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer));
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glGenRenderbuffers(1, &renderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height);
 
-    GLenum FramebufferStatus = GLIS_error_to_string_exec_GL(
-        glCheckFramebufferStatus(GL_FRAMEBUFFER));
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
+                                  renderbuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+    GLenum FramebufferStatus =
+        glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
         LOG_ERROR("framebuffer is not complete");
@@ -1202,20 +1193,20 @@ void GLIS_texture_buffer(GLuint & framebuffer, GLuint & renderbuffer, GLuint & r
         LOG_INFO("framebuffer is complete");
 
     // create a new texture
-    GLIS_error_to_string_exec_GL(glGenTextures(1, &renderedTexture));
-    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, renderedTexture));
-    GLIS_error_to_string_exec_GL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,0));
-    GLIS_error_to_string_exec_GL(
-        glGenerateMipmap(GL_TEXTURE_2D)); // this DOES NOT affect the total size of read pixels
-    GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-    GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-    GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+    glGenTextures(1, &renderedTexture);
+    glBindTexture(GL_TEXTURE_2D, renderedTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,0);
+
+        glGenerateMipmap(GL_TEXTURE_2D); // this DOES NOT affect the total size of read pixels
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     // Set "renderedTexture" as our colour attachement #0
-    GLIS_error_to_string_exec_GL(glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0));
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
     // Set the list of draw buffers.
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    GLIS_error_to_string_exec_GL(glDrawBuffers(1, DrawBuffers)); // "1" is the size of DrawBuffers
+    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
 }
 
 GLuint GLIS_current_texture = 0;
@@ -1223,10 +1214,10 @@ GLuint GLIS_current_texture = 0;
 void GLIS_Sync_GPU() {
 //    LOG_INFO("synchronizing with GPU");
     double start = now_ms();
-    GLsync GPU = GLIS_error_to_string_exec_GL(glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0));
+    GLsync GPU = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
     if (GPU == nullptr) LOG_ERROR("glFenceSync failed");
 //    LOG_INFO("synchronizing");
-    GLIS_error_to_string_exec_GL(glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED));
+    glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED);
 //    LOG_INFO("synchronized");
     glDeleteSync(GPU);
     double end = now_ms();
@@ -1256,29 +1247,122 @@ int SYNC_STATE = STATE.no_state;
 GLuint *TEXDATA = nullptr;
 size_t TEXDATA_LEN = 0;
 
+class GLIS_BACKUP {
+public:
+    struct {
+        GLint __GL_READ_FRAMEBUFFER_BINDING, __GL_DRAW_FRAMEBUFFER_BINDING;
+    } framebuffer;
+    struct {
+        GLint __GL_RENDERBUFFER_BINDING, __GL_RENDERBUFFER_WIDTH, __GL_RENDERBUFFER_HEIGHT,
+                __GL_RENDERBUFFER_INTERNAL_FORMAT, __GL_RENDERBUFFER_RED_SIZE,
+                __GL_RENDERBUFFER_GREEN_SIZE, __GL_RENDERBUFFER_BLUE_SIZE,
+                __GL_RENDERBUFFER_ALPHA_SIZE, __GL_RENDERBUFFER_DEPTH_SIZE,
+                __GL_RENDERBUFFER_STENCIL_SIZE, __GL_RENDERBUFFER_SAMPLES;
+    } renderbuffer;
+    struct {
+        GLint __GL_ACTIVE_TEXTURE, __GL_TEXTURE_BUFFER_BINDING, __GL_VERTEX_ARRAY_BINDING,
+                __GL_ARRAY_BUFFER_BINDING, __GL_ELEMENT_ARRAY_BUFFER_BINDING;
+    } texture;
+    struct {
+        GLint __GL_CURRENT_PROGRAM;
+    } program;
+};
+
+void GLIS_backup_framebuffer(GLIS_BACKUP &backup) {
+    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
+                  &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
+    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
+                  &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING);
+//    glGetFramebufferAttachmentParameteriv(GL_READ_FRAMEBUFFER, GL_BACK, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
+}
+
+void GLIS_backup_renderbuffer(GLIS_BACKUP &backup) {
+
+    glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_WIDTH);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_HEIGHT);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_INTERNAL_FORMAT);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_RED_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_RED_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_GREEN_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_GREEN_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_BLUE_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_BLUE_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_ALPHA_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_ALPHA_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_DEPTH_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_STENCIL_SIZE,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_STENCIL_SIZE);
+
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_SAMPLES,
+                                 &backup.renderbuffer.__GL_RENDERBUFFER_SAMPLES);
+}
+
+void GLIS_backup_texture(GLIS_BACKUP &backup) {
+
+    glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE);
+
+    glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING);
+
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING);
+
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING);
+    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                  &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
+    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                  &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
+}
+
+void GLIS_backup_program(GLIS_BACKUP &backup) {
+
+    glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM);
+}
+
+// IMPORTANT:
+
+void GLIS_backup(GLIS_BACKUP &backup) {
+    GLIS_backup_framebuffer(backup);
+    GLIS_backup_renderbuffer(backup);
+    GLIS_backup_texture(backup);
+    GLIS_backup_program(backup);
+}
+
 void
 GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from, int width_to,
             int height_to) {
     GLIS_BACKUP backup;
     // save
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
-    GLIS_error_to_string_exec_GL(
-        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM));
+    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING);
+    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
+                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
+
+        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING);
+
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE);
+
+        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING);
+
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING);
+
+        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING);
+    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
+                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
+
+        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM);
     const char *CHILDvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -1315,18 +1399,18 @@ void main()
     CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
     CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
     LOG_INFO("Creating Shader program");
-    CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+    CHILDshaderProgram = glCreateProgram();
     LOG_INFO("Attaching vertex Shader to program");
-    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+    glAttachShader(CHILDshaderProgram, CHILDvertexShader);
     LOG_INFO("Attaching fragment Shader to program");
-    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+    glAttachShader(CHILDshaderProgram, CHILDfragmentShader);
     LOG_INFO("Linking Shader program");
-    GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
+    glLinkProgram(CHILDshaderProgram);
     LOG_INFO("Validating Shader program");
     GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
     assert(ProgramIsValid == GL_TRUE);
     LOG_INFO("Using Shader program");
-    GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+    glUseProgram(CHILDshaderProgram);
     LOG_INFO("drawing rectangle");
     GLIS_draw_rectangle<GLint>(
         GL_TEXTURE0, renderedTexture, 0, 0, 0, width_to, height_to, width_from, height_from);
@@ -1334,32 +1418,34 @@ void main()
     TEXDATA_LEN = width_to * height_to * sizeof(GLuint);
     *TEXDATA = new GLuint[TEXDATA_LEN];
     memset(*TEXDATA, 0, TEXDATA_LEN);
-    GLIS_error_to_string_exec_GL(glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
-                                              *TEXDATA));
-    GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
-    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
-    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
-    GLIS_error_to_string_exec_GL(glDeleteTextures(1, &renderedTexture));
-    GLIS_error_to_string_exec_GL(glDeleteRenderbuffers(1, &RB));
-    GLIS_error_to_string_exec_GL(glDeleteFramebuffers(1, &FB));
+    glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
+                                              *TEXDATA);
+    glDeleteProgram(CHILDshaderProgram);
+    glDeleteShader(CHILDfragmentShader);
+    glDeleteShader(CHILDvertexShader);
+    glDeleteTextures(1, &renderedTexture);
+    glDeleteRenderbuffers(1, &RB);
+    glDeleteFramebuffers(1, &FB);
     // restore
-    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_READ_FRAMEBUFFER,
-                                                   static_cast<GLuint>(backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING)));
-    GLIS_error_to_string_exec_GL(glBindFramebuffer(GL_DRAW_FRAMEBUFFER,
-                                                   static_cast<GLuint>(backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING)));
-    GLIS_error_to_string_exec_GL(glBindRenderbuffer(GL_RENDERBUFFER,
-                                                    static_cast<GLuint>(backup.renderbuffer.__GL_RENDERBUFFER_BINDING)));
-    GLIS_error_to_string_exec_GL(
-        glActiveTexture(static_cast<GLenum>(backup.texture.__GL_ACTIVE_TEXTURE)));
-    GLIS_error_to_string_exec_GL(
-        glBindVertexArray(static_cast<GLuint>(backup.texture.__GL_VERTEX_ARRAY_BINDING)));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER,
-                                              static_cast<GLuint>(backup.texture.__GL_ARRAY_BUFFER_BINDING)));
-    GLIS_error_to_string_exec_GL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
-                                              static_cast<GLuint>(backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING)));
-    GLIS_error_to_string_exec_GL(
-        glUseProgram(static_cast<GLuint>(backup.program.__GL_CURRENT_PROGRAM)));
+    glBindFramebuffer(GL_READ_FRAMEBUFFER,
+                                                   static_cast<GLuint>(backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,
+                                                   static_cast<GLuint>(backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
+    glBindRenderbuffer(GL_RENDERBUFFER,
+                                                    static_cast<GLuint>(backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
+
+        glActiveTexture(static_cast<GLenum>(backup.texture.__GL_ACTIVE_TEXTURE));
+
+        glBindVertexArray(static_cast<GLuint>(backup.texture.__GL_VERTEX_ARRAY_BINDING));
+    glBindBuffer(GL_ARRAY_BUFFER,
+                                              static_cast<GLuint>(backup.texture.__GL_ARRAY_BUFFER_BINDING));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
+                                              static_cast<GLuint>(backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
+
+        glUseProgram(static_cast<GLuint>(backup.program.__GL_CURRENT_PROGRAM));
 }
+
+// BACKUP USAGE: ^
 
 // fonts
 
@@ -1404,11 +1490,11 @@ struct Character {
 };
 
 #include <map>
+#include <freetype/ftbbox.h>
 
 std::map<GLchar, Character> sCharacters;
 
-bool GLIS_font_store_ascii() {
-
+bool GLIS_font_2D_store_ascii() {
     // Load first 128 characters of ASCII set
     int loaded = 0;
     for (GLubyte c = 0; c < 128; c++) {
@@ -1420,9 +1506,9 @@ bool GLIS_font_store_ascii() {
         loaded++;
         // Generate texture
         GLuint texture;
-        GLIS_error_to_string_exec_GL(glGenTextures(1, &texture));
-        GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, texture));
-        GLIS_error_to_string_exec_GL(glTexImage2D(
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
                 GL_R8,
@@ -1432,12 +1518,12 @@ bool GLIS_font_store_ascii() {
                 GL_RED,
                 GL_UNSIGNED_BYTE,
                 GLIS_font_face->glyph->bitmap.buffer
-        ));
+        );
         // Set texture options
-        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GLIS_error_to_string_exec_GL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // Now store character for later use
         Character character = {
                 texture,
@@ -1447,7 +1533,7 @@ bool GLIS_font_store_ascii() {
         };
         sCharacters.insert(std::pair<GLchar, Character>(c, character));
     }
-    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+    glBindTexture(GL_TEXTURE_2D, 0);
     return loaded != 0;
 }
 
@@ -1456,40 +1542,14 @@ void GLIS_font_free() {
     FT_Done_FreeType(GLIS_font);
 }
 
-bool GLIS_FONT_INITIALIZED = false;
+GLuint GLIS_FONT_SHADER_PROGRAM;
+GLuint GLIS_FONT_VERTEX_SHADER;
+GLuint GLIS_FONT_FRAGMENT_SHADER;
+GLuint GLIS_FONT_VAO;
+GLuint GLIS_FONT_VBO;
 
-bool GLIS_load_font(const char * font, int width, int height) {
-    // TODO: smart load
-    if (!GLIS_font_init()) return false;
-    if (!GLIS_font_load(font)) {
-        FT_Done_FreeType(GLIS_font);
-        return false;
-    }
-    GLIS_font_set_size(width, height);
-
-    // disable byte-alignment restriction
-    GLIS_error_to_string_exec_GL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-
-    bool r = GLIS_font_store_ascii();
-
-    // enable byte-alignment restriction
-    GLIS_error_to_string_exec_GL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));
-
-    if (!r) {
-        GLIS_font_free();
-        return false;
-    }
-    return true;
-}
-
-// TODO: remove these
-
-unsigned int GLIS_VAO, GLIS_VBO;
-
-void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float y, float scale, glm::vec3 color) {
-
-    const char *CHILDvertexSource = R"glsl( #version 300 es
-
+bool GLIS_font_init_shaders() {
+    const char *vs = R"glsl( #version 300 es
 layout (location = 0) in vec4 vertex;
 out vec2 TexCoords;
 
@@ -1502,7 +1562,7 @@ void main()
 }
 )glsl";
 
-    const char *CHILDfragmentSource = R"glsl( #version 300 es
+    const char *fs = R"glsl( #version 300 es
 precision mediump float;
 
 in vec2 TexCoords;
@@ -1518,114 +1578,173 @@ void main()
 }
 )glsl";
 
-    GLuint CHILDshaderProgram;
-    GLuint CHILDvertexShader;
-    GLuint CHILDfragmentShader;
-    CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
-    CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
+    GLIS_FONT_VERTEX_SHADER = GLIS_createShader(GL_VERTEX_SHADER, vs);
+    GLIS_FONT_FRAGMENT_SHADER = GLIS_createShader(GL_FRAGMENT_SHADER, fs);
     LOG_INFO("Creating Shader program");
-    CHILDshaderProgram = GLIS_error_to_string_exec_GL(glCreateProgram());
+    GLIS_FONT_SHADER_PROGRAM = glCreateProgram();
     LOG_INFO("Attaching vertex Shader to program");
-    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDvertexShader));
+    glAttachShader(GLIS_FONT_SHADER_PROGRAM, GLIS_FONT_VERTEX_SHADER);
     LOG_INFO("Attaching fragment Shader to program");
-    GLIS_error_to_string_exec_GL(glAttachShader(CHILDshaderProgram, CHILDfragmentShader));
+    glAttachShader(GLIS_FONT_SHADER_PROGRAM, GLIS_FONT_FRAGMENT_SHADER);
     LOG_INFO("Linking Shader program");
-    GLIS_error_to_string_exec_GL(glLinkProgram(CHILDshaderProgram));
+    glLinkProgram(GLIS_FONT_SHADER_PROGRAM);
     LOG_INFO("Validating Shader program");
-    GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
+    GLboolean ProgramIsValid = GLIS_validate_program(GLIS_FONT_SHADER_PROGRAM);
     assert(ProgramIsValid == GL_TRUE);
+    LOG_INFO("Shader program is valid");
+    // Configure VAO/VBO for texture quads
+    glGenVertexArrays(1, &GLIS_FONT_VAO);
+    glGenBuffers(1, &GLIS_FONT_VBO);
+    glBindVertexArray(GLIS_FONT_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, GLIS_FONT_VAO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    return true;
+}
 
-    if (CHILDshaderProgram) {
-        // Configure VAO/VBO for texture quads
-        glGenVertexArrays(1, &GLIS_VAO);
-        glGenBuffers(1, &GLIS_VBO);
-        glBindVertexArray(GLIS_VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, GLIS_VAO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+bool GLIS_load_font(const char * font, int width, int height) {
+    // TODO: smart load
+    if (!GLIS_font_init_shaders()) return false;
+    if (!GLIS_font_init()) return false;
+    if (!GLIS_font_load(font)) {
+        FT_Done_FreeType(GLIS_font);
+        return false;
     }
+    GLIS_font_set_size(width, height);
 
-    LOG_INFO("Using Shader program");
-    GLIS_error_to_string_exec_GL(glUseProgram(CHILDshaderProgram));
+    // disable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    bool r = GLIS_font_2D_store_ascii();
+
+    // TODO: restore alignment from paramater
+
+    // enable byte-alignment restriction
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    if (!r) {
+        GLIS_font_free();
+        return false;
+    }
+    return true;
+}
+
+void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float y, float scale, glm::vec3 color) {
+
+    // Using Shader program
+    glUseProgram(GLIS_FONT_SHADER_PROGRAM);
+
+    // do something
 
     glm::mat4 projection = glm::ortho(0.0f, w, 0.0f, h);
 
-    GLuint loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "projection"));
-    GLIS_error_to_string_exec_GL(glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection)));
+    GLuint loc = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "projection");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    loc = GLIS_error_to_string_exec_GL(glGetUniformLocation(CHILDshaderProgram, "textColor"));
-    GLIS_error_to_string_exec_GL(glUniform3f(loc, color.x, color.y, color.z));
+    loc = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "textColor");
+    glUniform3f(loc, color.x, color.y, color.z);
 
+    // culling improves performance
     glEnable(GL_CULL_FACE);
+
+    // blend into background
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    GLIS_error_to_string_exec_GL(glActiveTexture(GL_TEXTURE0));
-    GLIS_error_to_string_exec_GL(glBindVertexArray(GLIS_VAO));
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(GLIS_FONT_VAO);
 
     // Iterate through all characters
     std::string::const_iterator c;
+    GLfloat y_ = y-h;
+    y_ = y_ < 0 ? -y_ : y_;
+
+    // first we calculate the maxY of each character we are going to be rendering
+
+    int topOffset = 0;
+    int bottomOffset = 0;
+
+    for (c = text.begin(); c != text.end(); c++)
+        if (sCharacters.count(*c) > 0) {
+            Character ch = sCharacters[*c];
+            if (ch.bearing.y > topOffset) topOffset = ch.bearing.y;
+            if ((ch.size.y - ch.bearing.y) > bottomOffset) bottomOffset = (ch.size.y - ch.bearing.y);
+        }
+
+    // clamp y to top and bottom offsets
+
+    int yOffset = 0;
+    if (y < topOffset) {
+        yOffset = topOffset;
+    } else {
+        int bottom = h - bottomOffset;
+        if (y > bottom) {
+            yOffset = -(bottomOffset);
+        }
+    }
+
+    // then we apply this to the entire string
+
     for (c = text.begin(); c != text.end(); c++) {
 
         if (sCharacters.count(*c) > 0) {
 
             Character ch = sCharacters[*c];
 
-            GLfloat xpos = x + ch.bearing.x * scale;
-            GLfloat ypos = y - (ch.size.y - ch.bearing.y) * scale;
+            // set to origin
+            GLfloat xpos = x + ch.bearing.x;
+            GLfloat ypos = y_ - (ch.size.y - ch.bearing.y) - yOffset;
 
-            GLfloat w = ch.size.x * scale;
-            GLfloat h = ch.size.y * scale;
+            // apply scaling
+            xpos *= scale;
+            ypos *= scale;
+
+            GLfloat w_ = ch.size.x * scale;
+            GLfloat h_ = ch.size.y * scale;
+
             // Update VBO for each character
             GLfloat vertices[6][4] = {
-                    {xpos,     ypos + h, 0.0f, 0.0f},
+                    {xpos,     ypos + h_, 0.0f, 0.0f},
                     {xpos,     ypos,     0.0f, 1.0f},
-                    {xpos + w, ypos,     1.0f, 1.0f},
+                    {xpos + w_, ypos,     1.0f, 1.0f},
 
-                    {xpos,     ypos + h, 0.0f, 0.0f},
-                    {xpos + w, ypos,     1.0f, 1.0f},
-                    {xpos + w, ypos + h, 1.0f, 0.0f}
+                    {xpos,     ypos + h_, 0.0f, 0.0f},
+                    {xpos + w_, ypos,     1.0f, 1.0f},
+                    {xpos + w_, ypos + h_, 1.0f, 0.0f}
             };
-
-            //#################debug#################
-//            static bool debug = false;
-//            if (!debug) {
-//                glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(sWidth), 0.0f,
-//                                                  static_cast<GLfloat>(sHeight));
-//                glm::vec4 v(xpos, ypos + h, 0.0f, 0.0f);
-//                v = projection * v;
-//                base_LOG("%f,%f,%f,%f", v.x, v.y, v.z, v.w);
-//                debug = true;
+//            std::string m = "";
+//            for (int i = 0; i < 6; i++) {
+//                for (int ii = 0; ii < 4; ii++) {
+//                    m += std::to_string(vertices[i][ii]);
+//                    if (ii != 3) m += " ";
+//                }
+//                if (i != 5) m += "\n";
 //            }
-            //#############end debug#################
-
+//            LOG_INFO("matrix:\n%s", m.c_str());
+//            GLIS_print_vertices(vertices, 6, 4);
             // Render glyph texture over quad
-            GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, ch.textureID));
+            glBindTexture(GL_TEXTURE_2D, ch.textureID);
             // Update content of VBO memory
-            GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, GLIS_VBO));
-            GLIS_error_to_string_exec_GL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices),
-                            vertices)); // Be sure to use glBufferSubData and not glBufferData
+            glBindBuffer(GL_ARRAY_BUFFER, GLIS_FONT_VBO);
+            // Be sure to use glBufferSubData and not glBufferData
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
-            GLIS_error_to_string_exec_GL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
             // Render quad
-            GLIS_error_to_string_exec_GL(glDrawArrays(GL_TRIANGLES, 0, 6));
+            glDrawArrays(GL_TRIANGLES, 0, 6);
             // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-            x += (ch.advance >> 6) *
-                 scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+            // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+            x += (ch.advance >> 6) * scale;
         }
     }
-    GLIS_error_to_string_exec_GL(glBindVertexArray(0));
-    GLIS_error_to_string_exec_GL(glBindTexture(GL_TEXTURE_2D, 0));
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     glDisable(GL_BLEND);
     glDisable(GL_CULL_FACE);
-
-    GLIS_error_to_string_exec_GL(glDeleteProgram(CHILDshaderProgram));
-    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDfragmentShader));
-    GLIS_error_to_string_exec_GL(glDeleteShader(CHILDvertexShader));
 }
 
 #include "GLIS_COMMANDS.h"

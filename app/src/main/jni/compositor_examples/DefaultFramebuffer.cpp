@@ -9,7 +9,6 @@ int main() {
     int W = 1080;
     int H = 2031;
     if (GLIS_setupOffScreenRendering(G, W, H)) {
-        GLIS_error_to_string();
         glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 //        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
