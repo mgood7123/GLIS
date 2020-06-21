@@ -81,11 +81,11 @@ void GLIS_shared_memory_write(GLIS_shared_memory &sh, serializer &data) {
     int8_t indexstate = sizeof(size_t);
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
-    size_t buffer = sh.size - indexdata;
     data.construct();
     reinterpret_cast<size_t *>(sh.data)[indexsize] = data.stream.data_len;
+    size_t buffer = data.stream.data_len;
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
-        LOG_INFO_SHM("total to write: %zu", data.stream.data_len);
+        LOG_INFO_SHM("total to write: %zu", buffer);
         LOG_INFO_SHM("buffer: %zu", buffer);
     }
     sh.data[indexstate] = shared_memory_waiting_for_allocation;
@@ -124,14 +124,14 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
     int8_t indexstate = sizeof(size_t);
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
-    size_t buffer = sh.size - indexdata;
     while (sh.data[indexstate] != shared_memory_waiting_for_allocation) {
         if (sh.reference_count == 0) {
             return;
         }
     }
+    size_t buffer = reinterpret_cast<size_t *>(sh.data)[indexsize];
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
-        LOG_INFO_SHM("total to read: %zu", reinterpret_cast<size_t *>(sh.data)[indexsize]);
+        LOG_INFO_SHM("total to read: %zu", buffer);
         LOG_INFO_SHM("buffer: %zu", buffer);
     }
     data.stream.allocate(reinterpret_cast<size_t *>(sh.data)[indexsize]);
@@ -172,10 +172,10 @@ void GLIS_shared_memory_write_texture(GLIS_shared_memory &sh, int8_t *texture, s
     int8_t indexstate = sizeof(size_t);
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
-    size_t buffer = sh.size - indexdata;
     reinterpret_cast<size_t *>(sh.data)[indexsize] = len;
+    size_t buffer = len;
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
-        LOG_INFO_SHM("total to write: %zu", len);
+        LOG_INFO_SHM("total to write: %zu", buffer);
         LOG_INFO_SHM("buffer: %zu", buffer);
     }
     sh.data[indexstate] = shared_memory_waiting_for_allocation;
@@ -213,11 +213,11 @@ void GLIS_shared_memory_read_texture(GLIS_shared_memory &sh, int8_t **texture) {
     int8_t indexstate = sizeof(size_t);
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
-    size_t buffer = sh.size - indexdata;
     while (sh.data[indexstate] != shared_memory_waiting_for_allocation)
-        if (sh.reference_count == 0)return;
+        if (sh.reference_count == 0) return;
+    size_t buffer = reinterpret_cast<size_t *>(sh.data)[indexsize];
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
-        LOG_INFO_SHM("total to read: %zu", reinterpret_cast<size_t *>(sh.data)[indexsize]);
+        LOG_INFO_SHM("total to read: %zu", buffer);
         LOG_INFO_SHM("buffer: %zu", buffer);
     }
     *texture = static_cast<int8_t *>(malloc(reinterpret_cast<size_t *>(sh.data)[indexsize]));

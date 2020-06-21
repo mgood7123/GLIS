@@ -120,6 +120,14 @@ void main()
 }
 )glsl";
 
+/*
+[22:30] <emersion> 1. client renders using OpenGL
+[22:30] <emersion> 2. OpenGL implementation sends the GPU buffer to the server, e.g. via the linux-dmabuf protocol
+[22:30] <emersion> 3. server receives it and imports it via OpenGL
+[22:31] <emersion> 4. server composites the client using OpenGL, e.g. on a buffer allocated via GBM
+[22:31] <emersion> 5. server uses DRM to display the GBM buffer
+ */
+
 int COMPOSITORMAIN__() {
 
     LOG_INFO("called COMPOSITORMAIN__()");
@@ -335,7 +343,7 @@ int COMPOSITORMAIN__() {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                         tex_dimens[0], tex_dimens[1],
                         0, GL_RGBA, GL_UNSIGNED_BYTE, texdata
-                 );
+                );
                 if (texdata != nullptr) free(texdata);
                 glGenerateMipmap(GL_TEXTURE_2D);
 
