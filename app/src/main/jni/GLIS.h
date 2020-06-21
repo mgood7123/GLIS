@@ -22,6 +22,8 @@
 #include <poll.h>
 
 #include <sstream>
+#include <queue>
+#include <sys/time.h>
 
 #include "logger.h"
 #include "server.h"
@@ -1249,95 +1251,116 @@ size_t TEXDATA_LEN = 0;
 
 class GLIS_BACKUP {
 public:
-    struct {
+    class {
         GLint __GL_READ_FRAMEBUFFER_BINDING, __GL_DRAW_FRAMEBUFFER_BINDING;
+    public:
+        void backup() {
+            glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &__GL_READ_FRAMEBUFFER_BINDING);
+            glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &__GL_DRAW_FRAMEBUFFER_BINDING);
+        }
+        void restore() {
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, __GL_READ_FRAMEBUFFER_BINDING);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, __GL_DRAW_FRAMEBUFFER_BINDING);
+        }
     } framebuffer;
-    struct {
+    class {
         GLint __GL_RENDERBUFFER_BINDING, __GL_RENDERBUFFER_WIDTH, __GL_RENDERBUFFER_HEIGHT,
                 __GL_RENDERBUFFER_INTERNAL_FORMAT, __GL_RENDERBUFFER_RED_SIZE,
                 __GL_RENDERBUFFER_GREEN_SIZE, __GL_RENDERBUFFER_BLUE_SIZE,
                 __GL_RENDERBUFFER_ALPHA_SIZE, __GL_RENDERBUFFER_DEPTH_SIZE,
                 __GL_RENDERBUFFER_STENCIL_SIZE, __GL_RENDERBUFFER_SAMPLES;
+    public:
+        void backup() {
+            glGetIntegerv(GL_RENDERBUFFER_BINDING, &__GL_RENDERBUFFER_BINDING);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH,
+                                         &__GL_RENDERBUFFER_WIDTH);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT,
+                                         &__GL_RENDERBUFFER_HEIGHT);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT,
+                                         &__GL_RENDERBUFFER_INTERNAL_FORMAT);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_RED_SIZE,
+                                         &__GL_RENDERBUFFER_RED_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_GREEN_SIZE,
+                                         &__GL_RENDERBUFFER_GREEN_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_BLUE_SIZE,
+                                         &__GL_RENDERBUFFER_BLUE_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_ALPHA_SIZE,
+                                         &__GL_RENDERBUFFER_ALPHA_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE,
+                                         &__GL_RENDERBUFFER_DEPTH_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_STENCIL_SIZE,
+                                         &__GL_RENDERBUFFER_STENCIL_SIZE);
+
+            glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_SAMPLES,
+                                         &__GL_RENDERBUFFER_SAMPLES);
+        }
+        void restore() {
+            glBindRenderbuffer(GL_RENDERBUFFER, __GL_RENDERBUFFER_BINDING);
+            // TODO: restore parameters
+        }
     } renderbuffer;
-    struct {
+    class {
         GLint __GL_ACTIVE_TEXTURE, __GL_TEXTURE_BUFFER_BINDING, __GL_VERTEX_ARRAY_BINDING,
                 __GL_ARRAY_BUFFER_BINDING, __GL_ELEMENT_ARRAY_BUFFER_BINDING;
+    public:
+        void backup() {
+            glGetIntegerv(GL_ACTIVE_TEXTURE, &__GL_ACTIVE_TEXTURE);
+            glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &__GL_TEXTURE_BUFFER_BINDING);
+            glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &__GL_VERTEX_ARRAY_BINDING);
+            glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &__GL_ARRAY_BUFFER_BINDING);
+            glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &__GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        }
+        void restore() {
+            glActiveTexture(__GL_ACTIVE_TEXTURE);
+            // assume 2D
+            glBindTexture(GL_TEXTURE_2D, __GL_TEXTURE_BUFFER_BINDING);
+            glBindVertexArray(__GL_VERTEX_ARRAY_BINDING);
+            glBindBuffer(GL_ARRAY_BUFFER, __GL_ARRAY_BUFFER_BINDING);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, __GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        }
     } texture;
-    struct {
+    class {
         GLint __GL_CURRENT_PROGRAM;
+    public:
+        void backup() {
+            glGetIntegerv(GL_CURRENT_PROGRAM, &__GL_CURRENT_PROGRAM);
+        }
+        void restore() {
+            glUseProgram(__GL_CURRENT_PROGRAM);
+        }
     } program;
+
+    void backup() {
+        framebuffer.backup();
+        renderbuffer.backup();
+        texture.backup();
+        program.backup();
+    }
+    void restore() {
+        framebuffer.restore();
+        renderbuffer.restore();
+        texture.restore();
+        program.restore();
+    }
 };
 
-void GLIS_backup_framebuffer(GLIS_BACKUP &backup) {
-    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
-                  &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
-    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
-                  &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING);
-//    glGetFramebufferAttachmentParameteriv(GL_READ_FRAMEBUFFER, GL_BACK, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE, backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
-}
-
-void GLIS_backup_renderbuffer(GLIS_BACKUP &backup) {
-
-    glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_WIDTH);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_HEIGHT);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_INTERNAL_FORMAT,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_INTERNAL_FORMAT);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_RED_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_RED_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_GREEN_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_GREEN_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_BLUE_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_BLUE_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_ALPHA_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_ALPHA_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_DEPTH_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_DEPTH_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_STENCIL_SIZE,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_STENCIL_SIZE);
-
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_SAMPLES,
-                                 &backup.renderbuffer.__GL_RENDERBUFFER_SAMPLES);
-}
-
-void GLIS_backup_texture(GLIS_BACKUP &backup) {
-
-    glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE);
-
-    glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING);
-
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING);
-
-    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING);
-    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                  &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
-    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                  &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
-}
-
-void GLIS_backup_program(GLIS_BACKUP &backup) {
-
-    glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM);
-}
-
-// IMPORTANT:
-
-void GLIS_backup(GLIS_BACKUP &backup) {
-    GLIS_backup_framebuffer(backup);
-    GLIS_backup_renderbuffer(backup);
-    GLIS_backup_texture(backup);
-    GLIS_backup_program(backup);
+/**
+ * buffer swapping is expensive if **vsync** is enabled
+ *
+ * if vsync is enabled, eglSwapBuffers always waits for
+ * the screen to be refreshed once between swapbuffer calls
+ */
+EGLBoolean GLIS_SwapBuffers(class GLIS_CLASS & GLIS) {
+    return eglSwapBuffers(GLIS.display, GLIS.surface);
 }
 
 void
@@ -1345,24 +1368,7 @@ GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_fr
             int height_to) {
     GLIS_BACKUP backup;
     // save
-    glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING);
-    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING,
-                                               &backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING);
-
-        glGetIntegerv(GL_RENDERBUFFER_BINDING, &backup.renderbuffer.__GL_RENDERBUFFER_BINDING);
-
-        glGetIntegerv(GL_ACTIVE_TEXTURE, &backup.texture.__GL_ACTIVE_TEXTURE);
-
-        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &backup.texture.__GL_TEXTURE_BUFFER_BINDING);
-
-        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &backup.texture.__GL_VERTEX_ARRAY_BINDING);
-
-        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &backup.texture.__GL_ARRAY_BUFFER_BINDING);
-    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,
-                                               &backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING);
-
-        glGetIntegerv(GL_CURRENT_PROGRAM, &backup.program.__GL_CURRENT_PROGRAM);
+    backup.backup();
     const char *CHILDvertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -1427,22 +1433,7 @@ void main()
     glDeleteRenderbuffers(1, &RB);
     glDeleteFramebuffers(1, &FB);
     // restore
-    glBindFramebuffer(GL_READ_FRAMEBUFFER,
-                                                   static_cast<GLuint>(backup.framebuffer.__GL_READ_FRAMEBUFFER_BINDING));
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER,
-                                                   static_cast<GLuint>(backup.framebuffer.__GL_DRAW_FRAMEBUFFER_BINDING));
-    glBindRenderbuffer(GL_RENDERBUFFER,
-                                                    static_cast<GLuint>(backup.renderbuffer.__GL_RENDERBUFFER_BINDING));
-
-        glActiveTexture(static_cast<GLenum>(backup.texture.__GL_ACTIVE_TEXTURE));
-
-        glBindVertexArray(static_cast<GLuint>(backup.texture.__GL_VERTEX_ARRAY_BINDING));
-    glBindBuffer(GL_ARRAY_BUFFER,
-                                              static_cast<GLuint>(backup.texture.__GL_ARRAY_BUFFER_BINDING));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,
-                                              static_cast<GLuint>(backup.texture.__GL_ELEMENT_ARRAY_BUFFER_BINDING));
-
-        glUseProgram(static_cast<GLuint>(backup.program.__GL_CURRENT_PROGRAM));
+    backup.restore();
 }
 
 // BACKUP USAGE: ^
@@ -1633,6 +1624,8 @@ bool GLIS_load_font(const char * font, int width, int height) {
 }
 
 void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float y, float scale, glm::vec3 color) {
+    GLIS_BACKUP backup;
+    backup.backup();
 
     // Using Shader program
     glUseProgram(GLIS_FONT_SHADER_PROGRAM);
@@ -1715,16 +1708,6 @@ void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float
                     {xpos + w_, ypos,     1.0f, 1.0f},
                     {xpos + w_, ypos + h_, 1.0f, 0.0f}
             };
-//            std::string m = "";
-//            for (int i = 0; i < 6; i++) {
-//                for (int ii = 0; ii < 4; ii++) {
-//                    m += std::to_string(vertices[i][ii]);
-//                    if (ii != 3) m += " ";
-//                }
-//                if (i != 5) m += "\n";
-//            }
-//            LOG_INFO("matrix:\n%s", m.c_str());
-//            GLIS_print_vertices(vertices, 6, 4);
             // Render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D, ch.textureID);
             // Update content of VBO memory
@@ -1740,12 +1723,66 @@ void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float
             x += (ch.advance >> 6) * scale;
         }
     }
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
     glDisable(GL_BLEND);
     glDisable(GL_CULL_FACE);
+    backup.restore();
 }
+
+GLfloat GLIS_font_w = 0;
+GLfloat GLIS_font_h = 0;
+
+void GLIS_font_set_RenderText_w_h(int w, int h) {
+    GLIS_font_w = w;
+    GLIS_font_h = h;
+}
+
+void GLIS_font_RenderText(std::string text, int x, int y, glm::vec3 color) {
+
+    GLIS_font_RenderText(GLIS_font_w, GLIS_font_h, text, x, y, 1.0f, color);
+}
+
+glm::vec3 GLIS_font_color_black = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 GLIS_font_color_white = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
+// FPS
+
+class GLIS_FPS {
+    const int trackedTime = 1000;
+    int frameStartTime;
+    int queueAggregate = 0;
+    std::queue<int> frameLengths;
+
+    long getCurrentTime(void) {
+        struct timeval tv = {0};
+        gettimeofday(&tv, NULL);
+        return tv.tv_sec * 1000. + tv.tv_usec / 1000.;
+    }
+public:
+    double averageFps;
+
+    void onFrameStart()
+    {
+        frameStartTime = getCurrentTime();
+    }
+
+    void onFrameEnd()
+    {
+        int frameLength = getCurrentTime() - frameStartTime;
+
+        frameLengths.push(frameLength);
+        queueAggregate += frameLength;
+
+        while (queueAggregate > trackedTime)
+        {
+            int oldFrame = frameLengths.front();
+            frameLengths.pop();
+            queueAggregate -= oldFrame;
+        }
+
+        averageFps = frameLengths.size() / (trackedTime/1000);
+    }
+};
 
 #include "GLIS_COMMANDS.h"
 

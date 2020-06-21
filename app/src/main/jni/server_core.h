@@ -61,10 +61,17 @@ char *SOCKET_SERVER_name_to_server_name(SOCKET_SERVER_DATA * internaldata) {
 }
 
 /* Return current time in milliseconds */
-double now_ms(void) {
+long now_ms(void) {
     struct timeval tv = {0};
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000. + tv.tv_usec / 1000.;
+}
+
+/* Return current time in nanoseconds */
+long now_nanoseconds(void) {
+    timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts); // Works on Linux
+    return ts.tv_nsec;
 }
 
 char *str_humanise_bytes(off_t bytes) {

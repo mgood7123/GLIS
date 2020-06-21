@@ -120,69 +120,7 @@ void main()
 }
 )glsl";
 
-void testFont() {
-
-    // OpenGL code cannot be called yet as OpenGL is not yet initialized
-
-    SYNC_STATE = STATE.initialized;
-    while (SYNC_STATE != STATE.request_startup);
-    LOG_INFO("starting up");
-    SYNC_STATE = STATE.response_starting_up;
-    LOG_INFO("initializing main Compositor");
-    if (GLIS_setupOnScreenRendering(CompositorMain)) {
-        // OpenGL code can now be called
-        CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
-        LOG_INFO("initialized main Compositor");
-
-        std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
-
-        if (!GLIS_load_font(f.c_str(), 0, 128)) {
-            SYNC_STATE = STATE.response_shutting_down;
-            LOG_INFO("shutting down");
-
-            // clean up
-            GLIS_destroy_GLIS(CompositorMain);
-            LOG_INFO("Destroyed main Compositor GLIS");
-            LOG_INFO("shut down");
-            SYNC_STATE = STATE.response_shutdown;
-            return;
-        }
-
-        SYNC_STATE = STATE.response_started_up;
-
-        glClearColor(0.0F, 1.0F, 1.0F, 1.0F);
-        glClear(GL_COLOR_BUFFER_BIT);
-        GLfloat w = static_cast<GLfloat>(CompositorMain.width);
-        GLfloat h = static_cast<GLfloat>(CompositorMain.height);
-        glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
-
-        GLIS_font_RenderText(w, h, "This is sample text", 0, 20, 1.0f, black);
-        GLIS_font_RenderText(w, h, "(C) LearnOpenGL.com", 0, h-20, 1.0f, black);
-
-        glDeleteProgram(GLIS_FONT_SHADER_PROGRAM);
-        glDeleteShader(GLIS_FONT_FRAGMENT_SHADER);
-        glDeleteShader(GLIS_FONT_VERTEX_SHADER);
-        eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
-        GLIS_Sync_GPU();
-        while(SYNC_STATE != STATE.request_shutdown) {
-            sleep(5);
-        }
-        SYNC_STATE = STATE.response_shutting_down;
-        LOG_INFO("shutting down");
-
-        // clean up
-        LOG_INFO("Cleaning up");
-        GLIS_destroy_GLIS(CompositorMain);
-        LOG_INFO("Destroyed main Compositor GLIS");
-        LOG_INFO("Cleaned up");
-        LOG_INFO("shut down");
-        SYNC_STATE = STATE.response_shutdown;
-    } else LOG_ERROR("failed to initialize main Compositor");
-}
-
 int COMPOSITORMAIN__() {
-    testFont();
-    return 0;
 
     LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
@@ -213,6 +151,11 @@ int COMPOSITORMAIN__() {
                                              sizeof(size_t) + sizeof(int8_t) +
                                              (sizeof(int8_t) * 4)));
         }
+        std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
+
+        assert(GLIS_load_font(f.c_str(), 0, 128));
+        GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
+
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
         GLuint shaderProgram;
@@ -236,8 +179,6 @@ int COMPOSITORMAIN__() {
         GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
         glUseProgram(shaderProgram);
-        glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
-        glClear(GL_COLOR_BUFFER_BIT);
         SERVER_LOG_TRANSFER_INFO = true;
         SYNC_STATE = STATE.response_started_up;
         LOG_INFO("started up");
@@ -248,25 +189,21 @@ int COMPOSITORMAIN__() {
             int h;
             GLuint TEXTURE;
         };
-        glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-            eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
-        GLIS_Sync_GPU();
         bool stop_drawing = false;
-        unsigned int fps_frames = 0;
-        double fps_start = now_ms();
         double program_start = now_ms();
+        GLIS_FPS fps;
         while(SYNC_STATE != STATE.request_shutdown) {
+            fps.onFrameStart();
 
             // TODO: migrate to texture buffers:
             //  draw(texture[0]);
             //  draw[texture[1]);
             //  /* ... */
 
-
             double loop_start = now_ms();
+
             bool redraw = false;
+            bool needsSwap = false;
             bool accepted = false;
             serializer in;
             serializer out;
@@ -378,11 +315,12 @@ int COMPOSITORMAIN__() {
                     LOG_INFO("received w: %d, h: %d", tex_dimens[0], tex_dimens[1]);
                 }
                 struct Client_Window *CW = static_cast<Client_Window *>(
-                    CompositorMain.KERNEL.table->table[Client_id]->resource);
+                    CompositorMain.KERNEL.table->table[Client_id]->resource
+                );
 
-                    glGenTextures(1, &CW->TEXTURE);
+                glGenTextures(1, &CW->TEXTURE);
+                glBindTexture(GL_TEXTURE_2D, CW->TEXTURE);
 
-                    glBindTexture(GL_TEXTURE_2D, CW->TEXTURE);
                 GLuint *texdata = nullptr;
 //                if (IPC == IPC_MODE.socket) {
 //                    in.get_raw_pointer<GLuint>(&texdata);
@@ -394,23 +332,24 @@ int COMPOSITORMAIN__() {
                     LOG_INFO("read texture");
                 }
 
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_dimens[0], tex_dimens[1], 0,
-                                 GL_RGBA, GL_UNSIGNED_BYTE, texdata)
-                ;
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                        tex_dimens[0], tex_dimens[1],
+                        0, GL_RGBA, GL_UNSIGNED_BYTE, texdata
+                 );
                 if (texdata != nullptr) free(texdata);
                 glGenerateMipmap(GL_TEXTURE_2D);
 
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                                    GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_NEAREST);
 
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                                    GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                GL_LINEAR);
 
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                                    GL_CLAMP_TO_BORDER);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                                GL_CLAMP_TO_BORDER);
 
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                                    GL_CLAMP_TO_BORDER);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+                                GL_CLAMP_TO_BORDER);
                 glBindTexture(GL_TEXTURE_2D, 0);
             } else if (command == GLIS_SERVER_COMMANDS.shm_texture) {
                 double start = now_ms();
@@ -498,11 +437,13 @@ int COMPOSITORMAIN__() {
             LOG_INFO("CLIENT has uploaded");
             goto draw;
             draw:
-            if (redraw) {
-                double start = now_ms();
-                fps_frames++;
+            double start = now_ms();
+            // something is wrong with redraw...
+            // when redraw becomes false, then true, redraw does not reliably redraw anymore
+            // avoid using it for now and always redraw every frame
+//            if (redraw) {
                 LOG_INFO("rendering");
-                glClearColor(0.0F, 0.0F, 1.0F, 1.0F);
+                glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
                 glClear(GL_COLOR_BUFFER_BIT);
                 if (!stop_drawing) {
                     int page = 1;
@@ -531,22 +472,17 @@ int COMPOSITORMAIN__() {
                     LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
                              drawn == 1 ? "window" : "windows", endK - startK);
                 }
-                GLIS_Sync_GPU();
-
-                    eglSwapBuffers(CompositorMain.display, CompositorMain.surface);
-                GLIS_Sync_GPU();
                 double end = now_ms();
                 LOG_INFO("rendered in %G milliseconds", end - start);
                 LOG_INFO("since loop start: %G milliseconds", end - loop_start);
                 LOG_INFO("since start: %G milliseconds", end - program_start);
-            }
-            double delta_t = now_ms() - fps_start;
-            double fps = delta_t - static_cast<double>(fps_frames);
-            if (delta_t > 1000) {
-                LOG_INFO("FPS: %G", fps);
-                fps_frames = 0;
-                fps_start = now_ms();
-            }
+//            }
+            fps.onFrameEnd();
+            std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
+            GLIS_font_RenderText(text, 0, 20, GLIS_font_color_white);
+            GLIS_Sync_GPU();
+            GLIS_SwapBuffers(CompositorMain);
+            GLIS_Sync_GPU();
         }
         SYNC_STATE = STATE.response_shutting_down;
         LOG_INFO("shutting down");
@@ -574,7 +510,7 @@ void * COMPOSITORMAIN(void * arg) {
 
 long COMPOSITORMAIN_threadId;
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
-                                                                                 jclass type,
+                                                                                 jobject type,
                                                                                  jstring
                                                                                  ExecutablesDir) {
     jboolean val;
@@ -593,7 +529,7 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart
 }
 
 extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStop(JNIEnv* jenv,
-                                                                                 jclass type) {
+                                                                                jobject type) {
     LOG_INFO("waiting for main Compositor to stop");
     int * ret;
     int e = pthread_join(COMPOSITORMAIN_threadId, reinterpret_cast<void **>(&ret));
