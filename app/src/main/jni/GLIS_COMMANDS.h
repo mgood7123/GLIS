@@ -30,6 +30,21 @@ const char *GLIS_command_to_string(int &command) {
     else return "unknown";
 }
 
+// wayland consists of 1 global shm
+// and per-client shm pools
+// ALL shm are allocated by the clients
+// and are retrieved by the server
+
+// this is due to, if an out of memory occurs
+// the kernel would kill the server first
+// due to the server being the process
+// that is allocating shared memory
+// for the clients
+
+// see https://gitlab.freedesktop.org/wayland/wayland/-/blob/master/src/wayland-shm.c#L261-328
+
+// see https://man7.org/training/download/posix_shm_slides.pdf
+
 class GLIS_shared_memory {
     public:
         int fd = 0;
