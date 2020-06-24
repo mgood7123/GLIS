@@ -675,7 +675,12 @@ class SOCKET_SERVER {
             SOCKET_SEND_FD(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd, fd, server_name);
         }
 
-        char server_name[107];
+        void socket_get_fd(int &fd) {
+            SOCKET_GET_FD(internaldata->DATA_TRANSFER_INFO, TAG, socket_data_fd, fd, server_name);
+        }
+
+
+    char server_name[107];
 };
 
 Kernel SERVER_KERNEL;
@@ -765,6 +770,10 @@ class SOCKET_CLIENT {
         bool socket_get_serial(serializer &S) {
             return SOCKET_GET_SERIAL(DATA_TRANSFER_INFO, TAG, socket_data_fd, S,
                                      &server_addr.sun_path[1]);
+        }
+
+        void socket_put_fd(int &fd) {
+            SOCKET_SEND_FD(DATA_TRANSFER_INFO, TAG, socket_data_fd, fd, &server_addr.sun_path[1]);
         }
 
         void socket_get_fd(int &fd) {

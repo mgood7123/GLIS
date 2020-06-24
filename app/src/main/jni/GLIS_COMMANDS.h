@@ -133,7 +133,7 @@ void GLIS_shared_memory_write(GLIS_shared_memory &sh, serializer &data) {
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("shared memory transfer complete");
 }
 
-void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
+bool GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("initializing shared memory transfer");
     int8_t indexsize = 0;
     int8_t indexstate = sizeof(size_t);
@@ -141,7 +141,8 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
     assert(sh.size > indexdata);
     while (sh.data[indexstate] != shared_memory_waiting_for_allocation) {
         if (sh.reference_count == 0) {
-            return;
+            LOG_ERROR("reference_count == 0");
+            return false;
         }
     }
     size_t buffer = reinterpret_cast<size_t *>(sh.data)[indexsize];
@@ -152,7 +153,12 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
     data.stream.allocate(reinterpret_cast<size_t *>(sh.data)[indexsize]);
     sh.data[indexstate] = shared_memory_allocated;
     if (buffer >= data.stream.data_len) { // if buffer is greater than or equal to data len
-        while (sh.data[indexstate] != shared_memory_has_data) if (sh.reference_count == 0) return;
+        while (sh.data[indexstate] != shared_memory_has_data) {
+            if (sh.reference_count == 0) {
+                LOG_ERROR("reference_count == 0");
+                return false;
+            }
+        }
         memcpy(data.stream.data, &sh.data[indexdata], data.stream.data_len);
         if (LOG_SHARED_MEMORY_TRANSFER_INFO)
             LOG_INFO_SHM("'sh.data[%d]' -> 'data.stream.data' (size %zu)", indexdata,
@@ -164,7 +170,10 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
         while (sh.data[indexstate] != shared_memory_transfer_complete) {
             while (sh.data[indexstate] != shared_memory_has_data) {
                 if (sh.data[indexstate] == shared_memory_transfer_complete) break;
-                if (sh.reference_count == 0) return;
+                if (sh.reference_count == 0) {
+                    LOG_ERROR("reference_count == 0");
+                    return false;
+                }
             }
             if (sh.data[indexstate] == shared_memory_transfer_complete) break;
             memcpy(&data.stream.data[idx], &sh.data[indexdata + idx],
@@ -178,6 +187,7 @@ void GLIS_shared_memory_read(GLIS_shared_memory &sh, serializer &data) {
         if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("shared memory transfer complete");
     }
     data.deconstruct();
+    return true;
 }
 
 void GLIS_shared_memory_write_texture(GLIS_shared_memory &sh, int8_t *texture, size_t &len) {
@@ -222,14 +232,17 @@ void GLIS_shared_memory_write_texture(GLIS_shared_memory &sh, int8_t *texture, s
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("shared memory transfer complete");
 }
 
-void GLIS_shared_memory_read_texture(GLIS_shared_memory &sh, int8_t **texture) {
+bool GLIS_shared_memory_read_texture(GLIS_shared_memory &sh, int8_t **texture) {
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("initializing shared memory transfer");
     int8_t indexsize = 0;
     int8_t indexstate = sizeof(size_t);
     int8_t indexdata = sizeof(size_t) + sizeof(int8_t);
     assert(sh.size > indexdata);
     while (sh.data[indexstate] != shared_memory_waiting_for_allocation)
-        if (sh.reference_count == 0) return;
+        if (sh.reference_count == 0) {
+            LOG_ERROR("reference_count == 0");
+            return false;
+        }
     size_t buffer = reinterpret_cast<size_t *>(sh.data)[indexsize];
     if (LOG_SHARED_MEMORY_TRANSFER_INFO) {
         LOG_INFO_SHM("total to read: %zu", buffer);
@@ -238,34 +251,44 @@ void GLIS_shared_memory_read_texture(GLIS_shared_memory &sh, int8_t **texture) {
     *texture = static_cast<int8_t *>(malloc(reinterpret_cast<size_t *>(sh.data)[indexsize]));
     sh.data[indexstate] = shared_memory_allocated;
     if (buffer >= reinterpret_cast<size_t *>(sh.data)[indexsize]) {
-        while (sh.data[indexstate] != shared_memory_has_data) if (sh.reference_count == 0) return;
+        while (sh.data[indexstate] != shared_memory_has_data) {
+            if (sh.reference_count == 0) {
+                LOG_ERROR("reference_count == 0");
+                return false;
+            }
+        }
         memcpy(*texture, &sh.data[indexdata], reinterpret_cast<size_t *>(sh.data)[indexsize]);
         if (LOG_SHARED_MEMORY_TRANSFER_INFO)
             LOG_INFO_SHM("'sh.data[%d]' -> '*texture' (size %zu)", indexdata,
                          reinterpret_cast<size_t *>(sh.data)[indexsize]);
         sh.data[indexstate] = shared_memory_data_consumed;
-    } else {
-        if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("reading buffered");
-        size_t idx = 0;
-        while (sh.data[indexstate] != shared_memory_transfer_complete) {
-            while (sh.data[indexstate] != shared_memory_has_data) {
-                if (sh.data[indexstate] == shared_memory_transfer_complete) break;
-                if (sh.reference_count == 0) return;
-            }
-            if (sh.data[indexstate] == shared_memory_transfer_complete) break;
-            memcpy(&(*texture)[idx], &sh.data[indexdata + idx],
-                   reinterpret_cast<size_t *>(sh.data)[indexsize]);
-            if (LOG_SHARED_MEMORY_TRANSFER_INFO)
-                LOG_INFO_SHM("'sh.data[%zu]' -> '(*texture)[%zu]' (size %zu)", indexdata + idx, idx,
-                             reinterpret_cast<size_t *>(sh.data)[indexsize]);
-            idx += reinterpret_cast<size_t *>(sh.data)[indexsize];
-            sh.data[indexstate] = shared_memory_data_consumed;
-        }
-        if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("shared memory transfer complete");
+        return true;
     }
+    if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("reading buffered");
+    size_t idx = 0;
+    while (sh.data[indexstate] != shared_memory_transfer_complete) {
+        while (sh.data[indexstate] != shared_memory_has_data) {
+            if (sh.data[indexstate] == shared_memory_transfer_complete) break;
+            if (sh.reference_count == 0) {
+                LOG_ERROR("reference_count == 0");
+                return false;
+            }
+        }
+        if (sh.data[indexstate] == shared_memory_transfer_complete) break;
+        memcpy(&(*texture)[idx], &sh.data[indexdata + idx],
+               reinterpret_cast<size_t *>(sh.data)[indexsize]);
+        if (LOG_SHARED_MEMORY_TRANSFER_INFO)
+            LOG_INFO_SHM("'sh.data[%zu]' -> '(*texture)[%zu]' (size %zu)", indexdata + idx, idx,
+                         reinterpret_cast<size_t *>(sh.data)[indexsize]);
+        idx += reinterpret_cast<size_t *>(sh.data)[indexsize];
+        sh.data[indexstate] = shared_memory_data_consumed;
+    }
+    if (LOG_SHARED_MEMORY_TRANSFER_INFO) LOG_INFO_SHM("shared memory transfer complete");
+    return true;
 }
 
 bool GLIS_shared_memory_get(GLIS_shared_memory &sh) {
+//    assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
     SERVER_LOG_TRANSFER_INFO = true;
     SOCKET_CLIENT client;
     serializer cmd;
@@ -352,51 +375,6 @@ void *KEEP_ALIVE_MAIN_NOTIFIER(void *arg) {
     return ret;
 }
 
-bool GLIS_SHARED_MEMORY_INITIALIZED = false;
-
-bool GLIS_INIT_SHARED_MEMORY(GLIS_shared_memory &shared_memory, GLIS_shared_memory &parameter) {
-    if (GLIS_SHARED_MEMORY_INITIALIZED) return true;
-    SERVER_LOG_TRANSFER_INFO = true;
-    SOCKET_CLIENT client;
-    serializer cmd;
-    serializer server;
-    cmd.add<int>(GLIS_SERVER_COMMANDS.new_connection);
-    if (client.connect_to_server()) {
-        if (client.socket_put_serial(cmd)) {
-            if (client.socket_get_serial(server)) {
-                if (client.disconnect_from_server()) {
-                    char *server_name;
-                    server.get_raw_pointer<char>(&server_name);
-                    KEEP_ALIVE.set_name(server_name);
-                    delete[] server_name;
-                    if (KEEP_ALIVE.connect_to_server()) {
-                        if (GLIS_shared_memory_get(shared_memory)) {
-                            if (GLIS_shared_memory_open(shared_memory)) {
-                                if (GLIS_shared_memory_params_get(parameter)) {
-                                    if (GLIS_shared_memory_open(parameter)) {
-                                        GLIS_SHARED_MEMORY_INITIALIZED = true;
-                                        return true;
-                                    } else
-                                        LOG_ERROR("failed to open shared memory parameter");
-                                } else
-                                    LOG_ERROR("failed to get shared memory parameter");
-                            } else
-                                LOG_ERROR("failed to open shared memory texture");
-                        } else
-                            LOG_ERROR("failed to get shared memory texture");
-                    } else
-                        LOG_ERROR("failed to connect to the server");
-                } else
-                    LOG_ERROR("failed to disconnect from the server");
-            } else
-                LOG_ERROR("failed to get serial from the server");
-        } else
-            LOG_ERROR("failed to send command to the server");
-    } else
-        LOG_ERROR("failed to connect to server");
-    return false;
-};
-
 bool GLIS_start_drawing() {
     SERVER_LOG_TRANSFER_INFO = true;
     SOCKET_CLIENT client;
@@ -445,9 +423,60 @@ bool GLIS_stop_drawing() {
     return false;
 }
 
-bool GLIS_INIT_SHARED_MEMORY() {
-    return GLIS_INIT_SHARED_MEMORY(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
-                                   GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
+bool GLIS_SHARED_MEMORY_INITIALIZED = false;
+
+bool GLIS_INIT_SHARED_MEMORY(int w, int h) {
+    if (GLIS_SHARED_MEMORY_INITIALIZED) return true;
+
+    assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
+                                     sizeof(size_t) +
+                                     sizeof(int8_t) +
+                                     (sizeof(GLuint) * w * h)
+                                     )
+    );
+    assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
+    LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
+             GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+    assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER,
+                                     sizeof(size_t) + sizeof(int8_t) +
+                                     (sizeof(int8_t) * 4)));
+    assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd));
+    LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
+             GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+
+    SERVER_LOG_TRANSFER_INFO = true;
+    SOCKET_CLIENT client;
+    serializer cmd;
+    serializer id;
+    GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
+    GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
+    cmd.add<int>(GLIS_SERVER_COMMANDS.shm_params);
+    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
+    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(cmd)) {
+            client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
+            client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
+            if (client.socket_get_serial(id)) {
+                if (client.disconnect_from_server()) {
+                    bool ret;
+                    id.get<bool>(&ret);
+                    if (ret == true) {
+                        GLIS_SHARED_MEMORY_INITIALIZED = true;
+                        return true;
+                    } else
+                        LOG_ERROR("failed to initialize shared memory");
+                } else
+                    LOG_ERROR("failed to disconnect from the server");
+            } else
+                LOG_ERROR("failed to get serial from the server");
+        } else
+            LOG_ERROR("failed to send serial to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
+    return false;
 }
 
 size_t GLIS_new_window(int x, int y, int w, int h) {
@@ -458,7 +487,7 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
     window.add_pointer<int>(win, 4);
     if (IPC == IPC_MODE.shared_memory) {
         GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, window);
-        GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, id);
+        assert(GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, id));
         size_t window_id;
         id.get<size_t>(&window_id);
         return window_id;
@@ -535,8 +564,7 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
                            GLint texture_height, GLint texture_width_to,
                            GLint texture_height_to) {
     LOG_INFO("uploading texture");
-    GLIS_Sync_GPU();
-    eglSwapBuffers(GLIS.display, GLIS.surface);
+    GLIS_SwapBuffers(GLIS);
     GLIS_Sync_GPU();
     if (IPC == IPC_MODE.socket || IPC == IPC_MODE.shared_memory) {
         if (texture_width_to != 0 && texture_height_to != 0) {
@@ -565,9 +593,13 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
         };
         tex.add_pointer<GLint>(tex_dimens, 2);
         if (IPC == IPC_MODE.shared_memory) {
+            LOG_INFO("writing");
             GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, tex);
+            LOG_INFO("wrote");
+            LOG_INFO("writing");
             GLIS_shared_memory_write_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
                                              reinterpret_cast<int8_t *>(TEXDATA), TEXDATA_LEN);
+            LOG_INFO("wrote");
         } else if (IPC == IPC_MODE.socket) {
             tex.add_pointer<GLuint>(TEXDATA, TEXDATA_LEN);
             SOCKET_CLIENT client;

@@ -522,9 +522,9 @@ bool GLIS_setupOnScreenRendering(class GLIS_CLASS & GLIS) {
     return GLIS_setupOnScreenRendering(GLIS, EGL_NO_CONTEXT);
 }
 
-bool GLIS_INIT_SHARED_MEMORY();
+bool GLIS_INIT_SHARED_MEMORY(int w, int h);
 bool GLIS_setupOffScreenRendering(class GLIS_CLASS & GLIS, int w, int h, EGLContext shared_context) {
-    if (IPC == IPC_MODE.shared_memory) if (!GLIS_INIT_SHARED_MEMORY()) return false;
+    if (IPC == IPC_MODE.shared_memory) if (!GLIS_INIT_SHARED_MEMORY(w, h)) return false;
 
     GLIS.shared_context = shared_context;
 

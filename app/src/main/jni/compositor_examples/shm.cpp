@@ -7,7 +7,7 @@
 #define LOG_TAG "shm"
 
 int main() {
-    GLIS_INIT_SHARED_MEMORY();
+    GLIS_INIT_SHARED_MEMORY(15, 15);
     LOG_INFO("creating window %d", 0);
     size_t win_id1 = GLIS_new_window(0, 0, 5, 5);
     LOG_INFO("window id: %zu", win_id1);

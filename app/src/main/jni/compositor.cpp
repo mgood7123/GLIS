@@ -149,6 +149,8 @@ int COMPOSITORMAIN__() {
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
+        // TODO: swap server/client shared memory behaviour
+        // clients initialize SHM, server obtains and reads SHM
         if (IPC == IPC_MODE.shared_memory) {
             assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
                                              sizeof(size_t) +
@@ -240,7 +242,7 @@ int COMPOSITORMAIN__() {
                     if (GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0) {
                         LOG_INFO("reference_count != 0 , waiting for parameter");
                         double start = now_ms();
-                        GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in);
+                        assert(GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in));
                         double end = now_ms();
                         LOG_INFO("read parameters in %G milliseconds", end - start);
                     } else goto draw;
@@ -335,8 +337,8 @@ int COMPOSITORMAIN__() {
 //                }
                 if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("reading texture");
-                    GLIS_shared_memory_read_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
-                                                    reinterpret_cast<int8_t **>(&texdata));
+                    assert(GLIS_shared_memory_read_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
+                                                    reinterpret_cast<int8_t **>(&texdata)));
                     LOG_INFO("read texture");
                 }
 
@@ -369,13 +371,13 @@ int COMPOSITORMAIN__() {
                 out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
 //                if (IPC == IPC_MODE.socket) {
 //                    if (SERVER_LOG_TRANSFER_INFO)
-//                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
+//                        LOG_INFO_SERVER("%ssending id %d, size: %zu",
 //                                        CompositorMain.server.TAG,
 //                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
 //                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
 //                }
                 if (IPC == IPC_MODE.shared_memory) {
-                    LOG_INFO("sending id %d, sise: %zu",
+                    LOG_INFO("sending id %d, size: %zu",
                              GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
                              GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
                 }
@@ -386,30 +388,24 @@ int COMPOSITORMAIN__() {
                 double end = now_ms();
                 LOG_INFO("send texture file descriptor in %G milliseconds", end - start);
             } else if (command == GLIS_SERVER_COMMANDS.shm_params) {
-                double start = now_ms();
+                CompositorMain.server.socket_get_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
                 assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd));
-                LOG_INFO_SERVER("GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count = %zu",
-                                GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-                GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
-                out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-                out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-//                if (IPC == IPC_MODE.socket) {
-//                    if (SERVER_LOG_TRANSFER_INFO)
-//                        LOG_INFO_SERVER("%ssending id %d, sise: %zu",
-//                                        CompositorMain.server.TAG,
-//                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
-//                                        GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-//                }
-                if (IPC == IPC_MODE.shared_memory) {
-                    LOG_INFO("sending id %d, sise: %zu", GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
-                             GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-                }
-                CompositorMain.server.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
-                CompositorMain.server.socket_put_serial(out);
-                LOG_INFO_SERVER("GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count = %zu",
-                                GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-                double end = now_ms();
-                LOG_INFO("send parameters file descriptor in %G milliseconds", end - start);
+                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
+                assert(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0);
+                CompositorMain.server.socket_get_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
+                assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
+                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+                assert(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count != 0);
+                if (GLIS_shared_memory_open(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER)) {
+                    if (GLIS_shared_memory_open(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA)) {
+                        out.add<bool>(true);
+                        CompositorMain.server.socket_put_serial(out);
+                    } else
+                        LOG_ERROR("failed to open shared memory texture");
+                } else
+                    LOG_ERROR("failed to open shared memory parameter");
             } else if (command == GLIS_SERVER_COMMANDS.new_connection) {
                 struct pa {
                     size_t table_id;
