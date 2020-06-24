@@ -428,52 +428,74 @@ bool GLIS_SHARED_MEMORY_INITIALIZED = false;
 bool GLIS_INIT_SHARED_MEMORY(int w, int h) {
     if (GLIS_SHARED_MEMORY_INITIALIZED) return true;
 
-    assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
-                                     sizeof(size_t) +
-                                     sizeof(int8_t) +
-                                     (sizeof(GLuint) * w * h)
-                                     )
-    );
-    assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
-    LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
-             GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
-    assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER,
-                                     sizeof(size_t) + sizeof(int8_t) +
-                                     (sizeof(int8_t) * 4)));
-    assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd));
-    LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
-             GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-
     SERVER_LOG_TRANSFER_INFO = true;
     SOCKET_CLIENT client;
     serializer cmd;
-    serializer id;
-    GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
-    GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
-    cmd.add<int>(GLIS_SERVER_COMMANDS.shm_params);
-    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
-    cmd.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+    serializer server;
+    cmd.add<int>(GLIS_SERVER_COMMANDS.new_connection);
     if (client.connect_to_server()) {
         if (client.socket_put_serial(cmd)) {
-            client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
-            client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
-            if (client.socket_get_serial(id)) {
+            if (client.socket_get_serial(server)) {
                 if (client.disconnect_from_server()) {
-                    bool ret;
-                    id.get<bool>(&ret);
-                    if (ret == true) {
-                        GLIS_SHARED_MEMORY_INITIALIZED = true;
-                        return true;
+                    char *server_name;
+                    server.get_raw_pointer<char>(&server_name);
+                    KEEP_ALIVE.set_name(server_name);
+                    delete[] server_name;
+                    if (KEEP_ALIVE.connect_to_server()) {
+                        assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
+                                                         sizeof(size_t) +
+                                                         sizeof(int8_t) +
+                                                         (sizeof(GLuint) * w * h)
+                        )
+                        );
+                        assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
+                        LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
+                                 GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+                        assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER,
+                                                         sizeof(size_t) + sizeof(int8_t) +
+                                                         (sizeof(int8_t) * 4)));
+                        assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd));
+                        LOG_INFO("sending id %d, size: %zu", GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd,
+                                 GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+                        SOCKET_CLIENT client;
+                        serializer cmd1;
+                        serializer id;
+                        GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
+                        GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
+                        cmd1.add<int>(GLIS_SERVER_COMMANDS.shm_params);
+                        cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
+                        cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
+                        cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+                        cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+                        if (client.connect_to_server()) {
+                            if (client.socket_put_serial(cmd1)) {
+                                client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
+                                client.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
+                                if (client.socket_get_serial(id)) {
+                                    if (client.disconnect_from_server()) {
+                                        bool ret;
+                                        id.get<bool>(&ret);
+                                        if (ret == true) {
+                                            GLIS_SHARED_MEMORY_INITIALIZED = true;
+                                            return true;
+                                        } else
+                                            LOG_ERROR("failed to initialize shared memory");
+                                    } else
+                                        LOG_ERROR("failed to disconnect from the server");
+                                } else
+                                    LOG_ERROR("failed to get serial from the server");
+                            } else
+                                LOG_ERROR("failed to send serial to the server");
+                        } else
+                            LOG_ERROR("failed to connect to server");
                     } else
-                        LOG_ERROR("failed to initialize shared memory");
+                        LOG_ERROR("failed to connect to the server");
                 } else
                     LOG_ERROR("failed to disconnect from the server");
             } else
                 LOG_ERROR("failed to get serial from the server");
         } else
-            LOG_ERROR("failed to send serial to the server");
+            LOG_ERROR("failed to send command to the server");
     } else
         LOG_ERROR("failed to connect to server");
     return false;

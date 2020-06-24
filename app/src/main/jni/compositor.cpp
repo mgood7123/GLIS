@@ -242,7 +242,8 @@ int COMPOSITORMAIN__() {
                     if (GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0) {
                         LOG_INFO("reference_count != 0 , waiting for parameter");
                         double start = now_ms();
-                        assert(GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in));
+                        // if this returns false, a client has disconnected, connect to a new client
+                        GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in);
                         double end = now_ms();
                         LOG_INFO("read parameters in %G milliseconds", end - start);
                     } else goto draw;
