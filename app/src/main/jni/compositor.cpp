@@ -149,18 +149,6 @@ int COMPOSITORMAIN__() {
     SYNC_STATE = STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (GLIS_setupOnScreenRendering(CompositorMain)) {
-        // TODO: swap server/client shared memory behaviour
-        // clients initialize SHM, server obtains and reads SHM
-        if (IPC == IPC_MODE.shared_memory) {
-            assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
-                                             sizeof(size_t) +
-                                             sizeof(int8_t) +
-                                             (sizeof(GLuint) * CompositorMain.height *
-                                              CompositorMain.width)));
-            assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER,
-                                             sizeof(size_t) + sizeof(int8_t) +
-                                             (sizeof(int8_t) * 4)));
-        }
         std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
 
         assert(GLIS_load_font(f.c_str(), 0, 128));
@@ -237,7 +225,7 @@ int COMPOSITORMAIN__() {
                     double end = now_ms();
                     LOG_INFO("read serial in %G milliseconds", end - start);
                 } else {
-                    // already connected, an error occured, or failed to connect
+                    // nothing waiting to connect, or an error occurred
                     if (CompositorMain.server.internaldata->server_should_close) goto draw;
                     if (GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0) {
                         LOG_INFO("reference_count != 0 , waiting for parameter");
