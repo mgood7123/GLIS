@@ -135,13 +135,14 @@ int COMPOSITORMAIN__() {
     char *exe =
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/MYPRIVATEAPP").c_str());
-    char *args[2] = {exe, 0};
-//    GLIS_FORK(args[0], args);
+    char *args1[2] = {exe, 0};
+//    GLIS_FORK(exe, args1);
+
     char *exe2 =
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
     char *args2[2] = {exe2, 0};
-//    GLIS_FORK(args2[0], args2);
+    GLIS_FORK(exe2, args2);
 
     SYNC_STATE = STATE.initialized;
     while (SYNC_STATE != STATE.request_startup);
@@ -187,6 +188,10 @@ int COMPOSITORMAIN__() {
             int h;
             GLuint TEXTURE;
         };
+        struct Client {
+            class GLIS_shared_memory parameters;
+            class GLIS_shared_memory texture;
+        };
         bool stop_drawing = false;
         double program_start = now_ms();
         GLIS_FPS fps;
@@ -224,29 +229,22 @@ int COMPOSITORMAIN__() {
                     CompositorMain.server.socket_get_serial(in);
                     double end = now_ms();
                     LOG_INFO("read serial in %G milliseconds", end - start);
-                } else {
-                    // nothing waiting to connect, or an error occurred
-                    if (CompositorMain.server.internaldata->server_should_close) goto draw;
-                    if (GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0) {
-                        LOG_INFO("reference_count != 0 , waiting for parameter");
-                        double start = now_ms();
-                        // if this returns false, a client has disconnected, connect to a new client
-                        GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, in);
-                        double end = now_ms();
-                        LOG_INFO("read parameters in %G milliseconds", end - start);
-                    } else goto draw;
-                }
+                } else if (CompositorMain.server.internaldata->server_should_close) goto draw;
             }
             in.get<int>(&command);
 //            if (IPC == IPC_MODE.socket)
 //                LOG_INFO_SERVER("%scommand: %d (%s)",
 //                                CompositorMain.server.TAG, command,
 //                                GLIS_command_to_string(command));
-            if (IPC == IPC_MODE.shared_memory) {
-                LOG_INFO("command: %d (%s)", command, GLIS_command_to_string(command));
-            }
+            if (command != -1) LOG_INFO("command: %d (%s)", command, GLIS_command_to_string(command));
             if (command == GLIS_SERVER_COMMANDS.new_window) {
                 redraw = true;
+                size_t id_;
+                in.get<size_t>(&id_);
+                assert(CompositorMain.KERNEL.table->table[id_] != nullptr);
+                struct Client * client = reinterpret_cast<Client *>(
+                        CompositorMain.KERNEL.table->table[id_]->resource
+                );
                 int *win;
                 assert(in.get_raw_pointer<int>(&win) == 4); // must have 4 indexes
                 struct Client_Window *x = new struct Client_Window;
@@ -255,21 +253,13 @@ int COMPOSITORMAIN__() {
                 x->w = win[2];
                 x->h = win[3];
                 size_t id = CompositorMain.KERNEL.table->findObject(
-                    CompositorMain.KERNEL.newObject(0, 0, x));
-//                if (IPC == IPC_MODE.socket) {
-//                    LOG_INFO_SERVER("%swindow %zu: %d,%d,%d,%d",
-//                                    CompositorMain.server.TAG, id, win[0], win[1], win[2], win[3]);
-//                    if (SERVER_LOG_TRANSFER_INFO)
-//                        LOG_INFO_SERVER("%ssending id %zu", CompositorMain.server.TAG, id);
-//                }
-                if (IPC == IPC_MODE.shared_memory) {
-                    LOG_INFO("window %zu: %d,%d,%d,%d", id, win[0], win[1], win[2], win[3]);
-                    LOG_INFO("sending id %zu", id);
-                }
+                    CompositorMain.KERNEL.newObject(ObjectTypeWindow, 0, x));
+                LOG_INFO_SERVER("%swindow %zu: %d,%d,%d,%d",
+                                CompositorMain.server.TAG, id, win[0], win[1], win[2], win[3]);
+                if (SERVER_LOG_TRANSFER_INFO)
+                    LOG_INFO_SERVER("%ssending id %zu", CompositorMain.server.TAG, id);
                 out.add<int>(id);
-//                if (IPC == IPC_MODE.socket) CompositorMain.server.socket_put_serial(out);
-                if (IPC == IPC_MODE.shared_memory)
-                    GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, out);
+                CompositorMain.server.socket_put_serial(out);
                 redraw = true;
             } else if (command == GLIS_SERVER_COMMANDS.modify_window) {
                 redraw = true;
@@ -295,13 +285,19 @@ int COMPOSITORMAIN__() {
                 CompositorMain.KERNEL.table->DELETE(window_id);
             } else if (command == GLIS_SERVER_COMMANDS.texture) {
                 redraw = true;
-                size_t Client_id;
-                in.get<size_t>(&Client_id);
+                size_t id;
+                in.get<size_t>(&id);
+                assert(CompositorMain.KERNEL.table->table[id] != nullptr);
+                struct Client * client = reinterpret_cast<Client *>(
+                        CompositorMain.KERNEL.table->table[id]->resource
+                );
+                size_t window_id;
+                in.get<size_t>(&window_id);
 //                if (IPC == IPC_MODE.socket) {
 //                    if (SERVER_LOG_TRANSFER_INFO)
 //                        LOG_INFO_SERVER("%sreceived id: %zu", CompositorMain.server.TAG, Client_id);
                 if (IPC == IPC_MODE.shared_memory) {
-                    LOG_INFO("received id: %zu", Client_id);
+                    LOG_INFO("received id: %zu", window_id);
                 }
                 GLint *tex_dimens;
                 assert(in.get_raw_pointer<GLint>(&tex_dimens) == 2);
@@ -314,7 +310,7 @@ int COMPOSITORMAIN__() {
                     LOG_INFO("received w: %d, h: %d", tex_dimens[0], tex_dimens[1]);
                 }
                 struct Client_Window *CW = static_cast<Client_Window *>(
-                    CompositorMain.KERNEL.table->table[Client_id]->resource
+                    CompositorMain.KERNEL.table->table[window_id]->resource
                 );
 
                 glGenTextures(1, &CW->TEXTURE);
@@ -326,7 +322,7 @@ int COMPOSITORMAIN__() {
 //                }
                 if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("reading texture");
-                    assert(GLIS_shared_memory_read_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
+                    assert(GLIS_shared_memory_read_texture(client->texture,
                                                     reinterpret_cast<int8_t **>(&texdata)));
                     LOG_INFO("read texture");
                 }
@@ -338,57 +334,66 @@ int COMPOSITORMAIN__() {
                 if (texdata != nullptr) free(texdata);
                 glGenerateMipmap(GL_TEXTURE_2D);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                                GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                                GL_LINEAR);
-
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                                GL_CLAMP_TO_BORDER);
-
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                                GL_CLAMP_TO_BORDER);
                 glBindTexture(GL_TEXTURE_2D, 0);
             } else if (command == GLIS_SERVER_COMMANDS.shm_texture) {
                 double start = now_ms();
-                assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
-                LOG_INFO_SERVER("GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count = %zu",
-                                GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
-                GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
-                out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
-                out.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+                size_t id;
+                in.get<size_t>(&id);
+                assert(CompositorMain.KERNEL.table->table[id] != nullptr);
+                struct Client * client = reinterpret_cast<Client *>(
+                        CompositorMain.KERNEL.table->table[id]->resource
+                );
+                assert(ashmem_valid(client->texture.fd));
+                LOG_INFO_SERVER("client->parameters.reference_count = %zu",
+                                client->texture.reference_count);
+                GLIS_shared_memory_increase_reference(client->texture);
+                out.add<size_t>(client->texture.size);
+                out.add<size_t>(client->texture.reference_count);
 //                if (IPC == IPC_MODE.socket) {
 //                    if (SERVER_LOG_TRANSFER_INFO)
 //                        LOG_INFO_SERVER("%ssending id %d, size: %zu",
 //                                        CompositorMain.server.TAG,
-//                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
-//                                        GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+//                                        client->texture.fd,
+//                                        client->texture.size);
 //                }
                 if (IPC == IPC_MODE.shared_memory) {
                     LOG_INFO("sending id %d, size: %zu",
-                             GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd,
-                             GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
+                             client->texture.fd,
+                             client->texture.size);
                 }
-                CompositorMain.server.socket_put_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
+                CompositorMain.server.socket_put_fd(client->texture.fd);
                 CompositorMain.server.socket_put_serial(out);
-                LOG_INFO_SERVER("GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count = %zu",
-                                GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
+                LOG_INFO_SERVER("client->parameters.reference_count = %zu",
+                                client->texture.reference_count);
                 double end = now_ms();
                 LOG_INFO("send texture file descriptor in %G milliseconds", end - start);
             } else if (command == GLIS_SERVER_COMMANDS.shm_params) {
-                CompositorMain.server.socket_get_fd(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd);
-                assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.fd));
-                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
-                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
-                assert(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count != 0);
-                CompositorMain.server.socket_get_fd(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd);
-                assert(ashmem_valid(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.fd));
-                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
-                in.get<size_t>(&GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count);
-                assert(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.reference_count != 0);
-                if (GLIS_shared_memory_open(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER)) {
-                    if (GLIS_shared_memory_open(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA)) {
+                size_t id;
+                in.get<size_t>(&id);
+                assert(CompositorMain.KERNEL.table->table[id] != nullptr);
+                struct Client * client = reinterpret_cast<Client *>(
+                        CompositorMain.KERNEL.table->table[id]->resource
+                );
+                CompositorMain.server.socket_get_fd(client->parameters.fd);
+                assert(ashmem_valid(client->parameters.fd));
+                in.get<size_t>(&client->parameters.size);
+                in.get<size_t>(&client->parameters.reference_count);
+                LOG_INFO("size: %d, ref count: %d", client->parameters.size, client->parameters.reference_count);
+                assert(client->parameters.reference_count != 0);
+                CompositorMain.server.socket_get_fd(client->texture.fd);
+                assert(ashmem_valid(client->texture.fd));
+                in.get<size_t>(&client->texture.size);
+                in.get<size_t>(&client->texture.reference_count);
+                LOG_INFO("size: %d, ref count: %d", client->texture.size, client->texture.reference_count);
+                assert(client->texture.reference_count != 0);
+                if (GLIS_shared_memory_open(client->parameters)) {
+                    // is parameters even needed?
+                    if (GLIS_shared_memory_open(client->texture)) {
                         out.add<bool>(true);
                         CompositorMain.server.socket_put_serial(out);
                     } else
@@ -396,12 +401,15 @@ int COMPOSITORMAIN__() {
                 } else
                     LOG_ERROR("failed to open shared memory parameter");
             } else if (command == GLIS_SERVER_COMMANDS.new_connection) {
+                Client * x = new Client;
+                GLIS_client_id = CompositorMain.KERNEL.table->findObject(
+                        CompositorMain.KERNEL.newObject(ObjectTypeProcess, 0, x));
                 struct pa {
                     size_t table_id;
 
-                    class GLIS_shared_memory *GLIS_INTERNAL_SHARED_MEMORY_PARAMETER;
+                    class GLIS_shared_memory * parameters;
                 } p;
-                p.GLIS_INTERNAL_SHARED_MEMORY_PARAMETER = &GLIS_INTERNAL_SHARED_MEMORY_PARAMETER;
+                p.parameters = &x->parameters;
                 char *s = SERVER_allocate_new_server(SERVER_START_REPLY_MANUALLY, p.table_id);
                 long t; // unused
                 int e = pthread_create(&t, nullptr, KEEP_ALIVE_MAIN_NOTIFIER, &p);
@@ -412,6 +420,10 @@ int COMPOSITORMAIN__() {
                 else
                     LOG_INFO("KEEP_ALIVE_MAIN_NOTIFIER thread successfully started");
                 out.add_pointer<char>(s, 107);
+                if (IPC == IPC_MODE.shared_memory) {
+                    LOG_INFO("sending id %zu", GLIS_client_id);
+                }
+                out.add<size_t>(GLIS_client_id);
                 CompositorMain.server.socket_put_serial(out);
             } else if (command == GLIS_SERVER_COMMANDS.start_drawing) {
                 stop_drawing = false;
@@ -426,50 +438,56 @@ int COMPOSITORMAIN__() {
                 out.add<bool>(true);
                 CompositorMain.server.socket_put_serial(out);
             }
-            if (IPC == IPC_MODE.socket) assert(CompositorMain.server.socket_unaccept());
-            LOG_INFO("CLIENT has uploaded");
+//            assert(CompositorMain.server.socket_unaccept());
+            if (command != -1) LOG_INFO("CLIENT has uploaded");
             goto draw;
             draw:
             double start = now_ms();
             // something is wrong with redraw...
             // when redraw becomes false, then true, redraw does not reliably redraw anymore
             // avoid using it for now and always redraw every frame
-//            if (redraw) {
-                LOG_INFO("rendering");
-                glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
-                glClear(GL_COLOR_BUFFER_BIT);
-                if (!stop_drawing) {
-                    int page = 1;
-                    size_t index = 0;
-                    size_t page_size = CompositorMain.KERNEL.table->page_size;
-                    int drawn = 0;
-                    double startK = now_ms();
-                    for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
-                        index = ((page_size * page) - page_size);
-                        for (; index < page_size * page; index++)
-                            if (CompositorMain.KERNEL.table->table[index] != nullptr) {
-                                struct Client_Window *CW = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[index]->resource);
-                                struct Client_Window *CWT = static_cast<Client_Window *>(CompositorMain.KERNEL.table->table[0]->resource);
-                                double startR = now_ms();
+            if (command != -1) LOG_INFO("rendering");
+            glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
+            glClear(GL_COLOR_BUFFER_BIT);
+            if (!stop_drawing) {
+                int page = 1;
+                size_t index = 0;
+                size_t page_size = CompositorMain.KERNEL.table->page_size;
+                int drawn = 0;
+                double startK = now_ms();
+                for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
+                    index = ((page_size * page) - page_size);
+                    for (; index < page_size * page; index++)
+                        if (CompositorMain.KERNEL.table->table[index] != nullptr) {
+                            if (
+                                    CompositorMain.KERNEL.table->table[index]->type
+                                    ==
+                                    ObjectTypeWindow
+                            ) {
+                                struct Client_Window *CW = static_cast<Client_Window *>(
+                                        CompositorMain.KERNEL.table->table[index]->resource
+                                );
                                 GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
-                                                           CWT->TEXTURE,
+                                                           CW->TEXTURE,
                                                            0, CW->x,
                                                            CW->y, CW->w, CW->h,
                                                            CompositorMain.width,
-                                                           CompositorMain.height);
+                                                           CompositorMain.height
+                                );
                                 drawn++;
-                                double endR = now_ms();
                             }
-                    }
-                    double endK = now_ms();
-                    LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
-                             drawn == 1 ? "window" : "windows", endK - startK);
+                        }
                 }
-                double end = now_ms();
+                double endK = now_ms();
+                if (command != -1) LOG_INFO("Drawn %d %s in %G milliseconds", drawn,
+                         drawn == 1 ? "window" : "windows", endK - startK);
+            }
+            double end = now_ms();
+            if (command != -1) {
                 LOG_INFO("rendered in %G milliseconds", end - start);
                 LOG_INFO("since loop start: %G milliseconds", end - loop_start);
                 LOG_INFO("since start: %G milliseconds", end - program_start);
-//            }
+            }
             fps.onFrameEnd();
             std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
             GLIS_font_RenderText(text, 0, 20, GLIS_font_color_white);

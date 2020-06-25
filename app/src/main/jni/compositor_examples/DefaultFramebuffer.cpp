@@ -11,7 +11,6 @@ int main() {
     if (GLIS_setupOffScreenRendering(G, W, H)) {
         glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-//        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);

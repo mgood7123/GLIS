@@ -424,6 +424,7 @@ bool GLIS_stop_drawing() {
 }
 
 bool GLIS_SHARED_MEMORY_INITIALIZED = false;
+size_t GLIS_client_id = -1;
 
 bool GLIS_INIT_SHARED_MEMORY(int w, int h) {
     if (GLIS_SHARED_MEMORY_INITIALIZED) return true;
@@ -442,6 +443,7 @@ bool GLIS_INIT_SHARED_MEMORY(int w, int h) {
                     KEEP_ALIVE.set_name(server_name);
                     delete[] server_name;
                     if (KEEP_ALIVE.connect_to_server()) {
+                        server.get<size_t>(&GLIS_client_id);
                         assert(GLIS_shared_memory_malloc(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,
                                                          sizeof(size_t) +
                                                          sizeof(int8_t) +
@@ -463,6 +465,7 @@ bool GLIS_INIT_SHARED_MEMORY(int w, int h) {
                         GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER);
                         GLIS_shared_memory_increase_reference(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA);
                         cmd1.add<int>(GLIS_SERVER_COMMANDS.shm_params);
+                        cmd1.add<size_t>(GLIS_client_id);
                         cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.size);
                         cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER.reference_count);
                         cmd1.add<size_t>(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA.size);
@@ -506,31 +509,24 @@ size_t GLIS_new_window(int x, int y, int w, int h) {
     serializer id;
     int win[4] = {x, y, x + w, y + h};
     window.add<int>(GLIS_SERVER_COMMANDS.new_window);
+    window.add<size_t>(GLIS_client_id);
     window.add_pointer<int>(win, 4);
-    if (IPC == IPC_MODE.shared_memory) {
-        GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, window);
-        assert(GLIS_shared_memory_read(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, id));
-        size_t window_id;
-        id.get<size_t>(&window_id);
-        return window_id;
-    } else if (IPC == IPC_MODE.socket) {
-        SOCKET_CLIENT client;
-        if (client.connect_to_server()) {
-            if (client.socket_put_serial(window)) {
-                if (client.socket_get_serial(id)) {
-                    if (client.disconnect_from_server()) {
-                        size_t window_id;
-                        id.get<size_t>(&window_id);
-                        return window_id;
-                    } else
-                        LOG_ERROR("failed to disconnect from the server");
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.socket_get_serial(id)) {
+                if (client.disconnect_from_server()) {
+                    size_t window_id;
+                    id.get<size_t>(&window_id);
+                    return window_id;
                 } else
-                    LOG_ERROR("failed to get serial from the server");
+                    LOG_ERROR("failed to disconnect from the server");
             } else
-                LOG_ERROR("failed to send command to the server");
+                LOG_ERROR("failed to get serial from the server");
         } else
-            LOG_ERROR("failed to connect to server");
-    }
+            LOG_ERROR("failed to send command to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
     return static_cast<size_t>(-1);
 }
 
@@ -540,21 +536,16 @@ bool GLIS_modify_window(size_t window_id, int x, int y, int w, int h) {
     window.add<int>(GLIS_SERVER_COMMANDS.modify_window);
     window.add<size_t>(window_id);
     window.add_pointer<int>(win, 4);
-    if (IPC == IPC_MODE.shared_memory) {
-        GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, window);
-        return true;
-    } else if (IPC == IPC_MODE.socket) {
-        SOCKET_CLIENT client;
-        if (client.connect_to_server()) {
-            if (client.socket_put_serial(window)) {
-                if (client.disconnect_from_server()) return true;
-                else
-                    LOG_ERROR("failed to disconnect from the server");
-            } else
-                LOG_ERROR("failed to send command to the server");
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.disconnect_from_server()) return true;
+            else
+                LOG_ERROR("failed to disconnect from the server");
         } else
-            LOG_ERROR("failed to connect to server");
-    }
+            LOG_ERROR("failed to send command to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
     return false;
 }
 
@@ -562,21 +553,16 @@ bool GLIS_close_window(size_t window_id) {
     serializer window;
     window.add<int>(GLIS_SERVER_COMMANDS.close_window);
     window.add<size_t>(window_id);
-    if (IPC == IPC_MODE.shared_memory) {
-        GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, window);
-        return true;
-    } else if (IPC == IPC_MODE.socket) {
-        SOCKET_CLIENT client;
-        if (client.connect_to_server()) {
-            if (client.socket_put_serial(window)) {
-                if (client.disconnect_from_server()) return true;
-                else
-                    LOG_ERROR("failed to disconnect from the server");
-            } else
-                LOG_ERROR("failed to send command to the server");
+    SOCKET_CLIENT client;
+    if (client.connect_to_server()) {
+        if (client.socket_put_serial(window)) {
+            if (client.disconnect_from_server()) return true;
+            else
+                LOG_ERROR("failed to disconnect from the server");
         } else
-            LOG_ERROR("failed to connect to server");
-    }
+            LOG_ERROR("failed to send command to the server");
+    } else
+        LOG_ERROR("failed to connect to server");
     return false;
 }
 
@@ -608,6 +594,7 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
         }
         serializer tex;
         tex.add<int>(GLIS_SERVER_COMMANDS.texture);
+        tex.add<size_t>(GLIS_client_id);
         tex.add<size_t>(window_id);
         GLint tex_dimens[2] = {
             texture_width_to != 0 ? texture_width_to : texture_width,
@@ -616,7 +603,15 @@ GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_
         tex.add_pointer<GLint>(tex_dimens, 2);
         if (IPC == IPC_MODE.shared_memory) {
             LOG_INFO("writing");
-            GLIS_shared_memory_write(GLIS_INTERNAL_SHARED_MEMORY_PARAMETER, tex);
+            SOCKET_CLIENT client;
+            if (client.connect_to_server()) {
+                if (client.socket_put_serial(tex)) {
+                    if (!client.disconnect_from_server())
+                        LOG_ERROR("failed to disconnect from server");
+                } else
+                    LOG_ERROR("failed to send texture to server");
+            } else
+                LOG_ERROR("failed to connect to server");
             LOG_INFO("wrote");
             LOG_INFO("writing");
             GLIS_shared_memory_write_texture(GLIS_INTERNAL_SHARED_MEMORY_TEXTURE_DATA,

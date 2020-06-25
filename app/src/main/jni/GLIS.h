@@ -1223,7 +1223,7 @@ void GLIS_Sync_GPU() {
 //    LOG_INFO("synchronized");
     glDeleteSync(GPU);
     double end = now_ms();
-    LOG_INFO("synchronized with GPU in %G milliseconds", end - start);
+//    LOG_INFO("synchronized with GPU in %G milliseconds", end - start);
 }
 
 class STATE {
