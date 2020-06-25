@@ -4,7 +4,6 @@
 
 #include "../GLIS.h"
 
-class GLIS_CLASS G;
 int main() {
     GLIS_start_drawing();
     return 0;
