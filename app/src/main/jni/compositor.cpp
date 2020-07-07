@@ -44,6 +44,7 @@
 #include <pthread.h>
 #include <vector>
 #include <android/log.h>
+#include <boost/interprocess/shared_memory_object.hpp>
 
 #include "logger.h"
 #include "GLIS.h"
@@ -139,9 +140,27 @@ public:
     bool connected = false;
 };
 
+#include <boost/interprocess/managed_shared_memory.hpp>
+// in Android 10 and assumably Android 9, the directory /data/tmp/ exists and is world writable
+// however i am not sure if this directory is Partition backed or RAM (tmpfs) backed
+// eg if writing to /tmp/data/ creates a new physical file in the partition the directory resides in
+// or if writing to /tmp/data/ creates a new virtual file in RAM as per Linux tmpfs based /tmp/
+
 void handleCommands(
         int & command, Client * client, bool & stop_drawing, serializer & in, serializer & out
 ) {
+    {
+        //Remove shared memory on construction and destruction
+        struct shm_remove
+        {
+            shm_remove() { boost::interprocess::shared_memory_object::remove("My Shared Memory X"); }
+            ~shm_remove(){ boost::interprocess::shared_memory_object::remove("My Shared Memory X"); }
+        } remover;
+        boost::interprocess::managed_shared_memory segment(
+                boost::interprocess::create_only, "My Shared Memory X", 8000
+        );
+        segment.deallocate(segment.allocate(5000));
+    }
     if (command != -1) {
         if (client != nullptr) {
             CompositorMain.server.log_info(
