@@ -140,27 +140,9 @@ public:
     bool connected = false;
 };
 
-#include <boost/interprocess/managed_shared_memory.hpp>
-// in Android 10 and assumably Android 9, the directory /data/tmp/ exists and is world writable
-// however i am not sure if this directory is Partition backed or RAM (tmpfs) backed
-// eg if writing to /tmp/data/ creates a new physical file in the partition the directory resides in
-// or if writing to /tmp/data/ creates a new virtual file in RAM as per Linux tmpfs based /tmp/
-
 void handleCommands(
         int & command, Client * client, bool & stop_drawing, serializer & in, serializer & out
 ) {
-    {
-        //Remove shared memory on construction and destruction
-        struct shm_remove
-        {
-            shm_remove() { boost::interprocess::shared_memory_object::remove("My Shared Memory X"); }
-            ~shm_remove(){ boost::interprocess::shared_memory_object::remove("My Shared Memory X"); }
-        } remover;
-        boost::interprocess::managed_shared_memory segment(
-                boost::interprocess::create_only, "My Shared Memory X", 8000
-        );
-        segment.deallocate(segment.allocate(5000));
-    }
     if (command != -1) {
         if (client != nullptr) {
             CompositorMain.server.log_info(
@@ -294,7 +276,23 @@ void handleCommands(
 [22:31] <emersion> 5. server uses DRM to display the GBM buffer
  */
 
+#include <boost/interprocess/managed_shared_memory.hpp>
+// in Android 10 and assumably Android 9, the directory /data/local/traces/ exists and is world writable
+// however i am not sure if this directory is Partition backed or RAM (tmpfs) backed
+// eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
+// or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
+
+const char * shared_memory_name = "My Shared Memory X";
+
 int COMPOSITORMAIN__() {
+    struct shm_remove {
+        shm_remove() { boost::interprocess::shared_memory_object::remove(shared_memory_name); }
+        ~shm_remove(){ boost::interprocess::shared_memory_object::remove(shared_memory_name); }
+    } remover;
+    boost::interprocess::managed_shared_memory segment(
+            boost::interprocess::create_only, shared_memory_name, 8000
+    );
+    segment.deallocate(segment.allocate(5000));
 
     LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());

@@ -108,7 +108,7 @@ inline void get_shared_dir_root(std::string &dir_path)
       winapi::get_shared_documents_folder(dir_path);
    // BOOST_PATCHED
    #elif defined(__ANDROID__)
-      dir_path = "/data/tmp";
+      dir_path = "/data/local/traces";
    #else
       dir_path = "/tmp";
    #endif
