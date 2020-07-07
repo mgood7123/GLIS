@@ -47,33 +47,35 @@ int main() {
         GLuint fragmentShader;
         vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
         fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
-        LOG_INFO("Creating Shader program");
+        LOG_INFO("A: Creating Shader program");
         shaderProgram = glCreateProgram();
-        LOG_INFO("Attaching vertex Shader to program");
+        LOG_INFO("A: Attaching vertex Shader to program");
         glAttachShader(shaderProgram, vertexShader);
-        LOG_INFO("Attaching fragment Shader to program");
+        LOG_INFO("A: Attaching fragment Shader to program");
         glAttachShader(shaderProgram, fragmentShader);
-        LOG_INFO("Linking Shader program");
+        LOG_INFO("A: Linking Shader program");
         glLinkProgram(shaderProgram);
-        LOG_INFO("Validating Shader program");
+        LOG_INFO("A: Validating Shader program");
         GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
 
-        LOG_INFO("Using Shader program");
+        LOG_INFO("A: Using Shader program");
         glUseProgram(shaderProgram);
+        LOG_INFO("A: drawing rectangle");
         GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
+        LOG_INFO("A: drawn rectangle");
 
         size_t win_id1 = GLIS_new_window(500, 500, 200, 200);
         GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
-        LOG_INFO("win_id1 = %zu", win_id1);
+        LOG_INFO("A: win_id1 = %zu", win_id1);
         size_t win_id2 = GLIS_new_window(600, 600, 200, 200);
         GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
-        LOG_INFO("win_id2 = %zu", win_id2);
+        LOG_INFO("A: win_id2 = %zu", win_id2);
         for (int i = 500; i <= 600; i++) GLIS_modify_window(win_id1, 500, i, 200, 200);
         for (int i = 600; i <= 700; i++) GLIS_modify_window(win_id2, i, 600, 200, 200);
         for (int i = 599; i >= 451; i--) GLIS_modify_window(win_id1, 500, i, 200, 200);
         for (int i = 699; i >= 501; i--) GLIS_modify_window(win_id2, i, 600, 200, 200);
-        LOG_INFO("Cleaning up");
+        LOG_INFO("A: Cleaning up");
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
         glDeleteShader(vertexShader);
@@ -81,8 +83,8 @@ int main() {
         glDeleteRenderbuffers(1, &RB);
         glDeleteFramebuffers(1, &FB);
         GLIS_destroy_GLIS(G);
-        LOG_INFO("Destroyed sub Compositor GLIS");
-        LOG_INFO("Cleaned up");
+        LOG_INFO("A: Destroyed sub Compositor GLIS");
+        LOG_INFO("A: Cleaned up");
     }
     return 0;
 }

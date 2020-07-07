@@ -1,0 +1,469 @@
+i need help trying to figure out why this happens, in which the texture upload for window id 2 never completes
+---
+07-06 04:32:41.567  6595  6595 E GLIS    : waiting for GLIS_upload_texture (for window id 2) to complete on server side
+---
+
+07-06 04:32:41.517  6595  6595 I GLIS    : Compiling Fragment Shader
+07-06 04:32:41.518  6595  6595 I GLIS    : B: Creating Shader program
+07-06 04:32:41.518  6595  6595 I GLIS    : B: Attaching vertex Shader to program
+07-06 04:32:41.518  6595  6595 I GLIS    : B: Attaching fragment Shader to program
+07-06 04:32:41.518  6595  6595 I GLIS    : B: Linking Shader program
+07-06 04:32:41.521  6594  6594 I GLIS    : Initialized surface
+07-06 04:32:41.521  6594  6594 I GLIS    : Initializing context
+07-06 04:32:41.524  6594  6594 I GLIS    : Initialized context
+07-06 04:32:41.524  6594  6594 I GLIS    : Switching to context
+07-06 04:32:41.524  6594  6594 I GLIS    : GL_VENDOR: ARM
+07-06 04:32:41.524  6594  6594 I GLIS    : GL_RENDERER: Mali-G71
+07-06 04:32:41.524  6594  6594 I GLIS    : GL_VERSION: OpenGL ES 3.2 v1.r16p0-01rel0.###other-sha0123456789ABCDEF0###
+07-06 04:32:41.524  6594  6594 I GLIS    : GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+07-06 04:32:41.524  6594  6594 I GLIS    : GL_EXTENSIONS: GL_EXT_debug_marker GL_ARM_rgba8 GL_ARM_mali_shader_binary GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_packed_depth_stencil GL_OES_rgb8_rgba8 GL_EXT_read_format_bgra GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_standard_derivatives GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_texture_npot GL_OES_vertex_half_float GL_OES_required_internalformat GL_OES_vertex_array_object GL_OES_mapbuffer GL_EXT_texture_format_BGRA8888 GL_EXT_texture_rg GL_EXT_texture_type_2_10_10_10_REV GL_OES_fbo_render_mipmap GL_OES_element_index_uint GL_EXT_shadow_samplers GL_OES_texture_compression_astc GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_hdr GL_KHR_texture_compression_astc_sliced_3d GL_KHR_debug GL_EXT_occlusion_query_boolean GL_EXT_disjoint_timer_query GL_EXT_blend_minmax GL_EXT_discard_framebuffer GL_OES_get_program_binary GL_OES_texture_3D GL_EXT_texture_storage GL_EXT_multis
+07-06 04:32:41.524  6594  6594 I GLIS    : Switched to context
+07-06 04:32:41.524  6594  6594 I GLIS    : Obtaining surface width and height
+07-06 04:32:41.524  6594  6594 I GLIS    : Obtained surface width and height
+07-06 04:32:41.524  6594  6594 I GLIS    : Initialized
+07-06 04:32:41.529  6594  6594 I GLIS    : framebuffer is complete
+07-06 04:32:41.534  6595  6595 I GLIS    : B: Validating Shader program
+07-06 04:32:41.534  6595  6595 I GLIS    : B: Using Shader program
+07-06 04:32:41.534  6595  6595 I GLIS    : B: drawing rectangle
+07-06 04:32:41.534  6595  6595 I GLIS    : B: drawn rectangle
+07-06 04:32:41.534  6595  6595 E GLIS    : waiting for GLIS_new_window (for window id 18446744073709551615) to complete on server side
+07-06 04:32:41.534  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 2 (Create New Window)
+07-06 04:32:41.534  6536  6592 I EglSample: window  2: 100,100,300,300
+07-06 04:32:41.534  6536  6592 I EglSample: rendering
+07-06 04:32:41.534  6595  6595 E GLIS    : GLIS_new_window (for window id 18446744073709551615) has completed on server side
+07-06 04:32:41.534  6595  6595 I GLIS    : uploading texture
+07-06 04:32:41.535  6594  6594 I GLIS    : Supports Shader Compiler: true
+07-06 04:32:41.535  6594  6594 I GLIS    : Creating Vertex Shader
+07-06 04:32:41.535  6594  6594 I GLIS    : Compiling Vertex Shader
+07-06 04:32:41.538  6594  6594 I GLIS    : Supports Shader Compiler: true
+07-06 04:32:41.538  6594  6594 I GLIS    : Creating Fragment Shader
+07-06 04:32:41.538  6594  6594 I GLIS    : Compiling Fragment Shader
+07-06 04:32:41.539  6594  6594 I GLIS    : A: Creating Shader program
+07-06 04:32:41.539  6594  6594 I GLIS    : A: Attaching vertex Shader to program
+07-06 04:32:41.539  6594  6594 I GLIS    : A: Attaching fragment Shader to program
+07-06 04:32:41.539  6594  6594 I GLIS    : A: Linking Shader program
+07-06 04:32:41.553  6594  6594 I GLIS    : A: Validating Shader program
+07-06 04:32:41.553  6594  6594 I GLIS    : A: Using Shader program
+07-06 04:32:41.553  6594  6594 I GLIS    : A: drawing rectangle
+07-06 04:32:41.554  6594  6594 I GLIS    : A: drawn rectangle
+07-06 04:32:41.554  6594  6594 E GLIS    : waiting for GLIS_new_window (for window id 18446744073709551615) to complete on server side
+07-06 04:32:41.567  6595  6595 E GLIS    : waiting for GLIS_upload_texture (for window id 2) to complete on server side
+07-06 04:32:41.570  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 2 (Create New Window)
+07-06 04:32:41.570  6536  6592 I EglSample: window  3: 500,500,700,700
+07-06 04:32:41.570  6536  6592 I EglSample: rendering
+07-06 04:32:41.587  6594  6594 E GLIS    : GLIS_new_window (for window id 18446744073709551615) has completed on server side
+07-06 04:32:41.587  6594  6594 I GLIS    : uploading texture
+07-06 04:32:41.624  6594  6594 E GLIS    : waiting for GLIS_upload_texture (for window id 3) to complete on server side
+07-06 04:32:41.636  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 1 (Texture Upload)
+07-06 04:32:41.636  6536  6592 I EglSample: received id: 3
+07-06 04:32:41.636  6536  6592 I EglSample: received w: 1080, h: 2031
+07-06 04:32:41.677  6594  6594 E GLIS    : GLIS_upload_texture (for window id 3) has completed on server side
+07-06 04:32:41.677  6536  6592 I EglSample: CLIENT has uploaded
+07-06 04:32:41.677  6536  6592 I EglSample: rendering
+07-06 04:32:41.677  6594  6594 I GLIS    : uploaded texture
+07-06 04:32:41.677  6594  6594 I GLIS    : A: win_id1 = 3
+07-06 04:32:41.677  6594  6594 E GLIS    : waiting for GLIS_new_window (for window id 18446744073709551615) to complete on server side
+07-06 04:32:41.678  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 2 (Create New Window)
+07-06 04:32:41.678  6536  6592 I EglSample: window  4: 600,600,800,800
+07-06 04:32:41.678  6536  6592 I EglSample: rendering
+07-06 04:32:41.678  6594  6594 E GLIS    : GLIS_new_window (for window id 18446744073709551615) has completed on server side
+07-06 04:32:41.678  6594  6594 I GLIS    : uploading texture
+07-06 04:32:41.684  6594  6594 E GLIS    : waiting for GLIS_upload_texture (for window id 4) to complete on server side
+07-06 04:32:41.690  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 1 (Texture Upload)
+07-06 04:32:41.690  6536  6592 I EglSample: received id: 4
+07-06 04:32:41.690  6536  6592 I EglSample: received w: 1080, h: 2031
+07-06 04:32:41.700  6594  6594 E GLIS    : GLIS_upload_texture (for window id 4) has completed on server side
+07-06 04:32:41.700  6536  6592 I EglSample: CLIENT has uploaded
+07-06 04:32:41.700  6594  6594 I GLIS    : uploaded texture
+07-06 04:32:41.700  6536  6592 I EglSample: rendering
+07-06 04:32:41.700  6594  6594 I GLIS    : A: win_id2 = 4
+07-06 04:32:41.700  6594  6594 E GLIS    : waiting for GLIS_modify_window (for window id 3) to complete on server side
+07-06 04:32:41.719  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 3 (Modify Window)
+07-06 04:32:41.719  6536  6592 I EglSample: modifying window (ID: 3)
+07-06 04:32:41.719  6536  6592 I EglSample: rendering
+07-06 04:32:41.719  6594  6594 E GLIS    : GLIS_modify_window (for window id 3) has completed on server side
+07-06 04:32:41.719  6594  6594 E GLIS    : waiting for GLIS_modify_window (for window id 4) to complete on server side
+07-06 04:32:41.735  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 3 (Modify Window)
+07-06 04:32:41.735  6536  6592 I EglSample: modifying window (ID: 4)
+07-06 04:32:41.735  6536  6592 I EglSample: rendering
+07-06 04:32:41.735  6594  6594 E GLIS    : GLIS_modify_window (for window id 4) has completed on server side
+07-06 04:32:41.735  6594  6594 E GLIS    : waiting for GLIS_modify_window (for window id 3) to complete on server side
+07-06 04:32:41.750  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 3 (Modify Window)
+07-06 04:32:41.750  6536  6592 I EglSample: modifying window (ID: 3)
+07-06 04:32:41.750  6536  6592 I EglSample: rendering
+07-06 04:32:41.751  6594  6594 E GLIS    : GLIS_modify_window (for window id 3) has completed on server side
+07-06 04:32:41.751  6594  6594 E GLIS    : waiting for GLIS_modify_window (for window id 4) to complete on server side
+07-06 04:32:41.767  6536  6592 I server_core: SERVER: SOCKET_SERVER : command: 3 (Modify Window)
+07-06 04:32:41.767  6536  6592 I EglSample: modifying window (ID: 4)
+07-06 04:32:41.767  6536  6592 I EglSample: rendering
+07-06 04:32:41.767  6594  6594 E GLIS    : GLIS_modify_window (for window id 4) has completed on server side
+07-06 04:32:41.767  6594  6594 I GLIS    : A: Cleaning up
+07-06 04:32:41.768  6594  6594 I GLIS    : A: Destroyed sub Compositor GLIS
+07-06 04:32:41.768  6594  6594 I GLIS    : A: Cleaned up
+07-06 04:32:41.863  6536  6632 I server_core: SERVER: 1 : Client has closed the connection
+07-06 04:32:41.863  6536  6632 I server_core: params.reference_count = 1
+07-06 04:32:41.863  6536  6632 I server_core: params.reference_count = 0
+
+
+
+// C++
+
+
+// MovingWindowsB.cpp // CLIENT B
+// NOTE that client A is exactly the same as client B except in client A it has `LOG_INFO("A: ` instead of `LOG_INFO("B: `
+
+//
+// Created by konek on 8/14/2019.
+//
+
+#include "../GLIS.h"
+
+const char *vertexSource = R"glsl( #version 320 es
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
+
+out vec3 ourColor;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+    TexCoord = aTexCoord;
+}
+)glsl";
+
+const char *fragmentSource = R"glsl( #version 320 es
+out highp vec4 FragColor;
+in highp vec3 ourColor;
+
+void main()
+{
+    FragColor = vec4(ourColor, 1.0);
+}
+)glsl";
+
+class GLIS_CLASS G;
+
+int main() {
+    int W = 1080;
+    int H = 2031;
+    if (GLIS_setupOffScreenRendering(G, W, H)) {
+        // create a new texture
+        GLuint FB;
+        GLuint RB;
+        GLuint renderedTexture;
+        GLIS_texture_buffer(FB, RB, renderedTexture, W, H);
+
+        GLuint shaderProgram;
+        GLuint vertexShader;
+        GLuint fragmentShader;
+        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+        LOG_INFO("B: Creating Shader program");
+        shaderProgram = glCreateProgram();
+        LOG_INFO("B: Attaching vertex Shader to program");
+        glAttachShader(shaderProgram, vertexShader);
+        LOG_INFO("B: Attaching fragment Shader to program");
+        glAttachShader(shaderProgram, fragmentShader);
+        LOG_INFO("B: Linking Shader program");
+        glLinkProgram(shaderProgram);
+        LOG_INFO("B: Validating Shader program");
+        GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
+        assert(ProgramIsValid == GL_TRUE);
+
+        LOG_INFO("B: Using Shader program");
+        glUseProgram(shaderProgram);
+        LOG_INFO("B: drawing rectangle");
+        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
+        LOG_INFO("B: drawn rectangle");
+
+        size_t win_id1 = GLIS_new_window(100, 100, 200, 200);
+        GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
+        LOG_INFO("B: win_id1 = %zu", win_id1);
+        size_t win_id2 = GLIS_new_window(200, 200, 200, 200);
+        GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
+        LOG_INFO("B: win_id2 = %zu", win_id2);
+        GLIS_modify_window(win_id1, 100, 200, 200, 200);
+        GLIS_modify_window(win_id2, 300, 200, 200, 200);
+        GLIS_modify_window(win_id1, 100, 051, 200, 200);
+        GLIS_modify_window(win_id2, 101, 200, 200, 200);
+//        for int i = 100; i <= 200; i++) GLIS_modify_window(win_id1, 100, i, 200, 200);
+//        for (int i = 200; i <= 300; i++) GLIS_modify_window(win_id2, i, 200, 200, 200);
+//        for (int i = 199; i >= 051; i--) GLIS_modify_window(win_id1, 100, i, 200, 200);
+//        for (int i = 299; i >= 101; i--) GLIS_modify_window(win_id2, i, 200, 200, 200);
+        LOG_INFO("B: Cleaning up");
+        glDeleteProgram(shaderProgram);
+        glDeleteShader(fragmentShader);
+        glDeleteShader(vertexShader);
+        glDeleteTextures(1, &renderedTexture);
+        glDeleteRenderbuffers(1, &RB);
+        glDeleteFramebuffers(1, &FB);
+        GLIS_destroy_GLIS(G);
+        LOG_INFO("B: Destroyed sub Compositor GLIS");
+        LOG_INFO("B: Cleaned up");
+    }
+    return 0;
+}
+
+// glis.h
+
+void GLIS_sync_server(const char * operation, size_t id) {
+    LOG_ERROR("waiting for %s (for window id %zu) to complete on server side", operation, id);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.status.store_int8_t(GLIS_INTERNAL_SHARED_MEMORY.status.ready_to_be_read);
+    while (GLIS_INTERNAL_SHARED_MEMORY.slot.status.load_int8_t() == GLIS_INTERNAL_SHARED_MEMORY.status.ready_to_be_read);
+    LOG_ERROR("%s (for window id %zu) has completed on server side", operation, id);
+}
+
+size_t GLIS_new_window(int x, int y, int w, int h) {
+    GLIS_INTERNAL_SHARED_MEMORY.slot.command.store_int8_t(GLIS_SERVER_COMMANDS.new_window);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_0.type_int64_t.store_int64_t(x);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_1.type_int64_t.store_int64_t(y);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_2.type_int64_t.store_int64_t(x + w);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_3.type_int64_t.store_int64_t(y + h);
+    GLIS_sync_server("GLIS_new_window", -1);
+    return GLIS_INTERNAL_SHARED_MEMORY.slot.result_data_0.type_size_t.load_size_t();
+}
+
+bool GLIS_modify_window(size_t window_id, int x, int y, int w, int h) {
+    GLIS_INTERNAL_SHARED_MEMORY.slot.command.store_int8_t(GLIS_SERVER_COMMANDS.modify_window);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_0.type_int64_t.store_int64_t(x);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_1.type_int64_t.store_int64_t(y);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_2.type_int64_t.store_int64_t(x + w);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_3.type_int64_t.store_int64_t(y + h);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_4.type_size_t.store_size_t(window_id);
+    GLIS_sync_server("GLIS_modify_window", window_id);
+    return true;
+}
+
+bool GLIS_close_window(size_t window_id) {
+    GLIS_INTERNAL_SHARED_MEMORY.slot.command.store_int8_t(GLIS_SERVER_COMMANDS.close_window);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_0.type_size_t.store_size_t(window_id);
+    GLIS_sync_server("GLIS_close_window", window_id);
+    return true;
+}
+
+void
+GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, GLint texture_width,
+                    GLint texture_height) {
+    LOG_INFO("uploading texture");
+    GLIS_SwapBuffers(GLIS);
+    GLIS_Sync_GPU();
+    GLIS_INTERNAL_SHARED_MEMORY.slot.command.store_int8_t(GLIS_SERVER_COMMANDS.texture);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_0.type_int64_t.store_int64_t(texture_width);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_1.type_int64_t.store_int64_t(texture_height);
+    GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_2.type_size_t.store_size_t(window_id);
+    glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, GLIS_INTERNAL_SHARED_MEMORY.slot.texture.load_ptr());
+    GLIS_sync_server("GLIS_upload_texture", window_id);
+    LOG_INFO("uploaded texture");
+}
+
+
+
+// server
+
+        LOG_INFO("started up");
+        class Client_Window {
+        public:
+            int x = 0;
+            int y = 0;
+            int w = 0;
+            int h = 0;
+            GLuint TEXTURE = 0;
+        };
+        class Client {
+        public:
+            class GLIS_shared_memory shared_memory;
+            SOCKET_SERVER * server = nullptr;
+            size_t server_id = 0;
+        };
+        bool stop_drawing = false;
+        GLIS_FPS fps;
+        while(SYNC_STATE != STATE.request_shutdown) {
+            fps.onFrameStart();
+
+            // TODO: migrate to texture buffers:
+            //  draw(texture[0]);
+            //  draw[texture[1]);
+            //  /* ... */
+
+            bool redraw = false;
+            bool needsSwap = false;
+            bool accepted = false;
+            serializer in;
+            serializer out;
+            int command = -1;
+            Client * currentClient = nullptr;
+            if (IPC == IPC_MODE.shared_memory) {
+                // try to connect
+                if (CompositorMain.server.socket_accept_non_blocking()) {
+                    // connected
+                    double start = now_ms();
+                    CompositorMain.server.socket_get_serial(in);
+                    double end = now_ms();
+                    CompositorMain.server.log_info("read serial in %G milliseconds", end - start);
+                    in.get<int>(&command);
+                } else if (CompositorMain.server.internaldata->server_should_close) goto draw;
+                int page = 1;
+                size_t index = 0;
+                size_t page_size = CompositorMain.KERNEL.table->page_size;
+                for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
+                    index = ((page_size * page) - page_size);
+                    for (; index < page_size * page; index++) {
+                        if (CompositorMain.KERNEL.table->table[index] != nullptr) {
+                            if (
+                                    CompositorMain.KERNEL.table->table[index]->type
+                                    ==
+                                    ObjectTypeProcess
+                            ) {
+                                class Client *client = static_cast<class Client *>(
+                                        CompositorMain.KERNEL.table->table[index]->resource
+                                );
+                                if (client->shared_memory.slot.status.load_int8_t() != client->shared_memory.status.standby) {
+                                    command = client->shared_memory.slot.command.load_int8_t();
+                                    client->shared_memory.slot.command.store_int8_t(-1);
+                                    currentClient = client;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (command != -1) {
+                CompositorMain.server.log_info(
+                        "command: %d (%s)", command, GLIS_command_to_string(command)
+                );
+                assert(GLIS_command_is_valid(command));
+            }
+            if (command == GLIS_SERVER_COMMANDS.new_connection) {
+                Client * x = new Client;
+                CompositorMain.KERNEL.newObject(ObjectTypeProcess, 0, x);
+                CompositorMain.server.socket_get_fd(x->shared_memory.fd);
+                assert(ashmem_valid(x->shared_memory.fd));
+                in.get<size_t>(&x->shared_memory.size);
+                assert(x->shared_memory.size != -1);
+                in.get<size_t>(&x->shared_memory.reference_count);
+                assert(x->shared_memory.reference_count != -1);
+                int w;
+                int h;
+                in.get<int>(&w);
+                in.get<int>(&h);
+                GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(x->shared_memory, w, h);
+                struct pa {
+                    size_t table_id;
+
+                    class GLIS_shared_memory * parameters;
+                } p;
+                p.parameters = &x->shared_memory;
+                char *s = SERVER_allocate_new_server(SERVER_START_REPLY_MANUALLY, p.table_id);
+                long t; // unused
+                int e = pthread_create(&t, nullptr, KEEP_ALIVE_MAIN_NOTIFIER, &p);
+                if (e != 0)
+                    LOG_ERROR("pthread_create(): errno: %d (%s) | return: %d (%s)", errno,
+                              strerror(errno), e,
+                              strerror(e));
+                else
+                    LOG_INFO("KEEP_ALIVE_MAIN_NOTIFIER thread successfully started");
+                out.add_pointer<char>(s, 107);
+                bool r = GLIS_shared_memory_open(x->shared_memory);
+                out.add<bool>(r);
+                if (!r) LOG_ERROR("failed to open shared memory texture");
+                CompositorMain.server.socket_put_serial(out);
+            } else if (command == GLIS_SERVER_COMMANDS.new_window) {
+                redraw = true;
+                class Client_Window *x = new class Client_Window;
+                x->x = currentClient->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
+                x->y = currentClient->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
+                x->w = currentClient->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
+                x->h = currentClient->shared_memory.slot.additional_data_3.type_int64_t.load_int64_t();
+                size_t id = CompositorMain.KERNEL.table->findObject(CompositorMain.KERNEL.newObject(ObjectTypeWindow, 0, x));
+                LOG_INFO("window  %zu: %d,%d,%d,%d", id, x->x, x->y, x->w, x->h);
+                currentClient->shared_memory.slot.result_data_0.type_size_t.store_size_t(id);
+                currentClient->shared_memory.slot.status.store_int8_t(currentClient->shared_memory.status.standby);
+                redraw = true;
+            } else if (command == GLIS_SERVER_COMMANDS.texture) {
+                redraw = true;
+                size_t window_id = currentClient->shared_memory.slot.additional_data_2.type_size_t.load_size_t();
+                LOG_INFO("received id: %zu", window_id);
+                assert(window_id >= 0);
+                assert(CompositorMain.KERNEL.table->table[window_id] != nullptr);
+                class Client_Window *x = reinterpret_cast<Client_Window *>(
+                        CompositorMain.KERNEL.table->table[window_id]->resource
+                );
+                int64_t w = currentClient->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
+                int64_t h = currentClient->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
+                LOG_INFO("received w: %lu, h: %lu", w, h);
+                glGenTextures(1, &x->TEXTURE);
+                glBindTexture(GL_TEXTURE_2D, x->TEXTURE);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, currentClient->shared_memory.slot.texture.load_ptr());
+                glGenerateMipmap(GL_TEXTURE_2D);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                currentClient->shared_memory.slot.status.store_int8_t(currentClient->shared_memory.status.standby);
+                LOG_INFO("CLIENT has uploaded");
+            } else if (command == GLIS_SERVER_COMMANDS.modify_window) {
+                redraw = true;
+                size_t window_id = currentClient->shared_memory.slot.additional_data_4.type_size_t.load_size_t();
+                LOG_INFO("modifying window (ID: %zu)", window_id);
+                assert(window_id >= 0);
+                assert(CompositorMain.KERNEL.table->table[window_id] != nullptr);
+                class Client_Window *x = reinterpret_cast<Client_Window *>(
+                        CompositorMain.KERNEL.table->table[window_id]->resource
+                );
+                x->x = currentClient->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
+                x->y = currentClient->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
+                x->w = currentClient->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
+                x->h = currentClient->shared_memory.slot.additional_data_3.type_int64_t.load_int64_t();
+                currentClient->shared_memory.slot.status.store_int8_t(currentClient->shared_memory.status.standby);
+            } else if (command == GLIS_SERVER_COMMANDS.close_window) {
+                redraw = true;
+                CompositorMain.KERNEL.table->DELETE(currentClient->shared_memory.slot.additional_data_0.type_size_t.load_size_t());
+                currentClient->shared_memory.slot.status.store_int8_t(currentClient->shared_memory.status.standby);
+            }
+            goto draw;
+            draw:
+            if (command != -1) LOG_INFO("rendering");
+            glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
+            glClear(GL_COLOR_BUFFER_BIT);
+            if (!stop_drawing) {
+                int page = 1;
+                size_t index = 0;
+                size_t page_size = CompositorMain.KERNEL.table->page_size;
+                int drawn = 0;
+                for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
+                    index = ((page_size * page) - page_size);
+                    for (; index < page_size * page; index++)
+                        if (CompositorMain.KERNEL.table->table[index] != nullptr) {
+                            if (
+                                    CompositorMain.KERNEL.table->table[index]->type
+                                    ==
+                                    ObjectTypeWindow
+                            ) {
+                                class Client_Window *CW = static_cast<Client_Window *>(
+                                        CompositorMain.KERNEL.table->table[index]->resource
+                                );
+                                GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
+                                                           CW->TEXTURE,
+                                                           0, CW->x,
+                                                           CW->y, CW->w, CW->h,
+                                                           CompositorMain.width,
+                                                           CompositorMain.height
+                                );
+                                drawn++;
+                            }
+                        }
+                }
+            }
+            fps.onFrameEnd();
+            std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
+            GLIS_font_RenderText(text, 0, 20, GLIS_font_color_white);
+            GLIS_Sync_GPU();
+            GLIS_SwapBuffers(CompositorMain);
+            GLIS_Sync_GPU();
+        }
+        SYNC_STATE = STATE.response_shutting_down;
+        LOG_INFO("shutting down");

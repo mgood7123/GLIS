@@ -53,10 +53,15 @@ bool SHM_create(int &fd, int8_t **data, size_t size) {
     return true;
 }
 
-bool SHM_resize(int &fd, size_t size) {
+bool SHM_resize(int &fd, int8_t **data, size_t size) {
     int ret = TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_SET_SIZE, size));
     if (ret < 0) {
         LOG_ERROR_SHM("ioctl: errno: %d (%s)", errno, strerror(errno));
+        return false;
+    }
+    *data = static_cast<int8_t *>(mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
+    if (*data == MAP_FAILED) {
+        LOG_ERROR_SHM("mmap: errno: %d (%s)", errno, strerror(errno));
         return false;
     }
     return true;

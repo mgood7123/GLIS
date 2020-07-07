@@ -77,7 +77,7 @@ int main() {
             int s = 50;
             size_t win_id2 = GLIS_new_window(i * s, i * s, s, s);
             LOG_INFO("window id: %zu", win_id2);
-            GLIS_upload_texture_resize(G, win_id2, renderedTexture, W, H, s, s);
+            GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
             LOG_INFO("created window %d", i + 1);
         }
         double end = now_ms();

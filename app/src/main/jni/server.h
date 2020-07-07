@@ -7,6 +7,8 @@
 
 #include "header.h"
 
+#include <boost/asio.hpp>
+
 #ifndef __ANDROID__
     #define LOG_INFO_SERVER printf
     #define LOG_ERROR_SERVER printf

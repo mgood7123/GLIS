@@ -97,6 +97,7 @@ char *str_humanise_bytes(off_t bytes) {
 // returns false if an error has occurred otherwise true
 bool SOCKET_READ(const char *TAG, ssize_t *ret, int &socket_data_fd, void *__buf, size_t __count,
                  int flags, ssize_t total) {
+    LOG_INFO_SERVER("%sreading message from fd %d", TAG, socket_data_fd);
     for (;;) { // implement blocking
         *ret = recv(socket_data_fd, static_cast<void *>(static_cast<uint8_t *>(__buf) + total),
                     __count - total, flags);
@@ -121,8 +122,8 @@ bool SOCKET_READ(const char *TAG, ssize_t *ret, int &socket_data_fd, void *__buf
 bool
 SOCKET_WRITE(const char *TAG, ssize_t *ret, int &socket_data_fd, const void *__buf, size_t __count,
              int flags, ssize_t total) {
+    LOG_INFO_SERVER("%swriting message to fd %d", TAG, socket_data_fd);
     for (;;) { // implement blocking
-        LOG_INFO_SERVER("sending message to fd %d", socket_data_fd);
         *ret = send(socket_data_fd,
                     static_cast<const void *>(static_cast<const uint8_t *>(__buf) + total),
                     __count - total, flags);
@@ -192,6 +193,7 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, 
 // returns false if an error has occurred otherwise true
 bool SOCKET_READ_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, msghdr *__msg,
                          int flags, ssize_t total) {
+    LOG_INFO_SERVER("%sreading message from fd %d", TAG, socket_data_fd);
     for (;;) { // implement blocking
         if (total > 0) {
             struct msghdr msg = {0};
@@ -221,6 +223,7 @@ bool SOCKET_READ_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, msg
 // returns false if an error has occurred otherwise true
 bool SOCKET_WRITE_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, const msghdr *__msg,
                           int flags, ssize_t total) {
+    LOG_INFO_SERVER("%swriting message to fd %d", TAG, socket_data_fd);
     for (;;) { // implement blocking
         if (total > 0) {
             struct msghdr msg = {0};
@@ -318,8 +321,11 @@ SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_dat
     return false;
 }
 
+/*
+ * send fd by socket
+ */
 void SOCKET_SEND_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
-                    char *server_name)  // send fd by socket
+                    char *server_name)
 {
     struct msghdr msg = {0};
     char buf[CMSG_SPACE(sizeof(fd))];
@@ -346,7 +352,9 @@ void SOCKET_SEND_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_d
 
     serializer m;
     m.add<size_t>(sizeof(msg));
+    LOG_INFO_SERVER("%ssending %zu", TAG, sizeof(msg));
     SOCKET_SEND_SERIAL(s, TAG, socket_data_fd, m, server_name);
+    LOG_INFO_SERVER("%ssending fd %d", TAG, fd);
     SOCKET_SEND_MESSAGE(s, TAG, socket_data_fd, &msg, sizeof(msg), server_name);
 }
 
@@ -365,16 +373,20 @@ void SOCKET_GET_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_da
     msg.msg_control = c_buffer;
     msg.msg_controllen = sizeof(c_buffer);
     serializer m;
+    LOG_INFO_SERVER("%sretreiving size", TAG);
     SOCKET_GET_SERIAL(s, TAG, socket_data_fd, m, server_name);
     size_t __count;
     m.get<size_t>(&__count);
+    LOG_INFO_SERVER("%sretreived size: %zu", TAG, __count);
+    LOG_INFO_SERVER("%sretreiving fd", TAG);
     SOCKET_GET_MESSAGE(s, TAG, socket_data_fd, &msg, __count, server_name);
+    LOG_INFO_SERVER("%sretreived fd", TAG);
 
     struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
 
-    LOG_INFO_SERVER("About to extract fd\n");
+    LOG_INFO_SERVER("%sAbout to extract fd", TAG);
     memmove(&fd, CMSG_DATA(cmsg), sizeof(fd));
-    LOG_INFO_SERVER("Extracted fd %d\n", fd);
+    LOG_INFO_SERVER("%sExtracted fd %d", TAG, fd);
 }
 
 bool SOCKET_CLOSE(const char *TAG, int & socket_fd) {
@@ -405,6 +417,23 @@ class SOCKET_SERVER {
         SOCKET_SERVER_DATA *internaldata = nullptr;
         int socket_fd = 0;
         int socket_data_fd = 0;
+
+        int log_info(const char* fmt, ...) {
+            va_list va;
+            va_start(va, fmt);
+            // be safe, allocate plus last char plus null terminator
+            int l = vsnprintf(NULL, 0, fmt, va)+2;
+            char * s = static_cast<char*>(malloc(l));
+            memset(s, 0, l);
+            vsnprintf(s, l, fmt, va);
+            int len = __android_log_print(
+                    ANDROID_LOG_INFO, LOG_TAG_SERVER,
+                    "%s%s", (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+            );
+            free(s);
+            va_end(va);
+            return len;
+        }
 
         void startServer(void *(*SERVER_MAIN)(void *)) {
             if (internaldata != nullptr) {
@@ -452,19 +481,30 @@ class SOCKET_SERVER {
                     std::string(std::string("SERVER: ") + (default_server_name) + " : ").c_str());
                 LOG_ERROR_SERVER("%sname was not supplied, conflicts are likely to happen\n", TAG);
                 if (strlen(default_server_name) > 107) {
-                    LOG_ERROR_SERVER("%sdefault name is longer than 107 characters, truncating\n",
-                                     TAG);
+                    LOG_ERROR_SERVER(
+                        "%sdefault name is longer than 107 characters, truncating, conflicts may happen\n",
+                        TAG
+                    );
                     memcpy(server_name, default_server_name, 107);
                 } else memcpy(server_name, default_server_name, default_server_name_length);
             } else {
-                if (strlen(server_name) > 107) {
+                LOG_INFO_SERVER(
+                        "%ssetting name to %s\n",
+                        TAG, name
+                );
+                if (strlen(name) > 107) {
                     LOG_ERROR_SERVER(
                         "%sname is longer than 107 characters, truncating, conflicts may happen\n",
-                        TAG);
+                        TAG
+                    );
                     memcpy(server_name, name, 107);
                 } else memcpy(server_name, name, strlen(name));
                 // build new TAG
                 TAG = strdup(std::string(std::string("SERVER: ") + server_name + " : ").c_str());
+                LOG_INFO_SERVER(
+                        "%sset name to %s\n",
+                        TAG, server_name
+                );
             }
         }
 
@@ -534,6 +574,7 @@ class SOCKET_SERVER {
         // otherwise returns true upon a successful accept attempt
         bool socket_accept(int &socket_fd, int &socket_data_fd) {
             for (;;) {
+                if (internaldata == nullptr) return false;
                 if (internaldata->server_should_close) return false;
                 socket_data_fd = accept(socket_fd, NULL, NULL);
                 if (socket_data_fd < 0) {
@@ -568,7 +609,11 @@ class SOCKET_SERVER {
         }
 
         bool connection_is_alive(int &socket_data_fd) {
+            if (internaldata == nullptr) return false;
+            if (internaldata->server_should_close) return false;
+            if (internaldata->server_closed) return false;
             int ret;
+            LOG_INFO_SERVER("%schecking if socket fd %d is alive", TAG, socket_data_fd);
             for (;;) { // implement blocking
                 // users may use this in sockets that send data
                 // do not remove any data that may be queued
@@ -576,7 +621,7 @@ class SOCKET_SERVER {
                 ret = recv(socket_data_fd, nothing, 1, MSG_PEEK | MSG_DONTWAIT);
                 free(nothing);
                 if (ret < 0) {
-                    if (errno == EINTR) continue;
+                    if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) continue;
                     else break;
                 }
                 break;
@@ -585,7 +630,11 @@ class SOCKET_SERVER {
                 // if recv returns zero, that means the connection has been closed
                 LOG_INFO_SERVER("%sClient has closed the connection\n", TAG);
                 return false;
-            } else if (ret < 0) {
+            }
+
+            LOG_INFO_SERVER("%ssocket fd %d is alive", TAG, socket_data_fd);
+
+            if (ret < 0) {
                 LOG_ERROR_SERVER("%srecv: (errno: %2d) %s\n", TAG, errno, strerror(errno));
                 return true;
             }
@@ -685,6 +734,12 @@ class SOCKET_SERVER {
 
 Kernel SERVER_KERNEL;
 
+SOCKET_SERVER *SERVER_get(size_t id) {
+    SOCKET_SERVER * S = static_cast<SOCKET_SERVER *>(SERVER_KERNEL.table->table[id]->resource);
+    assert(S != nullptr);
+    return S;
+}
+
 char *SERVER_allocate_new_server(void *(*SERVER_MAIN)(void *), size_t &id) {
     Object *o = SERVER_KERNEL.newObject(0, 0, new SOCKET_SERVER);
     id = SERVER_KERNEL.table->findObject(o);
@@ -695,6 +750,13 @@ char *SERVER_allocate_new_server(void *(*SERVER_MAIN)(void *), size_t &id) {
 
 char *SERVER_allocate_new_server(size_t &id) { return SERVER_allocate_new_server(nullptr, id); }
 
+void SERVER_deallocate_server(size_t &id) {
+    Object * o = SERVER_KERNEL.table->table[id];
+    SOCKET_SERVER * x = static_cast<SOCKET_SERVER *>(o->resource);
+    x->shutdownServer();
+    delete static_cast<SOCKET_SERVER *>(o->resource);
+    SERVER_KERNEL.table->DELETE(id);
+}
 
 void *SERVER_START_REPLY_MANUALLY(void *na) {
     assert(na != nullptr);
@@ -707,10 +769,6 @@ void *SERVER_START_REPLY_MANUALLY(void *na) {
     return NULL;
 }
 
-SOCKET_SERVER *SERVER_get(size_t id) {
-    return static_cast<SOCKET_SERVER *>(SERVER_KERNEL.table->table[id]->resource);
-}
-
 class SOCKET_CLIENT {
     public:
         int socket_data_fd = 0;
@@ -719,6 +777,24 @@ class SOCKET_CLIENT {
         const size_t default_client_name_length = strlen(default_client_name);
         char * TAG = nullptr;
         SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
+
+        int log_info(const char* fmt, ...) {
+            va_list va;
+            va_start(va, fmt);
+            // be safe, allocate plus last char plus null terminator
+            int l = vsnprintf(NULL, 0, fmt, va)+2;
+            char * s = static_cast<char*>(malloc(l));
+            memset(s, 0, l);
+            vsnprintf(s, l, fmt, va);
+            int len = __android_log_print(
+                    ANDROID_LOG_INFO, LOG_TAG_SERVER,
+                    "%s%s", (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+            );
+            free(s);
+            va_end(va);
+            return len;
+        }
+
         void set_name(const char * name) {
             char socket_name[108]; // 108 sun_path length max
             memset(&socket_name, 0, 108);
@@ -727,19 +803,30 @@ class SOCKET_CLIENT {
                 // build default TAG
                 TAG = strdup(std::string(std::string("CLIENT: ") + (default_client_name) + " : ").c_str());
                 if (strlen(default_client_name) > 107) {
-                    LOG_ERROR_SERVER("%sdefault name is longer than 107 characters, truncating\n",
-                                     TAG);
+                    LOG_ERROR_SERVER(
+                            "%sdefault name is longer than 107 characters, truncating, conflicts may happen\n",
+                            TAG
+                    );
                     memcpy(&socket_name[1], default_client_name, 107);
                 } else memcpy(&socket_name[1], default_client_name, default_client_name_length);
             } else {
+                LOG_INFO_SERVER(
+                        "%ssetting name to %s\n",
+                        TAG, name
+                );
                 if (strlen(name) > 107) {
                     LOG_ERROR_SERVER(
                         "%sname is longer than 107 characters, truncating, conflicts may happen\n",
-                        TAG);
+                        TAG
+                    );
                     memcpy(&socket_name[1], name, 107);
                 } else memcpy(&socket_name[1], name, strlen(name));
                 // build new TAG
                 TAG = strdup(std::string(std::string("CLIENT: ") + &socket_name[1] + " : ").c_str());
+                LOG_INFO_SERVER(
+                        "%sset name to %s\n",
+                        TAG, &socket_name[1]
+                );
             }
             // clear for safety
             memset(&server_addr, 0, sizeof(struct sockaddr_un));

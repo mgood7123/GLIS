@@ -15,7 +15,7 @@ bool SHM_create(int &fd, int8_t **data, size_t size);
 
 bool SHM_open(int &fd, int8_t **data, size_t size);
 
-bool SHM_resize(int &fd, size_t size);
+bool SHM_resize(int &fd, int8_t **data, size_t size);
 
 bool SHM_close(int &fd);
 #endif //GLNE_SHM_H
