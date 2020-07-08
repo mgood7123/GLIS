@@ -49,6 +49,7 @@
 #include "logger.h"
 #include "GLIS.h"
 #include "GLIS_COMMANDS.h"
+#include "libsu.h"
 
 #define LOG_TAG "EglSample"
 
@@ -282,9 +283,20 @@ void handleCommands(
 // eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
 // or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
 
+#include "libsu.h"
+
 const char * shared_memory_name = "My Shared Memory X";
 
 int COMPOSITORMAIN__() {
+    
+    if (libsu_sudo("true")) { // Check if we have SU privileges.
+        libsu_startshell();
+        libsu_sudo("ls -l /data");
+//        const char * stdoutString = libsu_get_stdout();
+//        LOG_INFO("libsu returned:\n%s", stdoutString);
+        libsu_closeshell();
+    }
+
     struct shm_remove {
         shm_remove() { boost::interprocess::shared_memory_object::remove(shared_memory_name); }
         ~shm_remove(){ boost::interprocess::shared_memory_object::remove(shared_memory_name); }
