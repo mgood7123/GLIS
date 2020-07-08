@@ -282,6 +282,7 @@ void handleCommands(
 // eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
 // or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
 
+// https://android.googlesource.com/platform/ndk/+/4e159d95ebf23b5f72bb707b0cb1518ef96b3d03/docs/system/libc/SYSV-IPC.TXT
 // https://www.geeksforgeeks.org/posix-shared-memory-api/
 // https://chromium.googlesource.com/chromiumos/third_party/glibc/+/cvs/fedora-glibc-2_4-1/sysdeps/unix/sysv/linux/shm_open.c
 
