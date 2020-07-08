@@ -282,6 +282,9 @@ void handleCommands(
 // eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
 // or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
 
+// https://www.geeksforgeeks.org/posix-shared-memory-api/
+// https://chromium.googlesource.com/chromiumos/third_party/glibc/+/cvs/fedora-glibc-2_4-1/sysdeps/unix/sysv/linux/shm_open.c
+
 #include "libsu/libsu.h"
 
 const char * shared_memory_name = "My Shared Memory X";
