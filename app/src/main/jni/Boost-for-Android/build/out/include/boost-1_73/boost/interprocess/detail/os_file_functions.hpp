@@ -436,7 +436,10 @@ inline bool get_temporary_path(char *buffer, std::size_t buf_len, std::size_t &r
    else{
       // BOOST_PATCHED
       #ifdef __ANDROID__
-         std::strcpy(buffer, "/data/local/traces");
+         #ifndef BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY
+            #define BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY "/data/local/traces/tmp"
+         #endif
+         std::strcpy(buffer, BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
       #else
          std::strcpy(buffer, "/tmp");
       #endif

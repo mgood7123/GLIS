@@ -10,7 +10,7 @@ include_directories(glm)
 add_subdirectory(Boost-for-Android)
 include_directories(${BOOST_INCLUDE})
 
-add_library(GLIS STATIC shm.cpp ashmem.cpp)
+add_library(GLIS STATIC shm.cpp ashmem.cpp libsu/libsu.cpp)
 target_link_libraries(GLIS log freetype glm EGL GLESv3 WinKernel ${BOOST_LIBRARY})
 
 add_library(nativeegl SHARED compositor.cpp)

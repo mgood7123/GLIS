@@ -108,7 +108,10 @@ inline void get_shared_dir_root(std::string &dir_path)
       winapi::get_shared_documents_folder(dir_path);
    // BOOST_PATCHED
    #elif defined(__ANDROID__)
-      dir_path = "/data/local/traces";
+      #ifndef BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY
+         #define BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY "/data/local/traces/tmp"
+      #endif
+      dir_path = BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY;
    #else
       dir_path = "/tmp";
    #endif

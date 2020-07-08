@@ -49,7 +49,6 @@
 #include "logger.h"
 #include "GLIS.h"
 #include "GLIS_COMMANDS.h"
-#include "libsu.h"
 
 #define LOG_TAG "EglSample"
 
@@ -283,18 +282,60 @@ void handleCommands(
 // eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
 // or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
 
-#include "libsu.h"
+#include "libsu/libsu.h"
 
 const char * shared_memory_name = "My Shared Memory X";
 
 int COMPOSITORMAIN__() {
-    
-    if (libsu_sudo("true")) { // Check if we have SU privileges.
-        libsu_startshell();
-        libsu_sudo("ls -l /data");
-//        const char * stdoutString = libsu_get_stdout();
-//        LOG_INFO("libsu returned:\n%s", stdoutString);
-        libsu_closeshell();
+    bool hasRoot = libsu_has_root_access();
+    libsu_LOG_INFO("libsu has root: %s", hasRoot ? "true" : "false");
+    if (hasRoot) {
+        libsu_processimage instance;
+        bool r;
+        std::string command_mkdir = "mkdir ";
+        command_mkdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+        r = libsu_sudo(&instance, command_mkdir.c_str());
+        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+        libsu_cleanup(&instance);
+
+        std::string command_chmod = "chmod 777 ";
+        command_chmod.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+        r = libsu_sudo(&instance, command_chmod.c_str());
+        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+        libsu_cleanup(&instance);
+
+        std::string command_mount = "mount -t tmpfs -o size=512m tmpfs ";
+        command_mount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+        r = libsu_sudo(&instance, command_mount.c_str());
+        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+        libsu_cleanup(&instance);
+
+        std::string command_umount = "umount ";
+        command_umount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+        r = libsu_sudo(&instance, command_umount.c_str());
+        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+        libsu_cleanup(&instance);
+
+        std::string command_rmdir = "rmdir ";
+        command_rmdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+        r = libsu_sudo(&instance, command_rmdir.c_str());
+        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+        libsu_cleanup(&instance);
     }
 
     struct shm_remove {
