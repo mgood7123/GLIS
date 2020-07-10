@@ -5,6 +5,19 @@
 #include <unistd.h>
 
 // https://pubs.opengroup.org/onlinepubs/9699919799/functions/shm_open.html
+// https://pubs.opengroup.org/onlinepubs/9699919799/functions/shm_unlink.html
+
+/*
+
+case 1: shm_open;
+case 2: shm_open; shm_unlink;
+case 3: shm_open; mmap;
+case 4: shm_open; mmap; munmap;
+case 5: shm_open; mmap; shm_unlink;
+case 6: shm_open; mmap; shm_unlink; munmap;
+case 7: shm_open; mmap; munmap; shm_unlink;
+
+*/
 
 char * shm_root_directory = const_cast<char*>("/tmp");
 
