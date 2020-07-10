@@ -88,6 +88,10 @@ int libsu_read(libsu_processimage * instance) {
 }
 
 bool libsu_sudo(libsu_processimage * instance, const char * command) {
+    return libsu_sudo(instance, false, command);
+}
+
+bool libsu_sudo(libsu_processimage * instance, bool mount_master, const char * command) {
     assert(command != NULL);
     libsu_processimage_clear(instance);
     libsu_LOG_INFO("attempting to invoke command: %s", command);
@@ -127,6 +131,7 @@ bool libsu_sudo(libsu_processimage * instance, const char * command) {
                 dup(stderr_fd[1]);
                 close(stderr_fd[0]);
             }
+            if (mount_master) execlp("su", "su", "--mount-master", "-c", command, NULL);
             execlp("su", "su", "-c", command, NULL);
             return false;
 
@@ -159,31 +164,39 @@ bool libsu_sudo(libsu_processimage * instance, const char * command) {
             int r = waitpid(instance->pid, &status, 0);
             int errno_ = errno;
             const char * errnoString = strerror(errno);
-            if (errno_ != 0) {
+            // waitpid(): on success, returns the process ID of the child whose state has changed;
+            // if WNOHANG was specified and one or more child(ren) specified by pid exist,
+            // but have not yet changed state, then 0 is returned. On error, -1 is returned.
+            if (errno_ == -1) {
                 libsu_LOG_ERROR("waitpid returned %d, errno: %d, errno string: %s\n", r, errno_, errnoString);
                 return false;
             }
 
             libsu_read(instance);
 
-            if (r != -1) {
-                if (WIFEXITED(status)) {
-                    instance->return_code = WEXITSTATUS(status);
-                    instance->exited_normally = true;
-                } else if (WIFSIGNALED(status)) {
-                    instance->signal = -WTERMSIG(status);
-                    instance->exited_from_signal = true;
-                } else {
-                    // third macro is WIFSTOPPED
-                    // we should probably let the OS manage this
+            if (WIFEXITED(status)) {
+                instance->return_code = WEXITSTATUS(status);
+                instance->exited_normally = true;
+            } else if (WIFSIGNALED(status)) {
+                instance->signal = -WTERMSIG(status);
+                instance->exited_from_signal = true;
+            } else {
+                // third macro is WIFSTOPPED
+                // we should probably let the OS manage this
 
-                    // Should never happen - waitpid(2) says
-                    // "One of the first three macros will evaluate to a non-zero (true) value".
-                }
+                // Should never happen - waitpid(2) says
+                // "One of the first three macros will evaluate to a non-zero (true) value".
             }
             return true;
     }
     return true;
+}
+
+void libsu_print_info(libsu_processimage * instance, bool libsu_sudo_return_code) {
+    libsu_LOG_INFO("libsu returned: %s", libsu_sudo_return_code ? "true" : "false");
+    libsu_LOG_INFO("libsu instance return code: %d", instance->return_code);
+    libsu_LOG_INFO("libsu stdout: %s", instance->string_stdout);
+    libsu_LOG_INFO("libsu stderr: %s", instance->string_stderr);
 }
 
 void libsu_cleanup(libsu_processimage * instance) {

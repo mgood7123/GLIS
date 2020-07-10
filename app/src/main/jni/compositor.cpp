@@ -291,79 +291,79 @@ void handleCommands(
 const char * shared_memory_name = "My Shared Memory X";
 
 int COMPOSITORMAIN__() {
-    bool hasRoot = libsu_has_root_access();
-    libsu_LOG_INFO("libsu has root: %s", hasRoot ? "true" : "false");
-    if (hasRoot) {
-        libsu_processimage instance;
-        bool r;
-        std::string command_mkdir = "mkdir ";
-        command_mkdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-        r = libsu_sudo(&instance, command_mkdir.c_str());
-        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-        libsu_cleanup(&instance);
-
-        std::string command_chmod = "chmod 777 ";
-        command_chmod.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-        r = libsu_sudo(&instance, command_chmod.c_str());
-        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-        libsu_cleanup(&instance);
-
-        std::string command_mount = "mount -t tmpfs -o size=512m tmpfs ";
-        command_mount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-        r = libsu_sudo(&instance, command_mount.c_str());
-        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-        libsu_cleanup(&instance);
-
-        std::string command_umount = "umount ";
-        command_umount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-        r = libsu_sudo(&instance, command_umount.c_str());
-        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-        libsu_cleanup(&instance);
-
-        std::string command_rmdir = "rmdir ";
-        command_rmdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-        r = libsu_sudo(&instance, command_rmdir.c_str());
-        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-        libsu_cleanup(&instance);
-    }
-
-    struct shm_remove {
-        shm_remove() { boost::interprocess::shared_memory_object::remove(shared_memory_name); }
-        ~shm_remove(){ boost::interprocess::shared_memory_object::remove(shared_memory_name); }
-    } remover;
-    boost::interprocess::managed_shared_memory segment(
-            boost::interprocess::create_only, shared_memory_name, 8000
-    );
-    segment.deallocate(segment.allocate(5000));
+//    bool hasRoot = libsu_has_root_access();
+//    libsu_LOG_INFO("libsu has root: %s", hasRoot ? "true" : "false");
+//    if (hasRoot) {
+//        libsu_processimage instance;
+//        bool r;
+//        std::string command_mkdir = "mkdir ";
+//        command_mkdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+//        r = libsu_sudo(&instance, command_mkdir.c_str());
+//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+//        libsu_cleanup(&instance);
+//
+//        std::string command_chmod = "chmod 777 ";
+//        command_chmod.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+//        r = libsu_sudo(&instance, command_chmod.c_str());
+//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+//        libsu_cleanup(&instance);
+//
+//        std::string command_mount = "mount -t tmpfs -o size=512m tmpfs ";
+//        command_mount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+//        r = libsu_sudo(&instance, command_mount.c_str());
+//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+//        libsu_cleanup(&instance);
+//
+//        std::string command_umount = "umount ";
+//        command_umount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+//        r = libsu_sudo(&instance, command_umount.c_str());
+//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+//        libsu_cleanup(&instance);
+//
+//        std::string command_rmdir = "rmdir ";
+//        command_rmdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
+//        r = libsu_sudo(&instance, command_rmdir.c_str());
+//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
+//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
+//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
+//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
+//        libsu_cleanup(&instance);
+//    }
+//
+//    struct shm_remove {
+//        shm_remove() { boost::interprocess::shared_memory_object::remove(shared_memory_name); }
+//        ~shm_remove(){ boost::interprocess::shared_memory_object::remove(shared_memory_name); }
+//    } remover;
+//    boost::interprocess::managed_shared_memory segment(
+//            boost::interprocess::create_only, shared_memory_name, 8000
+//    );
+//    segment.deallocate(segment.allocate(5000));
 
     LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
         const_cast<char *>(std::string(
-            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
+            std::string(executableDir) + "/Arch/arm64-v8a/LowMemoryKillerTest").c_str());
     char *args1[2] = {exe, 0};
     GLIS_FORK(exe, args1);
-
-    char *exe2 =
-        const_cast<char *>(std::string(
-            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindowsB").c_str());
-    char *args2[2] = {exe2, 0};
-    GLIS_FORK(exe2, args2);
+//
+//    char *exe2 =
+//        const_cast<char *>(std::string(
+//            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindowsB").c_str());
+//    char *args2[2] = {exe2, 0};
+//    GLIS_FORK(exe2, args2);
 
     SYNC_STATE = STATE.initialized;
     while (SYNC_STATE != STATE.request_startup);

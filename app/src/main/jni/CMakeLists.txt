@@ -10,27 +10,38 @@ include_directories(glm)
 add_subdirectory(Boost-for-Android)
 include_directories(${BOOST_INCLUDE})
 
-add_library(GLIS STATIC shm.cpp ashmem.cpp libsu/libsu.cpp)
+add_library(GLIS STATIC shm.cpp ashmem.cpp libsu/libsu.cpp SysV_api/SysV.cpp)
 target_link_libraries(GLIS log freetype glm EGL GLESv3 WinKernel ${BOOST_LIBRARY})
 
 add_library(nativeegl SHARED compositor.cpp)
 target_link_libraries(nativeegl android GLIS)
 
-add_executable(MovingWindows compositor_examples/MovingWindows.cpp)
-target_link_libraries(MovingWindows GLIS)
+include_directories("libsu")
+include_directories("SysV_api")
+
+add_executable(LowMemoryKillerTest compositor_examples/LowMemoryKillerTest.cpp)
+target_link_libraries(LowMemoryKillerTest GLIS)
 add_custom_command(
-        TARGET MovingWindows
+        TARGET LowMemoryKillerTest
         POST_BUILD
-        COMMAND cp -v MovingWindows \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
+        COMMAND cp -v LowMemoryKillerTest \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
 )
 
-add_executable(MovingWindowsB compositor_examples/MovingWindowsB.cpp)
-target_link_libraries(MovingWindowsB GLIS)
-add_custom_command(
-        TARGET MovingWindowsB
-        POST_BUILD
-        COMMAND cp -v MovingWindowsB \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
-)
+#add_executable(MovingWindows compositor_examples/MovingWindows.cpp)
+#target_link_libraries(MovingWindows GLIS)
+#add_custom_command(
+#        TARGET MovingWindows
+#        POST_BUILD
+#        COMMAND cp -v MovingWindows \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
+#)
+#
+#add_executable(MovingWindowsB compositor_examples/MovingWindowsB.cpp)
+#target_link_libraries(MovingWindowsB GLIS)
+#add_custom_command(
+#        TARGET MovingWindowsB
+#        POST_BUILD
+#        COMMAND cp -v MovingWindowsB \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
+#)
 
 
 #add_executable(compositor_start_drawing compositor_examples/compositor_start_drawing.cpp)

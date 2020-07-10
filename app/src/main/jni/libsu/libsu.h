@@ -49,4 +49,8 @@ typedef struct libsu_processimage libsu_processimage;
 
 bool libsu_has_root_access();
 bool libsu_sudo(libsu_processimage * instance, const char * command);
+// in magisk su, an option exists, called --mount-master,
+// which executes commands in the global mount namespace
+bool libsu_sudo(libsu_processimage * instance, bool mount_master, const char * command);
+void libsu_print_info(libsu_processimage * instance, bool libsu_sudo_return_code);
 void libsu_cleanup(libsu_processimage * instance);
