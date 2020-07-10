@@ -148,6 +148,13 @@ bool libsu_sudo(libsu_processimage * instance, const char * command) {
                 int r = fcntl(instance->stderr_fd, F_SETFL, O_NONBLOCK);
                 libsu_LOG_INFO("libsu - fcntl returned: %d", r);
             }
+#ifndef __ANDROID__
+            // linux su requests a password, mimic this since stdout and stderr are being redirected
+            // a new line will be entered by the user upon attempting to submit the password
+            // so no need to explicitly print a new line
+            printf("Password: ");
+            fflush(stdout);
+#endif
             int status;
             int r = waitpid(instance->pid, &status, 0);
             int errno_ = errno;
