@@ -6,6 +6,7 @@
 
 // https://pubs.opengroup.org/onlinepubs/9699919799/functions/shm_open.html
 // https://pubs.opengroup.org/onlinepubs/9699919799/functions/shm_unlink.html
+// https://android.googlesource.com/platform/ndk/+/4e159d95ebf23b5f72bb707b0cb1518ef96b3d03/docs/system/libc/SYSV-IPC.TXT
 
 /*
 
