@@ -31,6 +31,9 @@ on unlink():
     if the file /tmp/FILE_NAME is associated to a reference
         then the file /tmp/FILE_NAME is queued for removal
         upon the reference to /tmp/FILE_NAME being removed
+
+
+[13:09] <twkm> TacoCodedSalad: not quite right.  the pathname is what you create, open and unlink, it points to the inode (file) which open and mmap create references to (open creates two if it creates the inode) and munmap and close remove references to.  the inode is disposed when the reference count becomes zero.
 */
 
 char * shm_root_directory = const_cast<char*>("/tmp");
