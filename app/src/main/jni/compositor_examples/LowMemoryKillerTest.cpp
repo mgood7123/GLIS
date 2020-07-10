@@ -50,12 +50,12 @@ int main() {
         
         // no need to unmount and rmdir
 
-//        LOG_INFO("attempting to get killed by low memory killer");
-//        while(true) {
-//            LOG_INFO("allocating 1024");
-//            malloc(1024);
-//            sleep(1);
-//        }
+        LOG_INFO("attempting to get killed by low memory killer");
+        while(true) {
+            LOG_INFO("allocating 1024");
+            malloc(1024);
+            sleep(1);
+        }
     }
     return 0;
 }
