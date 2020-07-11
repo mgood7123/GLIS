@@ -192,6 +192,14 @@ bool libsu_sudo(libsu_processimage * instance, bool mount_master, const char * c
     return true;
 }
 
+void libsu_print_info(libsu_processimage * instance, const char * command) {
+    libsu_print_info(instance, libsu_sudo(instance, command));
+}
+
+void libsu_print_info(libsu_processimage * instance, bool mount_master, const char * command) {
+    libsu_print_info(instance, libsu_sudo(instance, mount_master, command));
+}
+
 void libsu_print_info(libsu_processimage * instance, bool libsu_sudo_return_code) {
     libsu_LOG_INFO("libsu returned: %s", libsu_sudo_return_code ? "true" : "false");
     libsu_LOG_INFO("libsu instance return code: %d", instance->return_code);
@@ -221,4 +229,15 @@ void libsu_cleanup(libsu_processimage * instance) {
         }
     }
     libsu_processimage_clear(instance);
+}
+
+void libsu_daemon() {
+    // process 0
+    if (fork() != 0) {
+        // process 1
+        libsu_LOG_ERROR("daemon process created, exiting main");
+        exit(0);
+    }
+    // process 1
+    libsu_LOG_ERROR("daemon process created");
 }

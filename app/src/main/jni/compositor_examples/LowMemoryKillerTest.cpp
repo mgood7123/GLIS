@@ -6,8 +6,9 @@
 #include <SysV.hpp>
 
 int main() {
+    pid_t ppid = getppid();
     bool hasRoot = libsu_has_root_access();
-    libsu_LOG_INFO("libsu has root: %s", hasRoot ? "true" : "false");
+    libsu_LOG_INFO("(ppid: %ld) libsu has root: %s", ppid, hasRoot ? "true" : "false");
     if (hasRoot) {
         // create once, use everywhere
         
@@ -15,13 +16,13 @@ int main() {
         
         // create tmp dir
         libsu_processimage instance;
-        libsu_print_info(&instance, libsu_sudo(&instance, "mount -o remount,rw /"));
+        libsu_print_info(&instance, "mount -o remount,rw /");
         libsu_cleanup(&instance);
 
-        libsu_print_info(&instance, libsu_sudo(&instance, "mkdir /tmp"));
+        libsu_print_info(&instance, "mkdir /tmp");
         libsu_cleanup(&instance);
 
-        libsu_print_info(&instance, libsu_sudo(&instance, "chmod 777 /tmp"));
+        libsu_print_info(&instance, "chmod 777 /tmp");
         libsu_cleanup(&instance);
 
         // a process can mount tmpfs
@@ -34,26 +35,34 @@ int main() {
 
         // use global namespace, this requires magisk su
 
-        libsu_print_info(&instance, libsu_sudo(&instance, true, "mount -t tmpfs -o size=512m tmpfs /tmp"));
+        libsu_print_info(&instance, true, "mount -t tmpfs -o size=512m tmpfs /tmp");
         libsu_cleanup(&instance);
 
-        libsu_print_info(&instance, libsu_sudo(&instance, "mount -o remount,ro /"));
+        libsu_print_info(&instance, "mount -o remount,ro /");
         libsu_cleanup(&instance);
 
         shm_set_root_directory("/tmp");
         int r = shm_open("name", O_CREAT, 0666);
-        LOG_INFO("shm_open returned %d", r);
-        libsu_print_info(&instance, libsu_sudo(&instance, "ls -l /tmp/name"));
+        libsu_LOG_INFO("shm_open returned %d", r);
+        libsu_print_info(&instance, "ls -l /tmp/name");
         libsu_cleanup(&instance);
         r = shm_unlink("name");
-        LOG_INFO("shm_unlink returned %d", r);
+        libsu_LOG_INFO("shm_unlink returned %d", r);
         
         // no need to unmount and rmdir
 
-        LOG_INFO("attempting to get killed by low memory killer");
+        libsu_daemon();
+        // even if re orphan the process,
+        // force killing the original parent will kill the orphan as well
+        /*
+        dreamlte:/ # ps 26229 26087 26148 -O GID
+        USER           PID  PPID     VSZ    RSS WCHAN            ADDR S      GID NAME
+        u0_a203      26087  3962 5175452 136456 SyS_epoll+ 7592963d58 S    10203 glnative.example
+        u0_a203      26148 26087       0      0 do_exit             0 Z    10203 [LowMemoryKiller]
+        u0_a203      26229     1   16448    864 hrtimer_n+ 7da702cab8 S    10203 LowMemoryKillerTest
+         */
         while(true) {
-            LOG_INFO("allocating 1024");
-            malloc(1024);
+            libsu_LOG_ERROR("(ppid: %ld) I AM ALIVE", getppid());
             sleep(1);
         }
     }
