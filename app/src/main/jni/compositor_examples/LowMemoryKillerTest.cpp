@@ -2,6 +2,7 @@
 // Created by konek on 8/20/2019.
 //
 
+#include <unistd.h>
 #include <libsu.h>
 #include <SysV.hpp>
 
@@ -51,10 +52,16 @@ int main() {
         
         // no need to unmount and rmdir
 
-        libsu_daemon();
+        daemon(0, 0);
+        // libsu_daemon();
         // even if re orphan the process,
         // force killing the original parent will kill the orphan as well
         /*
+        dreamlte:/ # ps 26229 26087 26148 -o NAME -o PID -o PPID -o GID
+        NAME                          PID  PPID      GID
+        glnative.example            26087  3962    10203
+        [LowMemoryKiller]           26148 26087    10203
+        LowMemoryKillerTest         26229     1    10203
         dreamlte:/ # ps 26229 26087 26148 -O GID
         USER           PID  PPID     VSZ    RSS WCHAN            ADDR S      GID NAME
         u0_a203      26087  3962 5175452 136456 SyS_epoll+ 7592963d58 S    10203 glnative.example
