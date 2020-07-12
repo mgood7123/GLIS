@@ -34,6 +34,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <glis/ipc/log_main.h>
+#include <linux/memfd.h>
+#include <syscall.h>
 
 #define ASHMEM_DEVICE "/dev/ashmem"
 
@@ -79,6 +81,23 @@ static int __ashmem_open()
 
     pthread_mutex_lock(&__ashmem_lock);
     fd = __ashmem_open_locked();
+    pthread_mutex_unlock(&__ashmem_lock);
+
+    return fd;
+}
+
+static int sys_memfd_create(const char *name,
+                            unsigned int flags)
+{
+    return syscall(__NR_memfd_create, name, flags);
+}
+
+static int __memfd_mem_open()
+{
+    int fd;
+
+    pthread_mutex_lock(&__ashmem_lock);
+    fd = sys_memfd_create("memfd", MFD_ALLOW_SEALING);
     pthread_mutex_unlock(&__ashmem_lock);
 
     return fd;
@@ -135,10 +154,42 @@ static int __ashmem_is_ashmem(int fd, int fatal)
     return -1;
 }
 
+static int __ashmem_is_memfd(int fd, int fatal)
+{
+    dev_t rdev;
+    struct stat st;
+
+    if (TEMP_FAILURE_RETRY(fstat(fd, &st)) < 0) {
+        return -1;
+    }
+
+    rdev = 0; /* Too much complexity to sniff __ashmem_rdev */
+    if (S_ISREG(st.st_mode) && st.st_dev) {
+        return 0;
+    }
+
+    if (fatal) {
+        if (rdev) {
+            LOG_ALWAYS_FATAL("illegal fd=%d mode=0%o rdev=%d:%d expected 0%o %d:%d",
+                             fd, st.st_mode, major(st.st_rdev), minor(st.st_rdev),
+                             S_IFREG | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IRGRP,
+                             major(rdev), minor(rdev));
+        } else {
+            LOG_ALWAYS_FATAL("illegal fd=%d mode=0%o rdev=%d:%d expected 0%o",
+                             fd, st.st_mode, major(st.st_rdev), minor(st.st_rdev),
+                             S_IFREG | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IRGRP);
+        }
+        /* NOTREACHED */
+    }
+
+    errno = ENOTTY;
+    return -1;
+}
+
 /* returns true on success, false on error */
 int ashmem_valid(int fd)
 {
-    return __ashmem_is_ashmem(fd, 0) >= 0;
+    return __ashmem_is_memfd(fd, 0) >= 0 || __ashmem_is_ashmem(fd, 0) >= 0;
 }
 
 /*
@@ -150,6 +201,16 @@ int ashmem_valid(int fd)
  */
 int ashmem_create_region(const char *name, size_t size)
 {
+    int memfd_fd = __memfd_mem_open();
+    if (memfd_fd != -1) {
+        if (ftruncate(memfd_fd, size) >= 0) {
+            return memfd_fd;
+        }
+        ALOGE("ftruncate(%s, %zd) failed for memfd creation: %s\n", name, size, strerror(errno));
+        close(memfd_fd);
+    }
+    ALOGE("memfd_create unsupported, using ashmem");
+
     int ret, save_errno;
 
     int fd = __ashmem_open();
@@ -219,6 +280,17 @@ int ashmem_unpin_region(int fd, size_t offset, size_t len)
 
 int ashmem_get_size_region(int fd)
 {
+    if (__ashmem_is_memfd(fd, 1) >= 0) {
+        struct stat st;
+        int r;
+        r = fstat(fd, &st);
+        if (r < 0) {
+            ALOGE("fstat(%d) failed: %s\n", fd, strerror(errno));
+            return r;
+        }
+        return st.st_size;
+    }
+
     int ret = __ashmem_is_ashmem(fd, 1);
     if (ret < 0) {
         return ret;
