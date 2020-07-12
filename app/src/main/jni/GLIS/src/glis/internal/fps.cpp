@@ -1,3 +1,4 @@
+#include <glis/internal/fps.hpp>
 
 long GLIS_FPS::getCurrentTime(void) {
     struct timeval tv = {0};
