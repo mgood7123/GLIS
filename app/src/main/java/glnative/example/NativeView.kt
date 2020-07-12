@@ -8,7 +8,7 @@ import android.view.SurfaceView
 
 class NativeView(val context: Context) {
     val TAG = "EglSample"
-    external fun nativeOnStart(ExecutableDir: String)
+    external fun nativeOnStart(ExecutableDir: String, NativeLibsDir: String)
     external fun nativeOnResume()
     external fun nativeOnPause()
     external fun nativeOnStop()

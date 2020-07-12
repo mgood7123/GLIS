@@ -2,7 +2,7 @@
 // Created by konek on 8/14/2019.
 //
 
-#include "../GLIS.h"
+#include <glis/glis.hpp>
 
 const char *vertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
@@ -30,23 +30,25 @@ void main()
 }
 )glsl";
 
-class GLIS_CLASS G;
+GLIS_CLASS G;
+
+GLIS glis;
 
 int main() {
     int W = 1080;
     int H = 2031;
-    if (GLIS_setupOffScreenRendering(G, W, H)) {
+    if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
         // create a new texture
         GLuint FB;
         GLuint RB;
         GLuint renderedTexture;
-        GLIS_texture_buffer(FB, RB, renderedTexture, W, H);
+        glis.GLIS_texture_buffer(FB, RB, renderedTexture, W, H);
 
         GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+        vertexShader = glis.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("A: Creating Shader program");
         shaderProgram = glCreateProgram();
         LOG_INFO("A: Attaching vertex Shader to program");
@@ -56,25 +58,25 @@ int main() {
         LOG_INFO("A: Linking Shader program");
         glLinkProgram(shaderProgram);
         LOG_INFO("A: Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
+        GLboolean ProgramIsValid = glis.GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
 
         LOG_INFO("A: Using Shader program");
         glUseProgram(shaderProgram);
         LOG_INFO("A: drawing rectangle");
-        GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
+        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
         LOG_INFO("A: drawn rectangle");
 
-        size_t win_id1 = GLIS_new_window(500, 500, 200, 200);
-        GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
+        size_t win_id1 = glis.GLIS_new_window(500, 500, 200, 200);
+        glis.GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
         LOG_INFO("A: win_id1 = %zu", win_id1);
-        size_t win_id2 = GLIS_new_window(600, 600, 200, 200);
-        GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
+        size_t win_id2 = glis.GLIS_new_window(600, 600, 200, 200);
+        glis.GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
         LOG_INFO("A: win_id2 = %zu", win_id2);
-        for (int i = 500; i <= 600; i++) GLIS_modify_window(win_id1, 500, i, 200, 200);
-        for (int i = 600; i <= 700; i++) GLIS_modify_window(win_id2, i, 600, 200, 200);
-        for (int i = 599; i >= 451; i--) GLIS_modify_window(win_id1, 500, i, 200, 200);
-        for (int i = 699; i >= 501; i--) GLIS_modify_window(win_id2, i, 600, 200, 200);
+        for (int i = 500; i <= 600; i++) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
+        for (int i = 600; i <= 700; i++) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
+        for (int i = 599; i >= 451; i--) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
+        for (int i = 699; i >= 501; i--) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
         LOG_INFO("A: Cleaning up");
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
@@ -82,7 +84,7 @@ int main() {
         glDeleteTextures(1, &renderedTexture);
         glDeleteRenderbuffers(1, &RB);
         glDeleteFramebuffers(1, &FB);
-        GLIS_destroy_GLIS(G);
+        glis.GLIS_destroy_GLIS(G);
         LOG_INFO("A: Destroyed sub Compositor GLIS");
         LOG_INFO("A: Cleaned up");
     }

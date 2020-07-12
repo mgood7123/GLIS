@@ -327,6 +327,12 @@ public:
     GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, GLint texture_width,
                         GLint texture_height);
 
+    // uses the default texture
+
+    void
+    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLint texture_width,
+                        GLint texture_height);
+
     void
     GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
                                GLint texture_width,

@@ -93,6 +93,8 @@ bool GLIS_LOG_PRINT_SHAPE_INFO = false;
 
 void GLIS::GLIS_FORK(const char *__file, char *const *__argv) {
     errno = 0;
+
+    LOG_INFO("LD_LIBRARY_PATH=%s", getenv("LD_LIBRARY_PATH"));
     pid_t pid = fork();
     LOG_ERROR("pid: %d", pid);
     if (pid == 0) {
@@ -1038,6 +1040,11 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &text
     glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, GLIS_INTERNAL_SHARED_MEMORY.slot.texture.load_ptr());
     GLIS_sync_server("GLIS_upload_texture", window_id);
     LOG_INFO("uploaded texture");
+}
+
+void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id,
+                               GLint texture_width, GLint texture_height) {
+    GLIS_upload_texture(GLIS, window_id, GLIS_current_texture, texture_width, texture_height);
 }
 
 void GLIS::GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,

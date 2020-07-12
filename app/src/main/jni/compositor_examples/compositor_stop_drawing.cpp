@@ -2,9 +2,11 @@
 // Created by brothercomplex on 18/06/20.
 //
 
-#include "../GLIS.h"
+#include <glis/glis.hpp>
+
+GLIS glis;
 
 int main() {
-    GLIS_stop_drawing();
+    glis.GLIS_stop_drawing();
     return 0;
 }

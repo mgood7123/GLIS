@@ -43,41 +43,16 @@
 #include <android/native_window_jni.h> // requires ndk r5 or newer
 #include <pthread.h>
 #include <vector>
-#include <android/log.h>
 #include <glis/glis.hpp>
-
-#include "logger.h"
-#include "GLIS/dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h"
 
 #define LOG_TAG "EglSample"
 
-class GLIS_CLASS CompositorMain;
-class GLIS g;
+GLIS_CLASS CompositorMain;
+GLIS glis;
+GLIS_FONT font;
 
 char *executableDir;
-
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
-                                                                                    jobject type,
-                                                                                    jobject surface)
-{
-    if (surface != nullptr) {
-        CompositorMain.native_window = ANativeWindow_fromSurface(jenv, surface);
-        LOG_INFO("Got window %p", CompositorMain.native_window);
-        LOG_INFO("waiting for Compositor to initialize");
-        while (g.SYNC_STATE != g.STATE.initialized) {}
-        LOG_INFO("requesting SERVER startup");
-        g.SYNC_STATE = g.STATE.request_startup;
-    } else {
-        CompositorMain.server.shutdownServer();
-        g.SYNC_STATE = g.STATE.request_shutdown;
-        LOG_INFO("requesting SERVER shutdown");
-        while (g.SYNC_STATE != g.STATE.response_shutdown) {}
-        LOG_INFO("SERVER has shutdown");
-        LOG_INFO("Releasing window");
-        ANativeWindow_release(CompositorMain.native_window);
-        CompositorMain.native_window = nullptr;
-    }
-}
+char *nativeLibsDir;
 
 const char *vertexSource = R"glsl( #version 320 es
 layout (location = 0) in vec3 aPos;
@@ -147,17 +122,17 @@ void handleCommands(
         if (client != nullptr) {
             CompositorMain.server.log_info(
                     "CLIENT ID: %zu, command: %d (%s)",
-                    client->id, command, g.GLIS_command_to_string(command)
+                    client->id, command, glis.GLIS_command_to_string(command)
             );
         } else {
             CompositorMain.server.log_info(
-                    "SERVER : command: %d (%s)", command, g.GLIS_command_to_string(command)
+                    "SERVER : command: %d (%s)", command, glis.GLIS_command_to_string(command)
             );
         };
-        assert(g.GLIS_command_is_valid(command));
+        assert(glis.GLIS_command_is_valid(command));
     }
 
-    if (command == g.GLIS_SERVER_COMMANDS.new_connection) {
+    if (command == glis.GLIS_SERVER_COMMANDS.new_connection) {
         LOG_ERROR("registering new client");
         client = new Client;
         Object * O = CompositorMain.KERNEL.newObject(ObjectTypeProcess, 0, client);
@@ -173,7 +148,7 @@ void handleCommands(
         int h;
         in.get<int>(&w);
         in.get<int>(&h);
-        g.GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(client->shared_memory, w, h);
+        glis.GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(client->shared_memory, w, h);
         char *s = SERVER_allocate_new_server(SERVER_START_REPLY_MANUALLY, client->table_id);
         long t; // unused
         int e = pthread_create(&t, nullptr, GLIS::KEEP_ALIVE_MAIN_NOTIFIER, client);
@@ -189,7 +164,7 @@ void handleCommands(
             );
         }
         out.add_pointer<char>(s, 107);
-        bool r = g.GLIS_shared_memory_open(client->shared_memory);
+        bool r = glis.GLIS_shared_memory_open(client->shared_memory);
         out.add<bool>(r);
         if (!r) {
             LOG_ERROR(
@@ -202,7 +177,7 @@ void handleCommands(
         LOG_ERROR("CLIENT ID: %zu, keep alive has connected", client->id);
         while (client->shared_memory.slot.status.load_int8_t() == client->shared_memory.status.standby);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == g.GLIS_SERVER_COMMANDS.new_window) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.new_window) {
         class Client_Window *x = new class Client_Window;
         x->x = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         x->y = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
@@ -215,7 +190,7 @@ void handleCommands(
         );
         client->shared_memory.slot.result_data_0.type_size_t.store_size_t(id);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == g.GLIS_SERVER_COMMANDS.texture) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.texture) {
         size_t window_id = client->shared_memory.slot.additional_data_2.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, received id: %zu", client->id, window_id);
         assert(window_id >= 0);
@@ -237,7 +212,7 @@ void handleCommands(
         glBindTexture(GL_TEXTURE_2D, 0);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
         LOG_INFO("CLIENT ID: %zu, CLIENT has uploaded", client->id);
-    } else if (command == g.GLIS_SERVER_COMMANDS.modify_window) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.modify_window) {
         size_t window_id = client->shared_memory.slot.additional_data_4.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, modifying window (ID: %zu)", client->id, window_id);
         assert(window_id >= 0);
@@ -250,17 +225,17 @@ void handleCommands(
         x->w = client->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
         x->h = client->shared_memory.slot.additional_data_3.type_int64_t.load_int64_t();
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == g.GLIS_SERVER_COMMANDS.close_window) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.close_window) {
         size_t window_id = client->shared_memory.slot.additional_data_0.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, closing window (ID: %zu)", client->id, window_id);
         CompositorMain.KERNEL.table->DELETE(window_id);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == g.GLIS_SERVER_COMMANDS.start_drawing) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.start_drawing) {
         stop_drawing = false;
         LOG_INFO("drawing started");
         out.add<bool>(true);
         client->server->socket_put_serial(out);
-    } else if (command == g.GLIS_SERVER_COMMANDS.stop_drawing) {
+    } else if (command == glis.GLIS_SERVER_COMMANDS.stop_drawing) {
         stop_drawing = true;
         LOG_INFO("drawing stopped");
         out.add<bool>(true);
@@ -270,45 +245,45 @@ void handleCommands(
 
 /*
 [22:30] <emersion> 1. client renders using OpenGL
-[22:30] <emersion> 2. OpenGL implementation sends the GPU buffer to the server, e.g. via the linux-dmabuf protocol
+[22:30] <emersion> 2. OpenGL implementation sends the GPU buffer to the server, e.glis. via the linux-dmabuf protocol
 [22:30] <emersion> 3. server receives it and imports it via OpenGL
-[22:31] <emersion> 4. server composites the client using OpenGL, e.g. on a buffer allocated via GBM
+[22:31] <emersion> 4. server composites the client using OpenGL, e.glis. on a buffer allocated via GBM
 [22:31] <emersion> 5. server uses DRM to display the GBM buffer
  */
 
 int COMPOSITORMAIN__() {
     LOG_INFO("called COMPOSITORMAIN__()");
+    setenv("LD_LIBRARY_PATH", nativeLibsDir, 1);
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
         const_cast<char *>(std::string(
             std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
     char *args1[2] = {exe, 0};
-    g.GLIS_FORK(exe, args1);
-//
-//    char *exe2 =
-//        const_cast<char *>(std::string(
-//            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindowsB").c_str());
-//    char *args2[2] = {exe2, 0};
-//    GLIS_FORK(exe2, args2);
+    glis.GLIS_FORK(exe, args1);
 
-    g.SYNC_STATE = g.STATE.initialized;
-    while (g.SYNC_STATE != g.STATE.request_startup);
+    char *exe2 =
+        const_cast<char *>(std::string(
+            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindowsB").c_str());
+    char *args2[2] = {exe2, 0};
+    glis.GLIS_FORK(exe2, args2);
+
+    glis.SYNC_STATE = glis.STATE.initialized;
+    while (glis.SYNC_STATE != glis.STATE.request_startup);
     LOG_INFO("starting up");
-    g.SYNC_STATE = g.STATE.response_starting_up;
+    glis.SYNC_STATE = glis.STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
-    if (g.GLIS_setupOnScreenRendering(CompositorMain)) {
+    if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
         std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
-        GLIS_FONT f_;
-        assert(f_.GLIS_load_font(f.c_str(), 0, 128));
-        f_.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
+        assert(font.GLIS_load_font(f.c_str(), 0, 128));
+        font.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
 
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
         GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        vertexShader = g.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = g.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+        vertexShader = glis.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("Creating Shader program");
         shaderProgram = glCreateProgram();
         LOG_INFO("Attaching vertex Shader to program");
@@ -318,19 +293,19 @@ int COMPOSITORMAIN__() {
         LOG_INFO("Linking Shader program");
         glLinkProgram(shaderProgram);
         LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = g.GLIS_validate_program(shaderProgram);
+        GLboolean ProgramIsValid = glis.GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-        g.GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
+        glis.GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
         glUseProgram(shaderProgram);
         SERVER_LOG_TRANSFER_INFO = true;
-        g.SYNC_STATE = g.STATE.response_started_up;
+        glis.SYNC_STATE = glis.STATE.response_started_up;
         LOG_INFO("started up");
         bool stop_drawing = false;
         GLIS_FPS fps;
-        while(g.SYNC_STATE != g.STATE.request_shutdown) {
+        while(glis.SYNC_STATE != glis.STATE.request_shutdown) {
             fps.onFrameStart();
 
             // TODO: migrate to texture buffers:
@@ -401,7 +376,7 @@ int COMPOSITORMAIN__() {
                                 class Client_Window *CW = static_cast<Client_Window *>(
                                         CompositorMain.KERNEL.table->table[index]->resource
                                 );
-                                g.GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
+                                glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
                                                            CW->TEXTURE,
                                                            0, CW->x,
                                                            CW->y, CW->w, CW->h,
@@ -415,12 +390,12 @@ int COMPOSITORMAIN__() {
             }
             fps.onFrameEnd();
             std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
-            f_.GLIS_font_RenderText(text, 0, 20, f_.GLIS_font_color_white);
-            g.GLIS_Sync_GPU();
-            g.GLIS_SwapBuffers(CompositorMain);
-            g.GLIS_Sync_GPU();
+            font.GLIS_font_RenderText(text, 0, 20, font.GLIS_font_color_white);
+            glis.GLIS_Sync_GPU();
+            glis.GLIS_SwapBuffers(CompositorMain);
+            glis.GLIS_Sync_GPU();
         }
-        g.SYNC_STATE = g.STATE.response_shutting_down;
+        glis.SYNC_STATE = glis.STATE.response_shutting_down;
         LOG_INFO("shutting down");
 
         // clean up
@@ -428,11 +403,11 @@ int COMPOSITORMAIN__() {
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
         glDeleteShader(vertexShader);
-        g.GLIS_destroy_GLIS(CompositorMain);
+        glis.GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
         LOG_INFO("shut down");
-        g.SYNC_STATE = g.STATE.response_shutdown;
+        glis.SYNC_STATE = glis.STATE.response_shutdown;
     } else LOG_ERROR("failed to initialize main Compositor");
     return 0;
 }
@@ -444,17 +419,44 @@ void * COMPOSITORMAIN(void * arg) {
     return ret;
 }
 
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurface(JNIEnv* jenv,
+                                                                                    jobject type,
+                                                                                    jobject surface)
+{
+    if (surface != nullptr) {
+        CompositorMain.native_window = ANativeWindow_fromSurface(jenv, surface);
+        LOG_INFO("Got window %p", CompositorMain.native_window);
+        LOG_INFO("waiting for Compositor to initialize");
+        while (glis.SYNC_STATE != glis.STATE.initialized) {}
+        LOG_INFO("requesting SERVER startup");
+        glis.SYNC_STATE = glis.STATE.request_startup;
+    } else {
+        CompositorMain.server.shutdownServer();
+        glis.SYNC_STATE = glis.STATE.request_shutdown;
+        LOG_INFO("requesting SERVER shutdown");
+        while (glis.SYNC_STATE != glis.STATE.response_shutdown) {}
+        LOG_INFO("SERVER has shutdown");
+        LOG_INFO("Releasing window");
+        ANativeWindow_release(CompositorMain.native_window);
+        CompositorMain.native_window = nullptr;
+    }
+}
+
 long COMPOSITORMAIN_threadId;
-extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(JNIEnv* jenv,
-                                                                                 jobject type,
-                                                                                 jstring
-                                                                                 ExecutablesDir) {
+extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeOnStart(
+        JNIEnv* jenv, jobject type, jstring ExecutablesDir, jstring NativeLibsDir
+) {
     jboolean val;
     const char *a = jenv->GetStringUTFChars(ExecutablesDir, &val);
     size_t len = (strlen(a) + 1) * sizeof(char);
     executableDir = static_cast<char *>(malloc(len));
     memcpy(executableDir, a, len);
     jenv->ReleaseStringUTFChars(ExecutablesDir, a);
+    const char *b = jenv->GetStringUTFChars(NativeLibsDir, &val);
+    size_t lenb = (strlen(b) + 1) * sizeof(char);
+    nativeLibsDir = static_cast<char *>(malloc(lenb));
+    memcpy(nativeLibsDir, b, lenb);
+    jenv->ReleaseStringUTFChars(NativeLibsDir, a);
     LOG_INFO("starting main Compositor");
     int e = pthread_create(&COMPOSITORMAIN_threadId, nullptr, COMPOSITORMAIN, nullptr);
     if (e != 0)
