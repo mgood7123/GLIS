@@ -299,7 +299,7 @@ int COMPOSITORMAIN__() {
     if (g.GLIS_setupOnScreenRendering(CompositorMain)) {
         std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
         GLIS_FONT f_;
-        assert(f_.GLIS_load_font(g, f.c_str(), 0, 128));
+        assert(f_.GLIS_load_font(f.c_str(), 0, 128));
         f_.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
 
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);

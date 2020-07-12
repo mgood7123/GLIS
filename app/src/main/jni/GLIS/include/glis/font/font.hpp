@@ -41,9 +41,9 @@ public:
     GLuint GLIS_FONT_VAO;
     GLuint GLIS_FONT_VBO;
 
-    bool GLIS_font_init_shaders(GLIS & glis);
+    bool GLIS_font_init_shaders();
 
-    bool GLIS_load_font(GLIS & glis, const char *font, int width, int height);
+    bool GLIS_load_font(const char *font, int width, int height);
 
     void GLIS_font_RenderText(GLfloat w, GLfloat h, std::string text, float x, float y, float scale,
                               glm::vec3 color);

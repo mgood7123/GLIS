@@ -70,7 +70,7 @@ void GLIS_FONT::GLIS_font_free() {
     FT_Done_FreeType(GLIS_font);
 }
 
-bool GLIS_FONT::GLIS_font_init_shaders(class GLIS & glis) {
+bool GLIS_FONT::GLIS_font_init_shaders() {
     const char *vs = R"glsl( #version 300 es
     layout (location = 0) in vec4 vertex;
     out vec2 TexCoords;
@@ -99,7 +99,7 @@ bool GLIS_FONT::GLIS_font_init_shaders(class GLIS & glis) {
         color = vec4(textColor, 1.0) * sampled;
     }
     )glsl";
-
+    GLIS glis;
     GLIS_FONT_VERTEX_SHADER = glis.GLIS_createShader(GL_VERTEX_SHADER, vs);
     GLIS_FONT_FRAGMENT_SHADER = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fs);
     LOG_INFO("Creating Shader program");
@@ -127,9 +127,9 @@ bool GLIS_FONT::GLIS_font_init_shaders(class GLIS & glis) {
     return true;
 }
 
-bool GLIS_FONT::GLIS_load_font(GLIS & glis, const char *font, int width, int height) {
+bool GLIS_FONT::GLIS_load_font(const char *font, int width, int height) {
     // TODO: smart load
-    if (!GLIS_font_init_shaders(glis)) return false;
+    if (!GLIS_font_init_shaders()) return false;
     if (!GLIS_font_init()) return false;
     if (!GLIS_font_load(font)) {
         FT_Done_FreeType(GLIS_font);
