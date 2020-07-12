@@ -1,31 +1,10 @@
 cmake_minimum_required(VERSION 3.4.1)
-add_subdirectory(WINAPI)
 
-add_subdirectory(freetype-2.10.2)
-include_directories(freetype-2.10.2/include)
-
-add_subdirectory(glm)
-include_directories(glm)
-
-add_subdirectory(Boost-for-Android)
-include_directories(${BOOST_INCLUDE})
-
-add_library(GLIS STATIC shm.cpp ashmem.cpp libsu/libsu.cpp SysV_api/SysV.cpp)
-target_link_libraries(GLIS log freetype glm EGL GLESv3 WinKernel ${BOOST_LIBRARY})
+add_subdirectory(GLIS)
+include_directories(${GLIS_INCLUDE_DIRECTORIES})
 
 add_library(nativeegl SHARED compositor.cpp)
 target_link_libraries(nativeegl android GLIS)
-
-include_directories("libsu")
-include_directories("SysV_api")
-
-add_executable(LowMemoryKillerTest compositor_examples/LowMemoryKillerTest.cpp)
-target_link_libraries(LowMemoryKillerTest GLIS)
-add_custom_command(
-        TARGET LowMemoryKillerTest
-        POST_BUILD
-        COMMAND cp -v LowMemoryKillerTest \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
-)
 
 #add_executable(MovingWindows compositor_examples/MovingWindows.cpp)
 #target_link_libraries(MovingWindows GLIS)
@@ -42,7 +21,6 @@ add_custom_command(
 #        POST_BUILD
 #        COMMAND cp -v MovingWindowsB \"${CMAKE_SOURCE_DIR}/executables/Arch/${CMAKE_ANDROID_ARCH_ABI}\"
 #)
-
 
 #add_executable(compositor_start_drawing compositor_examples/compositor_start_drawing.cpp)
 #target_link_libraries(compositor_start_drawing GLIS)

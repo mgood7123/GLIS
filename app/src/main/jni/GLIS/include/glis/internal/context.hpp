@@ -1,0 +1,36 @@
+#include <glis/ipc/server_core.hpp>
+
+#pragma once
+
+class GLIS_CLASS {
+public:
+    int init_GLIS = false;
+    bool
+            init_eglGetDisplay = false,
+            init_eglInitialize = false,
+            init_eglChooseConfig = false,
+            init_eglCreateWindowSurface = false,
+            init_eglCreatePbufferSurface = false,
+            init_eglCreateContext = false,
+            init_eglMakeCurrent = false;
+    const GLint
+            *configuration_attributes = nullptr,
+            *context_attributes = nullptr,
+            *surface_attributes = nullptr;
+    EGLint
+            eglMajVers = 0,
+            eglMinVers = 0,
+            number_of_configurations = 0;
+    EGLDisplay display = EGL_NO_DISPLAY;
+    EGLConfig configuration = 0;
+    EGLContext
+            context = EGL_NO_CONTEXT,
+            shared_context = EGL_NO_CONTEXT;
+    EGLSurface surface = EGL_NO_SURFACE;
+    ANativeWindow *native_window = nullptr;
+    GLint
+            width = 0,
+            height = 0;
+    SOCKET_SERVER server;
+    Kernel KERNEL;
+};

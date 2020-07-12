@@ -44,15 +44,15 @@
 #include <pthread.h>
 #include <vector>
 #include <android/log.h>
-#include <boost/interprocess/shared_memory_object.hpp>
+#include <glis/glis.hpp>
 
 #include "logger.h"
-#include "GLIS.h"
-#include "GLIS_COMMANDS.h"
+#include "GLIS/dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h"
 
 #define LOG_TAG "EglSample"
 
 class GLIS_CLASS CompositorMain;
+class GLIS g;
 
 char *executableDir;
 
@@ -64,14 +64,14 @@ extern "C" JNIEXPORT void JNICALL Java_glnative_example_NativeView_nativeSetSurf
         CompositorMain.native_window = ANativeWindow_fromSurface(jenv, surface);
         LOG_INFO("Got window %p", CompositorMain.native_window);
         LOG_INFO("waiting for Compositor to initialize");
-        while (SYNC_STATE != STATE.initialized) {}
+        while (g.SYNC_STATE != g.STATE.initialized) {}
         LOG_INFO("requesting SERVER startup");
-        SYNC_STATE = STATE.request_startup;
+        g.SYNC_STATE = g.STATE.request_startup;
     } else {
         CompositorMain.server.shutdownServer();
-        SYNC_STATE = STATE.request_shutdown;
+        g.SYNC_STATE = g.STATE.request_shutdown;
         LOG_INFO("requesting SERVER shutdown");
-        while (SYNC_STATE != STATE.response_shutdown) {}
+        while (g.SYNC_STATE != g.STATE.response_shutdown) {}
         LOG_INFO("SERVER has shutdown");
         LOG_INFO("Releasing window");
         ANativeWindow_release(CompositorMain.native_window);
@@ -132,7 +132,7 @@ public:
 
 class Client {
 public:
-    class GLIS_shared_memory shared_memory;
+    class GLIS::GLIS_shared_memory shared_memory;
     SOCKET_SERVER * server = nullptr;
     size_t server_id = 0;
     size_t id = -1;
@@ -147,17 +147,17 @@ void handleCommands(
         if (client != nullptr) {
             CompositorMain.server.log_info(
                     "CLIENT ID: %zu, command: %d (%s)",
-                    client->id, command, GLIS_command_to_string(command)
+                    client->id, command, g.GLIS_command_to_string(command)
             );
         } else {
             CompositorMain.server.log_info(
-                    "SERVER : command: %d (%s)", command, GLIS_command_to_string(command)
+                    "SERVER : command: %d (%s)", command, g.GLIS_command_to_string(command)
             );
         };
-        assert(GLIS_command_is_valid(command));
+        assert(g.GLIS_command_is_valid(command));
     }
 
-    if (command == GLIS_SERVER_COMMANDS.new_connection) {
+    if (command == g.GLIS_SERVER_COMMANDS.new_connection) {
         LOG_ERROR("registering new client");
         client = new Client;
         Object * O = CompositorMain.KERNEL.newObject(ObjectTypeProcess, 0, client);
@@ -173,10 +173,10 @@ void handleCommands(
         int h;
         in.get<int>(&w);
         in.get<int>(&h);
-        GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(client->shared_memory, w, h);
+        g.GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(client->shared_memory, w, h);
         char *s = SERVER_allocate_new_server(SERVER_START_REPLY_MANUALLY, client->table_id);
         long t; // unused
-        int e = pthread_create(&t, nullptr, KEEP_ALIVE_MAIN_NOTIFIER, client);
+        int e = pthread_create(&t, nullptr, GLIS::KEEP_ALIVE_MAIN_NOTIFIER, client);
         if (e != 0) {
             LOG_ERROR(
                     "CLIENT ID: %zu, pthread_create(): errno: %d (%s) | return: %d (%s)",
@@ -189,7 +189,7 @@ void handleCommands(
             );
         }
         out.add_pointer<char>(s, 107);
-        bool r = GLIS_shared_memory_open(client->shared_memory);
+        bool r = g.GLIS_shared_memory_open(client->shared_memory);
         out.add<bool>(r);
         if (!r) {
             LOG_ERROR(
@@ -202,7 +202,7 @@ void handleCommands(
         LOG_ERROR("CLIENT ID: %zu, keep alive has connected", client->id);
         while (client->shared_memory.slot.status.load_int8_t() == client->shared_memory.status.standby);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == GLIS_SERVER_COMMANDS.new_window) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.new_window) {
         class Client_Window *x = new class Client_Window;
         x->x = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         x->y = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
@@ -215,7 +215,7 @@ void handleCommands(
         );
         client->shared_memory.slot.result_data_0.type_size_t.store_size_t(id);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == GLIS_SERVER_COMMANDS.texture) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.texture) {
         size_t window_id = client->shared_memory.slot.additional_data_2.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, received id: %zu", client->id, window_id);
         assert(window_id >= 0);
@@ -237,7 +237,7 @@ void handleCommands(
         glBindTexture(GL_TEXTURE_2D, 0);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
         LOG_INFO("CLIENT ID: %zu, CLIENT has uploaded", client->id);
-    } else if (command == GLIS_SERVER_COMMANDS.modify_window) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.modify_window) {
         size_t window_id = client->shared_memory.slot.additional_data_4.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, modifying window (ID: %zu)", client->id, window_id);
         assert(window_id >= 0);
@@ -250,17 +250,17 @@ void handleCommands(
         x->w = client->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
         x->h = client->shared_memory.slot.additional_data_3.type_int64_t.load_int64_t();
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == GLIS_SERVER_COMMANDS.close_window) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.close_window) {
         size_t window_id = client->shared_memory.slot.additional_data_0.type_size_t.load_size_t();
         LOG_INFO("CLIENT ID: %zu, closing window (ID: %zu)", client->id, window_id);
         CompositorMain.KERNEL.table->DELETE(window_id);
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
-    } else if (command == GLIS_SERVER_COMMANDS.start_drawing) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.start_drawing) {
         stop_drawing = false;
         LOG_INFO("drawing started");
         out.add<bool>(true);
         client->server->socket_put_serial(out);
-    } else if (command == GLIS_SERVER_COMMANDS.stop_drawing) {
+    } else if (command == g.GLIS_SERVER_COMMANDS.stop_drawing) {
         stop_drawing = true;
         LOG_INFO("drawing stopped");
         out.add<bool>(true);
@@ -276,88 +276,14 @@ void handleCommands(
 [22:31] <emersion> 5. server uses DRM to display the GBM buffer
  */
 
-#include <boost/interprocess/managed_shared_memory.hpp>
-// in Android 10 and assumably Android 9, the directory /data/local/traces/ exists and is world writable
-// however i am not sure if this directory is Partition backed or RAM (tmpfs) backed
-// eg if writing to /data/local/traces creates a new physical file in the partition the directory resides in
-// or if writing to /data/local/traces creates a new virtual file in RAM as per Linux tmpfs based /tmp/
-
-// https://android.googlesource.com/platform/ndk/+/4e159d95ebf23b5f72bb707b0cb1518ef96b3d03/docs/system/libc/SYSV-IPC.TXT
-// https://www.geeksforgeeks.org/posix-shared-memory-api/
-// https://chromium.googlesource.com/chromiumos/third_party/glibc/+/cvs/fedora-glibc-2_4-1/sysdeps/unix/sysv/linux/shm_open.c
-
-#include "libsu/libsu.h"
-
-const char * shared_memory_name = "My Shared Memory X";
-
 int COMPOSITORMAIN__() {
-//    bool hasRoot = libsu_has_root_access();
-//    libsu_LOG_INFO("libsu has root: %s", hasRoot ? "true" : "false");
-//    if (hasRoot) {
-//        libsu_processimage instance;
-//        bool r;
-//        std::string command_mkdir = "mkdir ";
-//        command_mkdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-//        r = libsu_sudo(&instance, command_mkdir.c_str());
-//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-//        libsu_cleanup(&instance);
-//
-//        std::string command_chmod = "chmod 777 ";
-//        command_chmod.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-//        r = libsu_sudo(&instance, command_chmod.c_str());
-//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-//        libsu_cleanup(&instance);
-//
-//        std::string command_mount = "mount -t tmpfs -o size=512m tmpfs ";
-//        command_mount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-//        r = libsu_sudo(&instance, command_mount.c_str());
-//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-//        libsu_cleanup(&instance);
-//
-//        std::string command_umount = "umount ";
-//        command_umount.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-//        r = libsu_sudo(&instance, command_umount.c_str());
-//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-//        libsu_cleanup(&instance);
-//
-//        std::string command_rmdir = "rmdir ";
-//        command_rmdir.append(BOOST_TEMPORARY_ANDROID_DATA_DIRECTORY);
-//        r = libsu_sudo(&instance, command_rmdir.c_str());
-//        libsu_LOG_INFO("libsu returned: %s", r ? "true" : "false");
-//        libsu_LOG_INFO("libsu instance return code: %d", instance.return_code);
-//        libsu_LOG_INFO("libsu stdout: %s", instance.string_stdout);
-//        libsu_LOG_INFO("libsu stderr: %s", instance.string_stderr);
-//        libsu_cleanup(&instance);
-//    }
-//
-//    struct shm_remove {
-//        shm_remove() { boost::interprocess::shared_memory_object::remove(shared_memory_name); }
-//        ~shm_remove(){ boost::interprocess::shared_memory_object::remove(shared_memory_name); }
-//    } remover;
-//    boost::interprocess::managed_shared_memory segment(
-//            boost::interprocess::create_only, shared_memory_name, 8000
-//    );
-//    segment.deallocate(segment.allocate(5000));
-
     LOG_INFO("called COMPOSITORMAIN__()");
     system(std::string(std::string("chmod -R 777 ") + executableDir).c_str());
     char *exe =
         const_cast<char *>(std::string(
-            std::string(executableDir) + "/Arch/arm64-v8a/LowMemoryKillerTest").c_str());
+            std::string(executableDir) + "/Arch/arm64-v8a/MovingWindows").c_str());
     char *args1[2] = {exe, 0};
-    GLIS_FORK(exe, args1);
+    g.GLIS_FORK(exe, args1);
 //
 //    char *exe2 =
 //        const_cast<char *>(std::string(
@@ -365,24 +291,24 @@ int COMPOSITORMAIN__() {
 //    char *args2[2] = {exe2, 0};
 //    GLIS_FORK(exe2, args2);
 
-    SYNC_STATE = STATE.initialized;
-    while (SYNC_STATE != STATE.request_startup);
+    g.SYNC_STATE = g.STATE.initialized;
+    while (g.SYNC_STATE != g.STATE.request_startup);
     LOG_INFO("starting up");
-    SYNC_STATE = STATE.response_starting_up;
+    g.SYNC_STATE = g.STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
-    if (GLIS_setupOnScreenRendering(CompositorMain)) {
+    if (g.GLIS_setupOnScreenRendering(CompositorMain)) {
         std::string f = std::string(executableDir) + "/fonts/Vera.ttf";
-
-        assert(GLIS_load_font(f.c_str(), 0, 128));
-        GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
+        GLIS_FONT f_;
+        assert(f_.GLIS_load_font(g, f.c_str(), 0, 128));
+        f_.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
 
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
         GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+        vertexShader = g.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+        fragmentShader = g.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
         LOG_INFO("Creating Shader program");
         shaderProgram = glCreateProgram();
         LOG_INFO("Attaching vertex Shader to program");
@@ -392,19 +318,19 @@ int COMPOSITORMAIN__() {
         LOG_INFO("Linking Shader program");
         glLinkProgram(shaderProgram);
         LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
+        GLboolean ProgramIsValid = g.GLIS_validate_program(shaderProgram);
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-        GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
+        g.GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
         glUseProgram(shaderProgram);
         SERVER_LOG_TRANSFER_INFO = true;
-        SYNC_STATE = STATE.response_started_up;
+        g.SYNC_STATE = g.STATE.response_started_up;
         LOG_INFO("started up");
         bool stop_drawing = false;
         GLIS_FPS fps;
-        while(SYNC_STATE != STATE.request_shutdown) {
+        while(g.SYNC_STATE != g.STATE.request_shutdown) {
             fps.onFrameStart();
 
             // TODO: migrate to texture buffers:
@@ -475,7 +401,7 @@ int COMPOSITORMAIN__() {
                                 class Client_Window *CW = static_cast<Client_Window *>(
                                         CompositorMain.KERNEL.table->table[index]->resource
                                 );
-                                GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
+                                g.GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
                                                            CW->TEXTURE,
                                                            0, CW->x,
                                                            CW->y, CW->w, CW->h,
@@ -489,12 +415,12 @@ int COMPOSITORMAIN__() {
             }
             fps.onFrameEnd();
             std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
-            GLIS_font_RenderText(text, 0, 20, GLIS_font_color_white);
-            GLIS_Sync_GPU();
-            GLIS_SwapBuffers(CompositorMain);
-            GLIS_Sync_GPU();
+            f_.GLIS_font_RenderText(text, 0, 20, f_.GLIS_font_color_white);
+            g.GLIS_Sync_GPU();
+            g.GLIS_SwapBuffers(CompositorMain);
+            g.GLIS_Sync_GPU();
         }
-        SYNC_STATE = STATE.response_shutting_down;
+        g.SYNC_STATE = g.STATE.response_shutting_down;
         LOG_INFO("shutting down");
 
         // clean up
@@ -502,11 +428,11 @@ int COMPOSITORMAIN__() {
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
         glDeleteShader(vertexShader);
-        GLIS_destroy_GLIS(CompositorMain);
+        g.GLIS_destroy_GLIS(CompositorMain);
         LOG_INFO("Destroyed main Compositor GLIS");
         LOG_INFO("Cleaned up");
         LOG_INFO("shut down");
-        SYNC_STATE = STATE.response_shutdown;
+        g.SYNC_STATE = g.STATE.response_shutdown;
     } else LOG_ERROR("failed to initialize main Compositor");
     return 0;
 }
