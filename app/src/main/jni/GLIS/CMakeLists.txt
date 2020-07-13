@@ -33,12 +33,21 @@ add_library(GLIS SHARED
         src/glis/ipc/shm.cpp
 )
 
+if (ANDROID)
+    set (OPEN_GL_LIBRARY GLESv3)
+    set (LOG_LIBRARY log)
+elseif(UNIX)
+    set (OPEN_GL_LIBRARY GLESv2)
+    # make sure LOG_LIBRARY is unset, this will not unset for parent scope
+    unset(LOG_LIBRARY)
+endif()
+
 target_link_libraries(
         GLIS
-        log
+        ${LOG_LIBRARY}
         freetype
         glm
         EGL
-        GLESv3
+        ${OPEN_GL_LIBRARY}
         WinKernel
 )
