@@ -2,57 +2,38 @@
 
 #include <glis/glis.hpp>
 #include  <X11/Xlib.h>
-#include  <X11/Xatom.h>
-#include  <X11/Xutil.h>
 
 int main() {
     GLIS glis;
     GLIS_CLASS glis_class;
-    // we need to obtain a native window
 
-    // open the standard display (the primary screen)
-    Display    *x_display;
-    Window      win;
+    // create a new X11 window
+    Display * x_display = XOpenDisplay(nullptr);
+    if (x_display == nullptr) LOG_ALWAYS_FATAL("error, cannot connect to X server");
+    Window win = XCreateSimpleWindow(x_display, DefaultRootWindow(x_display), 0, 0, 800, 480, 0, 0, 0);
+    XMapWindow(x_display, win);
+    XStoreName(x_display, win, "Compositor");
 
-    x_display = XOpenDisplay ( NULL );   // open the standard display (the primary screen)
-    if ( x_display == NULL ) {
-        LOG_ERROR("error, cannot connect to X server");
-        return 1;
-    }
-
-    Window root  =  DefaultRootWindow( x_display );   // get the root window (usually the whole screen)
-
-    XSetWindowAttributes  swa;
-    swa.event_mask  =  ExposureMask | PointerMotionMask | KeyPressMask;
-
-    win  =  XCreateWindow (   // create a window with the provided parameters
-            x_display, root,
-            0, 0, 800, 480,   0,
-            CopyFromParent, InputOutput,
-            CopyFromParent, CWEventMask,
-            &swa );
-
-    XWMHints hints;
-    hints.input = True;
-    hints.flags = InputHint;
-    XSetWMHints(x_display, win, &hints);
-
-    XMapWindow ( x_display , win );             // make the window visible on the screen
-    XStoreName ( x_display , win , "GL test" ); // give the window a name
-
+    // override default values
     glis_class.native_window = win;
-    glis_class.display_id = (EGLNativeDisplayType) x_display;
+    glis_class.display_id = x_display;
+
+    // initiate opengl
     glis.GLIS_setupOnScreenRendering(glis_class);
 
+    // draw a pink background
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    // swap buffers
     glis.GLIS_SwapBuffers(glis_class);
 
+    // sleep to give time for window to appear
     sleep(2);
-    LOG_INFO("destroying glis");
+
+    // clean up everything
     glis.GLIS_destroy_GLIS(glis_class);
-    LOG_INFO("destroyed glis");
-    XDestroyWindow    ( x_display, win );
-    XCloseDisplay     ( x_display );
+    XDestroyWindow(x_display, win);
+    XCloseDisplay(x_display);
     return 0;
 }

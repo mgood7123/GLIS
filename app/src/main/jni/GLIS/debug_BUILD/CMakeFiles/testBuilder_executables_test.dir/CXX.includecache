@@ -1647,8 +1647,4 @@ glis/glis.hpp
 -
 X11/Xlib.h
 -
-X11/Xatom.h
--
-X11/Xutil.h
--
 
