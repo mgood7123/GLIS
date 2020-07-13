@@ -220,18 +220,22 @@ void GLIS::GLIS_EGL_INFORMATION(EGLDisplay &DISPLAY) {
 
 void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
     if (!GLIS.init_GLIS) return;
+    LOG_INFO("Uninitializing");
 
     if (GLIS.init_eglMakeCurrent) {
+        LOG_INFO("Switching context to no context");
         eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
         GLIS.init_eglMakeCurrent = false;
     }
     if (GLIS.init_eglCreateContext) {
+        LOG_INFO("Uninitializing context");
         eglDestroyContext(GLIS.display, GLIS.context);
         GLIS.context = EGL_NO_CONTEXT;
         GLIS.shared_context = EGL_NO_CONTEXT;
         GLIS.init_eglCreateContext = false;
     }
     if (GLIS.init_eglCreateWindowSurface || GLIS.init_eglCreatePbufferSurface) {
+        LOG_INFO("Uninitializing surface");
         eglDestroySurface(GLIS.display, GLIS.surface);
         GLIS.surface = EGL_NO_SURFACE;
         GLIS.init_eglCreateWindowSurface = false;
@@ -241,18 +245,21 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
         // TODO: figure how to undo init_eglChooseConfig
     }
     if (GLIS.init_eglInitialize) {
+        LOG_INFO("Uninitializing display");
         eglTerminate(GLIS.display);
         GLIS.init_eglInitialize = false;
     }
     if (GLIS.init_eglGetDisplay) {
+        LOG_INFO("Setting display to no display");
         GLIS.display = EGL_NO_DISPLAY;
         GLIS.init_eglGetDisplay = false;
     }
     GLIS.init_GLIS = false;
+    LOG_INFO("Uninitialized");
 }
 
 bool GLIS::GLIS_initialize_display(class GLIS_CLASS &GLIS) {
-    GLIS.display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    GLIS.display = eglGetDisplay(GLIS.display_id);
     if (GLIS.display == EGL_NO_DISPLAY) return false;
     GLIS.init_eglGetDisplay = true;
     EGLBoolean r = eglInitialize(GLIS.display, &GLIS.eglMajVers, &GLIS.eglMinVers);
@@ -271,6 +278,10 @@ bool GLIS::GLIS_initialize_configuration(class GLIS_CLASS &GLIS) {
 }
 
 bool GLIS::GLIS_initialize_surface_CreateWindowSurface(class GLIS_CLASS &GLIS) {
+    if(GLIS.native_window == 0) {
+        const char * msg = "error: a native window must be supplied prior to calling this function";
+        LOG_ALWAYS_FATAL("%s", msg);
+    }
     GLIS.surface = eglCreateWindowSurface(GLIS.display, GLIS.configuration, GLIS.native_window, nullptr);
     if (GLIS.surface == EGL_NO_SURFACE) return false;
     GLIS.init_eglCreateWindowSurface = true;

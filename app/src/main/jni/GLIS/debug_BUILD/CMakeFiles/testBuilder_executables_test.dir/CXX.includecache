@@ -1645,4 +1645,10 @@ ashmem.hpp
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/examples/example1.cpp
 glis/glis.hpp
 -
+X11/Xlib.h
+-
+X11/Xatom.h
+-
+X11/Xutil.h
+-
 

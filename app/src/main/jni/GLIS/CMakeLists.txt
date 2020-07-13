@@ -58,5 +58,6 @@ target_link_libraries(
 
 add_subdirectory(testBuilder)
 testBuilder_add_library(test GLIS)
+testBuilder_add_library(test X11)
 testBuilder_add_source(test src/glis/examples/example1.cpp)
 testBuilder_build(test)

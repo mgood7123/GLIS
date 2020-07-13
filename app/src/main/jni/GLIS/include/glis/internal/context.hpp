@@ -21,6 +21,7 @@ public:
             eglMajVers = 0,
             eglMinVers = 0,
             number_of_configurations = 0;
+    EGLNativeDisplayType display_id = EGL_DEFAULT_DISPLAY;
     EGLDisplay display = EGL_NO_DISPLAY;
     EGLConfig configuration = 0;
     EGLContext

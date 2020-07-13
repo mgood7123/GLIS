@@ -4,6 +4,8 @@ macro(testBuilder_add_source testName sourceFile)
     set(testBuilder_SOURCES_LIST_${testName} ${testBuilder_SOURCES_LIST_${testName}};${sourceFile})
 endmacro()
 
+
+# libraries can be specified as a space seperated list, or as individual calls
 macro(testBuilder_add_library testName libraryName)
     set(testBuilder_LIBRARIES_LIST_${testName} ${testBuilder_LIBRARIES_LIST_${testName}};${libraryName})
 endmacro()
