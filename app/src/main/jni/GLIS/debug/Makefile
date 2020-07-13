@@ -217,6 +217,19 @@ freetype/fast:
 	$(MAKE) -f dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build
 .PHONY : freetype/fast
 
+#=============================================================================
+# Target rules for targets named glm_shared
+
+# Build rule for target.
+glm_shared: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 glm_shared
+.PHONY : glm_shared
+
+# fast build rule for target.
+glm_shared/fast:
+	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
+.PHONY : glm_shared/fast
+
 src/glis/backup/backup.o: src/glis/backup/backup.cpp.o
 
 .PHONY : src/glis/backup/backup.o
@@ -612,6 +625,7 @@ help:
 	@echo "... GLIS"
 	@echo "... WinKernel"
 	@echo "... freetype"
+	@echo "... glm_shared"
 	@echo "... src/glis/backup/backup.o"
 	@echo "... src/glis/backup/backup.i"
 	@echo "... src/glis/backup/backup.s"

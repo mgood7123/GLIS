@@ -151,7 +151,7 @@ dependancies/glm/clean: dependancies/glm/glm/clean
 # Directory level rules for directory dependancies/glm/glm
 
 # Recursive "all" directory target.
-dependancies/glm/glm/all:
+dependancies/glm/glm/all: dependancies/glm/glm/CMakeFiles/glm_shared.dir/all
 
 .PHONY : dependancies/glm/glm/all
 
@@ -161,7 +161,7 @@ dependancies/glm/glm/preinstall:
 .PHONY : dependancies/glm/glm/preinstall
 
 # Recursive "clean" directory target.
-dependancies/glm/glm/clean:
+dependancies/glm/glm/clean: dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
 
 .PHONY : dependancies/glm/glm/clean
 
@@ -246,6 +246,33 @@ freetype: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/rule
 dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/clean:
 	$(MAKE) -f dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/clean
 .PHONY : dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/glm/glm/CMakeFiles/glm_shared.dir
+
+# All Build rule for target.
+dependancies/glm/glm/CMakeFiles/glm_shared.dir/all:
+	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/depend
+	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug/CMakeFiles --progress-num=62,63 "Built target glm_shared"
+.PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/glm/glm/CMakeFiles/glm_shared.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug/CMakeFiles 0
+.PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
+
+# Convenience name for target.
+glm_shared: dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
+
+.PHONY : glm_shared
+
+# clean rule for target.
+dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean:
+	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
+.PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

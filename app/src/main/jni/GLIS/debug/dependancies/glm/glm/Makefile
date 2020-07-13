@@ -178,6 +178,48 @@ depend:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(MAKE) -f CMakeFiles/Makefile2 dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
+.PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
+
+# Convenience name for target.
+glm_shared: dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
+
+.PHONY : glm_shared
+
+# fast build rule for target.
+glm_shared/fast:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
+.PHONY : glm_shared/fast
+
+detail/glm.o: detail/glm.cpp.o
+
+.PHONY : detail/glm.o
+
+# target to build an object file
+detail/glm.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/detail/glm.cpp.o
+.PHONY : detail/glm.cpp.o
+
+detail/glm.i: detail/glm.cpp.i
+
+.PHONY : detail/glm.i
+
+# target to preprocess a source file
+detail/glm.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/detail/glm.cpp.i
+.PHONY : detail/glm.cpp.i
+
+detail/glm.s: detail/glm.cpp.s
+
+.PHONY : detail/glm.s
+
+# target to generate assembly for a file
+detail/glm.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug && $(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/detail/glm.cpp.s
+.PHONY : detail/glm.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -191,7 +233,11 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... package"
+	@echo "... glm_shared"
 	@echo "... install/strip"
+	@echo "... detail/glm.o"
+	@echo "... detail/glm.i"
+	@echo "... detail/glm.s"
 .PHONY : help
 
 

@@ -4,6 +4,8 @@ project(GLIS)
 
 add_subdirectory(dependancies/WINAPI)
 
+set(BUILD_SHARED_LIBS ON)
+
 add_subdirectory(dependancies/freetype-2.10.2)
 include_directories(dependancies/freetype-2.10.2/include)
 
@@ -34,12 +36,13 @@ add_library(GLIS SHARED
 )
 
 if (ANDROID)
-    set (OPEN_GL_LIBRARY GLESv3)
-    set (LOG_LIBRARY log)
+    set(OPEN_GL_LIBRARY GLESv3)
+    set(LOG_LIBRARY log)
+    unset(PTHREAD_LIBRARY)
 elseif(UNIX)
-    set (OPEN_GL_LIBRARY GLESv2)
-    # make sure LOG_LIBRARY is unset, this will not unset for parent scope
+    set(OPEN_GL_LIBRARY GLESv2)
     unset(LOG_LIBRARY)
+    set(PTHREAD_LIBRARY pthread)
 endif()
 
 target_link_libraries(
@@ -50,4 +53,10 @@ target_link_libraries(
         EGL
         ${OPEN_GL_LIBRARY}
         WinKernel
+        ${PTHREAD_LIBRARY}
 )
+
+add_subdirectory(testBuilder)
+testBuilder_add_library(test GLIS)
+testBuilder_add_source(test src/glis/examples/example1.cpp)
+testBuilder_build(test)

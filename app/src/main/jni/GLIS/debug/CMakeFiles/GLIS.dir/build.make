@@ -274,9 +274,8 @@ libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/build.make
-libGLIS.so: dependancies/freetype-2.10.2/libfreetyped.a
+libGLIS.so: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
 libGLIS.so: dependancies/WINAPI/SDK/src/Windows/Kernel/libWinKernel.a
-libGLIS.so: /usr/lib/x86_64-linux-gnu/libz.so
 libGLIS.so: CMakeFiles/GLIS.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX shared library libGLIS.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GLIS.dir/link.txt --verbose=$(VERBOSE)
