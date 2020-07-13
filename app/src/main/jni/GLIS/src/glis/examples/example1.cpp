@@ -32,26 +32,6 @@ int main() {
             CopyFromParent, CWEventMask,
             &swa );
 
-    XSetWindowAttributes  xattr;
-    Atom  atom;
-    int   one = 1;
-
-    xattr.override_redirect = False;
-    XChangeWindowAttributes ( x_display, win, CWOverrideRedirect, &xattr );
-
-    atom = XInternAtom ( x_display, "_NET_WM_STATE_FULLSCREEN", True );
-    XChangeProperty (
-            x_display, win,
-            XInternAtom ( x_display, "_NET_WM_STATE", True ),
-            XA_ATOM,  32,  PropModeReplace,
-            (unsigned char*) &atom,  1 );
-
-    XChangeProperty (
-            x_display, win,
-            XInternAtom ( x_display, "_HILDON_NON_COMPOSITED_WINDOW", False ),
-            XA_INTEGER,  32,  PropModeReplace,
-            (unsigned char*) &one,  1);
-
     XWMHints hints;
     hints.input = True;
     hints.flags = InputHint;
@@ -60,29 +40,14 @@ int main() {
     XMapWindow ( x_display , win );             // make the window visible on the screen
     XStoreName ( x_display , win , "GL test" ); // give the window a name
 
-    //// get identifiers for the provided atom name strings
-    Atom wm_state   = XInternAtom ( x_display, "_NET_WM_STATE", False );
-    Atom fullscreen = XInternAtom ( x_display, "_NET_WM_STATE_FULLSCREEN", False );
-
-    XEvent xev;
-    memset ( &xev, 0, sizeof(xev) );
-
-    xev.type                 = ClientMessage;
-    xev.xclient.window       = win;
-    xev.xclient.message_type = wm_state;
-    xev.xclient.format       = 32;
-    xev.xclient.data.l[0]    = 1;
-    xev.xclient.data.l[1]    = fullscreen;
-    XSendEvent (                // send an event mask to the X-server
-            x_display,
-            DefaultRootWindow ( x_display ),
-            False,
-            SubstructureNotifyMask,
-            &xev );
-
     glis_class.native_window = win;
     glis_class.display_id = (EGLNativeDisplayType) x_display;
     glis.GLIS_setupOnScreenRendering(glis_class);
+
+    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glis.GLIS_SwapBuffers(glis_class);
+
     sleep(2);
     LOG_INFO("destroying glis");
     glis.GLIS_destroy_GLIS(glis_class);
