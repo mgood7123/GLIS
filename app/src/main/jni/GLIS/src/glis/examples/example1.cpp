@@ -1,39 +1,35 @@
 // LINUX
 
 #include <glis/glis.hpp>
-#include  <X11/Xlib.h>
 
 int main() {
+    // print non errors
+    GLIS_LOG_PRINT_NON_ERRORS = true;
     GLIS glis;
     GLIS_CLASS glis_class;
 
     // create a new X11 window
-    Display * x_display = XOpenDisplay(nullptr);
-    if (x_display == nullptr) LOG_ALWAYS_FATAL("error, cannot connect to X server");
-    Window win = XCreateSimpleWindow(x_display, DefaultRootWindow(x_display), 0, 0, 800, 480, 0, 0, 0);
-    XMapWindow(x_display, win);
-    XStoreName(x_display, win, "Compositor");
-
-    // override default values
-    glis_class.native_window = win;
-    glis_class.display_id = x_display;
+    if (!glis.getX11Window(glis_class, 400, 400)) return -1;
 
     // initiate opengl
     glis.GLIS_setupOnScreenRendering(glis_class);
+    glis.GLIS_error_to_string_GL();
 
     // draw a pink background
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glis.GLIS_error_to_string_GL("glClearColor");
     glClear(GL_COLOR_BUFFER_BIT);
+    glis.GLIS_error_to_string_GL("glClear");
 
     // swap buffers
     glis.GLIS_SwapBuffers(glis_class);
+    glis.GLIS_error_to_string_EGL("SwapBuffers");
 
     // sleep to give time for window to appear
     sleep(2);
 
     // clean up everything
     glis.GLIS_destroy_GLIS(glis_class);
-    XDestroyWindow(x_display, win);
-    XCloseDisplay(x_display);
+    glis.destroyX11Window(glis_class);
     return 0;
 }

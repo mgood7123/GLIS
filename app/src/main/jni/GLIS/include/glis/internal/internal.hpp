@@ -21,29 +21,29 @@ class GLIS {
 public:
     void GLIS_FORK(const char *__file, char *const *__argv);
 
-    void GLIS_error_to_string_GL(const char *name, GLint err);
+    static void GLIS_error_to_string_GL(const char *name, GLint err);
 
-    void GLIS_error_to_string_EGL(const char *name, EGLint err);
+    static void GLIS_error_to_string_EGL(const char *name, EGLint err);
 
-    void GLIS_error_to_string_GL(GLint err);
+    static void GLIS_error_to_string_GL(GLint err);
 
-    void GLIS_error_to_string_EGL(EGLint err);
+    static void GLIS_error_to_string_EGL(EGLint err);
 
-    void GLIS_error_to_string_GL();
+    static void GLIS_error_to_string_GL();
 
-    void GLIS_error_to_string_EGL();
+    static void GLIS_error_to_string_EGL();
 
-    void GLIS_error_to_string();
+    static void GLIS_error_to_string();
 
-    void GLIS_error_to_string_GL(const char *name);
+    static void GLIS_error_to_string_GL(const char *name);
 
-    void GLIS_error_to_string_EGL(const char *name);
+    static void GLIS_error_to_string_EGL(const char *name);
 
-    void GLIS_error_to_string(const char *name);
+    static void GLIS_error_to_string(const char *name);
 
-    void GLIS_GL_INFORMATION();
+    static void GLIS_GL_INFORMATION();
 
-    void GLIS_EGL_INFORMATION(EGLDisplay &DISPLAY);
+    static void GLIS_EGL_INFORMATION(EGLDisplay &DISPLAY);
 
     void GLIS_destroy_GLIS(class GLIS_CLASS &GLIS);
 
@@ -338,6 +338,15 @@ public:
                                GLint texture_width,
                                GLint texture_height, GLint texture_width_to,
                                GLint texture_height_to);
+
+    bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
+
+    bool destroyX11Window(GLIS_CLASS & GLIS);
+
+    bool getWaylandWindow(GLIS_CLASS & GLIS, int width, int height);
+
+    bool destroyWaylandWindow(GLIS_CLASS & GLIS);
+
 };
 
 #pragma clang diagnostic pop

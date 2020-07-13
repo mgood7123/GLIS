@@ -7,6 +7,9 @@
 #ifdef __ANDROID__
 #include <android/native_window.h> // requires ndk r5 or newer
 #endif
+#ifndef __ANDROID__
+#include  <X11/Xlib.h>
+#endif
 #include <cstdlib>
 #include <cassert>
 #include <malloc.h>
@@ -225,11 +228,13 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
     if (GLIS.init_eglMakeCurrent) {
         LOG_INFO("Switching context to no context");
         eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        GLIS_error_to_string_EGL("eglMakeCurrent");
         GLIS.init_eglMakeCurrent = false;
     }
     if (GLIS.init_eglCreateContext) {
         LOG_INFO("Uninitializing context");
         eglDestroyContext(GLIS.display, GLIS.context);
+        GLIS_error_to_string_EGL("eglDestroyContext");
         GLIS.context = EGL_NO_CONTEXT;
         GLIS.shared_context = EGL_NO_CONTEXT;
         GLIS.init_eglCreateContext = false;
@@ -237,6 +242,7 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
     if (GLIS.init_eglCreateWindowSurface || GLIS.init_eglCreatePbufferSurface) {
         LOG_INFO("Uninitializing surface");
         eglDestroySurface(GLIS.display, GLIS.surface);
+        GLIS_error_to_string_EGL("eglDestroySurface");
         GLIS.surface = EGL_NO_SURFACE;
         GLIS.init_eglCreateWindowSurface = false;
         GLIS.init_eglCreatePbufferSurface = false;
@@ -247,6 +253,7 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
     if (GLIS.init_eglInitialize) {
         LOG_INFO("Uninitializing display");
         eglTerminate(GLIS.display);
+        GLIS_error_to_string_EGL("eglTerminate");
         GLIS.init_eglInitialize = false;
     }
     if (GLIS.init_eglGetDisplay) {
@@ -260,9 +267,11 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
 
 bool GLIS::GLIS_initialize_display(class GLIS_CLASS &GLIS) {
     GLIS.display = eglGetDisplay(GLIS.display_id);
+    GLIS_error_to_string_EGL("eglGetDisplay");
     if (GLIS.display == EGL_NO_DISPLAY) return false;
     GLIS.init_eglGetDisplay = true;
     EGLBoolean r = eglInitialize(GLIS.display, &GLIS.eglMajVers, &GLIS.eglMinVers);
+    GLIS_error_to_string_EGL("eglInitialize");
     if (r == EGL_FALSE) return false;
     GLIS.init_eglInitialize = true;
     LOG_INFO("EGL initialized with version %d.%d", GLIS.eglMajVers, GLIS.eglMinVers);
@@ -272,6 +281,7 @@ bool GLIS::GLIS_initialize_display(class GLIS_CLASS &GLIS) {
 
 bool GLIS::GLIS_initialize_configuration(class GLIS_CLASS &GLIS) {
     EGLBoolean r = eglChooseConfig(GLIS.display, GLIS.configuration_attributes, &GLIS.configuration, 1, &GLIS.number_of_configurations);
+    GLIS_error_to_string_EGL("eglChooseConfig");
     if (r == EGL_FALSE) return false;
     GLIS.init_eglChooseConfig = true;
     return true;
@@ -283,6 +293,7 @@ bool GLIS::GLIS_initialize_surface_CreateWindowSurface(class GLIS_CLASS &GLIS) {
         LOG_ALWAYS_FATAL("%s", msg);
     }
     GLIS.surface = eglCreateWindowSurface(GLIS.display, GLIS.configuration, GLIS.native_window, nullptr);
+    GLIS_error_to_string_EGL("eglCreateWindowSurface");
     if (GLIS.surface == EGL_NO_SURFACE) return false;
     GLIS.init_eglCreateWindowSurface = true;
     return true;
@@ -290,6 +301,7 @@ bool GLIS::GLIS_initialize_surface_CreateWindowSurface(class GLIS_CLASS &GLIS) {
 
 bool GLIS::GLIS_initialize_surface_CreatePbufferSurface(class GLIS_CLASS &GLIS) {
     GLIS.surface = eglCreatePbufferSurface(GLIS.display, GLIS.configuration, GLIS.surface_attributes);
+    GLIS_error_to_string_EGL("eglCreatePbufferSurface");
     if (GLIS.surface == EGL_NO_SURFACE) return false;
     GLIS.init_eglCreatePbufferSurface = true;
     return true;
@@ -297,6 +309,7 @@ bool GLIS::GLIS_initialize_surface_CreatePbufferSurface(class GLIS_CLASS &GLIS) 
 
 bool GLIS::GLIS_create_context(class GLIS_CLASS &GLIS) {
     GLIS.context = eglCreateContext(GLIS.display, GLIS.configuration, GLIS.shared_context, GLIS.context_attributes);
+    GLIS_error_to_string_EGL("eglCreateContext");
     if (GLIS.context == EGL_NO_CONTEXT) return false;
     GLIS.init_eglCreateContext = true;
     return true;
@@ -304,6 +317,7 @@ bool GLIS::GLIS_create_context(class GLIS_CLASS &GLIS) {
 
 bool GLIS::GLIS_switch_to_context(class GLIS_CLASS &GLIS) {
     EGLBoolean r = eglMakeCurrent(GLIS.display, GLIS.surface, GLIS.surface, GLIS.context);
+    GLIS_error_to_string_EGL("eglMakeCurrent");
     if (r == EGL_FALSE) return false;
     GLIS.init_eglMakeCurrent = true;
     GLIS_GL_INFORMATION();
@@ -312,8 +326,10 @@ bool GLIS::GLIS_switch_to_context(class GLIS_CLASS &GLIS) {
 
 bool GLIS::GLIS_get_width_height(class GLIS_CLASS &GLIS) {
     EGLBoolean r1 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_WIDTH, &GLIS.width);
+    GLIS_error_to_string_EGL("eglQuerySurface");
     if (r1 == EGL_FALSE) return false;
     EGLBoolean r2 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_HEIGHT, &GLIS.height);
+    GLIS_error_to_string_EGL("eglQuerySurface");
     if (r2 == EGL_FALSE) return false;
     return true;
 }
@@ -412,7 +428,9 @@ void GLIS::enable_debug_callbacks(void) {
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(on_gl_error, nullptr);
-    if (glGetError() != GL_NO_ERROR) {
+    GLenum err = glGetError();
+    GLIS_error_to_string_GL("glDebugMessageCallback", err);
+    if (err != GL_NO_ERROR) {
         LOG_ERROR("Failed to enable debug messages");
     }
 }
@@ -421,8 +439,11 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
     if (GLIS.init_GLIS) return true;
 
     LOG_INFO("Initializing");
-
-    if (eglBindAPI(EGL_OPENGL_ES_API) == EGL_FALSE) return false;
+    EGLBoolean r = eglBindAPI(EGL_OPENGL_ES_API);
+    GLIS_error_to_string_EGL("eglBindAPI");
+    if (r == EGL_FALSE) {
+        return false;
+    }
 
     LOG_INFO("Initializing display");
     if (!GLIS_initialize_display(GLIS)) {
@@ -1094,6 +1115,61 @@ void GLIS::GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuin
 //    }
     LOG_ERROR("GLIS_upload_texture_resize has been depreciated");
     abort();
+}
+
+bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return false;
+#endif
+    // create a new X11 window
+    GLIS.display_id = XOpenDisplay(nullptr);
+    if (GLIS.display_id == 0) {
+        LOG_ERROR("error, cannot connect to X server");
+        return false;
+    }
+    GLIS.native_window = XCreateSimpleWindow(
+            GLIS.display_id, DefaultRootWindow(GLIS.display_id), 0, 0, width, height, 0, 0, 0
+    );
+    XMapWindow(GLIS.display_id, GLIS.native_window);
+    XStoreName(GLIS.display_id, GLIS.native_window, "Compositor");
+    return true;
+}
+
+bool GLIS::destroyX11Window(GLIS_CLASS & GLIS) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return false;
+#endif
+    XDestroyWindow(GLIS.display_id, GLIS.native_window);
+    XCloseDisplay(GLIS.display_id);
+    return true;
+}
+
+bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return false;
+#endif
+    // https://github.com/emersion/hello-wayland/blob/opengl/main.c
+    // create a new Wayland window
+    GLIS.display_id = wl_display_connect(NULL);
+    static struct wl_compositor *compositor = NULL;
+    struct wl_surface *surface = wl_compositor_create_surface(compositor);
+    wl_surface_commit(surface); // looks important
+    GLIS.native_window = wl_egl_window_create(surface, width, height);
+    return true;
+}
+
+bool GLIS::destroyWaylandWindow(GLIS_CLASS & GLIS) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return false;
+#endif
+    xdg_toplevel_destroy(xdg_toplevel);
+    xdg_surface_destroy(xdg_surface);
+    wl_surface_destroy(surface);
+    return true;
 }
 
 GLIS::GLIS_shared_memory::slot_::slot_() {}
