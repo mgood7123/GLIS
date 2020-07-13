@@ -4,6 +4,8 @@
 
 #include <Windows/Kernel/WindowsAPITable.h>
 
+#include <cassert> // assert
+
 Table::Table() {
     this->Page.table = this;
     assert(this->table.size() == 0 && this->Page.count() == 0);

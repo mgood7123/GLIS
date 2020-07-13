@@ -27,7 +27,8 @@ public:
             context = EGL_NO_CONTEXT,
             shared_context = EGL_NO_CONTEXT;
     EGLSurface surface = EGL_NO_SURFACE;
-    ANativeWindow *native_window = nullptr;
+    // previously: ANativeWindow *native_window = nullptr;
+    EGLNativeWindowType native_window = 0;
     GLint
             width = 0,
             height = 0;

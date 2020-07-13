@@ -25,7 +25,9 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#ifdef __ANDROID__
 #include <linux/ashmem.h>
+#endif
 #include <pthread.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -33,7 +35,8 @@
 #include <sys/sysmacros.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <glis/ipc/log_main.h>
+#include <glis/internal/log.hpp>
+#define ALOGE LOG_ERROR
 #include <linux/memfd.h>
 #include <syscall.h>
 
@@ -50,6 +53,9 @@ static pthread_mutex_t __ashmem_lock = PTHREAD_MUTEX_INITIALIZER;
 /* logistics of getting file descriptor for ashmem */
 static int __ashmem_open_locked()
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     int ret;
     struct stat st;
 
@@ -73,10 +79,14 @@ static int __ashmem_open_locked()
 
     __ashmem_rdev = st.st_rdev;
     return fd;
+#endif
 }
 
 static int __ashmem_open()
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     int fd;
 
     pthread_mutex_lock(&__ashmem_lock);
@@ -84,6 +94,7 @@ static int __ashmem_open()
     pthread_mutex_unlock(&__ashmem_lock);
 
     return fd;
+#endif
 }
 
 static int sys_memfd_create(const char *name,
@@ -106,6 +117,9 @@ static int __memfd_mem_open()
 /* Make sure file descriptor references ashmem, negative number means false */
 static int __ashmem_is_ashmem(int fd, int fatal)
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     dev_t rdev;
     struct stat st;
 
@@ -152,6 +166,7 @@ static int __ashmem_is_ashmem(int fd, int fatal)
 
     errno = ENOTTY;
     return -1;
+#endif
 }
 
 static int __ashmem_is_memfd(int fd, int fatal)
@@ -210,6 +225,9 @@ int ashmem_create_region(const char *name, size_t size)
         close(memfd_fd);
     }
     ALOGE("memfd_create unsupported, using ashmem");
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
 
     int ret, save_errno;
 
@@ -240,20 +258,28 @@ int ashmem_create_region(const char *name, size_t size)
     close(fd);
     errno = save_errno;
     return ret;
+#endif
 }
 
 int ashmem_set_prot_region(int fd, int prot)
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     int ret = __ashmem_is_ashmem(fd, 1);
     if (ret < 0) {
         return ret;
     }
 
     return TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_SET_PROT_MASK, prot));
+#endif
 }
 
 int ashmem_pin_region(int fd, size_t offset, size_t len)
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     // TODO: should LP64 reject too-large offset/len?
     ashmem_pin pin = { static_cast<uint32_t>(offset), static_cast<uint32_t>(len) };
 
@@ -263,10 +289,14 @@ int ashmem_pin_region(int fd, size_t offset, size_t len)
     }
 
     return TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_PIN, &pin));
+#endif
 }
 
 int ashmem_unpin_region(int fd, size_t offset, size_t len)
 {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
     // TODO: should LP64 reject too-large offset/len?
     ashmem_pin pin = { static_cast<uint32_t>(offset), static_cast<uint32_t>(len) };
 
@@ -276,6 +306,7 @@ int ashmem_unpin_region(int fd, size_t offset, size_t len)
     }
 
     return TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_UNPIN, &pin));
+#endif
 }
 
 int ashmem_get_size_region(int fd)
@@ -290,6 +321,9 @@ int ashmem_get_size_region(int fd)
         }
         return st.st_size;
     }
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+#else
 
     int ret = __ashmem_is_ashmem(fd, 1);
     if (ret < 0) {
@@ -297,4 +331,5 @@ int ashmem_get_size_region(int fd)
     }
 
     return TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_GET_SIZE, NULL));
+#endif
 }

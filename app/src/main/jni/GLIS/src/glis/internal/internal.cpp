@@ -4,7 +4,9 @@
 
 #include <glis/glis.hpp>
 
+#ifdef __ANDROID__
 #include <android/native_window.h> // requires ndk r5 or newer
+#endif
 #include <cstdlib>
 #include <cassert>
 #include <malloc.h>
@@ -85,11 +87,6 @@ bool GLIS_LOG_PRINT_SHAPE_INFO = false;
     GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOG_ERROR, default, name, err, err, "Unknown error: %d", "Unknown error", "%s generated an unknown error: %d", "%s generated an unknown error", true)
 
 #define GLIS_boolean_to_string(val, TRUE_VALUE) val == TRUE_VALUE ? "true" : "false"
-
-#define GLIS_SHADER_SOURCE__BEGIN R"glsl(
-#define GLIS_SHADER_SOURCE__END )glsl";
-#define GLIS_SHADER_SOURCE__(S, source, E) S source E
-#define GLIS_SHADER_SOURCE(source) GLIS_SHADER_SOURCE__(GLIS_SHADER_SOURCE__BEGIN, source, GLIS_SHADER_SOURCE__END)
 
 void GLIS::GLIS_FORK(const char *__file, char *const *__argv) {
     errno = 0;

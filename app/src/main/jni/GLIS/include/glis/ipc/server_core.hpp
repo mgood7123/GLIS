@@ -141,9 +141,9 @@ class SOCKET_SERVER {
 
         ~SOCKET_SERVER();
 
-        bool socket_create(int &socket_fd, __kernel_sa_family_t __af, int __type, int __protocol);
+        bool socket_create(int &socket_fd, int __af, int __type, int __protocol);
 
-        bool socket_bind(int &socket_fd, __kernel_sa_family_t __af);
+        bool socket_bind(int &socket_fd, int __af);
 
         //       The pending_connection_queue_size argument defines the maximum length to which the
         //       queue of pending connections for socket_fd may grow.
@@ -172,9 +172,9 @@ class SOCKET_SERVER {
 
         void socket_close(int &socket_fd, int &socket_data_fd);
 
-        bool socket_create(__kernel_sa_family_t __af, int __type, int __protocol);
+        bool socket_create(int __af, int __type, int __protocol);
 
-        bool socket_bind(__kernel_sa_family_t __af);
+        bool socket_bind(int __af);
 
         //       The pending_connection_queue_size argument defines the maximum length to which the
         //       queue of pending connections for socket_fd may grow.

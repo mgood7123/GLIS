@@ -1,5 +1,7 @@
 #include <glis/internal/fps.hpp>
 
+#include <sys/time.h> // struct timeval, gettimeofday
+
 long GLIS_FPS::getCurrentTime(void) {
     struct timeval tv = {0};
     gettimeofday(&tv, NULL);

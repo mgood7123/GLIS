@@ -82,11 +82,23 @@ typedef LONG_PTR LRESULT;
 #ifndef NOMINMAX
 
 #ifndef max
+#ifndef __cplusplus
 #define max(a, b)            (((a) > (b)) ? (a) : (b))
+#else
+template<typename autoA, typename autoB> auto max(autoA a, autoB b) {
+    return (((a) > (b)) ? (a) : (b));
+}
+#endif
 #endif
 
 #ifndef min
+#ifndef __cplusplus
 #define min(a, b)            (((a) < (b)) ? (a) : (b))
+#else
+template<typename autoA, typename autoB> auto min(autoA a, autoB b) {
+    return (((a) < (b)) ? (a) : (b));
+}
+#endif
 #endif
 
 #endif  /* NOMINMAX */
@@ -260,21 +272,5 @@ SIZE roundUp(SIZE value, SIZE size) {
 }
 
 #undef UNICODE
-
-#include <android/log.h>
-#include <EGL/egl.h>
-#include <GLES3/gl32.h>
-
-#define LOG_TAG "ANDROID_WINAPI"
-
-#include <android/log.h>
-
-#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-#define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
-
 
 #endif //MEDIA_PLAYER_PRO_WINDOWSAPIDEFINITIONS_H

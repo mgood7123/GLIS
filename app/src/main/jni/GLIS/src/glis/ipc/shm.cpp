@@ -11,6 +11,8 @@
 #include <string>
 #include <sys/ioctl.h>
 #include <zconf.h>
+#include <string.h>
+#include <cassert>
 
 char *SHM_str_humanise_bytes(off_t bytes) {
     char *data = new char[1024];
@@ -61,6 +63,9 @@ bool SHM_create(int &fd, int8_t **data, size_t size) {
 }
 
 bool SHM_resize(int &fd, int8_t **data, size_t size) {
+#ifndef __ANDROID__
+    LOG_ALWAYS_FATAL("SHM_resize", "ashmem is not supported in linux");
+#else
     int ret = TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_SET_SIZE, size));
     if (ret < 0) {
         LOG_ERROR("ioctl: errno: %d (%s)", errno, strerror(errno));
@@ -72,6 +77,7 @@ bool SHM_resize(int &fd, int8_t **data, size_t size) {
         return false;
     }
     return true;
+#endif
 }
 
 bool SHM_close(int &fd) {

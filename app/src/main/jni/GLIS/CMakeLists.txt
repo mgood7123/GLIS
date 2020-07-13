@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+project(GLIS)
+
 add_subdirectory(dependancies/WINAPI)
 
 add_subdirectory(dependancies/freetype-2.10.2)

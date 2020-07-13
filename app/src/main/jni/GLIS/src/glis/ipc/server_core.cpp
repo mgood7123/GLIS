@@ -2,6 +2,7 @@
 #include <glis/internal/log.hpp>
 #include <fstream>
 #include <zconf.h>
+#include <sys/time.h> // gettimeofday
 
 bool SERVER_LOG_TRANSFER_INFO = true;
 const char * LOG_TAG_SERVER = "server";
@@ -403,9 +404,8 @@ int SOCKET_SERVER::log_info(const char *fmt, ...) {
     char * s = static_cast<char*>(malloc(l));
     memset(s, 0, l);
     vsnprintf(s, l, fmt, va);
-    int len = __android_log_print(
-            ANDROID_LOG_INFO, LOG_TAG_SERVER,
-            "%s%s", (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+    int len = LOG_INFO(LOG_TAG_SERVER,"%s%s",
+            (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
     );
     free(s);
     va_end(va);
@@ -505,7 +505,7 @@ SOCKET_SERVER::~SOCKET_SERVER() {
 }
 
 bool
-SOCKET_SERVER::socket_create(int &socket_fd, __kernel_sa_family_t __af, int __type, int __protocol) {
+SOCKET_SERVER::socket_create(int &socket_fd, int __af, int __type, int __protocol) {
     socket_fd = socket(__af, __type, __protocol);
     if (socket_fd < 0) {
         LOG_ERROR("%ssocket: %d (%s)\n", TAG, errno, strerror(errno));
@@ -515,7 +515,7 @@ SOCKET_SERVER::socket_create(int &socket_fd, __kernel_sa_family_t __af, int __ty
     return true;
 }
 
-bool SOCKET_SERVER::socket_bind(int &socket_fd, __kernel_sa_family_t __af) {
+bool SOCKET_SERVER::socket_bind(int &socket_fd, int __af) {
     memset(&internaldata->server_addr, 0, sizeof(struct sockaddr_un));
     internaldata->server_addr.sun_family = __af;
     memcpy(internaldata->server_addr.sun_path, internaldata->socket_name, 108);
@@ -636,11 +636,11 @@ void SOCKET_SERVER::socket_close(int &socket_fd, int &socket_data_fd) {
         internaldata->server_closed = true;
 }
 
-bool SOCKET_SERVER::socket_create(__kernel_sa_family_t __af, int __type, int __protocol) {
+bool SOCKET_SERVER::socket_create(int __af, int __type, int __protocol) {
     return socket_create(socket_fd, __af, __type, __protocol);
 }
 
-bool SOCKET_SERVER::socket_bind(__kernel_sa_family_t __af) { return socket_bind(socket_fd, __af); }
+bool SOCKET_SERVER::socket_bind(int __af) { return socket_bind(socket_fd, __af); }
 
 bool SOCKET_SERVER::socket_listen(int pending_connection_queue_size) {
     return socket_listen(socket_fd, pending_connection_queue_size);
@@ -688,9 +688,8 @@ int SOCKET_CLIENT::log_info(const char *fmt, ...) {
     char * s = static_cast<char*>(malloc(l));
     memset(s, 0, l);
     vsnprintf(s, l, fmt, va);
-    int len = __android_log_print(
-            ANDROID_LOG_INFO, LOG_TAG_SERVER,
-            "%s%s", (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+    int len = LOG_INFO(LOG_TAG_SERVER,"%s%s",
+                       (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
     );
     free(s);
     va_end(va);

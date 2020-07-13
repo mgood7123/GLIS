@@ -16,4 +16,4 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <EGL/egl.h>
-#include <GLES3/gl32.h>
+#include <GLES3/gl32.h> // in ubuntu, this header is provided by libgles-dev
