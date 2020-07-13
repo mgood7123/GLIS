@@ -18,3 +18,8 @@ macro(testBuilder_build testName)
             POST_BUILD
             COMMAND mv testBuilder_executables_${testName} EXECUTABLES/${testName})
 endmacro()
+
+macro(testBuilder_build_shared_library testName)
+    add_library(${testName} SHARED ${testBuilder_SOURCES_LIST_${testName}})
+    target_link_libraries(${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
+endmacro()

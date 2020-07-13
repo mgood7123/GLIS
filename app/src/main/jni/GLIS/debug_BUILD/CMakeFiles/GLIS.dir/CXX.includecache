@@ -1592,6 +1592,14 @@ android/log.h
 android/log.h
 -
 
+../include/glis/internal/xdg-shell-client-protocol.h
+stdint.h
+-
+stddef.h
+-
+wayland-client.h
+../include/glis/internal/wayland-client.h
+
 ../include/glis/ipc/ashmem.hpp
 stddef.h
 -
@@ -1642,20 +1650,22 @@ ashmem.hpp
 
 ../include/glis/templates/templates.hpp
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/font/font.cpp
-glis/font/font.hpp
--
-glis/internal/log.hpp
--
-glis/glis.hpp
--
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/internal.cpp
 glis/glis.hpp
 -
 android/native_window.h
 -
 X11/Xlib.h
+-
+wayland-client.h
+-
+wayland-client-protocol.h
+-
+wayland-egl.h
+-
+glis/internal/xdg-shell-client-protocol.h
+-
+linux/input-event-codes.h
 -
 cstdlib
 -

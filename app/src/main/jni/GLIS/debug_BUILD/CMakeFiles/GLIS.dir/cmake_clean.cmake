@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o"
+  "CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
@@ -18,6 +19,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
+foreach(lang C CXX)
   include(CMakeFiles/GLIS.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

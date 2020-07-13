@@ -345,8 +345,11 @@ public:
 
     bool getWaylandWindow(GLIS_CLASS & GLIS, int width, int height);
 
-    bool destroyWaylandWindow(GLIS_CLASS & GLIS);
+    bool waylandIsRunning();
 
+    int waylandDispatch(GLIS_CLASS & GLIS);
+
+    bool destroyWaylandWindow(GLIS_CLASS & GLIS);
 };
 
 #pragma clang diagnostic pop

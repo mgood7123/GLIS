@@ -513,6 +513,33 @@ src/glis/internal/log.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.s
 .PHONY : src/glis/internal/log.cpp.s
 
+src/glis/internal/xdg-shell-protocol.o: src/glis/internal/xdg-shell-protocol.c.o
+
+.PHONY : src/glis/internal/xdg-shell-protocol.o
+
+# target to build an object file
+src/glis/internal/xdg-shell-protocol.c.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o
+.PHONY : src/glis/internal/xdg-shell-protocol.c.o
+
+src/glis/internal/xdg-shell-protocol.i: src/glis/internal/xdg-shell-protocol.c.i
+
+.PHONY : src/glis/internal/xdg-shell-protocol.i
+
+# target to preprocess a source file
+src/glis/internal/xdg-shell-protocol.c.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.i
+.PHONY : src/glis/internal/xdg-shell-protocol.c.i
+
+src/glis/internal/xdg-shell-protocol.s: src/glis/internal/xdg-shell-protocol.c.s
+
+.PHONY : src/glis/internal/xdg-shell-protocol.s
+
+# target to generate assembly for a file
+src/glis/internal/xdg-shell-protocol.c.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.s
+.PHONY : src/glis/internal/xdg-shell-protocol.c.s
+
 src/glis/ipc/ashmem.o: src/glis/ipc/ashmem.cpp.o
 
 .PHONY : src/glis/ipc/ashmem.o
@@ -697,6 +724,9 @@ help:
 	@echo "... src/glis/internal/log.o"
 	@echo "... src/glis/internal/log.i"
 	@echo "... src/glis/internal/log.s"
+	@echo "... src/glis/internal/xdg-shell-protocol.o"
+	@echo "... src/glis/internal/xdg-shell-protocol.i"
+	@echo "... src/glis/internal/xdg-shell-protocol.s"
 	@echo "... src/glis/ipc/ashmem.o"
 	@echo "... src/glis/ipc/ashmem.i"
 	@echo "... src/glis/ipc/ashmem.s"

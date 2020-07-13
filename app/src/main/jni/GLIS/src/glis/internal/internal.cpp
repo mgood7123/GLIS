@@ -8,7 +8,14 @@
 #include <android/native_window.h> // requires ndk r5 or newer
 #endif
 #ifndef __ANDROID__
+// X11
 #include  <X11/Xlib.h>
+// Wayland
+#include <wayland-client.h>
+#include <wayland-client-protocol.h>
+#include <wayland-egl.h>
+#include <glis/internal/xdg-shell-client-protocol.h>
+#include <linux/input-event-codes.h>
 #endif
 #include <cstdlib>
 #include <cassert>
@@ -35,7 +42,7 @@ bool GLIS_LOG_PRINT_CONVERSIONS = false;
 bool GLIS_LOG_PRINT_SHAPE_INFO = false;
 
 #define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT) CASE_NAME: { \
-    if(name == nullptr || name == NULL || name == 0) { \
+    if(name == nullptr || name == nullptr || name == 0) { \
         if (PRINT) { \
             if ((UNNAMED_STRING_CAN_PRINT_ERROR) != nullptr) { \
                 std::string msg = GLIS_INTERNAL_MESSAGE_PREFIX; \
@@ -1146,6 +1153,95 @@ bool GLIS::destroyX11Window(GLIS_CLASS & GLIS) {
     return true;
 }
 
+// TODO: move these into GLIS_CLASS
+static bool running = true;
+struct wl_surface *surface;
+struct xdg_surface *xdg_surface;
+static struct xdg_wm_base *xdg_wm_base = nullptr;
+static struct xdg_toplevel *xdg_toplevel = nullptr;
+static struct wl_compositor *compositor = nullptr;
+
+bool GLIS::waylandIsRunning() {
+    return running;
+}
+
+static void noop(void* a, struct xdg_toplevel * b, int32_t c, int32_t d, struct wl_array * e) {
+    // This space intentionally left blank
+}
+
+static void xdg_surface_handle_configure(void *data,
+                                         struct xdg_surface *xdg_surface, uint32_t serial) {
+    xdg_surface_ack_configure(xdg_surface, serial);
+}
+
+static const struct xdg_surface_listener xdg_surface_listener = {
+        .configure = xdg_surface_handle_configure,
+};
+
+static void xdg_toplevel_handle_close(void *data,
+                                      struct xdg_toplevel *xdg_toplevel) {
+    running = false;
+}
+
+static const struct xdg_toplevel_listener xdg_toplevel_listener = {
+        .configure = noop,
+        .close = xdg_toplevel_handle_close,
+};
+
+static void pointer_handle_button(void *data, struct wl_pointer *pointer,
+                                  uint32_t serial, uint32_t time, uint32_t button, uint32_t state) {
+    struct wl_seat *seat = reinterpret_cast<struct wl_seat *>(data);
+
+    if (button == BTN_LEFT && state == WL_POINTER_BUTTON_STATE_PRESSED) {
+        xdg_toplevel_move(xdg_toplevel, seat, serial);
+    }
+    if (button == BTN_RIGHT && state == WL_POINTER_BUTTON_STATE_PRESSED) {
+        running = false;
+    }
+}
+
+static const struct wl_pointer_listener pointer_listener = {
+        .enter = reinterpret_cast<void (*)(void*, struct wl_pointer*, uint32_t, struct wl_surface*, wl_fixed_t, wl_fixed_t)>(noop),
+        .leave = reinterpret_cast<void (*)(void*, struct wl_pointer*, uint32_t, struct wl_surface*)>(noop),
+        .motion = reinterpret_cast<void (*)(void*, struct wl_pointer*, uint32_t, wl_fixed_t, wl_fixed_t)>(noop),
+        .button = pointer_handle_button,
+        .axis = reinterpret_cast<void (*)(void*, struct wl_pointer*, uint32_t, uint32_t, wl_fixed_t)>(noop),
+};
+
+static void seat_handle_capabilities(void *data, struct wl_seat *seat,
+                                     uint32_t capabilities) {
+    if (capabilities & WL_SEAT_CAPABILITY_POINTER) {
+        struct wl_pointer *pointer = wl_seat_get_pointer(seat);
+        wl_pointer_add_listener(pointer, &pointer_listener, seat);
+    }
+}
+
+static const struct wl_seat_listener seat_listener = {
+        .capabilities = seat_handle_capabilities,
+};
+
+static void handle_global(void *data, struct wl_registry *registry,
+                          uint32_t name, const char *interface, uint32_t version) {
+    if (strcmp(interface, wl_seat_interface.name) == 0) {
+        struct wl_seat *seat = reinterpret_cast<struct wl_seat *>(wl_registry_bind(registry, name, &wl_seat_interface, 1));
+        wl_seat_add_listener(seat, &seat_listener, nullptr);
+    } else if (strcmp(interface, wl_compositor_interface.name) == 0) {
+        compositor = reinterpret_cast<wl_compositor *>(wl_registry_bind(registry, name, &wl_compositor_interface, 1));
+    } else if (strcmp(interface, xdg_wm_base_interface.name) == 0) {
+        xdg_wm_base = reinterpret_cast<struct xdg_wm_base *>(wl_registry_bind(registry, name, &xdg_wm_base_interface, 1));
+    }
+}
+
+static void handle_global_remove(void *data, struct wl_registry *registry,
+                                 uint32_t name) {
+    // Who cares
+}
+
+static const struct wl_registry_listener registry_listener = {
+        .global = handle_global,
+        .global_remove = handle_global_remove,
+};
+
 bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
@@ -1153,12 +1249,33 @@ bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
 #endif
     // https://github.com/emersion/hello-wayland/blob/opengl/main.c
     // create a new Wayland window
-    GLIS.display_id = wl_display_connect(NULL);
-    static struct wl_compositor *compositor = NULL;
-    struct wl_surface *surface = wl_compositor_create_surface(compositor);
-    wl_surface_commit(surface); // looks important
-    GLIS.native_window = wl_egl_window_create(surface, width, height);
+    GLIS.display_id = reinterpret_cast<EGLNativeDisplayType>(wl_display_connect(nullptr));
+    if (GLIS.display_id == nullptr) {
+        LOG_ERROR("error, cannot connect to Wayland");
+        return false;
+    }
+
+    struct wl_registry *registry = wl_display_get_registry(reinterpret_cast<struct wl_display *>(GLIS.display_id));
+    wl_registry_add_listener(registry, &registry_listener, nullptr);
+    wl_display_dispatch(reinterpret_cast<struct wl_display *>(GLIS.display_id));
+    wl_display_roundtrip(reinterpret_cast<struct wl_display *>(GLIS.display_id));
+    if (compositor == nullptr || xdg_wm_base == nullptr) {
+        LOG_ERROR("no wl_shm, wl_compositor or xdg_wm_base support");
+        return false;
+    }
+    surface = wl_compositor_create_surface(compositor);
+    xdg_surface = xdg_wm_base_get_xdg_surface(xdg_wm_base, surface);
+    xdg_toplevel = xdg_surface_get_toplevel(xdg_surface);
+    xdg_toplevel_set_min_size(xdg_toplevel, width, height);
+    xdg_toplevel_set_max_size(xdg_toplevel, width, height);
+    wl_surface_commit(surface);
+    wl_display_roundtrip(reinterpret_cast<struct wl_display *>(GLIS.display_id));
+    GLIS.native_window = reinterpret_cast<EGLNativeWindowType>(wl_egl_window_create(surface, width, height));
     return true;
+}
+
+int GLIS::waylandDispatch(GLIS_CLASS & GLIS) {
+    return wl_display_dispatch(reinterpret_cast<struct wl_display *>(GLIS.display_id));
 }
 
 bool GLIS::destroyWaylandWindow(GLIS_CLASS & GLIS) {

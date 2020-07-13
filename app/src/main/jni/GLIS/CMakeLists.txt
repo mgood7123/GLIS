@@ -18,46 +18,41 @@ include_directories(include)
 set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
 set(GLIS_INCLUDE_DIRECTORIES ${cwd}/include ${cwd}/dependancies PARENT_SCOPE)
 
-add_library(GLIS SHARED
-        src/glis/backup/backup.cpp
-        src/glis/backup/types/framebuffer.cpp
-        src/glis/backup/types/renderbuffer.cpp
-        src/glis/backup/types/texture.cpp
-        src/glis/backup/types/program.cpp
-        src/glis/font/font.cpp
-        src/glis/internal/fps.cpp
-        src/glis/internal/internal.cpp
-        src/glis/internal/log.cpp
-        src/glis/ipc/ashmem.cpp
-        src/glis/ipc/ipc.cpp
-        src/glis/ipc/serializer.cpp
-        src/glis/ipc/server_core.cpp
-        src/glis/ipc/shm.cpp
-)
+add_subdirectory(testBuilder)
+
+testBuilder_add_source(GLIS src/glis/backup/backup.cpp)
+testBuilder_add_source(GLIS src/glis/backup/types/framebuffer.cpp)
+testBuilder_add_source(GLIS src/glis/backup/types/renderbuffer.cpp)
+testBuilder_add_source(GLIS src/glis/backup/types/texture.cpp)
+testBuilder_add_source(GLIS src/glis/backup/types/program.cpp)
+testBuilder_add_source(GLIS src/glis/font/font.cpp)
+testBuilder_add_source(GLIS src/glis/internal/fps.cpp)
+testBuilder_add_source(GLIS src/glis/internal/internal.cpp)
+testBuilder_add_source(GLIS src/glis/internal/log.cpp)
+testBuilder_add_source(GLIS src/glis/ipc/ashmem.cpp)
+testBuilder_add_source(GLIS src/glis/ipc/ipc.cpp)
+testBuilder_add_source(GLIS src/glis/ipc/serializer.cpp)
+testBuilder_add_source(GLIS src/glis/ipc/server_core.cpp)
+testBuilder_add_source(GLIS src/glis/ipc/shm.cpp)
 
 if (ANDROID)
-    set(OPEN_GL_LIBRARY GLESv3)
-    set(LOG_LIBRARY log)
-    unset(PTHREAD_LIBRARY)
+    testBuilder_add_library(GLIS GLESv3)
+    testBuilder_add_library(GLIS log)
 elseif(UNIX)
-    set(OPEN_GL_LIBRARY GLESv2)
-    unset(LOG_LIBRARY)
-    set(PTHREAD_LIBRARY pthread)
+    testBuilder_add_source(GLIS src/glis/internal/xdg-shell-protocol.c)
+    testBuilder_add_library(GLIS GLESv2)
+    testBuilder_add_library(GLIS pthread)
+    testBuilder_add_library(GLIS X11)
+    testBuilder_add_library(GLIS wayland-client)
+    testBuilder_add_library(GLIS wayland-egl)
 endif()
 
-target_link_libraries(
-        GLIS
-        ${LOG_LIBRARY}
-        freetype
-        glm
-        EGL
-        ${OPEN_GL_LIBRARY}
-        WinKernel
-        ${PTHREAD_LIBRARY}
-)
+testBuilder_add_library(GLIS freetype)
+testBuilder_add_library(GLIS glm)
+testBuilder_add_library(GLIS EGL)
+testBuilder_add_library(GLIS WinKernel)
+testBuilder_build_shared_library(GLIS)
 
-add_subdirectory(testBuilder)
 testBuilder_add_library(test GLIS)
-testBuilder_add_library(test X11)
 testBuilder_add_source(test src/glis/examples/example1.cpp)
 testBuilder_build(test)
