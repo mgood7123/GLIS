@@ -79,7 +79,7 @@ GLIS_convertPair(TYPETO TYPETO_INITIALIZER, TYPEFROM x, TYPEFROM y, TYPEFROM x_m
         }
     } else if (x < 0) {
         if (GLIS_LOG_PRINT_CONVERSIONS)
-            LOG_INFO("x is out of bounds (expected %hi, got %hi)\n", 0, x);
+            LOG_INFO("x is out of bounds (expected %hi, got %hi)", 0, x);
         if (clip) {
             if (GLIS_LOG_PRINT_CONVERSIONS) LOG_INFO("clipping to %hi", 0);
             x = 0;
@@ -87,14 +87,14 @@ GLIS_convertPair(TYPETO TYPETO_INITIALIZER, TYPEFROM x, TYPEFROM y, TYPEFROM x_m
     }
     if (y > y_max) {
         if (GLIS_LOG_PRINT_CONVERSIONS)
-            LOG_INFO("y is out of bounds (expected %hi, got %hi)\n", y_max, y);
+            LOG_INFO("y is out of bounds (expected %hi, got %hi)", y_max, y);
         if (clip) {
             if (GLIS_LOG_PRINT_CONVERSIONS) LOG_INFO("clipping to %hi", y_max);
             y = y_max;
         }
     } else if (y < 0) {
         if (GLIS_LOG_PRINT_CONVERSIONS)
-            LOG_INFO("y is out of bounds (expected %hi, got %hi)\n", 0, y);
+            LOG_INFO("y is out of bounds (expected %hi, got %hi)", 0, y);
         if (clip) {
             if (GLIS_LOG_PRINT_CONVERSIONS) LOG_INFO("clipping to %hi", 0);
             y = 0;
@@ -127,7 +127,7 @@ GLIS_convertPair(TYPETO TYPETO_INITIALIZER, TYPEFROM x, TYPEFROM y, TYPEFROM x_m
     }
     if (GLIS_LOG_PRINT_CONVERSIONS)
         LOG_INFO(
-                "width: %hi, width_max: %hi, height: %hi, height_max: %hi, ConvertPair: %f, %f\n",
+                "width: %hi, width_max: %hi, height: %hi, height_max: %hi, ConvertPair: %f, %f",
                 x, x_max, y, y_max, xy.x, xy.y);
     return xy;
 }

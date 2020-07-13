@@ -106,7 +106,7 @@ void GLIS::GLIS_FORK(const char *__file, char *const *__argv) {
     LOG_ERROR("pid: %d", pid);
     if (pid == 0) {
         execvp(__file, __argv);
-        LOG_ERROR("Cannot exec(%s) - %s\n", __file, strerror(errno));
+        LOG_ERROR("Cannot exec(%s) - %s", __file, strerror(errno));
         exit(1);
     }
 }
@@ -611,7 +611,7 @@ GLuint GLIS::GLIS_createShader(GLenum shaderType, const char *&src) {
                 if (infoLog) {
 
                     glGetShaderInfoLog(shader, infoLogLen, nullptr, infoLog);
-                    LOG_ERROR("Could not compile %s shader:\n%s\n", SHADER_TYPE, infoLog);
+                    LOG_ERROR("Could not compile %s shader:\n%s", SHADER_TYPE, infoLog);
                     free(infoLog);
                 }
             }
@@ -634,7 +634,7 @@ GLboolean GLIS::GLIS_validate_program_link(GLuint &Program) {
             if (infoLog) {
 
                 glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
-                LOG_ERROR("Could not link program:\n%s\n", infoLog);
+                LOG_ERROR("Could not link program:\n%s", infoLog);
                 free(infoLog);
             }
         }
@@ -656,7 +656,7 @@ GLboolean GLIS::GLIS_validate_program_valid(GLuint &Program) {
             if (infoLog) {
 
                 glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
-                LOG_ERROR("Could not validate program:\n%s\n", infoLog);
+                LOG_ERROR("Could not validate program:\n%s", infoLog);
                 free(infoLog);
             }
         }
@@ -762,7 +762,7 @@ void GLIS::GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, in
     GLIS_BACKUP backup;
     // save
     backup.backup();
-    const char *CHILDvertexSource = R"glsl( #version 320 es
+    const char *CHILDvertexSource = R"glsl( #version 300 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
@@ -778,7 +778,7 @@ void main()
 }
 )glsl";
 
-    const char *CHILDfragmentSource = R"glsl( #version 320 es
+    const char *CHILDfragmentSource = R"glsl( #version 300 es
 out highp vec4 FragColor;
 in highp vec3 ourColor;
 
@@ -1138,9 +1138,33 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     GLIS.native_window = XCreateSimpleWindow(
             GLIS.display_id, DefaultRootWindow(GLIS.display_id), 0, 0, width, height, 0, 0, 0
     );
+    GLIS.width = width;
+    GLIS.height = height;
     XMapWindow(GLIS.display_id, GLIS.native_window);
     XStoreName(GLIS.display_id, GLIS.native_window, "Compositor");
     return true;
+}
+
+int predicate (
+        Display *display,
+        XEvent *event,
+        XPointer arg
+) {
+    return event->type == ClientMessage;
+}
+
+void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*function)()) {
+    Atom wmDeleteMessage = XInternAtom(GLIS.display_id, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(GLIS.display_id, GLIS.native_window, &wmDeleteMessage, 1);
+    XEvent event;
+    bool running = true;
+
+    while (running) {
+        function();
+        if (XCheckIfEvent(GLIS.display_id, &event, predicate, nullptr))
+            if (event.xclient.data.l[0] == wmDeleteMessage)
+                running = false;
+    }
 }
 
 bool GLIS::destroyX11Window(GLIS_CLASS & GLIS) {
@@ -1159,6 +1183,7 @@ struct wl_surface *surface;
 struct xdg_surface *xdg_surface;
 static struct xdg_wm_base *xdg_wm_base = nullptr;
 static struct xdg_toplevel *xdg_toplevel = nullptr;
+
 static struct wl_compositor *compositor = nullptr;
 
 bool GLIS::waylandIsRunning() {

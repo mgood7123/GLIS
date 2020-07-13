@@ -100,6 +100,7 @@ static int __ashmem_open()
 static int sys_memfd_create(const char *name,
                             unsigned int flags)
 {
+    LOG_INFO("creating a new memfd");
     return syscall(__NR_memfd_create, name, flags);
 }
 
@@ -221,7 +222,7 @@ int ashmem_create_region(const char *name, size_t size)
         if (ftruncate(memfd_fd, size) >= 0) {
             return memfd_fd;
         }
-        ALOGE("ftruncate(%s, %zd) failed for memfd creation: %s\n", name, size, strerror(errno));
+        ALOGE("ftruncate(%s, %zd) failed for memfd creation: %s", name, size, strerror(errno));
         close(memfd_fd);
     }
     ALOGE("memfd_create unsupported, using ashmem");
@@ -316,7 +317,7 @@ int ashmem_get_size_region(int fd)
         int r;
         r = fstat(fd, &st);
         if (r < 0) {
-            ALOGE("fstat(%d) failed: %s\n", fd, strerror(errno));
+            ALOGE("fstat(%d) failed: %s", fd, strerror(errno));
             return r;
         }
         return st.st_size;

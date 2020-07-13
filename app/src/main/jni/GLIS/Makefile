@@ -48,7 +48,7 @@ rebuild_release:
 	make release
 
 test:
-	$(debug_executable_dir)/test
+	$(debug_executable_dir)/compositor
 
 $(release_executable_dir_present):
 $(release_build_dir_present):

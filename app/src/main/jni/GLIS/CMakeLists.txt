@@ -53,6 +53,34 @@ testBuilder_add_library(GLIS EGL)
 testBuilder_add_library(GLIS WinKernel)
 testBuilder_build_shared_library(GLIS)
 
-testBuilder_add_library(test GLIS)
-testBuilder_add_source(test src/glis/examples/example1.cpp)
-testBuilder_build(test)
+testBuilder_add_library(compositor GLIS)
+testBuilder_add_source(compositor examples/compositor.cpp)
+testBuilder_build(compositor)
+
+testBuilder_add_library(MovingWindows GLIS)
+testBuilder_add_source(MovingWindows compositor_clients/MovingWindows.cpp)
+testBuilder_build(MovingWindows)
+
+testBuilder_add_library(MovingWindowsB GLIS)
+testBuilder_add_source(MovingWindowsB compositor_clients/MovingWindowsB.cpp)
+testBuilder_build(MovingWindowsB)
+
+testBuilder_add_library(compositor_start_drawing GLIS)
+testBuilder_add_source(compositor_start_drawing compositor_clients/compositor_start_drawing.cpp)
+testBuilder_build(compositor_start_drawing)
+
+testBuilder_add_library(compositor_stop_drawing GLIS)
+testBuilder_add_source(compositor_stop_drawing compositor_clients/compositor_stop_drawing.cpp)
+testBuilder_build(compositor_stop_drawing)
+
+testBuilder_add_library(DefaultFramebuffer GLIS)
+testBuilder_add_source(DefaultFramebuffer compositor_clients/DefaultFramebuffer.cpp)
+testBuilder_build(DefaultFramebuffer)
+
+testBuilder_add_library(MYPRIVATEAPP GLIS)
+testBuilder_add_source(MYPRIVATEAPP compositor_clients/MYPRIVATEAPP.cpp)
+testBuilder_build(MYPRIVATEAPP)
+
+testBuilder_add_library(shm GLIS)
+testBuilder_add_source(shm compositor_clients/shm.cpp)
+testBuilder_build(shm)

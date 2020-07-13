@@ -341,6 +341,8 @@ public:
 
     bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
 
+    void runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*function)());
+
     bool destroyX11Window(GLIS_CLASS & GLIS);
 
     bool getWaylandWindow(GLIS_CLASS & GLIS, int width, int height);

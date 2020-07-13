@@ -80,17 +80,6 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
-# Special rule for the target package_source
-package_source:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CPackSourceConfig.cmake
-.PHONY : package_source
-
-# Special rule for the target package_source
-package_source/fast: package_source
-
-.PHONY : package_source/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -113,16 +102,16 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
+# Special rule for the target package_source
+package_source:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CPackSourceConfig.cmake
+.PHONY : package_source
 
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
+# Special rule for the target package_source
+package_source/fast: package_source
 
-.PHONY : rebuild_cache/fast
+.PHONY : package_source/fast
 
 # Special rule for the target package
 package: preinstall
@@ -145,6 +134,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -179,17 +179,95 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_test
+# Target rules for targets named testBuilder_executables_compositor
 
 # Build rule for target.
-testBuilder_executables_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_test
-.PHONY : testBuilder_executables_test
+testBuilder_executables_compositor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor
+.PHONY : testBuilder_executables_compositor
 
 # fast build rule for target.
-testBuilder_executables_test/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_test.dir/build.make CMakeFiles/testBuilder_executables_test.dir/build
-.PHONY : testBuilder_executables_test/fast
+testBuilder_executables_compositor/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/build
+.PHONY : testBuilder_executables_compositor/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_compositor_stop_drawing
+
+# Build rule for target.
+testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_stop_drawing
+.PHONY : testBuilder_executables_compositor_stop_drawing
+
+# fast build rule for target.
+testBuilder_executables_compositor_stop_drawing/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
+.PHONY : testBuilder_executables_compositor_stop_drawing/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_MovingWindows
+
+# Build rule for target.
+testBuilder_executables_MovingWindows: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindows
+.PHONY : testBuilder_executables_MovingWindows
+
+# fast build rule for target.
+testBuilder_executables_MovingWindows/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/build
+.PHONY : testBuilder_executables_MovingWindows/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_MovingWindowsB
+
+# Build rule for target.
+testBuilder_executables_MovingWindowsB: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindowsB
+.PHONY : testBuilder_executables_MovingWindowsB
+
+# fast build rule for target.
+testBuilder_executables_MovingWindowsB/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build
+.PHONY : testBuilder_executables_MovingWindowsB/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_compositor_start_drawing
+
+# Build rule for target.
+testBuilder_executables_compositor_start_drawing: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_start_drawing
+.PHONY : testBuilder_executables_compositor_start_drawing
+
+# fast build rule for target.
+testBuilder_executables_compositor_start_drawing/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build
+.PHONY : testBuilder_executables_compositor_start_drawing/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_MYPRIVATEAPP
+
+# Build rule for target.
+testBuilder_executables_MYPRIVATEAPP: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MYPRIVATEAPP
+.PHONY : testBuilder_executables_MYPRIVATEAPP
+
+# fast build rule for target.
+testBuilder_executables_MYPRIVATEAPP/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
+.PHONY : testBuilder_executables_MYPRIVATEAPP/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_shm
+
+# Build rule for target.
+testBuilder_executables_shm: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
+.PHONY : testBuilder_executables_shm
+
+# fast build rule for target.
+testBuilder_executables_shm/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
+.PHONY : testBuilder_executables_shm/fast
 
 #=============================================================================
 # Target rules for targets named GLIS
@@ -203,6 +281,19 @@ GLIS: cmake_check_build_system
 GLIS/fast:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
 .PHONY : GLIS/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_DefaultFramebuffer
+
+# Build rule for target.
+testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_DefaultFramebuffer
+.PHONY : testBuilder_executables_DefaultFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_DefaultFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
+.PHONY : testBuilder_executables_DefaultFramebuffer/fast
 
 #=============================================================================
 # Target rules for targets named WinKernel
@@ -242,6 +333,222 @@ glm_shared: cmake_check_build_system
 glm_shared/fast:
 	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
 .PHONY : glm_shared/fast
+
+compositor_clients/DefaultFramebuffer.o: compositor_clients/DefaultFramebuffer.cpp.o
+
+.PHONY : compositor_clients/DefaultFramebuffer.o
+
+# target to build an object file
+compositor_clients/DefaultFramebuffer.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o
+.PHONY : compositor_clients/DefaultFramebuffer.cpp.o
+
+compositor_clients/DefaultFramebuffer.i: compositor_clients/DefaultFramebuffer.cpp.i
+
+.PHONY : compositor_clients/DefaultFramebuffer.i
+
+# target to preprocess a source file
+compositor_clients/DefaultFramebuffer.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.i
+.PHONY : compositor_clients/DefaultFramebuffer.cpp.i
+
+compositor_clients/DefaultFramebuffer.s: compositor_clients/DefaultFramebuffer.cpp.s
+
+.PHONY : compositor_clients/DefaultFramebuffer.s
+
+# target to generate assembly for a file
+compositor_clients/DefaultFramebuffer.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.s
+.PHONY : compositor_clients/DefaultFramebuffer.cpp.s
+
+compositor_clients/MYPRIVATEAPP.o: compositor_clients/MYPRIVATEAPP.cpp.o
+
+.PHONY : compositor_clients/MYPRIVATEAPP.o
+
+# target to build an object file
+compositor_clients/MYPRIVATEAPP.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/compositor_clients/MYPRIVATEAPP.cpp.o
+.PHONY : compositor_clients/MYPRIVATEAPP.cpp.o
+
+compositor_clients/MYPRIVATEAPP.i: compositor_clients/MYPRIVATEAPP.cpp.i
+
+.PHONY : compositor_clients/MYPRIVATEAPP.i
+
+# target to preprocess a source file
+compositor_clients/MYPRIVATEAPP.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/compositor_clients/MYPRIVATEAPP.cpp.i
+.PHONY : compositor_clients/MYPRIVATEAPP.cpp.i
+
+compositor_clients/MYPRIVATEAPP.s: compositor_clients/MYPRIVATEAPP.cpp.s
+
+.PHONY : compositor_clients/MYPRIVATEAPP.s
+
+# target to generate assembly for a file
+compositor_clients/MYPRIVATEAPP.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/compositor_clients/MYPRIVATEAPP.cpp.s
+.PHONY : compositor_clients/MYPRIVATEAPP.cpp.s
+
+compositor_clients/MovingWindows.o: compositor_clients/MovingWindows.cpp.o
+
+.PHONY : compositor_clients/MovingWindows.o
+
+# target to build an object file
+compositor_clients/MovingWindows.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/compositor_clients/MovingWindows.cpp.o
+.PHONY : compositor_clients/MovingWindows.cpp.o
+
+compositor_clients/MovingWindows.i: compositor_clients/MovingWindows.cpp.i
+
+.PHONY : compositor_clients/MovingWindows.i
+
+# target to preprocess a source file
+compositor_clients/MovingWindows.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/compositor_clients/MovingWindows.cpp.i
+.PHONY : compositor_clients/MovingWindows.cpp.i
+
+compositor_clients/MovingWindows.s: compositor_clients/MovingWindows.cpp.s
+
+.PHONY : compositor_clients/MovingWindows.s
+
+# target to generate assembly for a file
+compositor_clients/MovingWindows.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/compositor_clients/MovingWindows.cpp.s
+.PHONY : compositor_clients/MovingWindows.cpp.s
+
+compositor_clients/MovingWindowsB.o: compositor_clients/MovingWindowsB.cpp.o
+
+.PHONY : compositor_clients/MovingWindowsB.o
+
+# target to build an object file
+compositor_clients/MovingWindowsB.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/compositor_clients/MovingWindowsB.cpp.o
+.PHONY : compositor_clients/MovingWindowsB.cpp.o
+
+compositor_clients/MovingWindowsB.i: compositor_clients/MovingWindowsB.cpp.i
+
+.PHONY : compositor_clients/MovingWindowsB.i
+
+# target to preprocess a source file
+compositor_clients/MovingWindowsB.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/compositor_clients/MovingWindowsB.cpp.i
+.PHONY : compositor_clients/MovingWindowsB.cpp.i
+
+compositor_clients/MovingWindowsB.s: compositor_clients/MovingWindowsB.cpp.s
+
+.PHONY : compositor_clients/MovingWindowsB.s
+
+# target to generate assembly for a file
+compositor_clients/MovingWindowsB.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/compositor_clients/MovingWindowsB.cpp.s
+.PHONY : compositor_clients/MovingWindowsB.cpp.s
+
+compositor_clients/compositor_start_drawing.o: compositor_clients/compositor_start_drawing.cpp.o
+
+.PHONY : compositor_clients/compositor_start_drawing.o
+
+# target to build an object file
+compositor_clients/compositor_start_drawing.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/compositor_clients/compositor_start_drawing.cpp.o
+.PHONY : compositor_clients/compositor_start_drawing.cpp.o
+
+compositor_clients/compositor_start_drawing.i: compositor_clients/compositor_start_drawing.cpp.i
+
+.PHONY : compositor_clients/compositor_start_drawing.i
+
+# target to preprocess a source file
+compositor_clients/compositor_start_drawing.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/compositor_clients/compositor_start_drawing.cpp.i
+.PHONY : compositor_clients/compositor_start_drawing.cpp.i
+
+compositor_clients/compositor_start_drawing.s: compositor_clients/compositor_start_drawing.cpp.s
+
+.PHONY : compositor_clients/compositor_start_drawing.s
+
+# target to generate assembly for a file
+compositor_clients/compositor_start_drawing.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/compositor_clients/compositor_start_drawing.cpp.s
+.PHONY : compositor_clients/compositor_start_drawing.cpp.s
+
+compositor_clients/compositor_stop_drawing.o: compositor_clients/compositor_stop_drawing.cpp.o
+
+.PHONY : compositor_clients/compositor_stop_drawing.o
+
+# target to build an object file
+compositor_clients/compositor_stop_drawing.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o
+.PHONY : compositor_clients/compositor_stop_drawing.cpp.o
+
+compositor_clients/compositor_stop_drawing.i: compositor_clients/compositor_stop_drawing.cpp.i
+
+.PHONY : compositor_clients/compositor_stop_drawing.i
+
+# target to preprocess a source file
+compositor_clients/compositor_stop_drawing.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.i
+.PHONY : compositor_clients/compositor_stop_drawing.cpp.i
+
+compositor_clients/compositor_stop_drawing.s: compositor_clients/compositor_stop_drawing.cpp.s
+
+.PHONY : compositor_clients/compositor_stop_drawing.s
+
+# target to generate assembly for a file
+compositor_clients/compositor_stop_drawing.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.s
+.PHONY : compositor_clients/compositor_stop_drawing.cpp.s
+
+compositor_clients/shm.o: compositor_clients/shm.cpp.o
+
+.PHONY : compositor_clients/shm.o
+
+# target to build an object file
+compositor_clients/shm.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
+.PHONY : compositor_clients/shm.cpp.o
+
+compositor_clients/shm.i: compositor_clients/shm.cpp.i
+
+.PHONY : compositor_clients/shm.i
+
+# target to preprocess a source file
+compositor_clients/shm.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.i
+.PHONY : compositor_clients/shm.cpp.i
+
+compositor_clients/shm.s: compositor_clients/shm.cpp.s
+
+.PHONY : compositor_clients/shm.s
+
+# target to generate assembly for a file
+compositor_clients/shm.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.s
+.PHONY : compositor_clients/shm.cpp.s
+
+examples/compositor.o: examples/compositor.cpp.o
+
+.PHONY : examples/compositor.o
+
+# target to build an object file
+examples/compositor.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o
+.PHONY : examples/compositor.cpp.o
+
+examples/compositor.i: examples/compositor.cpp.i
+
+.PHONY : examples/compositor.i
+
+# target to preprocess a source file
+examples/compositor.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.i
+.PHONY : examples/compositor.cpp.i
+
+examples/compositor.s: examples/compositor.cpp.s
+
+.PHONY : examples/compositor.s
+
+# target to generate assembly for a file
+examples/compositor.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.s
+.PHONY : examples/compositor.cpp.s
 
 src/glis/backup/backup.o: src/glis/backup/backup.cpp.o
 
@@ -377,33 +684,6 @@ src/glis/backup/types/texture.s: src/glis/backup/types/texture.cpp.s
 src/glis/backup/types/texture.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.s
 .PHONY : src/glis/backup/types/texture.cpp.s
-
-src/glis/examples/example1.o: src/glis/examples/example1.cpp.o
-
-.PHONY : src/glis/examples/example1.o
-
-# target to build an object file
-src/glis/examples/example1.cpp.o:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_test.dir/build.make CMakeFiles/testBuilder_executables_test.dir/src/glis/examples/example1.cpp.o
-.PHONY : src/glis/examples/example1.cpp.o
-
-src/glis/examples/example1.i: src/glis/examples/example1.cpp.i
-
-.PHONY : src/glis/examples/example1.i
-
-# target to preprocess a source file
-src/glis/examples/example1.cpp.i:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_test.dir/build.make CMakeFiles/testBuilder_executables_test.dir/src/glis/examples/example1.cpp.i
-.PHONY : src/glis/examples/example1.cpp.i
-
-src/glis/examples/example1.s: src/glis/examples/example1.cpp.s
-
-.PHONY : src/glis/examples/example1.s
-
-# target to generate assembly for a file
-src/glis/examples/example1.cpp.s:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_test.dir/build.make CMakeFiles/testBuilder_executables_test.dir/src/glis/examples/example1.cpp.s
-.PHONY : src/glis/examples/example1.cpp.s
 
 src/glis/font/font.o: src/glis/font/font.cpp.o
 
@@ -683,17 +963,48 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... package_source"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... rebuild_cache"
+	@echo "... testBuilder_executables_compositor"
+	@echo "... testBuilder_executables_compositor_stop_drawing"
+	@echo "... testBuilder_executables_MovingWindows"
+	@echo "... testBuilder_executables_MovingWindowsB"
+	@echo "... testBuilder_executables_compositor_start_drawing"
+	@echo "... testBuilder_executables_MYPRIVATEAPP"
+	@echo "... testBuilder_executables_shm"
+	@echo "... package_source"
+	@echo "... GLIS"
+	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... package"
 	@echo "... edit_cache"
-	@echo "... testBuilder_executables_test"
-	@echo "... GLIS"
+	@echo "... rebuild_cache"
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
+	@echo "... compositor_clients/DefaultFramebuffer.o"
+	@echo "... compositor_clients/DefaultFramebuffer.i"
+	@echo "... compositor_clients/DefaultFramebuffer.s"
+	@echo "... compositor_clients/MYPRIVATEAPP.o"
+	@echo "... compositor_clients/MYPRIVATEAPP.i"
+	@echo "... compositor_clients/MYPRIVATEAPP.s"
+	@echo "... compositor_clients/MovingWindows.o"
+	@echo "... compositor_clients/MovingWindows.i"
+	@echo "... compositor_clients/MovingWindows.s"
+	@echo "... compositor_clients/MovingWindowsB.o"
+	@echo "... compositor_clients/MovingWindowsB.i"
+	@echo "... compositor_clients/MovingWindowsB.s"
+	@echo "... compositor_clients/compositor_start_drawing.o"
+	@echo "... compositor_clients/compositor_start_drawing.i"
+	@echo "... compositor_clients/compositor_start_drawing.s"
+	@echo "... compositor_clients/compositor_stop_drawing.o"
+	@echo "... compositor_clients/compositor_stop_drawing.i"
+	@echo "... compositor_clients/compositor_stop_drawing.s"
+	@echo "... compositor_clients/shm.o"
+	@echo "... compositor_clients/shm.i"
+	@echo "... compositor_clients/shm.s"
+	@echo "... examples/compositor.o"
+	@echo "... examples/compositor.i"
+	@echo "... examples/compositor.s"
 	@echo "... src/glis/backup/backup.o"
 	@echo "... src/glis/backup/backup.i"
 	@echo "... src/glis/backup/backup.s"
@@ -709,9 +1020,6 @@ help:
 	@echo "... src/glis/backup/types/texture.o"
 	@echo "... src/glis/backup/types/texture.i"
 	@echo "... src/glis/backup/types/texture.s"
-	@echo "... src/glis/examples/example1.o"
-	@echo "... src/glis/examples/example1.i"
-	@echo "... src/glis/examples/example1.s"
 	@echo "... src/glis/font/font.o"
 	@echo "... src/glis/font/font.i"
 	@echo "... src/glis/font/font.s"

@@ -160,7 +160,7 @@ serializer::~serializer() {
 }
 
 void serializer::info() {
-    LOG_INFO("stream length: %zu\n", stream.data_len);
+    LOG_INFO("stream length: %zu", stream.data_len);
     std::string si("stream index:");
     for (int i = 0; i < stream.data_len; i++) {
         if (i < 10) si += "|  " + std::to_string(i);
@@ -199,14 +199,14 @@ void serializer_demo() {
     XX.get<uint64_t>(&V2); // consumes vector index
     XX.get<double>(&V3); // consumes vector index
     size_t indexes = XX.get_raw_pointer<size_t>(&V4); // consumes vector index, allocates a pointer
-    LOG_INFO("V1 = %zu\n", V1);
-    LOG_INFO("UINT64_MAX = %llu\n", UINT64_MAX);
-    LOG_INFO("V2 =         %llu\n", V2);
+    LOG_INFO("V1 = %zu", V1);
+    LOG_INFO("UINT64_MAX = %llu", UINT64_MAX);
+    LOG_INFO("V2 =         %llu", V2);
     assert(V2 == UINT64_MAX);
-    LOG_INFO("V3 = %G\n", V3);
-    LOG_INFO("indexes = %zu\n", indexes);
-    LOG_INFO("V4[0] = %zu\n", V4[0]);
-    LOG_INFO("V4[1] = %zu\n", V4[1]);
+    LOG_INFO("V3 = %G", V3);
+    LOG_INFO("indexes = %zu", indexes);
+    LOG_INFO("V4[0] = %zu", V4[0]);
+    LOG_INFO("V4[1] = %zu", V4[1]);
     delete[] V4; // free pointer that was allocated on get_raw_pointer
     XX.free__(); // free unused vectors, normally we do not know if all vectors add's are matched by
     // get even though we should, for example, we mey preserve indexes for future use or we may exit
@@ -240,7 +240,7 @@ void serializer_demo() {
     ARG_COPY_raw_pointer.get_raw_pointer<char>(&argv_raw_pointer[0]);
     ARG_COPY_raw_pointer.get_raw_pointer<char>(&argv_raw_pointer[1]);
     LOG_INFO(
-            "ARG_COPY_raw_pointer: argc_raw_pointer: %d, argv_raw_pointer[0]: %s, argv_raw_pointer[1]: %s\n",
+            "ARG_COPY_raw_pointer: argc_raw_pointer: %d, argv_raw_pointer[0]: %s, argv_raw_pointer[1]: %s",
             argc_raw_pointer, argv_raw_pointer[0], argv_raw_pointer[1]);
     // raw pointers must be deleted
     delete[] argv_raw_pointer[0];
@@ -254,7 +254,7 @@ void serializer_demo() {
     ARG_COPY_vector.get_vector_pointer<char>(argv_vector[0]);
     ARG_COPY_vector.get_vector_pointer<char>(argv_vector[1]);
     LOG_INFO(
-            "ARG_COPY_vector: argc_vector: %d, argv_vector[0]: %s, argv_vector[1]: %s\n", argc_vector,
+            "ARG_COPY_vector: argc_vector: %d, argv_vector[0]: %s, argv_vector[1]: %s", argc_vector,
             argv_vector[0].data(), argv_vector[1].data());
     // vectors get deleted automatically
 }
