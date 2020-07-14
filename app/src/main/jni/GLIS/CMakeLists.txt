@@ -57,6 +57,14 @@ testBuilder_add_library(compositor GLIS)
 testBuilder_add_source(compositor examples/compositor.cpp)
 testBuilder_build(compositor)
 
+testBuilder_add_library(X11 GLIS)
+testBuilder_add_source(X11 examples/X11.cpp)
+testBuilder_build(X11)
+
+testBuilder_add_library(X11_2 GLIS)
+testBuilder_add_source(X11_2 examples/X11_2.cpp)
+testBuilder_build(X11_2)
+
 testBuilder_add_library(MovingWindows GLIS)
 testBuilder_add_source(MovingWindows compositor_clients/MovingWindows.cpp)
 testBuilder_build(MovingWindows)

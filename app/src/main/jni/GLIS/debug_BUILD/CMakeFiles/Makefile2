@@ -54,13 +54,15 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 
 # The main recursive "all" target.
 all: CMakeFiles/testBuilder_executables_compositor.dir/all
+all: CMakeFiles/testBuilder_executables_X11.dir/all
+all: CMakeFiles/testBuilder_executables_shm.dir/all
+all: CMakeFiles/testBuilder_executables_X11_2.dir/all
 all: CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all
 all: CMakeFiles/testBuilder_executables_MovingWindows.dir/all
 all: CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all
 all: CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all
 all: CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all
 all: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all
-all: CMakeFiles/testBuilder_executables_shm.dir/all
 all: CMakeFiles/GLIS.dir/all
 all: CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all
 all: dependancies/WINAPI/all
@@ -80,13 +82,15 @@ preinstall: testBuilder/preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/testBuilder_executables_compositor.dir/clean
+clean: CMakeFiles/testBuilder_executables_X11.dir/clean
+clean: CMakeFiles/testBuilder_executables_shm.dir/clean
+clean: CMakeFiles/testBuilder_executables_X11_2.dir/clean
 clean: CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/clean
 clean: CMakeFiles/testBuilder_executables_MovingWindows.dir/clean
 clean: CMakeFiles/testBuilder_executables_MovingWindowsB.dir/clean
 clean: CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/clean
 clean: CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/clean
 clean: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/clean
-clean: CMakeFiles/testBuilder_executables_shm.dir/clean
 clean: CMakeFiles/GLIS.dir/clean
 clean: CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/clean
 clean: dependancies/WINAPI/clean
@@ -213,7 +217,7 @@ CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/WINAPI/SDK/s
 CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=75,76 "Built target testBuilder_executables_compositor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=79,80 "Built target testBuilder_executables_compositor"
 .PHONY : CMakeFiles/testBuilder_executables_compositor.dir/all
 
 # Build rule for subdir invocation for target.
@@ -234,6 +238,93 @@ CMakeFiles/testBuilder_executables_compositor.dir/clean:
 .PHONY : CMakeFiles/testBuilder_executables_compositor.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/testBuilder_executables_X11.dir
+
+# All Build rule for target.
+CMakeFiles/testBuilder_executables_X11.dir/all: CMakeFiles/GLIS.dir/all
+CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
+CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/depend
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=75,76 "Built target testBuilder_executables_X11"
+.PHONY : CMakeFiles/testBuilder_executables_X11.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/testBuilder_executables_X11.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 64
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : CMakeFiles/testBuilder_executables_X11.dir/rule
+
+# Convenience name for target.
+testBuilder_executables_X11: CMakeFiles/testBuilder_executables_X11.dir/rule
+
+.PHONY : testBuilder_executables_X11
+
+# clean rule for target.
+CMakeFiles/testBuilder_executables_X11.dir/clean:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/clean
+.PHONY : CMakeFiles/testBuilder_executables_X11.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/testBuilder_executables_shm.dir
+
+# All Build rule for target.
+CMakeFiles/testBuilder_executables_shm.dir/all: CMakeFiles/GLIS.dir/all
+CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
+CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/depend
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=85,86 "Built target testBuilder_executables_shm"
+.PHONY : CMakeFiles/testBuilder_executables_shm.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/testBuilder_executables_shm.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 64
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_shm.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : CMakeFiles/testBuilder_executables_shm.dir/rule
+
+# Convenience name for target.
+testBuilder_executables_shm: CMakeFiles/testBuilder_executables_shm.dir/rule
+
+.PHONY : testBuilder_executables_shm
+
+# clean rule for target.
+CMakeFiles/testBuilder_executables_shm.dir/clean:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/clean
+.PHONY : CMakeFiles/testBuilder_executables_shm.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/testBuilder_executables_X11_2.dir
+
+# All Build rule for target.
+CMakeFiles/testBuilder_executables_X11_2.dir/all: CMakeFiles/GLIS.dir/all
+CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
+CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/depend
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=77,78 "Built target testBuilder_executables_X11_2"
+.PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/testBuilder_executables_X11_2.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 64
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_2.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/rule
+
+# Convenience name for target.
+testBuilder_executables_X11_2: CMakeFiles/testBuilder_executables_X11_2.dir/rule
+
+.PHONY : testBuilder_executables_X11_2
+
+# clean rule for target.
+CMakeFiles/testBuilder_executables_X11_2.dir/clean:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/clean
+.PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir
 
 # All Build rule for target.
@@ -242,7 +333,7 @@ CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=79,80 "Built target testBuilder_executables_compositor_stop_drawing"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=83,84 "Built target testBuilder_executables_compositor_stop_drawing"
 .PHONY : CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all
 
 # Build rule for subdir invocation for target.
@@ -329,7 +420,7 @@ CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancie
 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=77,78 "Built target testBuilder_executables_compositor_start_drawing"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=81,82 "Built target testBuilder_executables_compositor_start_drawing"
 .PHONY : CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all
 
 # Build rule for subdir invocation for target.
@@ -406,35 +497,6 @@ testBuilder_executables_MYPRIVATEAPP: CMakeFiles/testBuilder_executables_MYPRIVA
 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/clean:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/clean
 .PHONY : CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/testBuilder_executables_shm.dir
-
-# All Build rule for target.
-CMakeFiles/testBuilder_executables_shm.dir/all: CMakeFiles/GLIS.dir/all
-CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
-CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/depend
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=81,82 "Built target testBuilder_executables_shm"
-.PHONY : CMakeFiles/testBuilder_executables_shm.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/testBuilder_executables_shm.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 64
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_shm.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
-.PHONY : CMakeFiles/testBuilder_executables_shm.dir/rule
-
-# Convenience name for target.
-testBuilder_executables_shm: CMakeFiles/testBuilder_executables_shm.dir/rule
-
-.PHONY : testBuilder_executables_shm
-
-# clean rule for target.
-CMakeFiles/testBuilder_executables_shm.dir/clean:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/clean
-.PHONY : CMakeFiles/testBuilder_executables_shm.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/GLIS.dir

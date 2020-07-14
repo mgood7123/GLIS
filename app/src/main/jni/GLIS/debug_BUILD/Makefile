@@ -192,6 +192,45 @@ testBuilder_executables_compositor/fast:
 .PHONY : testBuilder_executables_compositor/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_X11
+
+# Build rule for target.
+testBuilder_executables_X11: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11
+.PHONY : testBuilder_executables_X11
+
+# fast build rule for target.
+testBuilder_executables_X11/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/build
+.PHONY : testBuilder_executables_X11/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_shm
+
+# Build rule for target.
+testBuilder_executables_shm: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
+.PHONY : testBuilder_executables_shm
+
+# fast build rule for target.
+testBuilder_executables_shm/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
+.PHONY : testBuilder_executables_shm/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_X11_2
+
+# Build rule for target.
+testBuilder_executables_X11_2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_2
+.PHONY : testBuilder_executables_X11_2
+
+# fast build rule for target.
+testBuilder_executables_X11_2/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/build
+.PHONY : testBuilder_executables_X11_2/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_compositor_stop_drawing
 
 # Build rule for target.
@@ -268,19 +307,6 @@ testBuilder_executables_MYPRIVATEAPP: cmake_check_build_system
 testBuilder_executables_MYPRIVATEAPP/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
 .PHONY : testBuilder_executables_MYPRIVATEAPP/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_shm
-
-# Build rule for target.
-testBuilder_executables_shm: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
-.PHONY : testBuilder_executables_shm
-
-# fast build rule for target.
-testBuilder_executables_shm/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
-.PHONY : testBuilder_executables_shm/fast
 
 #=============================================================================
 # Target rules for targets named GLIS
@@ -562,6 +588,60 @@ compositor_clients/shm.s: compositor_clients/shm.cpp.s
 compositor_clients/shm.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.s
 .PHONY : compositor_clients/shm.cpp.s
+
+examples/X11.o: examples/X11.cpp.o
+
+.PHONY : examples/X11.o
+
+# target to build an object file
+examples/X11.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o
+.PHONY : examples/X11.cpp.o
+
+examples/X11.i: examples/X11.cpp.i
+
+.PHONY : examples/X11.i
+
+# target to preprocess a source file
+examples/X11.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.i
+.PHONY : examples/X11.cpp.i
+
+examples/X11.s: examples/X11.cpp.s
+
+.PHONY : examples/X11.s
+
+# target to generate assembly for a file
+examples/X11.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.s
+.PHONY : examples/X11.cpp.s
+
+examples/X11_2.o: examples/X11_2.cpp.o
+
+.PHONY : examples/X11_2.o
+
+# target to build an object file
+examples/X11_2.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/examples/X11_2.cpp.o
+.PHONY : examples/X11_2.cpp.o
+
+examples/X11_2.i: examples/X11_2.cpp.i
+
+.PHONY : examples/X11_2.i
+
+# target to preprocess a source file
+examples/X11_2.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/examples/X11_2.cpp.i
+.PHONY : examples/X11_2.cpp.i
+
+examples/X11_2.s: examples/X11_2.cpp.s
+
+.PHONY : examples/X11_2.s
+
+# target to generate assembly for a file
+examples/X11_2.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/examples/X11_2.cpp.s
+.PHONY : examples/X11_2.cpp.s
 
 examples/compositor.o: examples/compositor.cpp.o
 
@@ -1005,17 +1085,19 @@ help:
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
+	@echo "... package_source"
 	@echo "... testBuilder_executables_compositor"
+	@echo "... testBuilder_executables_X11"
+	@echo "... testBuilder_executables_shm"
+	@echo "... testBuilder_executables_X11_2"
 	@echo "... testBuilder_executables_compositor_stop_drawing"
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
 	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
-	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... testBuilder_executables_shm"
-	@echo "... package_source"
 	@echo "... GLIS"
 	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... package"
@@ -1046,6 +1128,12 @@ help:
 	@echo "... compositor_clients/shm.o"
 	@echo "... compositor_clients/shm.i"
 	@echo "... compositor_clients/shm.s"
+	@echo "... examples/X11.o"
+	@echo "... examples/X11.i"
+	@echo "... examples/X11.s"
+	@echo "... examples/X11_2.o"
+	@echo "... examples/X11_2.i"
+	@echo "... examples/X11_2.s"
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"

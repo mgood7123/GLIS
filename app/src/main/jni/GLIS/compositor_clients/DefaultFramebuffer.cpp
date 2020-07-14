@@ -9,8 +9,8 @@ GLIS_CLASS G;
 GLIS glis;
 
 int main() {
-    int W = 1080;
-    int H = 2031;
+    int W = 1000;
+    int H = 1000;
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
         glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

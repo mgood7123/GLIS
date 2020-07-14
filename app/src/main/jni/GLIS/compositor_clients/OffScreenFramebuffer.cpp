@@ -35,8 +35,8 @@ void main()
 )glsl";
 
 int main() {
-    int W = 1080;
-    int H = 2031;
+    int W = 1000;
+    int H = 1000;
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
         // create a new texture
         GLuint FB;
@@ -57,7 +57,10 @@ int main() {
         assert(ProgramIsValid == GL_TRUE);
         glUseProgram(shaderProgram);
 
-        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
+        glBindFramebuffer(GL_FRAMEBUFFER, FB);
+        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = glis.GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);
