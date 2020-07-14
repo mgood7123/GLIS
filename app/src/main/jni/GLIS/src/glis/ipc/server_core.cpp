@@ -167,9 +167,6 @@ SOCKET_READ_MESSAGE(const char *TAG, ssize_t *ret, int &socket_data_fd, msghdr *
         if (total > 0) {
             struct msghdr msg = {0};
             memcpy(&msg, __msg, sizeof(*__msg));
-//            msg.msg_control = static_cast<void *>(static_cast<uint8_t *>(__msg->msg_control) +
-//                                                  total);
-//            msg.msg_controllen -= total;
             *ret = recvmsg(socket_data_fd, &msg, flags);
         } else *ret = recvmsg(socket_data_fd, __msg, flags);
         if (*ret < 0) {
@@ -285,66 +282,94 @@ SOCKET_GET_SERIAL(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_dat
 
 void SOCKET_SEND_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
                     char *server_name) {
-    struct msghdr msg = {0};
-    char buf[CMSG_SPACE(sizeof(fd))];
-    memset(buf, '\0', sizeof(buf));
+    if (fd <= 0) return;
+    struct iovec	iov[1];
+    struct msghdr	msg;
+    char			buf[2];	/* send_fd()/recv_fd() 2-byte protocol */
 
-    /* On Mac OS X, the struct iovec is needed, even if it points to minimal data */
-    struct iovec io;
-    io.iov_base = (void *) "";
-    io.iov_len = 1;
+    iov[0].iov_base = buf;
+    iov[0].iov_len  = 2;
+    msg.msg_iov     = iov;
+    msg.msg_iovlen  = 1;
+    msg.msg_name    = NULL;
+    msg.msg_namelen = 0;
 
-    msg.msg_iov = &io;
-    msg.msg_iovlen = 1;
-    msg.msg_control = buf;
-    msg.msg_controllen = sizeof(buf);
-
-    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-    cmsg->cmsg_level = SOL_SOCKET;
-    cmsg->cmsg_type = SCM_RIGHTS;
-    cmsg->cmsg_len = CMSG_LEN(sizeof(fd));
-
-    memmove(CMSG_DATA(cmsg), &fd, sizeof(fd));
-
-    msg.msg_controllen = CMSG_SPACE(sizeof(fd));
-
-    serializer m;
-    m.add<size_t>(sizeof(msg));
-    LOG_INFO("%ssending %zu", TAG, sizeof(msg));
-    SOCKET_SEND_SERIAL(s, TAG, socket_data_fd, m, server_name);
-    LOG_INFO("%ssending fd %d", TAG, fd);
-    SOCKET_SEND_MESSAGE(s, TAG, socket_data_fd, &msg, sizeof(msg), server_name);
+    struct cmsghdr	*cmptr = static_cast<cmsghdr *>(malloc(CMSG_LEN(sizeof(int))));
+    cmptr->cmsg_level  = SOL_SOCKET;
+    cmptr->cmsg_type   = SCM_RIGHTS;
+    cmptr->cmsg_len    = CMSG_LEN(sizeof(int));
+    msg.msg_control    = cmptr;
+    msg.msg_controllen = CMSG_LEN(sizeof(int));
+    *(int *)CMSG_DATA(cmptr) = fd;		/* the fd to pass */
+    buf[1] = 0;		/* zero status means OK */
+    buf[0] = 0;			/* null byte flag to recv_fd() */
+    sendmsg(socket_data_fd, &msg, 0);
+    free(cmptr);
 }
 
+// TODO: error checking
 void SOCKET_GET_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
                    char *server_name)  // receive fd from socket
 {
-    struct msghdr msg = {0};
+    int				nr, status;
+    char			*ptr;
+    char			buf[4096];
+    struct iovec	iov[1];
+    struct msghdr	msg;
 
-    /* On Mac OS X, the struct iovec is needed, even if it points to minimal data */
-    char m_buffer[1];
-    struct iovec io = {.iov_base = m_buffer, .iov_len = sizeof(m_buffer)};
-    msg.msg_iov = &io;
-    msg.msg_iovlen = 1;
+    struct cmsghdr	*cmptr = static_cast<cmsghdr *>(malloc(CMSG_LEN(sizeof(int))));
 
-    char c_buffer[256];
-    msg.msg_control = c_buffer;
-    msg.msg_controllen = sizeof(c_buffer);
-    serializer m;
-    LOG_INFO("%sretreiving size", TAG);
-    SOCKET_GET_SERIAL(s, TAG, socket_data_fd, m, server_name);
-    size_t __count;
-    m.get<size_t>(&__count);
-    LOG_INFO("%sretreived size: %zu", TAG, __count);
-    LOG_INFO("%sretreiving fd", TAG);
-    SOCKET_GET_MESSAGE(s, TAG, socket_data_fd, &msg, __count, server_name);
-    LOG_INFO("%sretreived fd", TAG);
+    status = -1;
+    for ( ; ; ) {
+        iov[0].iov_base = buf;
+        iov[0].iov_len  = sizeof(buf);
+        msg.msg_iov     = iov;
+        msg.msg_iovlen  = 1;
+        msg.msg_name    = NULL;
+        msg.msg_namelen = 0;
+        msg.msg_control    = cmptr;
+        msg.msg_controllen = CMSG_LEN(sizeof(int));
+        if ((nr = recvmsg(socket_data_fd, &msg, 0)) < 0) {
+            LOG_ALWAYS_FATAL("recvmsg error: %s", strerror(errno));
+            return;
+        } else if (nr == 0) {
+            LOG_ALWAYS_FATAL("connection closed by server");
+            return;
+        }
 
-    struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-
-    LOG_INFO("%sAbout to extract fd", TAG);
-    memmove(&fd, CMSG_DATA(cmsg), sizeof(fd));
-    LOG_INFO("%sExtracted fd %d", TAG, fd);
+        /*
+         * See if this is the final data with null & status.  Null
+         * is next to last byte of buffer; status byte is last byte.
+         * Zero status means there is a file descriptor to receive.
+         */
+        for (ptr = buf; ptr < &buf[nr]; ) {
+            if (*ptr++ == 0) {
+                if (ptr != &buf[nr-1]) {
+                    LOG_ERROR("message format error");
+                    return;
+                }
+                status = *ptr & 0xFF;	/* prevent sign extension */
+                if (status == 0) {
+                    if (msg.msg_controllen == CMSG_LEN(sizeof(int)))
+                    LOG_ERROR("status = 0 but no fd");
+                    fd = *(int *)CMSG_DATA(cmptr);
+                    LOG_ERROR("received fd: %d", fd);
+                    free(cmptr);
+                    return;
+                } else {
+                    fd = -status;
+                    LOG_ERROR("status error: %d", fd);
+                    free(cmptr);
+                    return;
+                }
+                nr -= 2;
+            }
+        }
+        if (status >= 0) {    /* final data has arrived */
+            free(cmptr);
+            return;    /* descriptor, or -status */
+        }
+    }
 }
 
 bool SOCKET_CLOSE(const char *TAG, int &socket_fd) {
