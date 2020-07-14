@@ -62,10 +62,10 @@ int main() {
         size_t win_id2 = glis.GLIS_new_window(600, 600, 200, 200);
         glis.GLIS_upload_texture(G, win_id2, texture, W, H);
         LOG_INFO("A: win_id2 = %zu", win_id2);
-        for (int i = 500; i <= 600; i++) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
-        for (int i = 600; i <= 700; i++) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
-        for (int i = 599; i >= 451; i--) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
-        for (int i = 699; i >= 501; i--) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
+//        for (int i = 500; i <= 600; i++) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
+//        for (int i = 600; i <= 700; i++) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
+//        for (int i = 599; i >= 451; i--) glis.GLIS_modify_window(win_id1, 500, i, 200, 200);
+//        for (int i = 699; i >= 501; i--) glis.GLIS_modify_window(win_id2, i, 600, 200, 200);
         LOG_INFO("A: Cleaning up");
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);

@@ -6,11 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/xdg-shell-protocol.c
-stdlib.h
--
-stdint.h
--
-wayland-util.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/wayland-util.h
-

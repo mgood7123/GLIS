@@ -227,6 +227,7 @@ void render() {
                         class Client_Window *CW = static_cast<Client_Window *>(
                                 CompositorMain.KERNEL.table->table[index]->resource
                         );
+                        GLIS_LOG_PRINT_CONVERSIONS = true;
                         glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
                                                         CW->TEXTURE,
                                                         0, CW->x,
@@ -290,7 +291,6 @@ int main() {
         assert(ProgramIsValid == GL_TRUE);
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
-        glis.GLIS_set_conversion_origin(GLIS_CONVERSION_ORIGIN_BOTTOM_LEFT);
         LOG_INFO("Using Shader program");
         glUseProgram(shaderProgram);
         SERVER_LOG_TRANSFER_INFO = true;
