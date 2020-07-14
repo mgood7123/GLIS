@@ -41,46 +41,31 @@ int main() {
         // create a new texture
         GLuint FB;
         GLuint RB;
-        GLuint renderedTexture;
-        glis.GLIS_texture_buffer(FB, RB, renderedTexture, W, H);
+        GLuint texture;
+        glis.GLIS_texture_buffer_linux(FB, RB, texture, W, H);
 
         GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        vertexShader = glis.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
-        LOG_INFO("Creating Shader program");
-        shaderProgram = glCreateProgram();
-        LOG_INFO("Attaching vertex Shader to program");
-        glAttachShader(shaderProgram, vertexShader);
-        LOG_INFO("Attaching fragment Shader to program");
-        glAttachShader(shaderProgram, fragmentShader);
-        LOG_INFO("Linking Shader program");
-        glLinkProgram(shaderProgram);
-        LOG_INFO("Validating Shader program");
-        GLboolean ProgramIsValid = glis.GLIS_validate_program(shaderProgram);
-        assert(ProgramIsValid == GL_TRUE);
-
-        LOG_INFO("Using Shader program");
+        glis.GLIS_build_simple_shader_program(
+                vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
+        );
         glUseProgram(shaderProgram);
-//        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-//        glClear(GL_COLOR);
-        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, renderedTexture, 0, 0, 0, W, H, W, H);
-
+        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, W, H, W, H);
         double program_start = now_ms();
         LOG_INFO("creating 21 windows");
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = glis.GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);
         SERVER_LOG_TRANSFER_INFO = true;
-        glis.GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
+        glis.GLIS_upload_texture(G, win_id1, texture, W, H);
         LOG_INFO("created window %d", 0);
         for (int i = 0; i < 20; i++) {
             LOG_INFO("creating window %d", i + 1);
             int s = 50;
             size_t win_id2 = glis.GLIS_new_window(i * s, i * s, s, s);
             LOG_INFO("window id: %zu", win_id2);
-            glis.GLIS_upload_texture(G, win_id2, renderedTexture, W, H);
+            glis.GLIS_upload_texture(G, win_id2, texture, W, H);
             LOG_INFO("created window %d", i + 1);
         }
         double end = now_ms();
@@ -90,7 +75,7 @@ int main() {
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
         glDeleteShader(vertexShader);
-        glDeleteTextures(1, &renderedTexture);
+        glDeleteTextures(1, &texture);
         glDeleteRenderbuffers(1, &RB);
         glDeleteFramebuffers(1, &FB);
         glis.GLIS_destroy_GLIS(G);

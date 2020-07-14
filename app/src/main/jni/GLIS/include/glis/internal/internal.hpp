@@ -94,7 +94,7 @@ public:
 
     void GLIS_set_texture(GLenum textureUnit, GLuint texture);
 
-    void GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &renderedTexture,
+    void GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
                              GLint &texture_width, GLint &texture_height);
 
     GLuint GLIS_current_texture = 0;
@@ -352,6 +352,19 @@ public:
     int waylandDispatch(GLIS_CLASS & GLIS);
 
     bool destroyWaylandWindow(GLIS_CLASS & GLIS);
+
+    void GLIS_texture_linux(GLuint & texture);
+
+    void GLIS_build_simple_shader_program(
+            GLuint & vertexShader, const char *vertexSource,
+            GLuint & fragmentShader, const char *fragmentSource,
+            GLuint &shaderProgram
+    );
+
+    void GLIS_texture_buffer_linux(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
+                               GLint &texture_width, GLint &texture_height);
+
+    void GLIS_draw_high_resolution_square();
 };
 
 #pragma clang diagnostic pop

@@ -179,6 +179,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_shm
+
+# Build rule for target.
+testBuilder_executables_shm: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
+.PHONY : testBuilder_executables_shm
+
+# fast build rule for target.
+testBuilder_executables_shm/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
+.PHONY : testBuilder_executables_shm/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_compositor
 
 # Build rule for target.
@@ -205,19 +218,6 @@ testBuilder_executables_X11/fast:
 .PHONY : testBuilder_executables_X11/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_shm
-
-# Build rule for target.
-testBuilder_executables_shm: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
-.PHONY : testBuilder_executables_shm
-
-# fast build rule for target.
-testBuilder_executables_shm/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
-.PHONY : testBuilder_executables_shm/fast
-
-#=============================================================================
 # Target rules for targets named testBuilder_executables_X11_2
 
 # Build rule for target.
@@ -231,6 +231,32 @@ testBuilder_executables_X11_2/fast:
 .PHONY : testBuilder_executables_X11_2/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_X11_3
+
+# Build rule for target.
+testBuilder_executables_X11_3: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_3
+.PHONY : testBuilder_executables_X11_3
+
+# fast build rule for target.
+testBuilder_executables_X11_3/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
+.PHONY : testBuilder_executables_X11_3/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_Texture
+
+# Build rule for target.
+testBuilder_executables_Texture: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Texture
+.PHONY : testBuilder_executables_Texture
+
+# fast build rule for target.
+testBuilder_executables_Texture/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
+.PHONY : testBuilder_executables_Texture/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_compositor_stop_drawing
 
 # Build rule for target.
@@ -242,6 +268,32 @@ testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
 testBuilder_executables_compositor_stop_drawing/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
 .PHONY : testBuilder_executables_compositor_stop_drawing/fast
+
+#=============================================================================
+# Target rules for targets named GLIS
+
+# Build rule for target.
+GLIS: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 GLIS
+.PHONY : GLIS
+
+# fast build rule for target.
+GLIS/fast:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
+.PHONY : GLIS/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_DefaultFramebuffer
+
+# Build rule for target.
+testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_DefaultFramebuffer
+.PHONY : testBuilder_executables_DefaultFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_DefaultFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
+.PHONY : testBuilder_executables_DefaultFramebuffer/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_MovingWindows
@@ -307,32 +359,6 @@ testBuilder_executables_MYPRIVATEAPP: cmake_check_build_system
 testBuilder_executables_MYPRIVATEAPP/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
 .PHONY : testBuilder_executables_MYPRIVATEAPP/fast
-
-#=============================================================================
-# Target rules for targets named GLIS
-
-# Build rule for target.
-GLIS: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 GLIS
-.PHONY : GLIS
-
-# fast build rule for target.
-GLIS/fast:
-	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
-.PHONY : GLIS/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_DefaultFramebuffer
-
-# Build rule for target.
-testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_DefaultFramebuffer
-.PHONY : testBuilder_executables_DefaultFramebuffer
-
-# fast build rule for target.
-testBuilder_executables_DefaultFramebuffer/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
-.PHONY : testBuilder_executables_DefaultFramebuffer/fast
 
 #=============================================================================
 # Target rules for targets named WinKernel
@@ -508,6 +534,33 @@ compositor_clients/OffScreenFramebuffer.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.s
 .PHONY : compositor_clients/OffScreenFramebuffer.cpp.s
 
+compositor_clients/Texture.o: compositor_clients/Texture.cpp.o
+
+.PHONY : compositor_clients/Texture.o
+
+# target to build an object file
+compositor_clients/Texture.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/compositor_clients/Texture.cpp.o
+.PHONY : compositor_clients/Texture.cpp.o
+
+compositor_clients/Texture.i: compositor_clients/Texture.cpp.i
+
+.PHONY : compositor_clients/Texture.i
+
+# target to preprocess a source file
+compositor_clients/Texture.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/compositor_clients/Texture.cpp.i
+.PHONY : compositor_clients/Texture.cpp.i
+
+compositor_clients/Texture.s: compositor_clients/Texture.cpp.s
+
+.PHONY : compositor_clients/Texture.s
+
+# target to generate assembly for a file
+compositor_clients/Texture.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/compositor_clients/Texture.cpp.s
+.PHONY : compositor_clients/Texture.cpp.s
+
 compositor_clients/compositor_start_drawing.o: compositor_clients/compositor_start_drawing.cpp.o
 
 .PHONY : compositor_clients/compositor_start_drawing.o
@@ -642,6 +695,33 @@ examples/X11_2.s: examples/X11_2.cpp.s
 examples/X11_2.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/examples/X11_2.cpp.s
 .PHONY : examples/X11_2.cpp.s
+
+examples/X11_3.o: examples/X11_3.cpp.o
+
+.PHONY : examples/X11_3.o
+
+# target to build an object file
+examples/X11_3.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/examples/X11_3.cpp.o
+.PHONY : examples/X11_3.cpp.o
+
+examples/X11_3.i: examples/X11_3.cpp.i
+
+.PHONY : examples/X11_3.i
+
+# target to preprocess a source file
+examples/X11_3.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/examples/X11_3.cpp.i
+.PHONY : examples/X11_3.cpp.i
+
+examples/X11_3.s: examples/X11_3.cpp.s
+
+.PHONY : examples/X11_3.s
+
+# target to generate assembly for a file
+examples/X11_3.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/examples/X11_3.cpp.s
+.PHONY : examples/X11_3.cpp.s
 
 examples/compositor.o: examples/compositor.cpp.o
 
@@ -1088,19 +1168,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... package_source"
+	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_compositor"
 	@echo "... testBuilder_executables_X11"
-	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_X11_2"
+	@echo "... testBuilder_executables_X11_3"
+	@echo "... testBuilder_executables_Texture"
 	@echo "... testBuilder_executables_compositor_stop_drawing"
+	@echo "... package"
+	@echo "... GLIS"
+	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
 	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
-	@echo "... GLIS"
-	@echo "... testBuilder_executables_DefaultFramebuffer"
-	@echo "... package"
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
@@ -1119,6 +1201,9 @@ help:
 	@echo "... compositor_clients/OffScreenFramebuffer.o"
 	@echo "... compositor_clients/OffScreenFramebuffer.i"
 	@echo "... compositor_clients/OffScreenFramebuffer.s"
+	@echo "... compositor_clients/Texture.o"
+	@echo "... compositor_clients/Texture.i"
+	@echo "... compositor_clients/Texture.s"
 	@echo "... compositor_clients/compositor_start_drawing.o"
 	@echo "... compositor_clients/compositor_start_drawing.i"
 	@echo "... compositor_clients/compositor_start_drawing.s"
@@ -1134,6 +1219,9 @@ help:
 	@echo "... examples/X11_2.o"
 	@echo "... examples/X11_2.i"
 	@echo "... examples/X11_2.s"
+	@echo "... examples/X11_3.o"
+	@echo "... examples/X11_3.i"
+	@echo "... examples/X11_3.s"
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"

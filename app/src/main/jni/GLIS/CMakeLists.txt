@@ -65,6 +65,10 @@ testBuilder_add_library(X11_2 GLIS)
 testBuilder_add_source(X11_2 examples/X11_2.cpp)
 testBuilder_build(X11_2)
 
+testBuilder_add_library(X11_3 GLIS)
+testBuilder_add_source(X11_3 examples/X11_3.cpp)
+testBuilder_build(X11_3)
+
 testBuilder_add_library(MovingWindows GLIS)
 testBuilder_add_source(MovingWindows compositor_clients/MovingWindows.cpp)
 testBuilder_build(MovingWindows)
@@ -84,6 +88,10 @@ testBuilder_build(compositor_stop_drawing)
 testBuilder_add_library(DefaultFramebuffer GLIS)
 testBuilder_add_source(DefaultFramebuffer compositor_clients/DefaultFramebuffer.cpp)
 testBuilder_build(DefaultFramebuffer)
+
+testBuilder_add_library(Texture GLIS)
+testBuilder_add_source(Texture compositor_clients/Texture.cpp)
+testBuilder_build(Texture)
 
 testBuilder_add_library(OffScreenFramebuffer GLIS)
 testBuilder_add_source(OffScreenFramebuffer compositor_clients/OffScreenFramebuffer.cpp)

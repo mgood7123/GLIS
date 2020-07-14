@@ -599,6 +599,7 @@ GLuint GLIS::GLIS_createShader(GLenum shaderType, const char *&src) {
             return 0;
         }
         glShaderSource(shader, 1, &src, nullptr);
+        LOG_INFO("Created %s Shader", SHADER_TYPE);
         GLint compiled = GL_FALSE;
         LOG_INFO("Compiling %s Shader", SHADER_TYPE);
         glCompileShader(shader);
@@ -619,6 +620,7 @@ GLuint GLIS::GLIS_createShader(GLenum shaderType, const char *&src) {
             return 0;
         }
         assert(glIsShader(shader) == GL_TRUE);
+        LOG_INFO("Compiled %s Shader", SHADER_TYPE);
         return shader;
     } else return 0;
 }
@@ -702,7 +704,7 @@ void GLIS::GLIS_set_texture(GLenum textureUnit, GLuint texture) {
     glBindTexture(GL_TEXTURE_2D, texture);
 }
 
-void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &renderedTexture,
+void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
                                GLint &texture_width, GLint &texture_height) {
     glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -723,8 +725,8 @@ void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint
         LOG_INFO("framebuffer is complete");
 
     // create a new texture
-    glGenTextures(1, &renderedTexture);
-    glBindTexture(GL_TEXTURE_2D, renderedTexture);
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, 0);
 
@@ -733,8 +735,8 @@ void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    // Set "renderedTexture" as our colour attachement #0
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
+    // Set "texture" as our colour attachement #0
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
     // Set the list of draw buffers.
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
@@ -790,8 +792,8 @@ void main()
     // RESIZE TEXTURE
     GLuint FB;
     GLuint RB;
-    GLuint renderedTexture;
-    GLIS_texture_buffer(FB, RB, renderedTexture, width_to, height_to);
+    GLuint texture;
+    GLIS_texture_buffer(FB, RB, texture, width_to, height_to);
     GLuint CHILDshaderProgram;
     GLuint CHILDvertexShader;
     GLuint CHILDfragmentShader;
@@ -812,7 +814,7 @@ void main()
     glUseProgram(CHILDshaderProgram);
     LOG_INFO("drawing rectangle");
     GLIS_draw_rectangle<GLint>(
-            GL_TEXTURE0, renderedTexture, 0, 0, 0, width_to, height_to, width_from,
+            GL_TEXTURE0, texture, 0, 0, 0, width_to, height_to, width_from,
             height_from);
     LOG_INFO("drawn rectangle");
     TEXDATA_LEN = width_to * height_to * sizeof(GLuint);
@@ -823,7 +825,7 @@ void main()
     glDeleteProgram(CHILDshaderProgram);
     glDeleteShader(CHILDfragmentShader);
     glDeleteShader(CHILDvertexShader);
-    glDeleteTextures(1, &renderedTexture);
+    glDeleteTextures(1, &texture);
     glDeleteRenderbuffers(1, &RB);
     glDeleteFramebuffers(1, &FB);
     // restore
@@ -1312,6 +1314,125 @@ bool GLIS::destroyWaylandWindow(GLIS_CLASS & GLIS) {
     xdg_surface_destroy(xdg_surface);
     wl_surface_destroy(surface);
     return true;
+}
+
+void GLIS::GLIS_build_simple_shader_program(
+    GLuint & vertexShader, const char *vertexSource,
+    GLuint & fragmentShader, const char *fragmentSource,
+    GLuint &shaderProgram
+) {
+    vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+    fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+    LOG_INFO("Creating Shader program");
+    shaderProgram = glCreateProgram();
+    LOG_INFO("Created Shader program");
+    LOG_INFO("Attaching vertex Shader to program");
+    glAttachShader(shaderProgram, vertexShader);
+    LOG_INFO("Attached vertex Shader to program");
+    LOG_INFO("Attaching fragment Shader to program");
+    glAttachShader(shaderProgram, fragmentShader);
+    LOG_INFO("Attached fragment Shader to program");
+    LOG_INFO("Linking Shader program");
+    glLinkProgram(shaderProgram);
+    LOG_INFO("Linked Shader program");
+    LOG_INFO("Validating Shader program");
+    GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
+    assert(ProgramIsValid == GL_TRUE);
+    LOG_INFO("Validated Shader program");
+}
+
+void GLIS::GLIS_texture_linux(GLuint & texture) {
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void GLIS::GLIS_texture_buffer_linux(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
+                               GLint &texture_width, GLint &texture_height) {
+
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+    glGenRenderbuffers(1, &renderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height);
+//    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, texture_width, texture_height); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer); // now actually attach it
+
+    GLenum FramebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+    if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE)
+        LOG_ERROR("framebuffer is not complete");
+    else
+        LOG_INFO("framebuffer is complete");
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // create a new texture
+    glGenTextures(1, &texture);
+    // Set "texture" as our colour attachement #0
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
+    // Set the list of draw buffers.
+    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+}
+
+void GLIS::GLIS_draw_high_resolution_square() {
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+            // positions          // colors           // texture coords
+            1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+    };
+    unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+    };
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 }
 
 GLIS::GLIS_shared_memory::slot_::slot_() {}

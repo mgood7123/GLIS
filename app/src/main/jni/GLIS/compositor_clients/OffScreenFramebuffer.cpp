@@ -35,46 +35,35 @@ void main()
 )glsl";
 
 int main() {
-    int W = 1000;
-    int H = 1000;
+    int W = 400;
+    int H = 400;
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
-        // create a new texture
-        GLuint FB;
-        GLuint RB;
-        GLuint renderedTexture;
-        glis.GLIS_texture_buffer(FB, RB, renderedTexture, W, H);
-
-        GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        vertexShader = glis.GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-        fragmentShader = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
-        shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, vertexShader);
-        glAttachShader(shaderProgram, fragmentShader);
-        glLinkProgram(shaderProgram);
-        GLboolean ProgramIsValid = glis.GLIS_validate_program(shaderProgram);
-        assert(ProgramIsValid == GL_TRUE);
+        GLuint shaderProgram;
+        GLuint framebuffer;
+        GLuint renderbuffer;
+        GLuint texture;
+        glis.GLIS_texture_buffer_linux(framebuffer, renderbuffer, texture, G.width, G.height);
+        glis.GLIS_build_simple_shader_program(
+                vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
+        );
         glUseProgram(shaderProgram);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, FB);
-        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = glis.GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);
         SERVER_LOG_TRANSFER_INFO = true;
-        glis.GLIS_upload_texture(G, win_id1, renderedTexture, W, H);
+        glis.GLIS_upload_texture(G, win_id1, texture, W, H);
         LOG_INFO("created window %d", 0);
 
         LOG_INFO("Cleaning up");
         glDeleteProgram(shaderProgram);
         glDeleteShader(fragmentShader);
         glDeleteShader(vertexShader);
-        glDeleteTextures(1, &renderedTexture);
-        glDeleteRenderbuffers(1, &RB);
-        glDeleteFramebuffers(1, &FB);
+        glDeleteTextures(1, &texture);
+        glDeleteRenderbuffers(1, &renderbuffer);
+        glDeleteFramebuffers(1, &framebuffer);
         glis.GLIS_destroy_GLIS(G);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");

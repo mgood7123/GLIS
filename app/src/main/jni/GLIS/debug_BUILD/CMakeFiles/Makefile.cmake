@@ -71,18 +71,20 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/testBuilder_executables_shm.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_compositor.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_X11.dir/DependInfo.cmake"
-  "CMakeFiles/testBuilder_executables_shm.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_X11_2.dir/DependInfo.cmake"
+  "CMakeFiles/testBuilder_executables_X11_3.dir/DependInfo.cmake"
+  "CMakeFiles/testBuilder_executables_Texture.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/DependInfo.cmake"
+  "CMakeFiles/GLIS.dir/DependInfo.cmake"
+  "CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_MovingWindows.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_MovingWindowsB.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/DependInfo.cmake"
-  "CMakeFiles/GLIS.dir/DependInfo.cmake"
-  "CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/DependInfo.cmake"
   "dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/DependInfo.cmake"
   "dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/DependInfo.cmake"
   "dependancies/glm/glm/CMakeFiles/glm_shared.dir/DependInfo.cmake"
