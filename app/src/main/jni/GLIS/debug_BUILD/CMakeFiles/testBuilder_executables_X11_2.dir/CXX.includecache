@@ -1645,10 +1645,4 @@ ashmem.hpp
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/X11_2.cpp
 glis/glis.hpp
 -
-../include/glis/internal/context.hpp
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/include/glis/internal/context.hpp
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/include/glis/internal/context.hpp
-glis/ipc/server_core.hpp
--
 
