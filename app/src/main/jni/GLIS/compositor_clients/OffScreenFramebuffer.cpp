@@ -49,7 +49,7 @@ int main() {
                 vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
         );
         glUseProgram(shaderProgram);
-        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
+        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, W,H, W, H);
         LOG_INFO("creating window %d", 0);
         size_t win_id1 = glis.GLIS_new_window(0, 0, W, H);
         LOG_INFO("window id: %zu", win_id1);

@@ -35,8 +35,8 @@ GLIS_CLASS G;
 GLIS glis;
 
 int main() {
-    int W = 1000;
-    int H = 1000;
+    int W = 400;
+    int H = 400;
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
         // create a new texture
         GLuint FB;
