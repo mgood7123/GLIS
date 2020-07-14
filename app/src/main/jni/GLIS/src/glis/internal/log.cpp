@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <cassert>
 
 int LOG_INFO(const char* format, ... ) {
+    assert(format != nullptr);
     va_list args;
     va_start(args, format);
     // set color to green
@@ -19,6 +21,7 @@ int LOG_INFO(const char* format, ... ) {
 }
 
 int LOG_ERROR(const char* format, ... ) {
+    assert(format != nullptr);
     va_list args;
     va_start(args, format);
     // set color to red
@@ -32,6 +35,7 @@ int LOG_ERROR(const char* format, ... ) {
 }
 
 void LOG_ALWAYS_FATAL(const char* format, ... ) {
+    assert(format != nullptr);
     va_list args;
     va_start(args, format);
     // set color to red

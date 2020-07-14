@@ -77,6 +77,10 @@ testBuilder_add_library(DefaultFramebuffer GLIS)
 testBuilder_add_source(DefaultFramebuffer compositor_clients/DefaultFramebuffer.cpp)
 testBuilder_build(DefaultFramebuffer)
 
+testBuilder_add_library(OffScreenFramebuffer GLIS)
+testBuilder_add_source(OffScreenFramebuffer compositor_clients/OffScreenFramebuffer.cpp)
+testBuilder_build(OffScreenFramebuffer)
+
 testBuilder_add_library(MYPRIVATEAPP GLIS)
 testBuilder_add_source(MYPRIVATEAPP compositor_clients/MYPRIVATEAPP.cpp)
 testBuilder_build(MYPRIVATEAPP)

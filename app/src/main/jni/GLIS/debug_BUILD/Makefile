@@ -102,6 +102,28 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
@@ -123,28 +145,6 @@ package: preinstall
 package/fast: package
 
 .PHONY : package/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -242,6 +242,19 @@ testBuilder_executables_compositor_start_drawing: cmake_check_build_system
 testBuilder_executables_compositor_start_drawing/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build
 .PHONY : testBuilder_executables_compositor_start_drawing/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
+
+# Build rule for target.
+testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
+.PHONY : testBuilder_executables_OffScreenFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_OffScreenFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
+.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_MYPRIVATEAPP
@@ -441,6 +454,33 @@ compositor_clients/MovingWindowsB.s: compositor_clients/MovingWindowsB.cpp.s
 compositor_clients/MovingWindowsB.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/compositor_clients/MovingWindowsB.cpp.s
 .PHONY : compositor_clients/MovingWindowsB.cpp.s
+
+compositor_clients/OffScreenFramebuffer.o: compositor_clients/OffScreenFramebuffer.cpp.o
+
+.PHONY : compositor_clients/OffScreenFramebuffer.o
+
+# target to build an object file
+compositor_clients/OffScreenFramebuffer.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.o
+.PHONY : compositor_clients/OffScreenFramebuffer.cpp.o
+
+compositor_clients/OffScreenFramebuffer.i: compositor_clients/OffScreenFramebuffer.cpp.i
+
+.PHONY : compositor_clients/OffScreenFramebuffer.i
+
+# target to preprocess a source file
+compositor_clients/OffScreenFramebuffer.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.i
+.PHONY : compositor_clients/OffScreenFramebuffer.cpp.i
+
+compositor_clients/OffScreenFramebuffer.s: compositor_clients/OffScreenFramebuffer.cpp.s
+
+.PHONY : compositor_clients/OffScreenFramebuffer.s
+
+# target to generate assembly for a file
+compositor_clients/OffScreenFramebuffer.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.s
+.PHONY : compositor_clients/OffScreenFramebuffer.cpp.s
 
 compositor_clients/compositor_start_drawing.o: compositor_clients/compositor_start_drawing.cpp.o
 
@@ -970,14 +1010,15 @@ help:
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
+	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... testBuilder_executables_shm"
 	@echo "... package_source"
 	@echo "... GLIS"
 	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... package"
-	@echo "... edit_cache"
-	@echo "... rebuild_cache"
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
@@ -993,6 +1034,9 @@ help:
 	@echo "... compositor_clients/MovingWindowsB.o"
 	@echo "... compositor_clients/MovingWindowsB.i"
 	@echo "... compositor_clients/MovingWindowsB.s"
+	@echo "... compositor_clients/OffScreenFramebuffer.o"
+	@echo "... compositor_clients/OffScreenFramebuffer.i"
+	@echo "... compositor_clients/OffScreenFramebuffer.s"
 	@echo "... compositor_clients/compositor_start_drawing.o"
 	@echo "... compositor_clients/compositor_start_drawing.i"
 	@echo "... compositor_clients/compositor_start_drawing.s"

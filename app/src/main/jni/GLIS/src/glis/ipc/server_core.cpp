@@ -308,6 +308,9 @@ void SOCKET_SEND_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_d
 }
 
 // TODO: error checking
+// taken from apue.3e/lib/sendfd.c and apue.3e/lib/recvfd.c
+// adapted to socket server implementation
+
 void SOCKET_GET_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, int &fd,
                    char *server_name)  // receive fd from socket
 {
@@ -435,8 +438,8 @@ int SOCKET_SERVER::log_info(const char *fmt, ...) {
     va_start(va2, fmt);
     vsnprintf(s, l, fmt, va2);
     va_end(va2);
-    int len = LOG_INFO(LOG_TAG_SERVER,"%s%s",
-            (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+    int len = LOG_INFO("%s: %s%s",
+        LOG_TAG_SERVER, (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
     );
     free(s);
     return len;
@@ -721,8 +724,8 @@ int SOCKET_CLIENT::log_info(const char *fmt, ...) {
     va_start(va2, fmt);
     vsnprintf(s, l, fmt, va2);
     va_end(va2);
-    int len = LOG_INFO(LOG_TAG_SERVER,"%s%s",
-                       (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
+    int len = LOG_INFO("%s: %s%s",
+        LOG_TAG_SERVER, (TAG == nullptr || TAG == NULL) ? "TAG NOT PROVIDED: " : TAG, s
     );
     free(s);
     return len;

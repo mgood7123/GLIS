@@ -251,7 +251,7 @@ int main() {
     // print non errors
     GLIS_LOG_PRINT_NON_ERRORS = true;
 
-    if (!glis.getX11Window(CompositorMain, 400, 400)) return -1;
+    if (!glis.getX11Window(CompositorMain, 1000, 1000)) return -1;
 
     // thread 1
     glis.SYNC_STATE = glis.STATE.initialized;
