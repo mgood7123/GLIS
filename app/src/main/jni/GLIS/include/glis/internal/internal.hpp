@@ -353,18 +353,18 @@ public:
 
     bool destroyWaylandWindow(GLIS_CLASS & GLIS);
 
-    void GLIS_texture_linux(GLuint & texture);
-
     void GLIS_build_simple_shader_program(
             GLuint & vertexShader, const char *vertexSource,
             GLuint & fragmentShader, const char *fragmentSource,
             GLuint &shaderProgram
     );
 
-    void GLIS_texture_buffer_linux(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
-                               GLint &texture_width, GLint &texture_height);
-
     void GLIS_draw_high_resolution_square();
+
+    void GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer, GLint &texture_width,
+                          GLint &texture_height);
+
+    void GLIS_texture(GLuint &texture);
 };
 
 #pragma clang diagnostic pop

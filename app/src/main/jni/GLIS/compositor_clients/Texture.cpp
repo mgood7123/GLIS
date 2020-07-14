@@ -40,7 +40,7 @@ int main() {
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
         // create a new texture
         GLuint texture;
-        glis.GLIS_texture_linux(texture);
+        glis.GLIS_texture(texture);
         GLuint vertexShader;
         GLuint fragmentShader;
         GLuint shaderProgram;

@@ -44,7 +44,7 @@ int main() {
         GLuint framebuffer;
         GLuint renderbuffer;
         GLuint texture;
-        glis.GLIS_texture_buffer_linux(framebuffer, renderbuffer, texture, G.width, G.height);
+        glis.GLIS_texture_buffer(framebuffer, renderbuffer, texture, G.width, G.height);
         glis.GLIS_build_simple_shader_program(
                 vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
         );

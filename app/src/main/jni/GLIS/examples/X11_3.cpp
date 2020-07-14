@@ -42,20 +42,20 @@ int main() {
     glis.GLIS_setupOnScreenRendering(CompositorMain);
 
     GLuint framebuffer;
-    GLuint textureColorbuffer;
+    GLuint texture;
     GLuint rbo;
-    glis.GLIS_texture_buffer_linux(framebuffer, rbo, textureColorbuffer, CompositorMain.width, CompositorMain.height);
+    glis.GLIS_texture_buffer(framebuffer, rbo, texture, CompositorMain.width, CompositorMain.height);
     glis.GLIS_build_simple_shader_program(
             vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
     );
     glUseProgram(shaderProgram);
-    glis.GLIS_draw_high_resolution_square();
+    glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
     glis.GLIS_SwapBuffers(CompositorMain);
     glis.runUntilX11WindowClose(CompositorMain, noop);
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
-    glDeleteTextures(1, &textureColorbuffer);
+    glDeleteTextures(1, &texture);
     glDeleteRenderbuffers(1, &rbo);
     glDeleteFramebuffers(1, &framebuffer);
     glis.destroyX11Window(CompositorMain);

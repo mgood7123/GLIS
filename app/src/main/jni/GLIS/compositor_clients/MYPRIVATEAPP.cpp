@@ -42,7 +42,7 @@ int main() {
         GLuint FB;
         GLuint RB;
         GLuint texture;
-        glis.GLIS_texture_buffer_linux(FB, RB, texture, W, H);
+        glis.GLIS_texture_buffer(FB, RB, texture, W, H);
 
         GLuint shaderProgram;
         GLuint vertexShader;

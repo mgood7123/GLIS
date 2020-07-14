@@ -36,13 +36,12 @@ int main() {
     GLIS_CLASS CompositorMain;
     GLIS glis;
     GLuint texture;
-    glis.GLIS_texture_linux(texture);
     GLuint vertexShader;
     GLuint fragmentShader;
     GLuint shaderProgram;
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
-    glis.GLIS_texture_linux(texture);
+    glis.GLIS_texture(texture);
     glis.GLIS_build_simple_shader_program(
             vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
     );
