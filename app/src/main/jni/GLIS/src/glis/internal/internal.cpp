@@ -1103,47 +1103,6 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id,
     GLIS_upload_texture(GLIS, window_id, GLIS_current_texture, texture_width, texture_height);
 }
 
-void GLIS::GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
-                                      GLint texture_width, GLint texture_height,
-                                      GLint texture_width_to, GLint texture_height_to) {
-//    if (IPC == IPC_MODE.socket || IPC == IPC_MODE.shared_memory) {
-//        if (texture_width_to != 0 && texture_height_to != 0) {
-//            LOG_ERROR("resizing from %dx%d to %dx%d",
-//                      texture_width, texture_height, texture_width_to, texture_height_to);
-//            GLIS_resize(&TEXDATA, TEXDATA_LEN, texture_width, texture_height, texture_width_to,
-//                        texture_height_to);
-//            LOG_ERROR("resized from %dx%d to %dx%d",
-//                      texture_width, texture_height, texture_width_to, texture_height_to);
-//            assert(TEXDATA != nullptr);
-//        }
-//        } else {
-//        LOG_INFO("uploaded texture");
-//        return;
-//    } else {
-//        while (SYNC_STATE != STATE.request_upload) {}
-//        SYNC_STATE = STATE.response_uploading;
-//        if (IPC == IPC_MODE.thread) {
-//            GLIS_current_texture = texture_id;
-//            SYNC_STATE = STATE.response_uploaded;
-//        } else if (IPC == IPC_MODE.texture) {
-//            TEXDATA_LEN = texture_width * texture_height * sizeof(GLuint);
-//            TEXDATA = new GLuint[TEXDATA_LEN];
-//
-//                glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE,
-//                             TEXDATA);
-//            SYNC_STATE = STATE.response_uploaded;
-//        }
-//        LOG_INFO("uploaded texture");
-//        LOG_INFO("requesting SERVER to render");
-//        SYNC_STATE = STATE.request_render;
-//        while (SYNC_STATE != STATE.response_rendered) {}
-//        LOG_INFO("SERVER has rendered");
-//        return;
-//    }
-    LOG_ERROR("GLIS_upload_texture_resize has been depreciated");
-    abort();
-}
-
 bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
@@ -1167,15 +1126,15 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     return true;
 }
 
-int predicate (
-        Display *display,
-        XEvent *event,
-        XPointer arg
-) {
-    return true;//event->type == ClientMessage || event->type == ConfigureNotify;
+int predicate (Display *display, XEvent *event, XPointer arg) {
+    return true;
 }
 
 void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWindowResize)(GLsizei, GLsizei), void (*onWindowClose)()) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return;
+#endif
     Atom wmDeleteMessage = XInternAtom(GLIS.display_id, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(GLIS.display_id, GLIS.native_window, &wmDeleteMessage, 1);
     XEvent event;
@@ -1191,8 +1150,6 @@ void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWi
                 }
             } else if (event.type == ConfigureNotify) {
                 XConfigureEvent xce = event.xconfigure;
-                /* This event type is generated for a variety of
-                   happenings. */
                 if (onWindowResize != nullptr) onWindowResize(xce.width, xce.height);
                 if (draw != nullptr) draw();
             }
