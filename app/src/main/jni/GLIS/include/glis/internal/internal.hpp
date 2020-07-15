@@ -341,7 +341,7 @@ public:
 
     bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
 
-    void runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*function)());
+    void runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWindowResize)(GLsizei, GLsizei), void (*onWindowClose)());
 
     bool destroyX11Window(GLIS_CLASS & GLIS);
 

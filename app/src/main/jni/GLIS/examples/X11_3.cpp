@@ -4,8 +4,6 @@
 
 #include <glis/glis.hpp>
 
-void noop() {}
-
 const char *vertexSource = R"glsl( #version 300 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -32,26 +30,25 @@ void main()
 }
 )glsl";
 
-int main() {
-    GLIS_CLASS CompositorMain;
-    GLIS glis;
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint shaderProgram;
-    glis.getX11Window(CompositorMain, 400, 400);
-    glis.GLIS_setupOnScreenRendering(CompositorMain);
+GLIS_CLASS CompositorMain;
+GLIS glis;
+GLuint vertexShader;
+GLuint fragmentShader;
+GLuint shaderProgram;
+GLuint framebuffer;
+GLuint texture;
+GLuint rbo;
 
-    GLuint framebuffer;
-    GLuint texture;
-    GLuint rbo;
-    glis.GLIS_texture_buffer(framebuffer, rbo, texture, CompositorMain.width, CompositorMain.height);
-    glis.GLIS_build_simple_shader_program(
-            vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
-    );
-    glUseProgram(shaderProgram);
+void draw() {
     glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
     glis.GLIS_SwapBuffers(CompositorMain);
-    glis.runUntilX11WindowClose(CompositorMain, noop);
+}
+
+void resize(GLsizei width, GLsizei height) {
+    glViewport(0, 0, width, height);
+}
+
+void close() {
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
@@ -60,4 +57,15 @@ int main() {
     glDeleteFramebuffers(1, &framebuffer);
     glis.destroyX11Window(CompositorMain);
     glis.GLIS_destroy_GLIS(CompositorMain);
+}
+
+int main() {
+    glis.getX11Window(CompositorMain, 400, 400);
+    glis.GLIS_setupOnScreenRendering(CompositorMain);
+    glis.GLIS_texture_buffer(framebuffer, rbo, texture, CompositorMain.width, CompositorMain.height);
+    glis.GLIS_build_simple_shader_program(
+            vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
+    );
+    glUseProgram(shaderProgram);
+    glis.runUntilX11WindowClose(CompositorMain, draw, resize, close);
 }

@@ -4,17 +4,22 @@
 
 #include <glis/glis.hpp>
 
-void noop() {}
+GLIS_CLASS CompositorMain;
+GLIS glis;
 
-int main() {
-    GLIS_CLASS CompositorMain;
-    GLIS glis;
-    glis.getX11Window(CompositorMain, 400, 400);
-    glis.GLIS_setupOnScreenRendering(CompositorMain);
+void draw() {
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glis.GLIS_SwapBuffers(CompositorMain);
-    glis.runUntilX11WindowClose(CompositorMain, noop);
+}
+
+void close() {
     glis.destroyX11Window(CompositorMain);
     glis.GLIS_destroy_GLIS(CompositorMain);
+}
+
+int main() {
+    glis.getX11Window(CompositorMain, 400, 400);
+    glis.GLIS_setupOnScreenRendering(CompositorMain);
+    glis.runUntilX11WindowClose(CompositorMain, draw, nullptr, close);
 }

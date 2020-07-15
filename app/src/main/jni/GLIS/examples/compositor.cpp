@@ -194,7 +194,9 @@ void render() {
                         Client *client = static_cast<Client *>(
                                 CompositorMain.KERNEL.table->table[index]->resource
                         );
-                        if (client->shared_memory.slot.status.load_int8_t() != client->shared_memory.status.standby) {
+                        if (client->shared_memory.data == nullptr) {
+                            CompositorMain.KERNEL.table->DELETE(index);
+                        } else if (client->shared_memory.slot.status.load_int8_t() != client->shared_memory.status.standby) {
                             command = client->shared_memory.slot.command.load_int8_t();
                             client->shared_memory.slot.command.store_int8_t(-1);
                             LOG_ERROR("using client with CLIENT ID: %zu", client->id);
@@ -250,6 +252,10 @@ void render() {
     glis.GLIS_Sync_GPU();
 }
 
+void resize(GLsizei width, GLsizei height) {
+    glViewport(0, 0, width, height);
+}
+
 int main() {
     // print non errors
     GLIS_LOG_PRINT_NON_ERRORS = true;
@@ -298,11 +304,11 @@ int main() {
         // ------------------------------------------------------------------
         LOG_INFO("Using Shader program");
         glUseProgram(shaderProgram);
-        SERVER_LOG_TRANSFER_INFO = true;
+//        SERVER_LOG_TRANSFER_INFO = true;
         glis.SYNC_STATE = glis.STATE.response_started_up;
         LOG_INFO("started up");
         while(glis.SYNC_STATE != glis.STATE.request_shutdown) {
-            glis.runUntilX11WindowClose(CompositorMain, render);
+            glis.runUntilX11WindowClose(CompositorMain, render, resize, nullptr);
             glis.SYNC_STATE = glis.STATE.request_shutdown;
         }
         glis.SYNC_STATE = glis.STATE.response_shutting_down;

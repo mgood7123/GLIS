@@ -1158,6 +1158,8 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     GLIS.native_window = XCreateSimpleWindow(
             GLIS.display_id, DefaultRootWindow(GLIS.display_id), 0, 0, width, height, 0, 0, 0
     );
+    // StructureNotifyMask so we can handle resizing
+    XSelectInput(GLIS.display_id, GLIS.native_window, StructureNotifyMask);
     GLIS.width = width;
     GLIS.height = height;
     XMapWindow(GLIS.display_id, GLIS.native_window);
@@ -1170,20 +1172,31 @@ int predicate (
         XEvent *event,
         XPointer arg
 ) {
-    return event->type == ClientMessage;
+    return true;//event->type == ClientMessage || event->type == ConfigureNotify;
 }
 
-void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*function)()) {
+void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWindowResize)(GLsizei, GLsizei), void (*onWindowClose)()) {
     Atom wmDeleteMessage = XInternAtom(GLIS.display_id, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(GLIS.display_id, GLIS.native_window, &wmDeleteMessage, 1);
     XEvent event;
     bool running = true;
 
     while (running) {
-        function();
-        if (XCheckIfEvent(GLIS.display_id, &event, predicate, nullptr))
-            if (event.xclient.data.l[0] == wmDeleteMessage)
-                running = false;
+        if (draw != nullptr) draw();
+        if (XCheckIfEvent(GLIS.display_id, &event, predicate, nullptr)) {
+            if (event.type == ClientMessage) {
+                if (event.xclient.data.l[0] == wmDeleteMessage) {
+                    if (onWindowClose != nullptr) onWindowClose();
+                    running = false;
+                }
+            } else if (event.type == ConfigureNotify) {
+                XConfigureEvent xce = event.xconfigure;
+                /* This event type is generated for a variety of
+                   happenings. */
+                if (onWindowResize != nullptr) onWindowResize(xce.width, xce.height);
+                if (draw != nullptr) draw();
+            }
+        }
     }
 }
 
