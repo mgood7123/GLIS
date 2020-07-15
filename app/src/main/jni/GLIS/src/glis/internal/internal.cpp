@@ -699,21 +699,35 @@ void GLIS::GLIS_set_conversion_origin(int origin) {
         }
 }
 
-void GLIS::GLIS_set_texture(GLenum textureUnit, GLuint texture) {
+void GLIS::GLIS_set_texture(GLenum textureUnit, GLuint & texture) {
     glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_2D, texture);
+}
+
+void GLIS::GLIS_set_framebuffer(GLuint &framebuffer, GLuint &renderbuffer) {
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+}
+
+void GLIS::GLIS_set_default_framebuffer() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+}
+
+void GLIS::GLIS_set_default_texture(GLenum textureUnit) {
+    glActiveTexture(textureUnit);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GLIS::GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer,
                             GLint &texture_width, GLint &texture_height) {
     glGenFramebuffers(1, &framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     glGenRenderbuffers(1, &renderbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    GLIS_set_framebuffer(framebuffer, renderbuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height);
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
     GLenum FramebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
@@ -911,8 +925,7 @@ bool GLIS::GLIS_shared_memory_realloc(GLIS::GLIS_shared_memory &sh, size_t size)
 }
 
 bool GLIS::GLIS_shared_memory_free(GLIS::GLIS_shared_memory &sh) {
-    if (SHM_close(sh.fd)) {
-        sh.data = nullptr;
+    if (SHM_close(sh.fd, &sh.data, sh.size)) {
         sh.size = 0;
         return true;
     }
@@ -944,6 +957,7 @@ void *GLIS::KEEP_ALIVE_MAIN_NOTIFIER(void *arg) {
     server->connection_wait_until_disconnect();
     LOG_INFO("CLIENT ID: %zu, closed its connection", client->id);
     SERVER_deallocate_server(client->table_id);
+    GLIS_shared_memory_free(client->shared_memory);
     LOG_INFO("CLIENT ID: %zu, shared_memory.reference_count = %zu", client->id, client->shared_memory.reference_count);
     client->shared_memory.reference_count--;
     LOG_INFO("CLIENT ID: %zu, shared_memory.reference_count = %zu", client->id, client->shared_memory.reference_count);

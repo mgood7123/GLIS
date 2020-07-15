@@ -1,3 +1,5 @@
+#define GLIS_COMMON_WIDTH 1080
+#define GLIS_COMMON_HEIGHT 2032
 #include <glis/ipc/ipc.hpp>
 #include <glis/internal/internal.hpp>
 #include <glis/backup/backup.hpp>

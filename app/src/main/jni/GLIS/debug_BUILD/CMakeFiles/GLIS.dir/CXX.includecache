@@ -1702,3 +1702,27 @@ sys/time.h
 glis/ipc/ipc.hpp
 -
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/shm.cpp
+glis/ipc/shm.hpp
+-
+sys/mman.h
+-
+cstdio
+-
+glis/internal/log.hpp
+-
+cstdlib
+-
+cerrno
+-
+string
+-
+sys/ioctl.h
+-
+zconf.h
+-
+string.h
+-
+cassert
+-
+

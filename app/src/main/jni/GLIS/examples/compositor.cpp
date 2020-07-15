@@ -215,6 +215,7 @@ void render() {
         size_t index = 0;
         size_t page_size = CompositorMain.KERNEL.table->page_size;
         int drawn = 0;
+        // TODO: remove client and client windows upon client death
         for (; page <= CompositorMain.KERNEL.table->Page.count(); page++) {
             index = ((page_size * page) - page_size);
             for (; index < page_size * page; index++)
@@ -227,13 +228,14 @@ void render() {
                         class Client_Window *CW = static_cast<Client_Window *>(
                                 CompositorMain.KERNEL.table->table[index]->resource
                         );
-                        GLIS_LOG_PRINT_CONVERSIONS = true;
-                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0,
-                                                        CW->TEXTURE,
-                                                        0, CW->x,
-                                                        CW->y, CW->w, CW->h,
-                                                        CompositorMain.width,
-                                                        CompositorMain.height
+                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
+                                                        0,
+                                                        // pos
+                                                        CW->x, CW->y,
+                                                        // dimens
+                                                        CW->w, CW->h,
+                                                        // max dimens
+                                                        GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT
                         );
                         drawn++;
                     }
@@ -242,7 +244,7 @@ void render() {
     }
     fps.onFrameEnd();
     std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
-    font.GLIS_font_RenderText(text, 0, 20, font.GLIS_font_color_white);
+    font.GLIS_font_RenderText(text, 0, 20, font.GLIS_font_color_black);
     glis.GLIS_Sync_GPU();
     glis.GLIS_SwapBuffers(CompositorMain);
     glis.GLIS_Sync_GPU();
@@ -252,7 +254,9 @@ int main() {
     // print non errors
     GLIS_LOG_PRINT_NON_ERRORS = true;
 
-    if (!glis.getX11Window(CompositorMain, 400, 400)) return -1;
+    if (!glis.getX11Window(CompositorMain, GLIS_COMMON_WIDTH/4, GLIS_COMMON_HEIGHT/4)) return -1;
+    CompositorMain.width = GLIS_COMMON_WIDTH;
+    CompositorMain.height = GLIS_COMMON_HEIGHT;
 
     // thread 1
     glis.SYNC_STATE = glis.STATE.initialized;
@@ -269,7 +273,8 @@ int main() {
     glis.SYNC_STATE = glis.STATE.response_starting_up;
     LOG_INFO("initializing main Compositor");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
-        assert(font.GLIS_load_font("/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf", 0, 24));
+        glViewport(0, 0, CompositorMain.width, CompositorMain.height);
+        assert(font.GLIS_load_font("/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf", 0, 12));
         font.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");

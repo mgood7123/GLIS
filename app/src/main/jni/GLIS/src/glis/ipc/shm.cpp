@@ -80,7 +80,19 @@ bool SHM_resize(int &fd, int8_t **data, size_t size) {
 #endif
 }
 
-bool SHM_close(int &fd) {
+bool SHM_delete(int8_t **data, size_t size) {
+    return true;
+}
+bool SHM_close(int &fd, int8_t **data, size_t size) {
+    if (!ashmem_valid(fd)) {
+        LOG_ERROR("ashmem_valid: errno: %d (%s)", errno, strerror(errno));
+        return false;
+    }
+    if (munmap(*data, size) == -1) {
+        LOG_ERROR("munmap: errno: %d (%s)", errno, strerror(errno));
+        return false;
+    }
+    *data = nullptr;
     int ret = close(fd);
     if (ret < 0) {
         LOG_ERROR("close: errno: %d (%s)", errno, strerror(errno));

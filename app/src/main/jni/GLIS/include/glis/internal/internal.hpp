@@ -92,7 +92,7 @@ public:
 
     GLboolean GLIS_validate_program(GLuint &Program);
 
-    void GLIS_set_texture(GLenum textureUnit, GLuint texture);
+    void GLIS_set_texture(GLenum textureUnit, GLuint & texture);
 
     void GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
                              GLint &texture_width, GLint &texture_height);
@@ -300,7 +300,7 @@ public:
 
     bool GLIS_shared_memory_realloc(GLIS_shared_memory &sh, size_t size);
 
-    bool GLIS_shared_memory_free(GLIS_shared_memory &sh);
+    static bool GLIS_shared_memory_free(GLIS_shared_memory &sh);
 
     SOCKET_CLIENT KEEP_ALIVE;
 
@@ -365,6 +365,12 @@ public:
                           GLint &texture_height);
 
     void GLIS_texture(GLuint &texture);
+
+    void GLIS_set_framebuffer(GLuint &framebuffer, GLuint &renderbuffer);
+
+    void GLIS_set_default_framebuffer();
+
+    void GLIS_set_default_texture(GLenum textureUnit);
 };
 
 #pragma clang diagnostic pop
