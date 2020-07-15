@@ -1149,9 +1149,8 @@ void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWi
                     running = false;
                 }
             } else if (event.type == ConfigureNotify) {
-                XConfigureEvent xce = event.xconfigure;
-                if (onWindowResize != nullptr) onWindowResize(xce.width, xce.height);
-                if (draw != nullptr) draw();
+                if (onWindowResize != nullptr)
+                    onWindowResize(event.xconfigure.width, event.xconfigure.height);
             }
         }
     }
