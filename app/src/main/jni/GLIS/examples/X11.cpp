@@ -6,14 +6,16 @@
 
 GLIS_CLASS CompositorMain;
 GLIS glis;
+GLIS_FONT font;
+GLIS_FPS fps;
 
-void draw() {
+GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glis.GLIS_SwapBuffers(CompositorMain);
 }
 
-void close() {
+GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(CompositorMain);
     glis.GLIS_destroy_GLIS(CompositorMain);
 }
@@ -21,5 +23,6 @@ void close() {
 int main() {
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
-    glis.runUntilX11WindowClose(CompositorMain, draw, nullptr, close);
+    eglSwapInterval(CompositorMain.display, 0);
+    glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, nullptr, close);
 }

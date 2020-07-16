@@ -4,4 +4,4 @@ add_subdirectory(GLIS)
 include_directories(${GLIS_INCLUDE_DIRECTORIES})
 
 add_library(nativeegl SHARED compositor.cpp)
-target_link_libraries(nativeegl android GLIS)
+target_link_libraries(nativeegl GLIS)

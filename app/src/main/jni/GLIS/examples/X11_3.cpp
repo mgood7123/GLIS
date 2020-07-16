@@ -32,6 +32,8 @@ void main()
 
 GLIS_CLASS CompositorMain;
 GLIS glis;
+GLIS_FONT font;
+GLIS_FPS fps;
 GLuint vertexShader;
 GLuint fragmentShader;
 GLuint shaderProgram;
@@ -39,16 +41,16 @@ GLuint framebuffer;
 GLuint texture;
 GLuint rbo;
 
-void draw() {
+GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
     glis.GLIS_SwapBuffers(CompositorMain);
 }
 
-void resize(GLsizei width, GLsizei height) {
+GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
     glViewport(0, 0, width, height);
 }
 
-void close() {
+GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
@@ -67,5 +69,5 @@ int main() {
             vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
     );
     glUseProgram(shaderProgram);
-    glis.runUntilX11WindowClose(CompositorMain, draw, resize, close);
+    glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, resize, close);
 }

@@ -122,9 +122,22 @@ CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/backup/types/program.cpp -o CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.s
 
+CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: CMakeFiles/GLIS.dir/flags.make
+CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../src/glis/compositor/compositor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/compositor/compositor.cpp
+
+CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/compositor/compositor.cpp > CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.i
+
+CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/compositor/compositor.cpp -o CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.s
+
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../src/glis/font/font.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/font/font.cpp
 
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.i: cmake_force
@@ -137,7 +150,7 @@ CMakeFiles/GLIS.dir/src/glis/font/font.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o: ../src/glis/internal/fps.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/fps.cpp
 
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.i: cmake_force
@@ -150,7 +163,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../src/glis/internal/internal.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/internal.cpp
 
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.i: cmake_force
@@ -163,7 +176,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o: ../src/glis/internal/log.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/log.cpp
 
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.i: cmake_force
@@ -176,7 +189,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o: ../src/glis/ipc/ashmem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/ashmem.cpp
 
 CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.i: cmake_force
@@ -189,7 +202,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o: ../src/glis/ipc/ipc.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/ipc.cpp
 
 CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.i: cmake_force
@@ -202,7 +215,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o: ../src/glis/ipc/serializer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/serializer.cpp
 
 CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.i: cmake_force
@@ -215,7 +228,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../src/glis/ipc/server_core.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/server_core.cpp
 
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.i: cmake_force
@@ -228,7 +241,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o: ../src/glis/ipc/shm.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/shm.cpp
 
 CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.i: cmake_force
@@ -241,7 +254,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.s: cmake_force
 
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o: ../src/glis/internal/xdg-shell-protocol.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/xdg-shell-protocol.c
 
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.i: cmake_force
@@ -259,6 +272,7 @@ GLIS_OBJECTS = \
 "CMakeFiles/GLIS.dir/src/glis/backup/types/renderbuffer.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.o" \
+"CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o" \
@@ -278,6 +292,7 @@ libGLIS.so: CMakeFiles/GLIS.dir/src/glis/backup/types/framebuffer.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/backup/types/renderbuffer.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.o
+libGLIS.so: CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o
 libGLIS.so: CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o
@@ -292,7 +307,7 @@ libGLIS.so: CMakeFiles/GLIS.dir/build.make
 libGLIS.so: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
 libGLIS.so: dependancies/WINAPI/SDK/src/Windows/Kernel/libWinKernel.a
 libGLIS.so: CMakeFiles/GLIS.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX shared library libGLIS.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX shared library libGLIS.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GLIS.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

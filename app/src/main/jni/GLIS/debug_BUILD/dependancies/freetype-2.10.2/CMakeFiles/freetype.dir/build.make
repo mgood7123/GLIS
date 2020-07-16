@@ -665,6 +665,11 @@ dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.
 dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftdebug.c.o
 dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make
 dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
+dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
+dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
+dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
+dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
+dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
 dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Linking C shared library libfreetyped.so"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2 && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/freetype.dir/link.txt --verbose=$(VERBOSE)

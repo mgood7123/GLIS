@@ -1508,6 +1508,10 @@ GLES3/gl32.h
 GLES3/gl32.h
 -
 
+../include/glis/compositor/compositor.hpp
+glis/glis.hpp
+-
+
 ../include/glis/font/font.hpp
 ft2build.h
 -
@@ -1523,17 +1527,17 @@ glm/gtc/type_ptr.hpp
 -
 GLES3/gl32.h
 -
-glis/internal/internal.hpp
--
 
 ../include/glis/glis.hpp
 glis/ipc/ipc.hpp
+-
+glis/font/font.hpp
 -
 glis/internal/internal.hpp
 -
 glis/backup/backup.hpp
 -
-glis/font/font.hpp
+glis/compositor/compositor.hpp
 -
 
 ../include/glis/internal/common.hpp
@@ -1562,6 +1566,12 @@ sys/un.h
 EGL/egl.h
 -
 GLES3/gl32.h
+-
+jni.h
+-
+android/native_window.h
+-
+android/native_window_jni.h
 -
 
 ../include/glis/internal/context.hpp
@@ -1645,8 +1655,4 @@ ashmem.hpp
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/compositor.cpp
 glis/glis.hpp
 -
-compositor_shaders.hpp
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/compositor_shaders.hpp
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/compositor_shaders.hpp
 

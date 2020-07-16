@@ -217,6 +217,7 @@ CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_client
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/backup/types/program.hpp
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/backup/types/renderbuffer.hpp
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/backup/types/texture.hpp
+CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/compositor/compositor.hpp
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/glis.hpp
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o: ../include/glis/internal/common.hpp

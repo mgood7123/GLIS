@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <GLES3/gl32.h> // in ubuntu, this header is provided by libgles-dev
+#include <GLES3/gl32.h>
 
 class GLIS_BACKUP_RENDERBUFFER {
     GLint __GL_RENDERBUFFER_BINDING, __GL_RENDERBUFFER_WIDTH, __GL_RENDERBUFFER_HEIGHT,

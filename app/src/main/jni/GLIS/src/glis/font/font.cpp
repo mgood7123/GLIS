@@ -100,20 +100,9 @@ bool GLIS_FONT::GLIS_font_init_shaders() {
     }
     )glsl";
     GLIS glis;
-    GLIS_FONT_VERTEX_SHADER = glis.GLIS_createShader(GL_VERTEX_SHADER, vs);
-    GLIS_FONT_FRAGMENT_SHADER = glis.GLIS_createShader(GL_FRAGMENT_SHADER, fs);
-    LOG_INFO("Creating Shader program");
-    GLIS_FONT_SHADER_PROGRAM = glCreateProgram();
-    LOG_INFO("Attaching vertex Shader to program");
-    glAttachShader(GLIS_FONT_SHADER_PROGRAM, GLIS_FONT_VERTEX_SHADER);
-    LOG_INFO("Attaching fragment Shader to program");
-    glAttachShader(GLIS_FONT_SHADER_PROGRAM, GLIS_FONT_FRAGMENT_SHADER);
-    LOG_INFO("Linking Shader program");
-    glLinkProgram(GLIS_FONT_SHADER_PROGRAM);
-    LOG_INFO("Validating Shader program");
-    GLboolean ProgramIsValid = glis.GLIS_validate_program(GLIS_FONT_SHADER_PROGRAM);
-    assert(ProgramIsValid == GL_TRUE);
-    LOG_INFO("Shader program is valid");
+    glis.GLIS_build_simple_shader_program(
+            GLIS_FONT_VERTEX_SHADER, vs, GLIS_FONT_FRAGMENT_SHADER, fs, GLIS_FONT_SHADER_PROGRAM
+    );
     // Configure VAO/VBO for texture quads
     glGenVertexArrays(1, &GLIS_FONT_VAO);
     glGenBuffers(1, &GLIS_FONT_VBO);

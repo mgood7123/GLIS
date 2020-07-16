@@ -9,5 +9,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/jni/GLIS/references/X11OpenGLWindow" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/jni/GLIS/references/weston" vcs="Git" />
   </component>
 </project>

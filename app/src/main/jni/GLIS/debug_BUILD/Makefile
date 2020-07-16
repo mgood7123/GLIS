@@ -179,17 +179,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_shm
+# Target rules for targets named testBuilder_executables_MYPRIVATEAPP
 
 # Build rule for target.
-testBuilder_executables_shm: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
-.PHONY : testBuilder_executables_shm
+testBuilder_executables_MYPRIVATEAPP: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MYPRIVATEAPP
+.PHONY : testBuilder_executables_MYPRIVATEAPP
 
 # fast build rule for target.
-testBuilder_executables_shm/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
-.PHONY : testBuilder_executables_shm/fast
+testBuilder_executables_MYPRIVATEAPP/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
+.PHONY : testBuilder_executables_MYPRIVATEAPP/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_compositor
@@ -242,6 +242,32 @@ testBuilder_executables_X11_3: cmake_check_build_system
 testBuilder_executables_X11_3/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
 .PHONY : testBuilder_executables_X11_3/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_shm
+
+# Build rule for target.
+testBuilder_executables_shm: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_shm
+.PHONY : testBuilder_executables_shm
+
+# fast build rule for target.
+testBuilder_executables_shm/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
+.PHONY : testBuilder_executables_shm/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_wayland
+
+# Build rule for target.
+testBuilder_executables_wayland: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_wayland
+.PHONY : testBuilder_executables_wayland
+
+# fast build rule for target.
+testBuilder_executables_wayland/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/build
+.PHONY : testBuilder_executables_wayland/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_Texture
@@ -346,19 +372,6 @@ testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
 testBuilder_executables_OffScreenFramebuffer/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
 .PHONY : testBuilder_executables_OffScreenFramebuffer/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_MYPRIVATEAPP
-
-# Build rule for target.
-testBuilder_executables_MYPRIVATEAPP: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MYPRIVATEAPP
-.PHONY : testBuilder_executables_MYPRIVATEAPP
-
-# fast build rule for target.
-testBuilder_executables_MYPRIVATEAPP/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
-.PHONY : testBuilder_executables_MYPRIVATEAPP/fast
 
 #=============================================================================
 # Target rules for targets named WinKernel
@@ -750,6 +763,33 @@ examples/compositor.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.s
 .PHONY : examples/compositor.cpp.s
 
+examples/wayland.o: examples/wayland.cpp.o
+
+.PHONY : examples/wayland.o
+
+# target to build an object file
+examples/wayland.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o
+.PHONY : examples/wayland.cpp.o
+
+examples/wayland.i: examples/wayland.cpp.i
+
+.PHONY : examples/wayland.i
+
+# target to preprocess a source file
+examples/wayland.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.i
+.PHONY : examples/wayland.cpp.i
+
+examples/wayland.s: examples/wayland.cpp.s
+
+.PHONY : examples/wayland.s
+
+# target to generate assembly for a file
+examples/wayland.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.s
+.PHONY : examples/wayland.cpp.s
+
 src/glis/backup/backup.o: src/glis/backup/backup.cpp.o
 
 .PHONY : src/glis/backup/backup.o
@@ -884,6 +924,33 @@ src/glis/backup/types/texture.s: src/glis/backup/types/texture.cpp.s
 src/glis/backup/types/texture.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.s
 .PHONY : src/glis/backup/types/texture.cpp.s
+
+src/glis/compositor/compositor.o: src/glis/compositor/compositor.cpp.o
+
+.PHONY : src/glis/compositor/compositor.o
+
+# target to build an object file
+src/glis/compositor/compositor.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o
+.PHONY : src/glis/compositor/compositor.cpp.o
+
+src/glis/compositor/compositor.i: src/glis/compositor/compositor.cpp.i
+
+.PHONY : src/glis/compositor/compositor.i
+
+# target to preprocess a source file
+src/glis/compositor/compositor.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.i
+.PHONY : src/glis/compositor/compositor.cpp.i
+
+src/glis/compositor/compositor.s: src/glis/compositor/compositor.cpp.s
+
+.PHONY : src/glis/compositor/compositor.s
+
+# target to generate assembly for a file
+src/glis/compositor/compositor.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.s
+.PHONY : src/glis/compositor/compositor.cpp.s
 
 src/glis/font/font.o: src/glis/font/font.cpp.o
 
@@ -1168,11 +1235,13 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... package_source"
-	@echo "... testBuilder_executables_shm"
+	@echo "... testBuilder_executables_MYPRIVATEAPP"
 	@echo "... testBuilder_executables_compositor"
 	@echo "... testBuilder_executables_X11"
 	@echo "... testBuilder_executables_X11_2"
 	@echo "... testBuilder_executables_X11_3"
+	@echo "... testBuilder_executables_shm"
+	@echo "... testBuilder_executables_wayland"
 	@echo "... testBuilder_executables_Texture"
 	@echo "... testBuilder_executables_compositor_stop_drawing"
 	@echo "... package"
@@ -1182,7 +1251,6 @@ help:
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
 	@echo "... testBuilder_executables_OffScreenFramebuffer"
-	@echo "... testBuilder_executables_MYPRIVATEAPP"
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
@@ -1225,6 +1293,9 @@ help:
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"
+	@echo "... examples/wayland.o"
+	@echo "... examples/wayland.i"
+	@echo "... examples/wayland.s"
 	@echo "... src/glis/backup/backup.o"
 	@echo "... src/glis/backup/backup.i"
 	@echo "... src/glis/backup/backup.s"
@@ -1240,6 +1311,9 @@ help:
 	@echo "... src/glis/backup/types/texture.o"
 	@echo "... src/glis/backup/types/texture.i"
 	@echo "... src/glis/backup/types/texture.s"
+	@echo "... src/glis/compositor/compositor.o"
+	@echo "... src/glis/compositor/compositor.i"
+	@echo "... src/glis/compositor/compositor.s"
 	@echo "... src/glis/font/font.o"
 	@echo "... src/glis/font/font.i"
 	@echo "... src/glis/font/font.s"

@@ -217,6 +217,7 @@ CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/Def
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/backup/types/program.hpp
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/backup/types/renderbuffer.hpp
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/backup/types/texture.hpp
+CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/compositor/compositor.hpp
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/glis.hpp
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o: ../include/glis/internal/common.hpp

@@ -333,23 +333,21 @@ public:
     GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLint texture_width,
                         GLint texture_height);
 
-    void
-    GLIS_upload_texture_resize(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
-                               GLint texture_width,
-                               GLint texture_height, GLint texture_width_to,
-                               GLint texture_height_to);
+    bool getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int width, int height);
 
+    bool runUntilAndroidWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
+
+    bool destroyAndroidWindow(GLIS_CLASS & GLIS);
+    
     bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
 
-    void runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWindowResize)(GLsizei, GLsizei), void (*onWindowClose)());
+    bool runUntilX11WindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
 
     bool destroyX11Window(GLIS_CLASS & GLIS);
 
     bool getWaylandWindow(GLIS_CLASS & GLIS, int width, int height);
 
-    bool waylandIsRunning();
-
-    int waylandDispatch(GLIS_CLASS & GLIS);
+    bool runUntilWaylandWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
 
     bool destroyWaylandWindow(GLIS_CLASS & GLIS);
 
@@ -372,5 +370,4 @@ public:
 
     void GLIS_set_default_texture(GLenum textureUnit);
 };
-
 #pragma clang diagnostic pop

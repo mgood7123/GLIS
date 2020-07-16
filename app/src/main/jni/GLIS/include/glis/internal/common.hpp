@@ -16,4 +16,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <EGL/egl.h>
-#include <GLES3/gl32.h> // in ubuntu, this header is provided by libgles-dev
+#include <GLES3/gl32.h>
+#ifdef __ANDROID__
+#include <jni.h>
+#include <android/native_window.h> // requires ndk r5 or newer
+#include <android/native_window_jni.h> // requires ndk r5 or newer
+#endif

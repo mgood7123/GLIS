@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <GLES3/gl32.h> // in ubuntu, this header is provided by libgles-dev
+#include <GLES3/gl32.h>
 
 class GLIS_BACKUP_TEXTURE {
     GLint __GL_ACTIVE_TEXTURE, __GL_TEXTURE_BUFFER_BINDING, __GL_VERTEX_ARRAY_BINDING,

@@ -218,6 +218,7 @@ CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o
  ../include/glis/backup/types/program.hpp
  ../include/glis/backup/types/renderbuffer.hpp
  ../include/glis/backup/types/texture.hpp
+ ../include/glis/compositor/compositor.hpp
  ../include/glis/font/font.hpp
  ../include/glis/glis.hpp
  ../include/glis/internal/common.hpp
@@ -232,4 +233,3 @@ CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o
  ../include/glis/ipc/shm.hpp
  ../include/glis/templates/templates.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/compositor.cpp
- /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/compositor_shaders.hpp

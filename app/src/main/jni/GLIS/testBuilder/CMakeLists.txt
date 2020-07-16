@@ -10,13 +10,13 @@ macro(testBuilder_add_library testName libraryName)
     set(testBuilder_LIBRARIES_LIST_${testName} ${testBuilder_LIBRARIES_LIST_${testName}};${libraryName})
 endmacro()
 
-macro(testBuilder_build testName)
+macro(testBuilder_build testName outDirectory)
     add_executable(testBuilder_executables_${testName} ${testBuilder_SOURCES_LIST_${testName}})
     target_link_libraries(testBuilder_executables_${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
     add_custom_command(
             TARGET testBuilder_executables_${testName}
             POST_BUILD
-            COMMAND mv testBuilder_executables_${testName} EXECUTABLES/${testName})
+            COMMAND cp -v testBuilder_executables_${testName} ${outDirectory}/${testName})
 endmacro()
 
 macro(testBuilder_build_shared_library testName)

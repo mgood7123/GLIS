@@ -43,6 +43,31 @@ dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/autofit/autofit.c.o
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/src/autofit/afwarp.h
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/src/autofit/afwrtsys.h
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/src/autofit/autofit.c
+ /usr/include/harfbuzz/hb-blob.h
+ /usr/include/harfbuzz/hb-buffer.h
+ /usr/include/harfbuzz/hb-common.h
+ /usr/include/harfbuzz/hb-deprecated.h
+ /usr/include/harfbuzz/hb-face.h
+ /usr/include/harfbuzz/hb-font.h
+ /usr/include/harfbuzz/hb-ft.h
+ /usr/include/harfbuzz/hb-map.h
+ /usr/include/harfbuzz/hb-ot-color.h
+ /usr/include/harfbuzz/hb-ot-deprecated.h
+ /usr/include/harfbuzz/hb-ot-font.h
+ /usr/include/harfbuzz/hb-ot-layout.h
+ /usr/include/harfbuzz/hb-ot-math.h
+ /usr/include/harfbuzz/hb-ot-meta.h
+ /usr/include/harfbuzz/hb-ot-metrics.h
+ /usr/include/harfbuzz/hb-ot-name.h
+ /usr/include/harfbuzz/hb-ot-shape.h
+ /usr/include/harfbuzz/hb-ot-var.h
+ /usr/include/harfbuzz/hb-ot.h
+ /usr/include/harfbuzz/hb-set.h
+ /usr/include/harfbuzz/hb-shape-plan.h
+ /usr/include/harfbuzz/hb-shape.h
+ /usr/include/harfbuzz/hb-unicode.h
+ /usr/include/harfbuzz/hb-version.h
+ /usr/include/harfbuzz/hb.h
 dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbase.c.o
  ../dependancies/freetype-2.10.2/include/freetype/config/ftheader.h
  ../dependancies/freetype-2.10.2/include/ft2build.h

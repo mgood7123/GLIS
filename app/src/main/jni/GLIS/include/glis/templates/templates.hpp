@@ -15,6 +15,7 @@ template<typename TYPE> float GLIS_convert(TYPE num, TYPE num_max) {
 
 template<typename TYPE> class GLIS_coordinates {
 public:
+    GLIS_coordinates() {}
     GLIS_coordinates(TYPE TYPE_INITIALIZER) {
         TYPE x = TYPE_INITIALIZER;
         TYPE y = TYPE_INITIALIZER;
@@ -33,13 +34,13 @@ public:
         bottomRight = GLIS_coordinates<TYPE>(TYPE_INITIALIZER);
     }
 
-    class GLIS_coordinates<TYPE> topLeft = NULL;
+    GLIS_coordinates<TYPE> topLeft;
 
-    class GLIS_coordinates<TYPE> topRight = NULL;
+    GLIS_coordinates<TYPE> topRight;
 
-    class GLIS_coordinates<TYPE> bottomLeft = NULL;
+    GLIS_coordinates<TYPE> bottomLeft;
 
-    class GLIS_coordinates<TYPE> bottomRight = NULL;
+    GLIS_coordinates<TYPE> bottomRight;
 };
 
 template<typename TYPE> class GLIS_rect<TYPE>

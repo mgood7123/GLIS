@@ -4,9 +4,6 @@
 
 #include <glis/glis.hpp>
 
-#ifdef __ANDROID__
-#include <android/native_window.h> // requires ndk r5 or newer
-#endif
 #ifndef __ANDROID__
 // X11
 #include  <X11/Xlib.h>
@@ -1103,11 +1100,54 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id,
     GLIS_upload_texture(GLIS, window_id, GLIS_current_texture, texture_width, texture_height);
 }
 
+bool GLIS::getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int width, int height) {
+#ifndef __ANDROID__
+    LOG_ERROR("function not implemented in Linux");
+    return false;
+#else
+    GLIS.native_window = ANativeWindow_fromSurface(static_cast<JNIEnv*>(jenv), static_cast<jobject>(surface));
+    if (GLIS.native_window == 0) {
+        LOG_ERROR("error, cannot obtain a native window");
+        return false;
+    }
+    GLIS.width = width;
+    GLIS.height = height;
+    return true;
+#endif
+}
+
+bool GLIS::runUntilAndroidWindowClose(
+        GLIS & glis,
+        GLIS_CLASS & glis_class,
+        GLIS_FONT & glis_font,
+        GLIS_FPS & glis_fps,
+        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
+        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
+        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+) {
+    while (glis.SYNC_STATE != glis.STATE.request_shutdown) {
+        if (draw != nullptr)
+            draw(glis, glis_class, glis_font, glis_fps);
+    }
+    return true;
+}
+
+bool GLIS::destroyAndroidWindow(GLIS_CLASS & GLIS) {
+#ifndef __ANDROID__
+    LOG_ERROR("function not implemented in Linux");
+    return false;
+#else
+    ANativeWindow_release(GLIS.native_window);
+    GLIS.native_window = 0;
+    return true;
+#endif
+}
+
 bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
     return false;
-#endif
+#else
     // create a new X11 window
     GLIS.display_id = XOpenDisplay(nullptr);
     if (GLIS.display_id == 0) {
@@ -1124,60 +1164,76 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     XMapWindow(GLIS.display_id, GLIS.native_window);
     XStoreName(GLIS.display_id, GLIS.native_window, "Compositor");
     return true;
+#endif
 }
 
+#ifndef __ANDROID__
 int predicate (Display *display, XEvent *event, XPointer arg) {
     return true;
 }
+#endif
 
-void GLIS::runUntilX11WindowClose(GLIS_CLASS & GLIS, void (*draw)(), void (*onWindowResize)(GLsizei, GLsizei), void (*onWindowClose)()) {
+bool GLIS::runUntilX11WindowClose(
+        GLIS & glis,
+        GLIS_CLASS & glis_class,
+        GLIS_FONT & glis_font,
+        GLIS_FPS & glis_fps,
+        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
+        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
+        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
-    return;
-#endif
-    Atom wmDeleteMessage = XInternAtom(GLIS.display_id, "WM_DELETE_WINDOW", False);
-    XSetWMProtocols(GLIS.display_id, GLIS.native_window, &wmDeleteMessage, 1);
+    return false;
+#else
+    Atom wmDeleteMessage = XInternAtom(glis_class.display_id, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(glis_class.display_id, glis_class.native_window, &wmDeleteMessage, 1);
     XEvent event;
     bool running = true;
 
     while (running) {
-        if (draw != nullptr) draw();
-        if (XCheckIfEvent(GLIS.display_id, &event, predicate, nullptr)) {
+        if (draw != nullptr) draw(glis, glis_class, glis_font, glis_fps);
+        if (XCheckIfEvent(glis_class.display_id, &event, predicate, nullptr)) {
             if (event.type == ClientMessage) {
                 if (event.xclient.data.l[0] == wmDeleteMessage) {
-                    if (onWindowClose != nullptr) onWindowClose();
+                    if (onWindowClose != nullptr)
+                        onWindowClose(glis, glis_class, glis_font, glis_fps);
                     running = false;
                 }
             } else if (event.type == ConfigureNotify) {
                 if (onWindowResize != nullptr)
-                    onWindowResize(event.xconfigure.width, event.xconfigure.height);
+                    onWindowResize(
+                            glis, glis_class, glis_font, glis_fps,
+                            event.xconfigure.width, event.xconfigure.height
+                    );
+                if (draw != nullptr)
+                    draw(glis, glis_class, glis_font, glis_fps);
             }
         }
     }
+    return true;
+#endif
 }
 
 bool GLIS::destroyX11Window(GLIS_CLASS & GLIS) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
     return false;
-#endif
+#else
     XDestroyWindow(GLIS.display_id, GLIS.native_window);
     XCloseDisplay(GLIS.display_id);
     return true;
+#endif
 }
 
+#ifndef __ANDROID__
 // TODO: move these into GLIS_CLASS
 static bool running = true;
 struct wl_surface *surface;
 struct xdg_surface *xdg_surface;
 static struct xdg_wm_base *xdg_wm_base = nullptr;
 static struct xdg_toplevel *xdg_toplevel = nullptr;
-
 static struct wl_compositor *compositor = nullptr;
-
-bool GLIS::waylandIsRunning() {
-    return running;
-}
 
 static void noop(void* a, struct xdg_toplevel * b, int32_t c, int32_t d, struct wl_array * e) {
     // This space intentionally left blank
@@ -1255,12 +1311,13 @@ static const struct wl_registry_listener registry_listener = {
         .global = handle_global,
         .global_remove = handle_global_remove,
 };
+#endif
 
 bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
     return false;
-#endif
+#else
     // https://github.com/emersion/hello-wayland/blob/opengl/main.c
     // create a new Wayland window
     GLIS.display_id = reinterpret_cast<EGLNativeDisplayType>(wl_display_connect(nullptr));
@@ -1286,21 +1343,43 @@ bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
     wl_display_roundtrip(reinterpret_cast<struct wl_display *>(GLIS.display_id));
     GLIS.native_window = reinterpret_cast<EGLNativeWindowType>(wl_egl_window_create(surface, width, height));
     return true;
+#endif
 }
 
-int GLIS::waylandDispatch(GLIS_CLASS & GLIS) {
-    return wl_display_dispatch(reinterpret_cast<struct wl_display *>(GLIS.display_id));
+bool GLIS::runUntilWaylandWindowClose(
+        GLIS & glis,
+        GLIS_CLASS & glis_class,
+        GLIS_FONT & glis_font,
+        GLIS_FPS & glis_fps,
+        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
+        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
+        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+) {
+#ifdef __ANDROID__
+    LOG_ERROR("function not implemented in android");
+    return false;
+#else
+    while(wl_display_dispatch(reinterpret_cast<struct wl_display *>(glis_class.display_id)) != -1 && running) {
+        if (draw != nullptr)
+            draw(glis, glis_class, glis_font, glis_fps);
+    }
+    if (onWindowClose != nullptr)
+        onWindowClose(glis, glis_class, glis_font, glis_fps);
+    return true;
+#endif
 }
+
 
 bool GLIS::destroyWaylandWindow(GLIS_CLASS & GLIS) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
     return false;
-#endif
+#else
     xdg_toplevel_destroy(xdg_toplevel);
     xdg_surface_destroy(xdg_surface);
     wl_surface_destroy(surface);
     return true;
+#endif
 }
 
 void GLIS::GLIS_build_simple_shader_program(

@@ -12,7 +12,7 @@ class NativeView(val context: Context) {
     external fun nativeOnResume()
     external fun nativeOnPause()
     external fun nativeOnStop()
-    external fun nativeSetSurface(surface: Surface?)
+    external fun nativeSetSurface(surface: Surface?, w: Int, h: Int);
     val surfaceView: View?
     val surfaceHolderCallback: SurfaceHolderCallback?
     init {
@@ -41,13 +41,13 @@ class NativeView(val context: Context) {
 
     inner class SurfaceHolderCallback: SurfaceHolder.Callback {
         override fun surfaceChanged(holder: SurfaceHolder, format: Int, w: Int, h: Int) {
-            nativeSetSurface(holder.surface)
+            nativeSetSurface(holder.surface, w, h)
         }
 
         override fun surfaceCreated(holder: SurfaceHolder) {}
 
         override fun surfaceDestroyed(holder: SurfaceHolder) {
-            nativeSetSurface(null)
+            nativeSetSurface(null, 0, 0)
         }
     }
 }

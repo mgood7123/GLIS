@@ -217,6 +217,7 @@ CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/backup/types/program.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/backup/types/renderbuffer.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/backup/types/texture.hpp
+CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/compositor/compositor.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/glis.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/internal/common.hpp
@@ -231,5 +232,4 @@ CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/ipc/shm.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../include/glis/templates/templates.hpp
 CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../examples/compositor.cpp
-CMakeFiles/testBuilder_executables_compositor.dir/examples/compositor.cpp.o: ../examples/compositor_shaders.hpp
 

@@ -7,8 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <GLES3/gl32.h> // in ubuntu, this header is provided by libgles-dev
-#include <glis/internal/internal.hpp>
+#include <GLES3/gl32.h>
 
 class GLIS_FONT {
 public:

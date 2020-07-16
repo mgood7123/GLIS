@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/backup/types/renderbuffer.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o"
+  "CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
