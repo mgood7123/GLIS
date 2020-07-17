@@ -719,6 +719,16 @@ void GLIS::GLIS_set_default_texture(GLenum textureUnit) {
 
 void GLIS::GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer,
                             GLint &texture_width, GLint &texture_height) {
+
+    // simply doing
+    // glGenFramebuffers(1, &framebuffer); glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    // (even tho this will produce an incomplete framebuffer, gl does not appear to actually care
+    // and will keep rendering as normal)
+    // will cause glReadPixels to be around 20x faster than if only the default framebuffer was
+    // binded
+
+    // however it is best to produce a complete framebuffer
+
     glGenFramebuffers(1, &framebuffer);
     glGenRenderbuffers(1, &renderbuffer);
     GLIS_set_framebuffer(framebuffer, renderbuffer);
@@ -730,7 +740,18 @@ void GLIS::GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer,
 
     if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE) LOG_ERROR("framebuffer is not complete");
     else LOG_INFO("framebuffer is complete");
+#ifndef __ANDROID__
+    // it seems that on Linux, it is required to rebind framebuffer 0
+    // in order to draw, and read pixels via glReadPixels,
+    // swapping buffers does not seem to require framebuffer 0 to be bound...
+    // however Android seems to be able to get away with this, why is this?
+
+    // on Linux, why is required to rebind framebuffer 0 in order to
+    // draw to a texture, and read pixels via glReadPixels from an FBO?
+    // as in Android, rebinding to framebuffer 0 does not appear to be a requirement
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
 }
 
 void GLIS::GLIS_texture(GLuint &texture) {
