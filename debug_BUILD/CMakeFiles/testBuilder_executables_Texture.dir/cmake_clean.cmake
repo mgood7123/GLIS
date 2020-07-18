@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_Texture.dir/compositor_clients/Texture.cpp.o"
-  "testBuilder_executables_Texture"
-  "testBuilder_executables_Texture.pdb"
+  "Debug/bin/testBuilder_executables_Texture"
+  "Debug/bin/testBuilder_executables_Texture.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -722,6 +722,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../include/glis/ipc/shm.hp
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../include/glis/templates/templates.hpp
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../src/glis/internal/internal.cpp
 
+CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o: ../include/glis/internal/common.hpp
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o: ../include/glis/internal/log.hpp
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o: ../src/glis/internal/log.cpp
 

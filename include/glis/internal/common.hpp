@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <EGL/egl.h>
+#include <EGL/eglext.h>
 #include <GLES3/gl32.h>
 #ifdef __ANDROID__
 #include <jni.h>

@@ -42,8 +42,11 @@ GLuint texture;
 GLuint rbo;
 
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
+    glis.GLIS_error_to_string_GL("before glis.GLIS_draw_rectangle");
     glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
+    glis.GLIS_error_to_string_GL("after glis.GLIS_draw_rectangle");
     glis.GLIS_SwapBuffers(CompositorMain);
+    glis.GLIS_error_to_string_GL("after glis.GLIS_SwapBuffers");
 }
 
 GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
@@ -62,12 +65,17 @@ GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
 }
 
 int main() {
+    GLIS_ABORT_ON_ERROR = true;
+    GLIS_ABORT_ON_DEBUG_LEVEL_API = false;
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
+    glis.GLIS_error_to_string_GL("after glis.GLIS_setupOnScreenRendering");
     glis.GLIS_texture_buffer(framebuffer, rbo, texture, CompositorMain.width, CompositorMain.height);
+    glis.GLIS_error_to_string_GL("after glis.GLIS_texture_buffer");
     glis.GLIS_build_simple_shader_program(
             vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
     );
     glUseProgram(shaderProgram);
+    glis.GLIS_error_to_string_GL("glUseProgram");
     glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, resize, close);
 }

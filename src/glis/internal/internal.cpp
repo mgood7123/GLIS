@@ -37,8 +37,10 @@ bool GLIS_LOG_PRINT_NON_ERRORS = false;
 bool GLIS_LOG_PRINT_VERTEX = false;
 bool GLIS_LOG_PRINT_CONVERSIONS = false;
 bool GLIS_LOG_PRINT_SHAPE_INFO = false;
+bool GLIS_ABORT_ON_ERROR = false;
+bool GLIS_ABORT_ON_DEBUG_LEVEL_API = false;
 
-#define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT) CASE_NAME: { \
+#define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT, IS_AN_ERROR) CASE_NAME: { \
     if(name == nullptr || name == nullptr || name == 0) { \
         if (PRINT) { \
             if ((UNNAMED_STRING_CAN_PRINT_ERROR) != nullptr) { \
@@ -71,27 +73,25 @@ bool GLIS_LOG_PRINT_SHAPE_INFO = false;
             } \
         } \
     } \
+    if (IS_AN_ERROR) abort(); \
     break; \
 }
 
 
 #define GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING_DONT_PRINT_ERROR(LOGGER, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
-    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, nullptr, UNNAMED_STRING, nullptr, NAMED_STRING, false)
+    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, nullptr, UNNAMED_STRING, nullptr, NAMED_STRING, false, false)
 
-#define GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING(LOGGER, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
-    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, UNNAMED_STRING, nullptr, NAMED_STRING, nullptr, true)
-
-#define GLIS_ERROR_SWITCH_CASE_CUSTOM_STRING_DONT_PRINT_ERROR(name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
-    GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING_DONT_PRINT_ERROR(LOG_ERROR, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING)
+#define GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING(LOGGER, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING, IS_AN_ERROR) \
+    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGER, case const, name, const, constSTRING, UNNAMED_STRING, nullptr, NAMED_STRING, nullptr, true, IS_AN_ERROR)
 
 #define GLIS_ERROR_SWITCH_CASE_CUSTOM_STRING(name, const, constSTRING, UNNAMED_STRING, NAMED_STRING) \
-    GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING(LOG_ERROR, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING)
+    GLIS_SWITCH_CASE_CUSTOM_LOGGER_CUSTOM_STRING(LOG_ERROR, name, const, constSTRING, UNNAMED_STRING, NAMED_STRING, true)
 
 #define GLIS_ERROR_SWITCH_CASE(name, const) \
     GLIS_ERROR_SWITCH_CASE_CUSTOM_STRING(name, const, #const, "%s", "%s generated error: %s")
 
 #define GLIS_ERROR_SWITCH_CASE_DEFAULT(name, err) \
-    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOG_ERROR, default, name, err, err, "Unknown error: %d", "Unknown error", "%s generated an unknown error: %d", "%s generated an unknown error", true)
+    GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOG_ERROR, default, name, err, err, "Unknown error: %d", "Unknown error", "%s generated an unknown error: %d", "%s generated an unknown error", true, true)
 
 #define GLIS_boolean_to_string(val, TRUE_VALUE) val == TRUE_VALUE ? "true" : "false"
 
@@ -229,6 +229,12 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
     if (!GLIS.init_GLIS) return;
     LOG_INFO("Uninitializing");
 
+    if (GLIS.init_debug) {
+        LOG_INFO("Disabling debug callbacks");
+        disable_debug_callbacks();
+        LOG_INFO("Disabled debug callbacks");
+        GLIS.init_debug = false;
+    }
     if (GLIS.init_eglMakeCurrent) {
         LOG_INFO("Switching context to no context");
         eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
@@ -344,7 +350,6 @@ void GLIS::on_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, G
 
     MessageSS << "OpenGL debug message " << id << " (";
     switch (source) {
-        // clang-format off
         case GL_DEBUG_SOURCE_API:
             MessageSS << "Source: API.";
             break;
@@ -365,11 +370,9 @@ void GLIS::on_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, G
             break;
         default:
             MessageSS << "Source: Unknown (" << source << ").";
-            // clang-format on
     }
 
     switch (type) {
-        // clang-format off
         case GL_DEBUG_TYPE_ERROR:
             MessageSS << " Type: ERROR.";
             break;
@@ -399,11 +402,9 @@ void GLIS::on_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, G
             break;
         default:
             MessageSS << " Type: Unknown (" << type << ").";
-            // clang-format on
     }
 
     switch (severity) {
-        // clang-format off
         case GL_DEBUG_SEVERITY_HIGH:
             MessageSS << " Severity: HIGH";
             break;
@@ -419,23 +420,39 @@ void GLIS::on_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, G
         default:
             MessageSS << " Severity: Unknown (" << severity << ")";
             break;
-            // clang-format on
     }
 
     MessageSS << "): " << message;
 
-    auto x = MessageSS.str();
-    LOG_ERROR("%s", x.c_str());
+    std::string s = MessageSS.str();
+    const char * msg = s.c_str();
+    if (GLIS_ABORT_ON_DEBUG_LEVEL_API && source == GL_DEBUG_SOURCE_API) LOG_ALWAYS_FATAL("%s", msg);
+    LOG_ERROR("%s", msg);
 }
 
 void GLIS::enable_debug_callbacks(void) {
     glEnable(GL_DEBUG_OUTPUT);
+    GLIS_error_to_string_GL("glEnable");
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    GLIS_error_to_string_GL("glEnable");
     glDebugMessageCallback(on_gl_error, nullptr);
     GLenum err = glGetError();
     GLIS_error_to_string_GL("glDebugMessageCallback", err);
     if (err != GL_NO_ERROR) {
         LOG_ERROR("Failed to enable debug messages");
+    }
+}
+
+void GLIS::disable_debug_callbacks(void) {
+    glDisable(GL_DEBUG_OUTPUT);
+    GLIS_error_to_string_GL("glDisable");
+    glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    GLIS_error_to_string_GL("glDisable");
+    glDebugMessageCallback(nullptr, nullptr);
+    GLenum err = glGetError();
+    GLIS_error_to_string_GL("glDebugMessageCallback", err);
+    if (err != GL_NO_ERROR) {
+        LOG_ERROR("Failed to disable debug messages");
     }
 }
 
@@ -458,19 +475,14 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
     LOG_INFO("Initialized display");
 
     if (debug) {
-        if (GLIS.eglMajVers == 1 && GLIS.eglMinVers == 5) {
-            LOG_INFO("debug mode enabled");
-            const EGLint context_attributes[] = {
-                    EGL_CONTEXT_CLIENT_VERSION, 3, EGL_CONTEXT_OPENGL_DEBUG, EGL_TRUE, EGL_NONE
-            };
-            GLIS.context_attributes = context_attributes;
-        }
-        LOG_INFO("debug mode requested however EGL 1.5 or higher is required");
-        LOG_INFO("you have EGL %d.%d", GLIS.eglMajVers, GLIS.eglMinVers);
-        LOG_INFO("debug mode will be disabled");
-        const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
+        LOG_INFO("Debug mode enabled");
+        const EGLint context_attributes[] = {
+                EGL_CONTEXT_CLIENT_VERSION, 3, EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR, EGL_NONE
+        };
         GLIS.context_attributes = context_attributes;
+        GLIS.debug_context = true;
     } else {
+        LOG_INFO("Debug mode disabled");
         const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
         GLIS.context_attributes = context_attributes;
     }
@@ -513,6 +525,12 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Switched to context");
+    if (debug) {
+        LOG_INFO("Enabling debug callbacks");
+        enable_debug_callbacks();
+        LOG_INFO("Enabled debug callbacks");
+        GLIS.init_debug = true;
+    }
     LOG_INFO("Obtaining surface width and height");
     if (!GLIS_get_width_height(GLIS)) {
         LOG_ERROR("Failed to obtain surface width and height");
@@ -565,7 +583,9 @@ bool GLIS::GLIS_setupOffScreenRendering(class GLIS_CLASS &GLIS, int w, int h) {
 
 GLboolean GLIS::GLIS_ShaderCompilerSupported() {
     GLboolean GLSC_supported;
+    GLIS_error_to_string_GL("before GLIS_ShaderCompilerSupported invocation");
     glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported);
+    GLIS_error_to_string_GL("glGetBooleanv");
     LOG_INFO("Supports Shader Compiler: %s", GLSC_supported == GL_TRUE ? "true" : "false");
     return GLSC_supported;
 }
@@ -592,28 +612,35 @@ GLuint GLIS::GLIS_createShader(GLenum shaderType, const char *&src) {
         }
         LOG_INFO("Creating %s Shader", SHADER_TYPE);
         GLuint shader = glCreateShader(shaderType);
+        GLIS_error_to_string_GL("glCreateShader");
         if (!shader) {
             return 0;
         }
         glShaderSource(shader, 1, &src, nullptr);
+        GLIS_error_to_string_GL("glShaderSource");
         LOG_INFO("Created %s Shader", SHADER_TYPE);
         GLint compiled = GL_FALSE;
         LOG_INFO("Compiling %s Shader", SHADER_TYPE);
         glCompileShader(shader);
+        GLIS_error_to_string_GL("glCompileShader");
         glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+        GLIS_error_to_string_GL("glGetShaderiv");
         if (compiled != GL_TRUE) {
             GLint infoLogLen = 0;
             glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLen);
+            GLIS_error_to_string_GL("glGetShaderiv");
             if (infoLogLen > 0) {
                 GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
                 if (infoLog) {
 
                     glGetShaderInfoLog(shader, infoLogLen, nullptr, infoLog);
+                    GLIS_error_to_string_GL("glGetShaderInfoLog");
                     LOG_ERROR("Could not compile %s shader:\n%s", SHADER_TYPE, infoLog);
                     free(infoLog);
                 }
             }
             glDeleteShader(shader);
+            GLIS_error_to_string_GL("glDeleteShader");
             return 0;
         }
         assert(glIsShader(shader) == GL_TRUE);
@@ -625,19 +652,23 @@ GLuint GLIS::GLIS_createShader(GLenum shaderType, const char *&src) {
 GLboolean GLIS::GLIS_validate_program_link(GLuint &Program) {
     GLint linked = GL_FALSE;
     glGetProgramiv(Program, GL_LINK_STATUS, &linked);
+    GLIS_error_to_string_GL("glGetProgramiv");
     if (linked != GL_TRUE) {
         GLint infoLogLen = 0;
         glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen);
+        GLIS_error_to_string_GL("glGetProgramiv");
         if (infoLogLen > 0) {
             GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
             if (infoLog) {
 
                 glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
+                GLIS_error_to_string_GL("glGetProgramInfoLog");
                 LOG_ERROR("Could not link program:\n%s", infoLog);
                 free(infoLog);
             }
         }
         glDeleteProgram(Program);
+        GLIS_error_to_string_GL("glDeleteProgram");
         return GL_FALSE;
     }
     return GL_TRUE;
@@ -646,20 +677,25 @@ GLboolean GLIS::GLIS_validate_program_link(GLuint &Program) {
 GLboolean GLIS::GLIS_validate_program_valid(GLuint &Program) {
     GLint validated = GL_FALSE;
     glValidateProgram(Program);
+    GLIS_error_to_string_GL("glValidateProgram");
     glGetProgramiv(Program, GL_VALIDATE_STATUS, &validated);
+    GLIS_error_to_string_GL("glGetProgramiv");
     if (validated != GL_TRUE) {
         GLint infoLogLen = 0;
         glGetProgramiv(Program, GL_INFO_LOG_LENGTH, &infoLogLen);
+        GLIS_error_to_string_GL("glGetProgramiv");
         if (infoLogLen > 0) {
             GLchar *infoLog = (GLchar *) malloc(static_cast<size_t>(infoLogLen));
             if (infoLog) {
 
                 glGetProgramInfoLog(Program, infoLogLen, nullptr, infoLog);
+                GLIS_error_to_string_GL("glGetProgramInfoLog");
                 LOG_ERROR("Could not validate program:\n%s", infoLog);
                 free(infoLog);
             }
         }
         glDeleteProgram(Program);
+        GLIS_error_to_string_GL("glDeleteProgram");
         return GL_FALSE;
     }
     return GL_TRUE;
@@ -669,6 +705,7 @@ GLboolean GLIS::GLIS_validate_program(GLuint &Program) {
     if (GLIS_validate_program_link(Program) == GL_TRUE)
         if (GLIS_validate_program_valid(Program) == GL_TRUE) {
             GLboolean v = glIsProgram(Program);
+            GLIS_error_to_string_GL("glIsProgram");
             return v;
         }
     return GL_FALSE;
@@ -698,18 +735,23 @@ void GLIS::GLIS_set_conversion_origin(int origin) {
 
 void GLIS::GLIS_set_texture(GLenum textureUnit, GLuint & texture) {
     glActiveTexture(textureUnit);
+    GLIS_error_to_string_GL("glActiveTexture");
     glBindTexture(GL_TEXTURE_2D, texture);
+    GLIS_error_to_string_GL("glBindTexture");
 }
 
 void GLIS::GLIS_set_framebuffer(GLuint &framebuffer, GLuint &renderbuffer) {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    GLIS_error_to_string_GL("glBindFramebuffer");
     glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    GLIS_error_to_string_GL("glBindRenderbuffer");
 }
 
 void GLIS::GLIS_set_default_framebuffer() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    GLIS_error_to_string_GL("glBindFramebuffer");
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
+    GLIS_error_to_string_GL("glBindRenderbuffer");
 }
 
 void GLIS::GLIS_set_default_texture(GLenum textureUnit) {
@@ -719,80 +761,70 @@ void GLIS::GLIS_set_default_texture(GLenum textureUnit) {
 
 void GLIS::GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer,
                             GLint &texture_width, GLint &texture_height) {
-
-    // simply doing
-    // glGenFramebuffers(1, &framebuffer); glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    // (even tho this will produce an incomplete framebuffer, gl does not appear to actually care
-    // and will keep rendering as normal)
-    // will cause glReadPixels to be around 20x faster than if only the default framebuffer was
-    // binded
-
-    // however it is best to produce a complete framebuffer
-
-    glGenFramebuffers(1, &framebuffer);
     glGenRenderbuffers(1, &renderbuffer);
+    GLIS_error_to_string_GL("glGenRenderbuffers");
     GLIS_set_framebuffer(framebuffer, renderbuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8UI, texture_width, texture_height);
+    GLIS_error_to_string_GL("glRenderbufferStorage");
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
-
-    GLenum FramebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
-    if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE) LOG_ERROR("framebuffer is not complete");
-    else LOG_INFO("framebuffer is complete");
-#ifndef __ANDROID__
-    // it seems that on Linux, it is required to rebind framebuffer 0
-    // in order to draw, and read pixels via glReadPixels,
-    // swapping buffers does not seem to require framebuffer 0 to be bound...
-    // however Android seems to be able to get away with this, why is this?
-
-    // on Linux, why is required to rebind framebuffer 0 in order to
-    // draw to a texture, and read pixels via glReadPixels from an FBO?
-    // as in Android, rebinding to framebuffer 0 does not appear to be a requirement
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#endif
+    GLIS_error_to_string_GL("glFramebufferRenderbuffer");
 }
 
 void GLIS::GLIS_texture(GLuint &texture) {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &texture); GLIS_error_to_string_GL("glGenTextures");
+    glBindTexture(GL_TEXTURE_2D, texture); GLIS_error_to_string_GL("glBindTexture");
 }
 
 void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
                                GLint &texture_width, GLint &texture_height) {
-    GLIS_framebuffer(framebuffer, renderbuffer, texture_width, texture_height);
-    GLIS_texture(texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA,
-                 GL_UNSIGNED_BYTE, 0);
-    glGenerateMipmap(GL_TEXTURE_2D); // this DOES NOT affect the total size of read pixels
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    // gen renderbuffer to remain temporarily compatible with code that expects current behavour:
+    // at cleanup they call glDeleteRenderbuffers(1, &renderbuffer);
+    glGenRenderbuffers(1, &renderbuffer);
 
-    // Set "texture" as our colour attachment #0
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
-    // Set the list of draw buffers.
+    glGenFramebuffers(1, &framebuffer); GLIS_error_to_string_GL("glGenFramebuffers");
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer); GLIS_error_to_string_GL("glBindFramebuffer");
+
+    glGenTextures(1, &texture); GLIS_error_to_string_GL("glGenTextures");
+    glBindTexture(GL_TEXTURE_2D, texture); GLIS_error_to_string_GL("glBindTexture");
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, texture_width, texture_height); GLIS_error_to_string_GL("glTexStorage2D");
+    // glGenerateMipmap DOES NOT affect the total size of glReadPixels
+    glGenerateMipmap(GL_TEXTURE_2D); GLIS_error_to_string_GL("glGenerateMipmap");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); GLIS_error_to_string_GL("glTexParameteri");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); GLIS_error_to_string_GL("glTexParameteri");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); GLIS_error_to_string_GL("glTexParameteri");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER); GLIS_error_to_string_GL("glTexParameteri");
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0); GLIS_error_to_string_GL("glFramebufferTexture2D");
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    glDrawBuffers(1, DrawBuffers); GLIS_error_to_string_GL("glDrawBuffers");
+
+    // framebuffer is complete
+    GLenum FramebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER); GLIS_error_to_string_GL("glCheckFramebufferStatus");
+    if (FramebufferStatus != GL_FRAMEBUFFER_COMPLETE) LOG_ERROR("framebuffer is not complete");
+    else LOG_INFO("framebuffer is complete");
 }
 
 void GLIS::GLIS_Sync_GPU() {
 //    LOG_INFO("synchronizing with GPU");
     double start = now_ms();
     GLsync GPU = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+    GLIS_error_to_string_GL("glFenceSync");
     if (GPU == nullptr) LOG_ERROR("glFenceSync failed");
 //    LOG_INFO("synchronizing");
     glWaitSync(GPU, 0, GL_TIMEOUT_IGNORED);
+    GLIS_error_to_string_GL("glWaitSync");
 //    LOG_INFO("synchronized");
     glDeleteSync(GPU);
+    GLIS_error_to_string_GL("glDeleteSync");
     double end = now_ms();
 //    LOG_INFO("synchronized with GPU in %G milliseconds", end - start);
 }
 
 EGLBoolean GLIS::GLIS_SwapBuffers(class GLIS_CLASS &GLIS) {
-    return eglSwapBuffers(GLIS.display, GLIS.surface);
+    EGLBoolean x = eglSwapBuffers(GLIS.display, GLIS.surface);
+    GLIS_error_to_string_EGL("eglSwapBuffers");
+    return x;
 }
 
 void GLIS::GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from,
@@ -856,7 +888,7 @@ void main()
     TEXDATA_LEN = width_to * height_to * sizeof(GLuint);
     *TEXDATA = new GLuint[TEXDATA_LEN];
     memset(*TEXDATA, 0, TEXDATA_LEN);
-    glReadPixels(0, 0, width_to, height_to, GL_RGBA, GL_UNSIGNED_BYTE,
+    glReadPixels(0, 0, width_to, height_to, GL_RGBA8, GL_UNSIGNED_BYTE,
                  *TEXDATA);
     glDeleteProgram(CHILDshaderProgram);
     glDeleteShader(CHILDfragmentShader);
@@ -1111,7 +1143,11 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &text
     GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_0.type_int64_t.store_int64_t(texture_width);
     GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_1.type_int64_t.store_int64_t(texture_height);
     GLIS_INTERNAL_SHARED_MEMORY.slot.additional_data_2.type_size_t.store_size_t(window_id);
+    auto s2 = now_ms();
     glReadPixels(0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, GLIS_INTERNAL_SHARED_MEMORY.slot.texture.load_ptr());
+    auto e2 = now_ms();
+    LOG_INFO("glReadPixels completed in %ld milliseconds", e2-s2);
+    GLIS_error_to_string_GL("glReadPixels");
     GLIS_sync_server("GLIS_upload_texture", window_id);
     LOG_INFO("uploaded texture");
 }
@@ -1412,15 +1448,19 @@ void GLIS::GLIS_build_simple_shader_program(
     fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
     LOG_INFO("Creating Shader program");
     shaderProgram = glCreateProgram();
+    GLIS_error_to_string_GL("glCreateProgram");
     LOG_INFO("Created Shader program");
     LOG_INFO("Attaching vertex Shader to program");
     glAttachShader(shaderProgram, vertexShader);
+    GLIS_error_to_string_GL("glAttachShader");
     LOG_INFO("Attached vertex Shader to program");
     LOG_INFO("Attaching fragment Shader to program");
     glAttachShader(shaderProgram, fragmentShader);
+    GLIS_error_to_string_GL("glAttachShader");
     LOG_INFO("Attached fragment Shader to program");
     LOG_INFO("Linking Shader program");
     glLinkProgram(shaderProgram);
+    GLIS_error_to_string_GL("glLinkProgram");
     LOG_INFO("Linked Shader program");
     LOG_INFO("Validating Shader program");
     GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);

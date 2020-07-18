@@ -152,15 +152,16 @@ void handleCommands(
         int64_t w = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         int64_t h = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
         LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, w, h);
-        glGenTextures(1, &x->TEXTURE);
-        glBindTexture(GL_TEXTURE_2D, x->TEXTURE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, client->shared_memory.slot.texture.load_ptr());
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glGenTextures(1, &x->TEXTURE); glis.GLIS_error_to_string_GL("glGenTextures");
+        glBindTexture(GL_TEXTURE_2D, x->TEXTURE); glis.GLIS_error_to_string_GL("glBindTexture");
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, w, h); glis.GLIS_error_to_string_GL("glTexStorage2D");
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, client->shared_memory.slot.texture.load_ptr()); glis.GLIS_error_to_string_GL("glTexSubImage2D");
+        glGenerateMipmap(GL_TEXTURE_2D); glis.GLIS_error_to_string_GL("glGenerateMipmap");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glBindTexture(GL_TEXTURE_2D, 0); glis.GLIS_error_to_string_GL("glBindTexture");
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
         LOG_INFO("CLIENT ID: %zu, CLIENT has uploaded", client->id);
     } else if (command == glis.GLIS_SERVER_COMMANDS.modify_window) {
@@ -285,6 +286,7 @@ void GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorM
     fps.onFrameEnd();
     std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
     font.GLIS_font_RenderText(text, 0, 20, font.GLIS_font_color_black);
+    glis.GLIS_error_to_string_GL("before GLIS_Sync_GPU");
     glis.GLIS_Sync_GPU();
     glis.GLIS_SwapBuffers(CompositorMain);
     glis.GLIS_Sync_GPU();

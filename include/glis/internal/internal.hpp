@@ -16,6 +16,8 @@ extern bool GLIS_LOG_PRINT_NON_ERRORS;
 extern bool GLIS_LOG_PRINT_VERTEX;
 extern bool GLIS_LOG_PRINT_CONVERSIONS;
 extern bool GLIS_LOG_PRINT_SHAPE_INFO;
+extern bool GLIS_ABORT_ON_ERROR;
+extern bool GLIS_ABORT_ON_DEBUG_LEVEL_API;
 
 class GLIS {
 public:
@@ -369,5 +371,7 @@ public:
     void GLIS_set_default_framebuffer();
 
     void GLIS_set_default_texture(GLenum textureUnit);
+
+    void disable_debug_callbacks(void);
 };
 #pragma clang diagnostic pop

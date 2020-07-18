@@ -723,6 +723,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o
  ../include/glis/templates/templates.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/internal.cpp
 CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o
+ ../include/glis/internal/common.hpp
  ../include/glis/internal/log.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/log.cpp
 CMakeFiles/GLIS.dir/src/glis/ipc/ashmem.cpp.o

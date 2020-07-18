@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/compositor_clients/compositor_stop_drawing.cpp.o"
-  "testBuilder_executables_compositor_stop_drawing"
-  "testBuilder_executables_compositor_stop_drawing.pdb"
+  "Debug/bin/testBuilder_executables_compositor_stop_drawing"
+  "Debug/bin/testBuilder_executables_compositor_stop_drawing.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -20,7 +20,6 @@ int main() {
         SERVER_LOG_TRANSFER_INFO = true;
         glis.GLIS_upload_texture(G, win_id1, W, H);
         LOG_INFO("created window %d", 0);
-
         LOG_INFO("Cleaning up");
         glis.GLIS_destroy_GLIS(G);
         LOG_INFO("Destroyed sub Compositor GLIS");

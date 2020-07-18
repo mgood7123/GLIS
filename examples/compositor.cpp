@@ -13,8 +13,6 @@ GLIS_COMPOSITOR_LOOP_FUNCTION(loop, glis, CompositorMain, font, fps, render, res
 
 int main() {
     // print non errors
-    GLIS_LOG_PRINT_NON_ERRORS = true;
-
     if (!glis.getX11Window(CompositorMain, GLIS_COMMON_WIDTH/4, GLIS_COMMON_HEIGHT/4)) return -1;
     CompositorMain.width = GLIS_COMMON_WIDTH;
     CompositorMain.height = GLIS_COMMON_HEIGHT;

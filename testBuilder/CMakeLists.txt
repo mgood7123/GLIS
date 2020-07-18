@@ -13,10 +13,17 @@ endmacro()
 macro(testBuilder_build testName outDirectory)
     add_executable(testBuilder_executables_${testName} ${testBuilder_SOURCES_LIST_${testName}})
     target_link_libraries(testBuilder_executables_${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
-    add_custom_command(
-            TARGET testBuilder_executables_${testName}
-            POST_BUILD
-            COMMAND cp -v testBuilder_executables_${testName} ${outDirectory}/${testName})
+    if(CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+        add_custom_command(
+                TARGET testBuilder_executables_${testName}
+                POST_BUILD
+                COMMAND cp -v ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testBuilder_executables_${testName} ${outDirectory}/${testName})
+    else()
+        add_custom_command(
+                TARGET testBuilder_executables_${testName}
+                POST_BUILD
+                COMMAND cp -v testBuilder_executables_${testName} ${outDirectory}/${testName})
+    endif()
 endmacro()
 
 macro(testBuilder_build_shared_library testName)

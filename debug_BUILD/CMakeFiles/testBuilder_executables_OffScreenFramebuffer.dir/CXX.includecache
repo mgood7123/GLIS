@@ -1565,6 +1565,8 @@ sys/un.h
 -
 EGL/egl.h
 -
+EGL/eglext.h
+-
 GLES3/gl32.h
 -
 jni.h
@@ -1597,10 +1599,6 @@ glis/templates/templates.hpp
 -
 
 ../include/glis/internal/log.hpp
-android/log.h
--
-android/log.h
--
 
 ../include/glis/ipc/ashmem.hpp
 stddef.h

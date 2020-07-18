@@ -12,6 +12,21 @@ include_directories(dependancies/freetype-2.10.2/include)
 add_subdirectory(dependancies/glm)
 include_directories(dependancies/glm)
 
+add_subdirectory(dependancies/corrade) # build with everything
+#add_subdirectory(dependancies/corrade EXCLUDE_FROM_ALL) # so only things you use are built
+
+# https://doc.magnum.graphics/magnum/requires-gl.html
+
+set(WITH_GL ON CACHE BOOL "" FORCE)
+set(TARGET_GLES ON CACHE BOOL "" FORCE)
+set(WITH_EGLCONTEXT ON CACHE BOOL "" FORCE)
+#set(TARGET_DESKTOP_GLES ON CACHE BOOL "" FORCE)
+#set(TARGET_VK ON CACHE BOOL "" FORCE)
+#set(WITH_MAGNUMFONT ON CACHE BOOL "" FORCE)
+#set(WITH_MAGNUMFONTCONVERTER ON CACHE BOOL "" FORCE)
+add_subdirectory(dependancies/magnum) # build with everything
+#add_subdirectory(dependancies/magnum EXCLUDE_FROM_ALL)  # so only things you use are built
+
 include_directories(dependancies)
 include_directories(include)
 
@@ -49,6 +64,8 @@ elseif(UNIX)
     testBuilder_add_library(GLIS wayland-egl)
 endif()
 
+testBuilder_add_library(GLIS Magnum::Magnum)
+testBuilder_add_library(GLIS Magnum::GL)
 testBuilder_add_library(GLIS freetype)
 testBuilder_add_library(GLIS glm)
 testBuilder_add_library(GLIS EGL)
@@ -72,6 +89,7 @@ build_program(examples X11)
 build_program(examples X11_2)
 build_program(examples X11_3)
 build_program(examples wayland)
+#build_program(examples X11_magnum)
 
 build_program(compositor_clients MovingWindows)
 build_program(compositor_clients MovingWindowsB)

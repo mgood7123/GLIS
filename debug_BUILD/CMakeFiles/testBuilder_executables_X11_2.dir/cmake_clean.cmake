@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_X11_2.dir/examples/X11_2.cpp.o"
-  "testBuilder_executables_X11_2"
-  "testBuilder_executables_X11_2.pdb"
+  "Debug/bin/testBuilder_executables_X11_2"
+  "Debug/bin/testBuilder_executables_X11_2.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

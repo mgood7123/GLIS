@@ -42,6 +42,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/WINAPI/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/glm/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/testBuilder/cmake_install.cmake")
 
 endif()

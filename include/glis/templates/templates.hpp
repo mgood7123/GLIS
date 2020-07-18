@@ -408,26 +408,42 @@ void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, T
     GLuint element_buffer_object;
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Generating buffers");
     glGenVertexArrays(1, &vertex_array_object);
+    GLIS_error_to_string_GL("glGenVertexArrays");
     glGenBuffers(1, &vertex_buffer_object);
+    GLIS_error_to_string_GL("glGenBuffers");
     glGenBuffers(1, &element_buffer_object);
+    GLIS_error_to_string_GL("glGenBuffers");
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Binding buffers");
     glBindVertexArray(vertex_array_object);
+    GLIS_error_to_string_GL("glBindVertexArray");
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
+    GLIS_error_to_string_GL("glBindBuffer");
     glBufferData(GL_ARRAY_BUFFER, v.vertex_size, v.vertex, GL_STATIC_DRAW);
+    GLIS_error_to_string_GL("glBufferData");
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_object);
+    GLIS_error_to_string_GL("glBindBuffer");
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.indices_size, v.indices, GL_STATIC_DRAW);
+    GLIS_error_to_string_GL("glBufferData");
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Initializing Attributes");
     v.init_attributes();
 
     if (GLIS_LOG_PRINT_SHAPE_INFO) LOG_INFO("Drawing rectangle");
     glBindVertexArray(vertex_array_object);
+    GLIS_error_to_string_GL("glBindVertexArray");
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    GLIS_error_to_string_GL("glDrawElements");
     glBindVertexArray(0);
+    GLIS_error_to_string_GL("glBindVertexArray");
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    GLIS_error_to_string_GL("glBindBuffer");
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    GLIS_error_to_string_GL("glBindBuffer");
     glDeleteVertexArrays(1, &vertex_array_object);
+    GLIS_error_to_string_GL("glDeleteVertexArrays");
     glDeleteBuffers(1, &vertex_buffer_object);
+    GLIS_error_to_string_GL("glDeleteBuffers");
     glDeleteBuffers(1, &element_buffer_object);
+    GLIS_error_to_string_GL("glDeleteBuffers");
 }
 
 template<typename TYPE>

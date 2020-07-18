@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o"
-  "testBuilder_executables_wayland"
-  "testBuilder_executables_wayland.pdb"
+  "Debug/bin/testBuilder_executables_wayland"
+  "Debug/bin/testBuilder_executables_wayland.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -15,8 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
-  "libGLIS.pdb"
-  "libGLIS.so"
+  "Debug/lib/libGLIS.pdb"
+  "Debug/lib/libGLIS.so"
 )
 
 # Per-language clean rules from dependency scanning.

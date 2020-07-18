@@ -7,6 +7,8 @@
 void GLIS_BACKUP_FRAMEBUFFER::backup() {
     glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &__GL_READ_FRAMEBUFFER_BINDING);
     glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &__GL_DRAW_FRAMEBUFFER_BINDING);
+//    glGetFramebufferParameteriv()
+//    glGetFramebufferAttachmentParameteriv()
 }
 
 void GLIS_BACKUP_FRAMEBUFFER::restore() {

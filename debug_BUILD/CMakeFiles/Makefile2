@@ -71,6 +71,8 @@ all: CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all
 all: dependancies/WINAPI/all
 all: dependancies/freetype-2.10.2/all
 all: dependancies/glm/all
+all: dependancies/corrade/all
+all: dependancies/magnum/all
 all: testBuilder/all
 
 .PHONY : all
@@ -79,6 +81,8 @@ all: testBuilder/all
 preinstall: dependancies/WINAPI/preinstall
 preinstall: dependancies/freetype-2.10.2/preinstall
 preinstall: dependancies/glm/preinstall
+preinstall: dependancies/corrade/preinstall
+preinstall: dependancies/magnum/preinstall
 preinstall: testBuilder/preinstall
 
 .PHONY : preinstall
@@ -102,6 +106,8 @@ clean: CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/clean
 clean: dependancies/WINAPI/clean
 clean: dependancies/freetype-2.10.2/clean
 clean: dependancies/glm/clean
+clean: dependancies/corrade/clean
+clean: dependancies/magnum/clean
 clean: testBuilder/clean
 
 .PHONY : clean
@@ -141,6 +147,210 @@ dependancies/WINAPI/SDK/src/Windows/Kernel/preinstall:
 dependancies/WINAPI/SDK/src/Windows/Kernel/clean: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/clean
 
 .PHONY : dependancies/WINAPI/SDK/src/Windows/Kernel/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade
+
+# Recursive "all" directory target.
+dependancies/corrade/all: dependancies/corrade/modules/all
+dependancies/corrade/all: dependancies/corrade/src/all
+
+.PHONY : dependancies/corrade/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/preinstall: dependancies/corrade/modules/preinstall
+dependancies/corrade/preinstall: dependancies/corrade/src/preinstall
+
+.PHONY : dependancies/corrade/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/clean: dependancies/corrade/modules/clean
+dependancies/corrade/clean: dependancies/corrade/src/clean
+
+.PHONY : dependancies/corrade/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/modules
+
+# Recursive "all" directory target.
+dependancies/corrade/modules/all:
+
+.PHONY : dependancies/corrade/modules/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/modules/preinstall:
+
+.PHONY : dependancies/corrade/modules/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/modules/clean:
+
+.PHONY : dependancies/corrade/modules/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src
+
+# Recursive "all" directory target.
+dependancies/corrade/src/all: dependancies/corrade/src/Corrade/all
+
+.PHONY : dependancies/corrade/src/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/preinstall: dependancies/corrade/src/Corrade/preinstall
+
+.PHONY : dependancies/corrade/src/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/clean: dependancies/corrade/src/Corrade/clean
+
+.PHONY : dependancies/corrade/src/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/all: dependancies/corrade/src/Corrade/Containers/all
+dependancies/corrade/src/Corrade/all: dependancies/corrade/src/Corrade/Interconnect/all
+dependancies/corrade/src/Corrade/all: dependancies/corrade/src/Corrade/PluginManager/all
+dependancies/corrade/src/Corrade/all: dependancies/corrade/src/Corrade/TestSuite/all
+dependancies/corrade/src/Corrade/all: dependancies/corrade/src/Corrade/Utility/all
+
+.PHONY : dependancies/corrade/src/Corrade/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/preinstall: dependancies/corrade/src/Corrade/Containers/preinstall
+dependancies/corrade/src/Corrade/preinstall: dependancies/corrade/src/Corrade/Interconnect/preinstall
+dependancies/corrade/src/Corrade/preinstall: dependancies/corrade/src/Corrade/PluginManager/preinstall
+dependancies/corrade/src/Corrade/preinstall: dependancies/corrade/src/Corrade/TestSuite/preinstall
+dependancies/corrade/src/Corrade/preinstall: dependancies/corrade/src/Corrade/Utility/preinstall
+
+.PHONY : dependancies/corrade/src/Corrade/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/clean
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/Containers/clean
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/Interconnect/clean
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/PluginManager/clean
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/TestSuite/clean
+dependancies/corrade/src/Corrade/clean: dependancies/corrade/src/Corrade/Utility/clean
+
+.PHONY : dependancies/corrade/src/Corrade/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/Containers
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/Containers/all:
+
+.PHONY : dependancies/corrade/src/Corrade/Containers/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/Containers/preinstall:
+
+.PHONY : dependancies/corrade/src/Corrade/Containers/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/Containers/clean: dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/clean
+
+.PHONY : dependancies/corrade/src/Corrade/Containers/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/Interconnect
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/Interconnect/all: dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all
+
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/Interconnect/preinstall:
+
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/Interconnect/clean: dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/clean
+
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/PluginManager
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/PluginManager/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/corrade/src/Corrade/PluginManager/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/all
+
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/PluginManager/preinstall:
+
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/PluginManager/clean: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/clean
+dependancies/corrade/src/Corrade/PluginManager/clean: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/clean
+
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/TestSuite
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/TestSuite/all: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
+dependancies/corrade/src/Corrade/TestSuite/all: dependancies/corrade/src/Corrade/TestSuite/Compare/all
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/TestSuite/preinstall: dependancies/corrade/src/Corrade/TestSuite/Compare/preinstall
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/TestSuite/clean: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/clean
+dependancies/corrade/src/Corrade/TestSuite/clean: dependancies/corrade/src/Corrade/TestSuite/Compare/clean
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/TestSuite/Compare
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/all:
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/preinstall:
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/clean: dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/clean
+
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/corrade/src/Corrade/Utility
+
+# Recursive "all" directory target.
+dependancies/corrade/src/Corrade/Utility/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all
+dependancies/corrade/src/Corrade/Utility/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/corrade/src/Corrade/Utility/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/all
+
+.PHONY : dependancies/corrade/src/Corrade/Utility/all
+
+# Recursive "preinstall" directory target.
+dependancies/corrade/src/Corrade/Utility/preinstall:
+
+.PHONY : dependancies/corrade/src/Corrade/Utility/preinstall
+
+# Recursive "clean" directory target.
+dependancies/corrade/src/Corrade/Utility/clean: dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/clean
+dependancies/corrade/src/Corrade/Utility/clean: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/clean
+dependancies/corrade/src/Corrade/Utility/clean: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/clean
+
+.PHONY : dependancies/corrade/src/Corrade/Utility/clean
 
 #=============================================================================
 # Directory level rules for directory dependancies/freetype-2.10.2
@@ -197,6 +407,473 @@ dependancies/glm/glm/clean: dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
 .PHONY : dependancies/glm/glm/clean
 
 #=============================================================================
+# Directory level rules for directory dependancies/magnum
+
+# Recursive "all" directory target.
+dependancies/magnum/all: dependancies/magnum/modules/all
+dependancies/magnum/all: dependancies/magnum/src/all
+
+.PHONY : dependancies/magnum/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/preinstall: dependancies/magnum/modules/preinstall
+dependancies/magnum/preinstall: dependancies/magnum/src/preinstall
+
+.PHONY : dependancies/magnum/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/clean: dependancies/magnum/modules/clean
+dependancies/magnum/clean: dependancies/magnum/src/clean
+
+.PHONY : dependancies/magnum/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/modules
+
+# Recursive "all" directory target.
+dependancies/magnum/modules/all:
+
+.PHONY : dependancies/magnum/modules/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/modules/preinstall:
+
+.PHONY : dependancies/magnum/modules/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/modules/clean:
+
+.PHONY : dependancies/magnum/modules/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src
+
+# Recursive "all" directory target.
+dependancies/magnum/src/all: dependancies/magnum/src/MagnumExternal/all
+dependancies/magnum/src/all: dependancies/magnum/src/Magnum/all
+dependancies/magnum/src/all: dependancies/magnum/src/MagnumPlugins/all
+
+.PHONY : dependancies/magnum/src/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/preinstall: dependancies/magnum/src/MagnumExternal/preinstall
+dependancies/magnum/src/preinstall: dependancies/magnum/src/Magnum/preinstall
+dependancies/magnum/src/preinstall: dependancies/magnum/src/MagnumPlugins/preinstall
+
+.PHONY : dependancies/magnum/src/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/clean: dependancies/magnum/src/MagnumExternal/clean
+dependancies/magnum/src/clean: dependancies/magnum/src/Magnum/clean
+dependancies/magnum/src/clean: dependancies/magnum/src/MagnumPlugins/clean
+
+.PHONY : dependancies/magnum/src/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Animation/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Math/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Platform/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/DebugTools/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/GL/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/MeshTools/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Primitives/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/SceneGraph/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Shaders/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Text/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/TextureTools/all
+dependancies/magnum/src/Magnum/all: dependancies/magnum/src/Magnum/Trade/all
+
+.PHONY : dependancies/magnum/src/Magnum/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Animation/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Math/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Platform/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/DebugTools/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/GL/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/MeshTools/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Primitives/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/SceneGraph/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Shaders/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Text/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/TextureTools/preinstall
+dependancies/magnum/src/Magnum/preinstall: dependancies/magnum/src/Magnum/Trade/preinstall
+
+.PHONY : dependancies/magnum/src/Magnum/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Animation/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Math/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Platform/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/DebugTools/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/GL/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/MeshTools/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Primitives/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/SceneGraph/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Shaders/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Text/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/TextureTools/clean
+dependancies/magnum/src/Magnum/clean: dependancies/magnum/src/Magnum/Trade/clean
+
+.PHONY : dependancies/magnum/src/Magnum/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Animation
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Animation/all:
+
+.PHONY : dependancies/magnum/src/Magnum/Animation/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Animation/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Animation/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Animation/clean: dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Animation/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/DebugTools
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/DebugTools/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
+dependancies/magnum/src/Magnum/DebugTools/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/DebugTools/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/DebugTools/clean: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/clean
+dependancies/magnum/src/Magnum/DebugTools/clean: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/GL
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/GL/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/GL/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/GL/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/GL/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/GL/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/GL/clean: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/clean
+dependancies/magnum/src/Magnum/GL/clean: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/GL/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Math
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Math/all: dependancies/magnum/src/Magnum/Math/Algorithms/all
+
+.PHONY : dependancies/magnum/src/Magnum/Math/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Math/preinstall: dependancies/magnum/src/Magnum/Math/Algorithms/preinstall
+
+.PHONY : dependancies/magnum/src/Magnum/Math/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Math/clean: dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/clean
+dependancies/magnum/src/Magnum/Math/clean: dependancies/magnum/src/Magnum/Math/Algorithms/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Math/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Math/Algorithms
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Math/Algorithms/all:
+
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Math/Algorithms/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Math/Algorithms/clean: dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/MeshTools
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/MeshTools/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+dependancies/magnum/src/Magnum/MeshTools/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/MeshTools/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/MeshTools/clean: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/clean
+dependancies/magnum/src/Magnum/MeshTools/clean: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Platform
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Platform/all: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
+dependancies/magnum/src/Magnum/Platform/all: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/Platform/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Platform/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Platform/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Platform/clean: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/clean
+dependancies/magnum/src/Magnum/Platform/clean: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/clean
+dependancies/magnum/src/Magnum/Platform/clean: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Platform/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Primitives
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Primitives/all: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/Primitives/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Primitives/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Primitives/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Primitives/clean: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Primitives/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/SceneGraph
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/SceneGraph/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
+dependancies/magnum/src/Magnum/SceneGraph/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/SceneGraph/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/SceneGraph/clean: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/clean
+dependancies/magnum/src/Magnum/SceneGraph/clean: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Shaders
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Shaders/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
+dependancies/magnum/src/Magnum/Shaders/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/Shaders/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Shaders/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Shaders/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Shaders/clean: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/clean
+dependancies/magnum/src/Magnum/Shaders/clean: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/clean
+dependancies/magnum/src/Magnum/Shaders/clean: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Shaders/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Text
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Text/all: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
+dependancies/magnum/src/Magnum/Text/all: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/Text/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Text/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Text/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Text/clean: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/clean
+dependancies/magnum/src/Magnum/Text/clean: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Text/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/TextureTools
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/TextureTools/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/TextureTools/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/TextureTools/clean: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/clean
+dependancies/magnum/src/Magnum/TextureTools/clean: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/Magnum/Trade
+
+# Recursive "all" directory target.
+dependancies/magnum/src/Magnum/Trade/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+dependancies/magnum/src/Magnum/Trade/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
+
+.PHONY : dependancies/magnum/src/Magnum/Trade/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/Magnum/Trade/preinstall:
+
+.PHONY : dependancies/magnum/src/Magnum/Trade/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/Magnum/Trade/clean: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/clean
+dependancies/magnum/src/Magnum/Trade/clean: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/Magnum/Trade/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/MagnumExternal
+
+# Recursive "all" directory target.
+dependancies/magnum/src/MagnumExternal/all: dependancies/magnum/src/MagnumExternal/OpenGL/all
+
+.PHONY : dependancies/magnum/src/MagnumExternal/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/MagnumExternal/preinstall: dependancies/magnum/src/MagnumExternal/OpenGL/preinstall
+
+.PHONY : dependancies/magnum/src/MagnumExternal/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/MagnumExternal/clean: dependancies/magnum/src/MagnumExternal/OpenGL/clean
+
+.PHONY : dependancies/magnum/src/MagnumExternal/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/MagnumExternal/OpenGL
+
+# Recursive "all" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/all: dependancies/magnum/src/MagnumExternal/OpenGL/KHR/all
+dependancies/magnum/src/MagnumExternal/OpenGL/all: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/all
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/preinstall: dependancies/magnum/src/MagnumExternal/OpenGL/KHR/preinstall
+dependancies/magnum/src/MagnumExternal/OpenGL/preinstall: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/preinstall
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/clean: dependancies/magnum/src/MagnumExternal/OpenGL/KHR/clean
+dependancies/magnum/src/MagnumExternal/OpenGL/clean: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/clean
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/MagnumExternal/OpenGL/GLES2
+
+# Recursive "all" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/all: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/all
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/preinstall:
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/clean: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/clean
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/MagnumExternal/OpenGL/KHR
+
+# Recursive "all" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/KHR/all:
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/KHR/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/KHR/preinstall:
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/KHR/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/MagnumExternal/OpenGL/KHR/clean:
+
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/KHR/clean
+
+#=============================================================================
+# Directory level rules for directory dependancies/magnum/src/MagnumPlugins
+
+# Recursive "all" directory target.
+dependancies/magnum/src/MagnumPlugins/all:
+
+.PHONY : dependancies/magnum/src/MagnumPlugins/all
+
+# Recursive "preinstall" directory target.
+dependancies/magnum/src/MagnumPlugins/preinstall:
+
+.PHONY : dependancies/magnum/src/MagnumPlugins/preinstall
+
+# Recursive "clean" directory target.
+dependancies/magnum/src/MagnumPlugins/clean:
+
+.PHONY : dependancies/magnum/src/MagnumPlugins/clean
+
+#=============================================================================
 # Directory level rules for directory testBuilder
 
 # Recursive "all" directory target.
@@ -221,14 +898,17 @@ testBuilder/clean:
 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=68,69 "Built target testBuilder_executables_MYPRIVATEAPP"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=91 "Built target testBuilder_executables_MYPRIVATEAPP"
 .PHONY : CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/rule
@@ -250,14 +930,17 @@ CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/clean:
 CMakeFiles/testBuilder_executables_compositor.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_compositor.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor.dir/build.make CMakeFiles/testBuilder_executables_compositor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=84,85 "Built target testBuilder_executables_compositor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=97 "Built target testBuilder_executables_compositor"
 .PHONY : CMakeFiles/testBuilder_executables_compositor.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_compositor.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_compositor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_compositor.dir/rule
@@ -279,14 +962,17 @@ CMakeFiles/testBuilder_executables_compositor.dir/clean:
 CMakeFiles/testBuilder_executables_X11.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=78,79 "Built target testBuilder_executables_X11"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=95 "Built target testBuilder_executables_X11"
 .PHONY : CMakeFiles/testBuilder_executables_X11.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11.dir/rule
@@ -308,14 +994,17 @@ CMakeFiles/testBuilder_executables_X11.dir/clean:
 CMakeFiles/testBuilder_executables_X11_2.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=80,81 "Built target testBuilder_executables_X11_2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_2"
 .PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 48
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/rule
@@ -337,14 +1026,17 @@ CMakeFiles/testBuilder_executables_X11_2.dir/clean:
 CMakeFiles/testBuilder_executables_X11_3.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=82,83 "Built target testBuilder_executables_X11_3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=96 "Built target testBuilder_executables_X11_3"
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_3.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/rule
@@ -366,14 +1058,17 @@ CMakeFiles/testBuilder_executables_X11_3.dir/clean:
 CMakeFiles/testBuilder_executables_shm.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_shm.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=90,91 "Built target testBuilder_executables_shm"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=99 "Built target testBuilder_executables_shm"
 .PHONY : CMakeFiles/testBuilder_executables_shm.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_shm.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_shm.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_shm.dir/rule
@@ -395,14 +1090,17 @@ CMakeFiles/testBuilder_executables_shm.dir/clean:
 CMakeFiles/testBuilder_executables_wayland.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_wayland.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_wayland.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_wayland.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_wayland.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_wayland.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=92,93 "Built target testBuilder_executables_wayland"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=100 "Built target testBuilder_executables_wayland"
 .PHONY : CMakeFiles/testBuilder_executables_wayland.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_wayland.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_wayland.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_wayland.dir/rule
@@ -424,14 +1122,17 @@ CMakeFiles/testBuilder_executables_wayland.dir/clean:
 CMakeFiles/testBuilder_executables_Texture.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=76,77 "Built target testBuilder_executables_Texture"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=94 "Built target testBuilder_executables_Texture"
 .PHONY : CMakeFiles/testBuilder_executables_Texture.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_Texture.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_Texture.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_Texture.dir/rule
@@ -453,14 +1154,17 @@ CMakeFiles/testBuilder_executables_Texture.dir/clean:
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=88,89 "Built target testBuilder_executables_compositor_stop_drawing"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=98 "Built target testBuilder_executables_compositor_stop_drawing"
 .PHONY : CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/rule
@@ -481,14 +1185,17 @@ CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/clean:
 # All Build rule for target.
 CMakeFiles/GLIS.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/GLIS.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/GLIS.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/GLIS.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/GLIS.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/depend
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Built target GLIS"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=12,13,14,15,16,17 "Built target GLIS"
 .PHONY : CMakeFiles/GLIS.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GLIS.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 63
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 48
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/GLIS.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/GLIS.dir/rule
@@ -510,14 +1217,17 @@ CMakeFiles/GLIS.dir/clean:
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=66,67 "Built target testBuilder_executables_DefaultFramebuffer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_DefaultFramebuffer"
 .PHONY : CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 48
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/rule
@@ -539,14 +1249,17 @@ CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/clean:
 CMakeFiles/testBuilder_executables_MovingWindows.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_MovingWindows.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_MovingWindows.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_MovingWindows.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_MovingWindows.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_MovingWindows.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=70,71 "Built target testBuilder_executables_MovingWindows"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=92 "Built target testBuilder_executables_MovingWindows"
 .PHONY : CMakeFiles/testBuilder_executables_MovingWindows.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_MovingWindows.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_MovingWindows.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_MovingWindows.dir/rule
@@ -568,14 +1281,17 @@ CMakeFiles/testBuilder_executables_MovingWindows.dir/clean:
 CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=72,73 "Built target testBuilder_executables_MovingWindowsB"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=93 "Built target testBuilder_executables_MovingWindowsB"
 .PHONY : CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_MovingWindowsB.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 49
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_MovingWindowsB.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_MovingWindowsB.dir/rule
@@ -597,14 +1313,17 @@ CMakeFiles/testBuilder_executables_MovingWindowsB.dir/clean:
 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=86,87 "Built target testBuilder_executables_compositor_start_drawing"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_compositor_start_drawing"
 .PHONY : CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 48
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/rule
@@ -626,14 +1345,17 @@ CMakeFiles/testBuilder_executables_compositor_start_drawing.dir/clean:
 CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: CMakeFiles/GLIS.dir/all
 CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=74,75 "Built target testBuilder_executables_OffScreenFramebuffer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_OffScreenFramebuffer"
 .PHONY : CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 65
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 48
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/rule
@@ -655,12 +1377,12 @@ CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/clean:
 dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all:
 	$(MAKE) -f dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build.make dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/depend
 	$(MAKE) -f dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build.make dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=18,19,20,21,22 "Built target WinKernel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=71 "Built target WinKernel"
 .PHONY : dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/rule
@@ -682,12 +1404,12 @@ dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/clean:
 dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all:
 	$(MAKE) -f dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/depend
 	$(MAKE) -f dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63 "Built target freetype"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=76,77,78,79,80,81,82,83,84,85,86,87,88,89 "Built target freetype"
 .PHONY : dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 41
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 14
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/rule
@@ -709,12 +1431,12 @@ dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/clean:
 dependancies/glm/glm/CMakeFiles/glm_shared.dir/all:
 	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/depend
 	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=64,65 "Built target glm_shared"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=90 "Built target glm_shared"
 .PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/glm/glm/CMakeFiles/glm_shared.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
@@ -728,6 +1450,1079 @@ glm_shared: dependancies/glm/glm/CMakeFiles/glm_shared.dir/rule
 dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean:
 	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
 .PHONY : dependancies/glm/glm/CMakeFiles/glm_shared.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/build.make dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/build.make dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target Corrade"
+.PHONY : dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/rule
+
+# Convenience name for target.
+Corrade: dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/rule
+
+.PHONY : Corrade
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/build.make dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/CMakeFiles/Corrade.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/build.make dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/build.make dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target CorradeContainers-headers"
+.PHONY : dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/rule
+
+# Convenience name for target.
+CorradeContainers-headers: dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/rule
+
+.PHONY : CorradeContainers-headers
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/build.make dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/Containers/CMakeFiles/CorradeContainers-headers.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+	$(MAKE) -f dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/build.make dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/build.make dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=1 "Built target CorradeInterconnect"
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/rule
+
+# Convenience name for target.
+CorradeInterconnect: dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/rule
+
+.PHONY : CorradeInterconnect
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/build.make dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/all
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=2 "Built target CorradePluginManager"
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/rule
+
+# Convenience name for target.
+CorradePluginManager: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/rule
+
+.PHONY : CorradePluginManager
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target CorradePluginManagerObjects"
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/rule
+
+# Convenience name for target.
+CorradePluginManagerObjects: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/rule
+
+.PHONY : CorradePluginManagerObjects
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/build.make dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/build.make dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/build.make dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=3,4,5 "Built target CorradeTestSuite"
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 9
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/rule
+
+# Convenience name for target.
+CorradeTestSuite: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/rule
+
+.PHONY : CorradeTestSuite
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/build.make dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/build.make dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/build.make dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target CorradeTestSuiteCompare"
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/rule
+
+# Convenience name for target.
+CorradeTestSuiteCompare: dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/rule
+
+.PHONY : CorradeTestSuiteCompare
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/build.make dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/TestSuite/Compare/CMakeFiles/CorradeTestSuiteCompare.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=72,73,74,75 "Built target corrade-rc"
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rule
+
+# Convenience name for target.
+corrade-rc: dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rule
+
+.PHONY : corrade-rc
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/all
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=6,7,8 "Built target CorradeUtility"
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/rule
+
+# Convenience name for target.
+CorradeUtility: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/rule
+
+.PHONY : CorradeUtility
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir
+
+# All Build rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/all:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/depend
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=9,10,11 "Built target CorradeUtilityObjects"
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/rule
+
+# Convenience name for target.
+CorradeUtilityObjects: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/rule
+
+.PHONY : CorradeUtilityObjects
+
+# clean rule for target.
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/clean:
+	$(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/clean
+.PHONY : dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build.make dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build.make dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=26 "Built target MagnumFlextGLObjects"
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/rule
+
+# Convenience name for target.
+MagnumFlextGLObjects: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/rule
+
+.PHONY : MagnumFlextGLObjects
+
+# clean rule for target.
+dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build.make dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/clean
+.PHONY : dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/all
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=18,19,20 "Built target Magnum"
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 13
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/rule
+
+# Convenience name for target.
+Magnum: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/rule
+
+.PHONY : Magnum
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=47,48 "Built target MagnumObjects"
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/rule
+
+# Convenience name for target.
+MagnumObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/rule
+
+.PHONY : MagnumObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=40,41 "Built target MagnumMathObjects"
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/rule
+
+# Convenience name for target.
+MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/rule
+
+.PHONY : MagnumMathObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/build.make dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/build.make dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumAnimation"
+.PHONY : dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/rule
+
+# Convenience name for target.
+MagnumAnimation: dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/rule
+
+.PHONY : MagnumAnimation
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/build.make dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Animation/CMakeFiles/MagnumAnimation.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/build.make dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/build.make dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumMath"
+.PHONY : dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/rule
+
+# Convenience name for target.
+MagnumMath: dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/rule
+
+.PHONY : MagnumMath
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/build.make dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Math/CMakeFiles/MagnumMath.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/build.make dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/build.make dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumMathAlgorithms"
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/rule
+
+# Convenience name for target.
+MagnumMathAlgorithms: dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/rule
+
+.PHONY : MagnumMathAlgorithms
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/build.make dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Math/Algorithms/CMakeFiles/MagnumMathAlgorithms.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/all
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=25 "Built target MagnumEglContext"
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 28
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/rule
+
+# Convenience name for target.
+MagnumEglContext: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/rule
+
+.PHONY : MagnumEglContext
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumPlatform"
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/rule
+
+# Convenience name for target.
+MagnumPlatform: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/rule
+
+.PHONY : MagnumPlatform
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumPlatform.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumEglContextObjects"
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/rule
+
+# Convenience name for target.
+MagnumEglContextObjects: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/rule
+
+.PHONY : MagnumEglContextObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=21 "Built target MagnumDebugTools"
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 62
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/rule
+
+# Convenience name for target.
+MagnumDebugTools: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/rule
+
+.PHONY : MagnumDebugTools
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=22,23,24 "Built target MagnumDebugToolsObjects"
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/rule
+
+# Convenience name for target.
+MagnumDebugToolsObjects: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/rule
+
+.PHONY : MagnumDebugToolsObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all: dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/all
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=27,28,29 "Built target MagnumGL"
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 27
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/rule
+
+# Convenience name for target.
+MagnumGL: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/rule
+
+.PHONY : MagnumGL
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=30,31,32,33,34,35,36,37,38,39 "Built target MagnumGLObjects"
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 10
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/rule
+
+# Convenience name for target.
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/rule
+
+.PHONY : MagnumGLObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/all
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=42,43,44,45 "Built target MagnumMeshTools"
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 41
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/rule
+
+# Convenience name for target.
+MagnumMeshTools: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/rule
+
+.PHONY : MagnumMeshTools
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=46 "Built target MagnumMeshToolsObjects"
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/rule
+
+# Convenience name for target.
+MagnumMeshToolsObjects: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/rule
+
+.PHONY : MagnumMeshToolsObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/build.make dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshToolsObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/build.make dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/build.make dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=49,50,51,52,53,54 "Built target MagnumPrimitives"
+.PHONY : dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 47
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/rule
+
+# Convenience name for target.
+MagnumPrimitives: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/rule
+
+.PHONY : MagnumPrimitives
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/build.make dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumSceneGraph"
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 14
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/rule
+
+# Convenience name for target.
+MagnumSceneGraph: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/rule
+
+.PHONY : MagnumSceneGraph
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=55 "Built target MagnumSceneGraphObjects"
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/rule
+
+# Convenience name for target.
+MagnumSceneGraphObjects: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/rule
+
+.PHONY : MagnumSceneGraphObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=56,57 "Built target MagnumShaders"
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 34
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/rule
+
+# Convenience name for target.
+MagnumShaders: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/rule
+
+.PHONY : MagnumShaders
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=58 "Built target MagnumShadersObjects"
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/rule
+
+# Convenience name for target.
+MagnumShadersObjects: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/rule
+
+.PHONY : MagnumShadersObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumShaders_RCS-dependencies"
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/rule
+
+# Convenience name for target.
+MagnumShaders_RCS-dependencies: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/rule
+
+.PHONY : MagnumShaders_RCS-dependencies
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders_RCS-dependencies.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=59 "Built target MagnumText"
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 36
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/rule
+
+# Convenience name for target.
+MagnumText: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/rule
+
+.PHONY : MagnumText
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=60 "Built target MagnumTextObjects"
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/rule
+
+# Convenience name for target.
+MagnumTextObjects: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/rule
+
+.PHONY : MagnumTextObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/all
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=61,62 "Built target MagnumTextureTools"
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 33
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/rule
+
+# Convenience name for target.
+MagnumTextureTools: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/rule
+
+.PHONY : MagnumTextureTools
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumTextureTools_RCS-dependencies"
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/rule
+
+# Convenience name for target.
+MagnumTextureTools_RCS-dependencies: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/rule
+
+.PHONY : MagnumTextureTools_RCS-dependencies
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=63,64,65,66,67 "Built target MagnumTrade"
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 22
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/rule
+
+# Convenience name for target.
+MagnumTrade: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/rule
+
+.PHONY : MagnumTrade
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/clean
+
+#=============================================================================
+# Target rules for target dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir
+
+# All Build rule for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/depend
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=68,69,70 "Built target MagnumTradeObjects"
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
+
+# Build rule for subdir invocation for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/rule
+
+# Convenience name for target.
+MagnumTradeObjects: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/rule
+
+.PHONY : MagnumTradeObjects
+
+# clean rule for target.
+dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/clean:
+	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/clean
+.PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

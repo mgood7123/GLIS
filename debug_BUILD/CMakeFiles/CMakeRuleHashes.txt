@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+1d160938238e8710c1796b911595f3e3 dependancies/magnum/src/Magnum/Shaders/resource_MagnumShaders_RCS.cpp
+b692a9598b5b9f9ee498ef49c4ff8cc0 dependancies/magnum/src/Magnum/TextureTools/resource_MagnumTextureTools_RCS.cpp

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.o"
-  "testBuilder_executables_OffScreenFramebuffer"
-  "testBuilder_executables_OffScreenFramebuffer.pdb"
+  "Debug/bin/testBuilder_executables_OffScreenFramebuffer"
+  "Debug/bin/testBuilder_executables_OffScreenFramebuffer.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

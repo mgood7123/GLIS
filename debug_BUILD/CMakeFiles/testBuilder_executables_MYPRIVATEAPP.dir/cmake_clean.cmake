@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/compositor_clients/MYPRIVATEAPP.cpp.o"
-  "testBuilder_executables_MYPRIVATEAPP"
-  "testBuilder_executables_MYPRIVATEAPP.pdb"
+  "Debug/bin/testBuilder_executables_MYPRIVATEAPP"
+  "Debug/bin/testBuilder_executables_MYPRIVATEAPP.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

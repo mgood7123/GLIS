@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/compositor_clients/DefaultFramebuffer.cpp.o"
-  "testBuilder_executables_DefaultFramebuffer"
-  "testBuilder_executables_DefaultFramebuffer.pdb"
+  "Debug/bin/testBuilder_executables_DefaultFramebuffer"
+  "Debug/bin/testBuilder_executables_DefaultFramebuffer.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
