@@ -80,10 +80,12 @@ testBuilder_executables_MYPRIVATEAPP_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/compositor_clients/MYPRIVATEAPP.cpp.o
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/build.make
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_MYPRIVATEAPP: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/link.txt

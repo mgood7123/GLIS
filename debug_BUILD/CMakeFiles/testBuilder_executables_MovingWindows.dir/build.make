@@ -80,10 +80,12 @@ testBuilder_executables_MovingWindows_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_MovingWindows: CMakeFiles/testBuilder_executables_MovingWindows.dir/compositor_clients/MovingWindows.cpp.o
 Debug/bin/testBuilder_executables_MovingWindows: CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindows: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_MovingWindows: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_MovingWindows: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_MovingWindows: CMakeFiles/testBuilder_executables_MovingWindows.dir/link.txt

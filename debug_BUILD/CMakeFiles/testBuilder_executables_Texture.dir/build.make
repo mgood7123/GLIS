@@ -80,10 +80,12 @@ testBuilder_executables_Texture_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_Texture: CMakeFiles/testBuilder_executables_Texture.dir/compositor_clients/Texture.cpp.o
 Debug/bin/testBuilder_executables_Texture: CMakeFiles/testBuilder_executables_Texture.dir/build.make
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_Texture: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_Texture: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_Texture: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_Texture: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_Texture: CMakeFiles/testBuilder_executables_Texture.dir/link.txt

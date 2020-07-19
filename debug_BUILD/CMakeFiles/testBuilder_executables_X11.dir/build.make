@@ -80,10 +80,12 @@ testBuilder_executables_X11_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_X11: CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o
 Debug/bin/testBuilder_executables_X11: CMakeFiles/testBuilder_executables_X11.dir/build.make
 Debug/bin/testBuilder_executables_X11: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_X11: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_X11: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_X11: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_X11: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_X11: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_X11: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_X11: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_X11: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_X11: CMakeFiles/testBuilder_executables_X11.dir/link.txt

@@ -237,6 +237,9 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
  ../dependancies/magnum/src/Magnum/Math/BoolVector.h
  ../dependancies/magnum/src/Magnum/Math/Math.h
  ../dependancies/magnum/src/Magnum/Math/Tags.h
+ ../dependancies/magnum/src/Magnum/Platform/GLContext.h
+ ../dependancies/magnum/src/Magnum/Platform/Platform.h
+ ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
  ../dependancies/magnum/src/Magnum/Tags.h
  ../dependancies/magnum/src/Magnum/Types.h
  ../dependancies/magnum/src/MagnumExternal/OpenGL/GL/flextGL.h

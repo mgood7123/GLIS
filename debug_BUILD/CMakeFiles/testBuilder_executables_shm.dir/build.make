@@ -80,10 +80,12 @@ testBuilder_executables_shm_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_shm: CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
 Debug/bin/testBuilder_executables_shm: CMakeFiles/testBuilder_executables_shm.dir/build.make
 Debug/bin/testBuilder_executables_shm: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_shm: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_shm: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_shm: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_shm: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_shm: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_shm: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_shm: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_shm: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_shm: CMakeFiles/testBuilder_executables_shm.dir/link.txt

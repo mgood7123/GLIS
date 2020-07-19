@@ -376,7 +376,7 @@ GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 GLIS_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD
 
 //Dependencies for the target
-GLIS_LIB_DEPENDS:STATIC=general;GLESv2;general;pthread;general;X11;general;wayland-client;general;wayland-egl;general;Magnum::Magnum;general;Magnum::GL;general;freetype;general;EGL;general;WinKernel;
+GLIS_LIB_DEPENDS:STATIC=general;GLESv2;general;pthread;general;X11;general;wayland-client;general;wayland-egl;general;Magnum::Magnum;general;Magnum::GL;general;Magnum::EglContext;general;freetype;general;EGL;general;WinKernel;
 
 //Value Computed by CMake
 GLIS_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS

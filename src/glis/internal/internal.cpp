@@ -225,56 +225,6 @@ void GLIS::GLIS_EGL_INFORMATION(EGLDisplay &DISPLAY) {
     LOG_INFO("EGL_EXTENSIONS: %s", extentions);
 }
 
-void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
-    if (!GLIS.init_GLIS) return;
-    LOG_INFO("Uninitializing");
-
-    if (GLIS.init_debug) {
-        LOG_INFO("Disabling debug callbacks");
-        disable_debug_callbacks();
-        LOG_INFO("Disabled debug callbacks");
-        GLIS.init_debug = false;
-    }
-    if (GLIS.init_eglMakeCurrent) {
-        LOG_INFO("Switching context to no context");
-        eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        GLIS_error_to_string_EGL("eglMakeCurrent");
-        GLIS.init_eglMakeCurrent = false;
-    }
-    if (GLIS.init_eglCreateContext) {
-        LOG_INFO("Uninitializing context");
-        eglDestroyContext(GLIS.display, GLIS.context);
-        GLIS_error_to_string_EGL("eglDestroyContext");
-        GLIS.context = EGL_NO_CONTEXT;
-        GLIS.shared_context = EGL_NO_CONTEXT;
-        GLIS.init_eglCreateContext = false;
-    }
-    if (GLIS.init_eglCreateWindowSurface || GLIS.init_eglCreatePbufferSurface) {
-        LOG_INFO("Uninitializing surface");
-        eglDestroySurface(GLIS.display, GLIS.surface);
-        GLIS_error_to_string_EGL("eglDestroySurface");
-        GLIS.surface = EGL_NO_SURFACE;
-        GLIS.init_eglCreateWindowSurface = false;
-        GLIS.init_eglCreatePbufferSurface = false;
-    }
-    if (GLIS.init_eglChooseConfig) {
-        // TODO: figure how to undo init_eglChooseConfig
-    }
-    if (GLIS.init_eglInitialize) {
-        LOG_INFO("Uninitializing display");
-        eglTerminate(GLIS.display);
-        GLIS_error_to_string_EGL("eglTerminate");
-        GLIS.init_eglInitialize = false;
-    }
-    if (GLIS.init_eglGetDisplay) {
-        LOG_INFO("Setting display to no display");
-        GLIS.display = EGL_NO_DISPLAY;
-        GLIS.init_eglGetDisplay = false;
-    }
-    GLIS.init_GLIS = false;
-    LOG_INFO("Uninitialized");
-}
-
 bool GLIS::GLIS_initialize_display(class GLIS_CLASS &GLIS) {
     GLIS.display = eglGetDisplay(GLIS.display_id);
     GLIS_error_to_string_EGL("eglGetDisplay");
@@ -458,6 +408,9 @@ void GLIS::disable_debug_callbacks(void) {
 
 bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debug) {
     if (GLIS.init_GLIS) return true;
+    LOG_MAGNUM_DEBUG << "DEBUG MAGNUM TEST MESSAGE";
+    LOG_MAGNUM_WARNING << "WARNING MAGNUM TEST MESSAGE";
+    LOG_MAGNUM_ERROR << "ERROR MAGNUM TEST MESSAGE";
 
     LOG_INFO("Initializing");
     EGLBoolean r = eglBindAPI(EGL_OPENGL_ES_API);
@@ -525,6 +478,14 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Switched to context");
+    LOG_INFO("Initializing Magnum context");
+    GLIS.contextMagnum = new Magnum::Platform::GLContext(Magnum::NoCreate);
+    if (!GLIS.contextMagnum->tryCreate()) {
+        LOG_ERROR("Failed to initialize Magnum context");
+        GLIS_destroy_GLIS(GLIS);
+        return false;
+    }
+    LOG_INFO("Initialized Magnum context");
     if (debug) {
         LOG_INFO("Enabling debug callbacks");
         enable_debug_callbacks();
@@ -541,6 +502,61 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
     GLIS.init_GLIS = true;
     LOG_INFO("Initialized");
     return true;
+}
+
+void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
+    if (!GLIS.init_GLIS) return;
+    LOG_INFO("Uninitializing");
+
+    if (GLIS.init_debug) {
+        LOG_INFO("Disabling debug callbacks");
+        disable_debug_callbacks();
+        LOG_INFO("Disabled debug callbacks");
+        GLIS.init_debug = false;
+    }
+
+    LOG_INFO("Uninitializing Magnum context");
+    delete GLIS.contextMagnum;
+    LOG_INFO("Uninitialized Magnum context");
+
+    if (GLIS.init_eglMakeCurrent) {
+        LOG_INFO("Switching context to no context");
+        eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        GLIS_error_to_string_EGL("eglMakeCurrent");
+        GLIS.init_eglMakeCurrent = false;
+    }
+    if (GLIS.init_eglCreateContext) {
+        LOG_INFO("Uninitializing context");
+        eglDestroyContext(GLIS.display, GLIS.context);
+        GLIS_error_to_string_EGL("eglDestroyContext");
+        GLIS.context = EGL_NO_CONTEXT;
+        GLIS.shared_context = EGL_NO_CONTEXT;
+        GLIS.init_eglCreateContext = false;
+    }
+    if (GLIS.init_eglCreateWindowSurface || GLIS.init_eglCreatePbufferSurface) {
+        LOG_INFO("Uninitializing surface");
+        eglDestroySurface(GLIS.display, GLIS.surface);
+        GLIS_error_to_string_EGL("eglDestroySurface");
+        GLIS.surface = EGL_NO_SURFACE;
+        GLIS.init_eglCreateWindowSurface = false;
+        GLIS.init_eglCreatePbufferSurface = false;
+    }
+    if (GLIS.init_eglChooseConfig) {
+        // TODO: figure how to undo init_eglChooseConfig
+    }
+    if (GLIS.init_eglInitialize) {
+        LOG_INFO("Uninitializing display");
+        eglTerminate(GLIS.display);
+        GLIS_error_to_string_EGL("eglTerminate");
+        GLIS.init_eglInitialize = false;
+    }
+    if (GLIS.init_eglGetDisplay) {
+        LOG_INFO("Setting display to no display");
+        GLIS.display = EGL_NO_DISPLAY;
+        GLIS.init_eglGetDisplay = false;
+    }
+    GLIS.init_GLIS = false;
+    LOG_INFO("Uninitialized");
 }
 
 bool GLIS::GLIS_setupOnScreenRendering(class GLIS_CLASS &GLIS, EGLContext shared_context) {

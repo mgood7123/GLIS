@@ -304,12 +304,14 @@ Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/build.make
-Debug/lib/libGLIS.so: Debug/lib/libMagnumGL-d.so.2.4
+Debug/lib/libGLIS.so: Debug/lib/libMagnumEglContext-d.a
 Debug/lib/libGLIS.so: Debug/lib/libfreetyped.so.6.17.2
 Debug/lib/libGLIS.so: Debug/lib/libWinKernel.a
+Debug/lib/libGLIS.so: Debug/lib/libMagnumGL-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libMagnum-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/lib/libGLIS.so: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/lib/libGLIS.so: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX shared library Debug/lib/libGLIS.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GLIS.dir/link.txt --verbose=$(VERBOSE)

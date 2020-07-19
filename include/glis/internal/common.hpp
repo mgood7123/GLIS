@@ -15,9 +15,9 @@
 #include <stdbool.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-#include <GLES3/gl32.h>
+#include <Magnum/Platform/GLContext.h> // OpenGL
+#include <Magnum/Platform/WindowlessEglApplication.h> // EGL
+#include <Magnum/GL/Context.h> // OpenGL
 #ifdef __ANDROID__
 #include <jni.h>
 #include <android/native_window.h> // requires ndk r5 or newer

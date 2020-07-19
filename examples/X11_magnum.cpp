@@ -3,7 +3,6 @@
 //
 
 #include <glis/glis.hpp>
-#include <Magnum/GL/Context.h>
 
 GLIS_CLASS CompositorMain;
 GLIS glis;
@@ -24,8 +23,7 @@ GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
 int main() {
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
-    auto x = Magnum::GL::Context::current().rendererString();
-    LOG_INFO("OpenGL renderer: %s", x.c_str());
+    eglCreateImageKHR
     eglSwapInterval(CompositorMain.display, 0);
     glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, nullptr, close);
 }

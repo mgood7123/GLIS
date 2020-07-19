@@ -67,9 +67,10 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/DependInfo.cmake"
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/DependInfo.cmake"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/DependInfo.cmake"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/DependInfo.cmake"
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/DependInfo.cmake"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/DependInfo.cmake"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/DependInfo.cmake"
   )

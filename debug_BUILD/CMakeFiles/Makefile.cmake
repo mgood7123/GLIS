@@ -158,6 +158,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/testBuilder_executables_X11_3.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_shm.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_wayland.dir/DependInfo.cmake"
+  "CMakeFiles/testBuilder_executables_X11_magnum.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_Texture.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/DependInfo.cmake"
   "CMakeFiles/GLIS.dir/DependInfo.cmake"

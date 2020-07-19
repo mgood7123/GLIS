@@ -28,6 +28,7 @@ public:
     EGLContext
             context = EGL_NO_CONTEXT,
             shared_context = EGL_NO_CONTEXT;
+    Magnum::Platform::GLContext * contextMagnum = nullptr;
     bool debug_context = false;
     EGLSurface surface = EGL_NO_SURFACE;
     // previously: ANativeWindow *native_window = nullptr;

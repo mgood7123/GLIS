@@ -270,6 +270,19 @@ testBuilder_executables_wayland/fast:
 .PHONY : testBuilder_executables_wayland/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_X11_magnum
+
+# Build rule for target.
+testBuilder_executables_X11_magnum: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_magnum
+.PHONY : testBuilder_executables_X11_magnum
+
+# fast build rule for target.
+testBuilder_executables_X11_magnum/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/build
+.PHONY : testBuilder_executables_X11_magnum/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_Texture
 
 # Build rule for target.
@@ -1230,6 +1243,33 @@ examples/X11_3.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/examples/X11_3.cpp.s
 .PHONY : examples/X11_3.cpp.s
 
+examples/X11_magnum.o: examples/X11_magnum.cpp.o
+
+.PHONY : examples/X11_magnum.o
+
+# target to build an object file
+examples/X11_magnum.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
+.PHONY : examples/X11_magnum.cpp.o
+
+examples/X11_magnum.i: examples/X11_magnum.cpp.i
+
+.PHONY : examples/X11_magnum.i
+
+# target to preprocess a source file
+examples/X11_magnum.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.i
+.PHONY : examples/X11_magnum.cpp.i
+
+examples/X11_magnum.s: examples/X11_magnum.cpp.s
+
+.PHONY : examples/X11_magnum.s
+
+# target to generate assembly for a file
+examples/X11_magnum.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.s
+.PHONY : examples/X11_magnum.cpp.s
+
 examples/compositor.o: examples/compositor.cpp.o
 
 .PHONY : examples/compositor.o
@@ -1736,6 +1776,7 @@ help:
 	@echo "... testBuilder_executables_X11_3"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_wayland"
+	@echo "... testBuilder_executables_X11_magnum"
 	@echo "... testBuilder_executables_Texture"
 	@echo "... testBuilder_executables_compositor_stop_drawing"
 	@echo "... package"
@@ -1822,6 +1863,9 @@ help:
 	@echo "... examples/X11_3.o"
 	@echo "... examples/X11_3.i"
 	@echo "... examples/X11_3.s"
+	@echo "... examples/X11_magnum.o"
+	@echo "... examples/X11_magnum.i"
+	@echo "... examples/X11_magnum.s"
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"

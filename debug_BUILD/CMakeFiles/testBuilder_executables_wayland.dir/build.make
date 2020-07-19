@@ -80,10 +80,12 @@ testBuilder_executables_wayland_EXTERNAL_OBJECTS =
 Debug/bin/testBuilder_executables_wayland: CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o
 Debug/bin/testBuilder_executables_wayland: CMakeFiles/testBuilder_executables_wayland.dir/build.make
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libGLIS.so
+Debug/bin/testBuilder_executables_wayland: Debug/lib/libMagnumEglContext-d.a
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/bin/testBuilder_executables_wayland: /usr/lib/x86_64-linux-gnu/libGLESv2.so
+Debug/bin/testBuilder_executables_wayland: /usr/lib/x86_64-linux-gnu/libEGL.so
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libfreetyped.so.6.17.2
 Debug/bin/testBuilder_executables_wayland: Debug/lib/libWinKernel.a
 Debug/bin/testBuilder_executables_wayland: CMakeFiles/testBuilder_executables_wayland.dir/link.txt

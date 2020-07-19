@@ -78,3 +78,19 @@ void LOG_ALWAYS_FATAL(const char* format, ... ) {
     lock.unlock();
     abort();
 }
+
+#ifdef __ANDROID__
+#include <Corrade/Utility/AndroidLogStreamBuffer.h>
+
+Corrade::Utility::AndroidLogStreamBuffer bufferDebug {Corrade::Utility::AndroidLogStreamBuffer::LogPriority::Debug, "GLIS-MAGNUM"};
+std::ostream streamDebug {&bufferDebug};
+
+Corrade::Utility::AndroidLogStreamBuffer bufferWarning {Corrade::Utility::AndroidLogStreamBuffer::LogPriority::Warning, "GLIS-MAGNUM"};
+std::ostream streamWarning {&bufferWarning};
+
+Corrade::Utility::AndroidLogStreamBuffer bufferError {Corrade::Utility::AndroidLogStreamBuffer::LogPriority::Error, "GLIS-MAGNUM"};
+std::ostream streamError {&bufferError};
+
+Corrade::Utility::AndroidLogStreamBuffer bufferFatal {Corrade::Utility::AndroidLogStreamBuffer::LogPriority::Fatal, "GLIS-MAGNUM"};
+std::ostream streamFatal {&bufferFatal};
+#endif
