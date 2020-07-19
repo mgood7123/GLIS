@@ -1,0 +1,12 @@
+[submodule "dependancies/corrade"]
+	path = dependancies/corrade
+	url = git://github.com/mosra/corrade.git
+[submodule "dependancies/magnum"]
+	path = dependancies/magnum
+	url = https://github.com/mosra/magnum
+[submodule "dependancies/magnum-extras"]
+	path = dependancies/magnum-extras
+	url = https://github.com/mosra/magnum-extras
+[submodule "dependancies/openal-soft"]
+	path = dependancies/openal-soft
+	url = https://github.com/kcat/openal-soft

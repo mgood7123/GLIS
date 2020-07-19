@@ -21,7 +21,6 @@ Color3 _color;
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
     _transformation = _transformation*Matrix4::rotationX(1.0_degf)*Matrix4::rotationY(1.0_degf);
-//    _transformation = Matrix4::rotationX(1.0_degf) * _transformation* Matrix4::rotationY(1.0_degf);
     _shader->setLightPosition({7.0f, 5.0f, 2.5f})
         .setLightColor(Color3{1.0f})
         .setDiffuseColor(_color)
@@ -54,7 +53,7 @@ int main() {
     glis.GLIS_setupOnScreenRendering(CompositorMain);
     GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
     GL::Renderer::enable(GL::Renderer::Feature::FaceCulling);
-    *_mesh = MeshTools::compile(Primitives::cubeSolid());
+    *_mesh = MeshTools::compile(Primitives::cubeWireframe());
     _transformation = Matrix4::rotationX(0.0_degf)*Matrix4::rotationY(0.0_degf);
     _projection = Matrix4::perspectiveProjection(35.0_degf, Vector2{static_cast<float>(CompositorMain.width*CompositorMain.height)}.aspectRatio(), 0.01f, 100.0f)*Matrix4::translation(Vector3::zAxis(-10.0f));
     _color = Color3::fromHsv({35.0_degf, 1.0f, 1.0f});
