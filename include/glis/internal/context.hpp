@@ -1,6 +1,12 @@
-#include <glis/ipc/server_core.hpp>
-
 #pragma once
+
+#include <Magnum/GL/OpenGL.h>
+#include <Magnum/Platform/WindowlessEglApplication.h> // EGL
+#include <glis/font/font.hpp>
+#include <glis/ipc/server_core.hpp>
+#include "internal.hpp"
+#include "fps.hpp"
+
 
 class GLIS_CLASS {
 public:
@@ -38,4 +44,11 @@ public:
             height = 0;
     SOCKET_SERVER server;
     Kernel KERNEL;
+
+    void setStructors(void (*fun)(),
+                      void (*fun1)());
+
+    void (*constructor)() = nullptr;
+
+    void (*destructor)() = nullptr;
 };

@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/MagnumGL.dir/AbstractShaderProgram.cpp.o"
   "CMakeFiles/MagnumGL.dir/AbstractTexture.cpp.o"
   "CMakeFiles/MagnumGL.dir/Attribute.cpp.o"
+  "CMakeFiles/MagnumGL.dir/BufferImage.cpp.o"
   "CMakeFiles/MagnumGL.dir/CubeMapTexture.cpp.o"
   "CMakeFiles/MagnumGL.dir/Mesh.cpp.o"
   "CMakeFiles/MagnumGL.dir/MeshView.cpp.o"

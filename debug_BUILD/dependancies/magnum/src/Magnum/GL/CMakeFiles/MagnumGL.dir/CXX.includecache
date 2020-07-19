@@ -102,6 +102,12 @@ Corrade/Containers/Tags.h
 Corrade/Containers/constructHelpers.h
 ../dependancies/corrade/src/Corrade/Containers/Corrade/Containers/constructHelpers.h
 
+../dependancies/corrade/src/Corrade/Containers/StridedArrayView.h
+Corrade/Containers/ArrayView.h
+../dependancies/corrade/src/Corrade/Containers/Corrade/Containers/ArrayView.h
+Corrade/Containers/Tags.h
+../dependancies/corrade/src/Corrade/Containers/Corrade/Containers/Tags.h
+
 ../dependancies/corrade/src/Corrade/Containers/Tags.h
 Corrade/configure.h
 ../dependancies/corrade/src/Corrade/Containers/Corrade/configure.h
@@ -716,6 +722,16 @@ Magnum/PixelStorage.h
 Magnum/Math/Vector3.h
 ../dependancies/magnum/src/Magnum/Magnum/Math/Vector3.h
 
+../dependancies/magnum/src/Magnum/Implementation/ImageProperties.h
+utility
+-
+Corrade/Containers/StridedArrayView.h
+-
+Magnum/Magnum.h
+../dependancies/magnum/src/Magnum/Implementation/Magnum/Magnum.h
+Magnum/DimensionTraits.h
+../dependancies/magnum/src/Magnum/Implementation/Magnum/DimensionTraits.h
+
 ../dependancies/magnum/src/Magnum/Magnum.h
 Corrade/Utility/Utility.h
 -
@@ -1167,6 +1183,24 @@ Magnum/Math/TypeTraits.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/Math/TypeTraits.h
 Corrade/Utility/Macros.h
 -
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferImage.cpp
+BufferImage.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferImage.h
+Magnum/GL/PixelFormat.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/GL/PixelFormat.h
+Magnum/Implementation/ImageProperties.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/Implementation/ImageProperties.h
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferImage.h
+Magnum/DimensionTraits.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/DimensionTraits.h
+Magnum/PixelStorage.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/PixelStorage.h
+Magnum/GL/Buffer.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/GL/Buffer.h
+Magnum/Math/Vector4.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Magnum/Math/Vector4.h
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/CubeMapTexture.cpp
 CubeMapTexture.h

@@ -140,25 +140,25 @@ GL/glx.h
 Magnum/Magnum.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Platform/Implementation/Magnum/Magnum.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGL.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGL.h
 Corrade/Utility/VisibilityMacros.h
 -
 Magnum/configure.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/Magnum/configure.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/Magnum/configure.h
 Magnum/GL/GL.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/Magnum/GL/GL.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/Magnum/GL/GL.h
 MagnumExternal/OpenGL/KHR/khrplatform.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/MagnumExternal/OpenGL/KHR/khrplatform.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/MagnumExternal/OpenGL/KHR/khrplatform.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp
 flextGL.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGL.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGL.h
 cstdio
 -
 cstdlib
 -
 Magnum/Platform/Implementation/OpenGLFunctionLoader.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/Magnum/Platform/Implementation/OpenGLFunctionLoader.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/Magnum/Platform/Implementation/OpenGLFunctionLoader.h
 
 dependancies/corrade/src/Corrade/configure.h
 ciso646

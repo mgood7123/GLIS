@@ -515,3 +515,21 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.o: dependancies/corrade/src/Corrade/configure.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.o: dependancies/magnum/src/Magnum/configure.h
 
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Corrade.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Resource.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardVector.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/visibility.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: dependancies/magnum/src/Magnum/DebugTools/resource_MagnumDebugTools_RESOURCES.cpp
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o: dependancies/corrade/src/Corrade/configure.h
+

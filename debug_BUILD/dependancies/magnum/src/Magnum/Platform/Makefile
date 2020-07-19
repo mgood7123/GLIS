@@ -250,32 +250,32 @@ Implementation/OpenGLFunctionLoader.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.s
 .PHONY : Implementation/OpenGLFunctionLoader.cpp.s
 
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.o: __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.o: __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o
 
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.o
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.o
 
 # target to build an object file
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o
 
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.i: __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.i
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.i: __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.i
 
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.i
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.i
 
 # target to preprocess a source file
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.i
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.i
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.i
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.i
 
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.s: __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.s
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.s: __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.s
 
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.s
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.s
 
 # target to generate assembly for a file
-__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.s
-.PHONY : __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.s
+__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/build.make dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.s
+.PHONY : __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.s
 
 __/__/dummy.o: __/__/dummy.cpp.o
 
@@ -324,9 +324,9 @@ help:
 	@echo "... Implementation/OpenGLFunctionLoader.o"
 	@echo "... Implementation/OpenGLFunctionLoader.i"
 	@echo "... Implementation/OpenGLFunctionLoader.s"
-	@echo "... __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.o"
-	@echo "... __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.i"
-	@echo "... __/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.s"
+	@echo "... __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.o"
+	@echo "... __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.i"
+	@echo "... __/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.s"
 	@echo "... __/__/dummy.o"
 	@echo "... __/__/dummy.i"
 	@echo "... __/__/dummy.s"

@@ -126,6 +126,10 @@ utility
 Corrade/configure.h
 ../dependancies/corrade/src/Corrade/Containers/Corrade/configure.h
 
+../dependancies/corrade/src/Corrade/Corrade.h
+Corrade/configure.h
+../dependancies/corrade/src/Corrade/Corrade/configure.h
+
 ../dependancies/corrade/src/Corrade/PluginManager/AbstractManager.h
 Corrade/Containers/EnumSet.h
 ../dependancies/corrade/src/Corrade/PluginManager/Corrade/Containers/EnumSet.h
@@ -1215,6 +1219,14 @@ inttypes.h
 -
 stdint.h
 -
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/resource_MagnumDebugTools_RESOURCES.cpp
+Corrade/Corrade.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/Corrade/Corrade.h
+Corrade/Utility/Macros.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/Corrade/Utility/Macros.h
+Corrade/Utility/Resource.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/Corrade/Utility/Resource.h
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/DebugTools/BufferData.cpp
 BufferData.h

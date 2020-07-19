@@ -208,6 +208,21 @@ MagnumDebugToolsObjects/fast:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build
 .PHONY : MagnumDebugToolsObjects/fast
 
+# Convenience name for target.
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/rule:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/rule
+.PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/rule
+
+# Convenience name for target.
+MagnumDebugTools_RESOURCES-dependencies: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/rule
+
+.PHONY : MagnumDebugTools_RESOURCES-dependencies
+
+# fast build rule for target.
+MagnumDebugTools_RESOURCES-dependencies/fast:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/build
+.PHONY : MagnumDebugTools_RESOURCES-dependencies/fast
+
 BufferData.o: BufferData.cpp.o
 
 .PHONY : BufferData.o
@@ -478,6 +493,33 @@ TextureImage.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.s
 .PHONY : TextureImage.cpp.s
 
+resource_MagnumDebugTools_RESOURCES.o: resource_MagnumDebugTools_RESOURCES.cpp.o
+
+.PHONY : resource_MagnumDebugTools_RESOURCES.o
+
+# target to build an object file
+resource_MagnumDebugTools_RESOURCES.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o
+.PHONY : resource_MagnumDebugTools_RESOURCES.cpp.o
+
+resource_MagnumDebugTools_RESOURCES.i: resource_MagnumDebugTools_RESOURCES.cpp.i
+
+.PHONY : resource_MagnumDebugTools_RESOURCES.i
+
+# target to preprocess a source file
+resource_MagnumDebugTools_RESOURCES.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.i
+.PHONY : resource_MagnumDebugTools_RESOURCES.cpp.i
+
+resource_MagnumDebugTools_RESOURCES.s: resource_MagnumDebugTools_RESOURCES.cpp.s
+
+.PHONY : resource_MagnumDebugTools_RESOURCES.s
+
+# target to generate assembly for a file
+resource_MagnumDebugTools_RESOURCES.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.s
+.PHONY : resource_MagnumDebugTools_RESOURCES.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -494,6 +536,7 @@ help:
 	@echo "... install/local"
 	@echo "... MagnumDebugTools"
 	@echo "... MagnumDebugToolsObjects"
+	@echo "... MagnumDebugTools_RESOURCES-dependencies"
 	@echo "... BufferData.o"
 	@echo "... BufferData.i"
 	@echo "... BufferData.s"
@@ -524,6 +567,9 @@ help:
 	@echo "... TextureImage.o"
 	@echo "... TextureImage.i"
 	@echo "... TextureImage.s"
+	@echo "... resource_MagnumDebugTools_RESOURCES.o"
+	@echo "... resource_MagnumDebugTools_RESOURCES.i"
+	@echo "... resource_MagnumDebugTools_RESOURCES.s"
 .PHONY : help
 
 

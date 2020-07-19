@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/MagnumDebugToolsObjects.dir/ResourceManager.cpp.o"
   "CMakeFiles/MagnumDebugToolsObjects.dir/Screenshot.cpp.o"
   "CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.o"
+  "CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o"
+  "resource_MagnumDebugTools_RESOURCES.cpp"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <GLES3/gl32.h>
+#include <Magnum/GL/OpenGL.h>
 
 class GLIS_BACKUP_PROGRAM {
     GLint __GL_CURRENT_PROGRAM;

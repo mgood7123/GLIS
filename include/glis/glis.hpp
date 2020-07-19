@@ -1,5 +1,23 @@
 #define GLIS_COMMON_WIDTH 1080
 #define GLIS_COMMON_HEIGHT 2032
+#include <Magnum/Platform/GLContext.h>
+#include <Magnum/GL/Context.h>
+#include <Magnum/GL/Buffer.h>
+#include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/GL/Mesh.h>
+#include <Magnum/GL/Renderer.h>
+#include <Magnum/Math/Color.h>
+#include <Magnum/Math/Matrix4.h>
+#include <Magnum/MeshTools/Compile.h>
+#include <Magnum/MeshTools/Interleave.h>
+#include <Magnum/MeshTools/CompressIndices.h>
+#include <Magnum/Primitives/Cube.h>
+#include <Magnum/Shaders/Phong.h>
+#include <Magnum/Trade/MeshData.h>
+
+#define GLIS_CALLBACKS_CONTEXT_CONSTRUCTOR(functionName) void functionName ()
+#define GLIS_CALLBACKS_CONTEXT_DECONSTRUCTOR(functionName) void functionName ()
+
 #include <glis/ipc/ipc.hpp>
 #include <glis/font/font.hpp>
 #include <glis/internal/internal.hpp>

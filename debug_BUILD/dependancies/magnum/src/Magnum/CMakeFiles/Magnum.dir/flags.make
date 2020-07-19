@@ -6,5 +6,5 @@ CXX_FLAGS = -g -fPIC   -std=c++11 -Wall -Wextra -Wold-style-cast -Winit-self -We
 
 CXX_DEFINES = -DCORRADE_IS_DEBUG_BUILD -DMagnum_EXPORTS
 
-CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src 
+CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src 
 

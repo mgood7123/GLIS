@@ -382,9 +382,61 @@ dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/Implementation/maxTextureSize.cpp.s"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/maxTextureSize.cpp -o CMakeFiles/MagnumGLObjects.dir/Implementation/maxTextureSize.cpp.s
 
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o: ../dependancies/magnum/src/Magnum/GL/PrimitiveQuery.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/PrimitiveQuery.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/PrimitiveQuery.cpp > CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/PrimitiveQuery.cpp -o CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o: ../dependancies/magnum/src/Magnum/GL/TextureArray.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TextureArray.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TextureArray.cpp > CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TextureArray.cpp -o CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o: ../dependancies/magnum/src/Magnum/GL/TransformFeedback.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TransformFeedback.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TransformFeedback.cpp > CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/TransformFeedback.cpp -o CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o: ../dependancies/magnum/src/Magnum/GL/Implementation/TransformFeedbackState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/TransformFeedbackState.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/TransformFeedbackState.cpp > CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/TransformFeedbackState.cpp -o CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.s
+
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o: ../dependancies/magnum/src/Magnum/GL/DebugOutput.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/DebugOutput.cpp
 
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.i: cmake_force
@@ -397,7 +449,7 @@ dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp
 
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o: ../dependancies/magnum/src/Magnum/GL/Implementation/DebugState.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/DebugState.cpp
 
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.i: cmake_force
@@ -407,6 +459,45 @@ dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.s"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Implementation/DebugState.cpp -o CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o: ../dependancies/magnum/src/Magnum/GL/BufferTexture.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferTexture.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferTexture.cpp > CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferTexture.cpp -o CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o: ../dependancies/magnum/src/Magnum/GL/CubeMapTextureArray.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/CubeMapTextureArray.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/CubeMapTextureArray.cpp > CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/CubeMapTextureArray.cpp -o CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.s
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/flags.make
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o: ../dependancies/magnum/src/Magnum/GL/MultisampleTexture.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/MultisampleTexture.cpp
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/MultisampleTexture.cpp > CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.i
+
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/MultisampleTexture.cpp -o CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.s
 
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/AbstractObject.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/AbstractQuery.cpp.o
@@ -433,8 +524,15 @@ MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.di
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TextureState.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/driverSpecific.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/maxTextureSize.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/DebugOutput.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/DebugState.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o
+MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o
 MagnumGLObjects: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make
 
 .PHONY : MagnumGLObjects

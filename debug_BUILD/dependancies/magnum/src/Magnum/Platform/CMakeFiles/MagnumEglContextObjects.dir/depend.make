@@ -19,17 +19,17 @@ dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/I
 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.o: dependancies/corrade/src/Corrade/configure.h
 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.o: dependancies/magnum/src/Magnum/configure.h
 
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/GL/GL.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Magnum.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Math/Math.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Platform/Implementation/OpenGLFunctionLoader.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Types.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/KHR/khrplatform.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGL.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: dependancies/corrade/src/Corrade/configure.h
-dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o: dependancies/magnum/src/Magnum/configure.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/GL/GL.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Magnum.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Math/Math.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Platform/Implementation/OpenGLFunctionLoader.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/Magnum/Types.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/KHR/khrplatform.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGL.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: dependancies/corrade/src/Corrade/configure.h
+dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o: dependancies/magnum/src/Magnum/configure.h
 

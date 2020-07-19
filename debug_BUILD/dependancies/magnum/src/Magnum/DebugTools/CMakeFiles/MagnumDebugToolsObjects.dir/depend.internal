@@ -515,3 +515,21 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/DebugTools/TextureImage.h
  dependancies/corrade/src/Corrade/configure.h
  dependancies/magnum/src/Magnum/configure.h
+dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o
+ ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+ ../dependancies/corrade/src/Corrade/Containers/Containers.h
+ ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+ ../dependancies/corrade/src/Corrade/Containers/Tags.h
+ ../dependancies/corrade/src/Corrade/Corrade.h
+ ../dependancies/corrade/src/Corrade/Utility/Assert.h
+ ../dependancies/corrade/src/Corrade/Utility/Debug.h
+ ../dependancies/corrade/src/Corrade/Utility/Macros.h
+ ../dependancies/corrade/src/Corrade/Utility/Resource.h
+ ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+ ../dependancies/corrade/src/Corrade/Utility/StlForwardVector.h
+ ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+ ../dependancies/corrade/src/Corrade/Utility/Utility.h
+ ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+ ../dependancies/corrade/src/Corrade/Utility/visibility.h
+ /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/resource_MagnumDebugTools_RESOURCES.cpp
+ dependancies/corrade/src/Corrade/configure.h

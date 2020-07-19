@@ -95,6 +95,7 @@ MagnumDebugTools_EXTERNAL_OBJECTS = \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ResourceManager.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/Screenshot.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.o" \
+"/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/BufferData.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ForceRenderer.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ObjectRenderer.cpp.o"
@@ -106,6 +107,7 @@ Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTool
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ResourceManager.cpp.o
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/Screenshot.cpp.o
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/TextureImage.cpp.o
+Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/resource_MagnumDebugTools_RESOURCES.cpp.o
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/BufferData.cpp.o
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ForceRenderer.cpp.o
 Debug/lib/libMagnumDebugTools-d.so.2.4: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/ObjectRenderer.cpp.o

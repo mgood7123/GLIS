@@ -77,11 +77,11 @@ MagnumEglContext_OBJECTS = \
 # External object files for target MagnumEglContext
 MagnumEglContext_EXTERNAL_OBJECTS = \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.o" \
-"/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o"
+"/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o"
 
 Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/__/__/dummy.cpp.o
 Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.o
-Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES2/flextGLPlatform.cpp.o
+Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o
 Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/build.make
 Debug/lib/libMagnumEglContext-d.a: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library ../../../../../Debug/lib/libMagnumEglContext-d.a"

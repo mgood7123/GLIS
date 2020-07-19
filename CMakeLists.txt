@@ -12,20 +12,20 @@ include_directories(dependancies/freetype-2.10.2/include)
 add_subdirectory(dependancies/glm)
 include_directories(dependancies/glm)
 
-add_subdirectory(dependancies/corrade) # build with everything
-#add_subdirectory(dependancies/corrade EXCLUDE_FROM_ALL) # so only things you use are built
+add_subdirectory(dependancies/openal-soft)
+include_directories(dependancies/openal-soft)
 
-# https://doc.magnum.graphics/magnum/requires-gl.html
-
+add_subdirectory(dependancies/corrade)
 set(WITH_GL ON CACHE BOOL "" FORCE)
 set(TARGET_GLES ON CACHE BOOL "" FORCE)
+set(TARGET_GLES2 OFF CACHE BOOL "" FORCE)
 set(WITH_EGLCONTEXT ON CACHE BOOL "" FORCE)
-#set(TARGET_DESKTOP_GLES ON CACHE BOOL "" FORCE)
+# not all platforms have Vulkan
 #set(TARGET_VK ON CACHE BOOL "" FORCE)
-#set(WITH_MAGNUMFONT ON CACHE BOOL "" FORCE)
-#set(WITH_MAGNUMFONTCONVERTER ON CACHE BOOL "" FORCE)
-add_subdirectory(dependancies/magnum) # build with everything
-#add_subdirectory(dependancies/magnum EXCLUDE_FROM_ALL)  # so only things you use are built
+add_subdirectory(dependancies/magnum)
+
+set(WITH_UI ON CACHE BOOL "" FORCE)
+add_subdirectory(dependancies/magnum-extras)
 
 include_directories(dependancies)
 include_directories(include)
@@ -42,6 +42,7 @@ testBuilder_add_source(GLIS src/glis/backup/types/texture.cpp)
 testBuilder_add_source(GLIS src/glis/backup/types/program.cpp)
 testBuilder_add_source(GLIS src/glis/compositor/compositor.cpp)
 testBuilder_add_source(GLIS src/glis/font/font.cpp)
+testBuilder_add_source(GLIS src/glis/internal/context.cpp)
 testBuilder_add_source(GLIS src/glis/internal/fps.cpp)
 testBuilder_add_source(GLIS src/glis/internal/internal.cpp)
 testBuilder_add_source(GLIS src/glis/internal/log.cpp)
@@ -64,9 +65,18 @@ elseif(UNIX)
     testBuilder_add_library(GLIS wayland-egl)
 endif()
 
-testBuilder_add_library(GLIS Magnum::Magnum)
-testBuilder_add_library(GLIS Magnum::GL)
+testBuilder_add_library(GLIS Magnum::DebugTools)
 testBuilder_add_library(GLIS Magnum::EglContext)
+testBuilder_add_library(GLIS Magnum::GL)
+testBuilder_add_library(GLIS Magnum::Magnum)
+testBuilder_add_library(GLIS Magnum::MeshTools)
+testBuilder_add_library(GLIS Magnum::Primitives)
+testBuilder_add_library(GLIS Magnum::SceneGraph)
+testBuilder_add_library(GLIS Magnum::Shaders)
+testBuilder_add_library(GLIS Magnum::Text)
+testBuilder_add_library(GLIS Magnum::TextureTools)
+testBuilder_add_library(GLIS Magnum::Trade)
+testBuilder_add_library(GLIS MagnumExtras::Ui)
 testBuilder_add_library(GLIS freetype)
 testBuilder_add_library(GLIS glm)
 testBuilder_add_library(GLIS EGL)
@@ -91,6 +101,7 @@ build_program(examples X11_2)
 build_program(examples X11_3)
 build_program(examples wayland)
 build_program(examples X11_magnum)
+build_program(examples X11Cube)
 
 build_program(compositor_clients MovingWindows)
 build_program(compositor_clients MovingWindowsB)

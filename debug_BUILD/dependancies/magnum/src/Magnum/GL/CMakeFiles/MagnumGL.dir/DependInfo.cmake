@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/AbstractShaderProgram.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/AbstractShaderProgram.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/AbstractTexture.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/AbstractTexture.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Attribute.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/Attribute.cpp.o"
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/BufferImage.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/BufferImage.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/CubeMapTexture.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/CubeMapTexture.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/Mesh.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/Mesh.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/GL/MeshView.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/MeshView.cpp.o"
@@ -27,6 +28,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../dependancies/freetype-2.10.2/include"
   "../dependancies/glm"
+  "../dependancies/openal-soft"
   "../dependancies/magnum/src"
   "dependancies/magnum/src"
   "../dependancies/corrade/src"

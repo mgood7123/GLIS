@@ -28,14 +28,14 @@ The CXX compiler identification is GNU, found in "/home/smallville7123/AndroidCo
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_8bc3d/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_8bc3d.dir/build.make CMakeFiles/cmTC_8bc3d.dir/build
+Run Build Command(s):/usr/bin/make cmTC_ce14d/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ce14d.dir/build.make CMakeFiles/cmTC_ce14d.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8bc3d.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_8bc3d.dir/testCCompiler.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_8bc3d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bc3d.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_8bc3d.dir/testCCompiler.c.o  -o cmTC_8bc3d 
+Building C object CMakeFiles/cmTC_ce14d.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ce14d.dir/testCCompiler.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_ce14d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ce14d.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_ce14d.dir/testCCompiler.c.o  -o cmTC_ce14d 
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -44,11 +44,11 @@ make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_370fc/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_370fc.dir/build.make CMakeFiles/cmTC_370fc.dir/build
+Run Build Command(s):/usr/bin/make cmTC_8bb13/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_8bb13.dir/build.make CMakeFiles/cmTC_8bb13.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc   -v -o CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc   -v -o CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 OFFLOAD_TARGET_NAMES=nvptx-none:hsa
@@ -57,8 +57,8 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.3.0-10ubuntu2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccZUcMlj.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cc0FSocN.s
 GNU C17 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)
 	compiled by GNU C version 9.3.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
@@ -78,15 +78,15 @@ GNU C17 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: 18dc4c39b54390aa2b5013fb4339d43f
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- as -v --64 -o CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o /tmp/ccZUcMlj.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o /tmp/cc0FSocN.s
 GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
-Linking C executable cmTC_370fc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_370fc.dir/link.txt --verbose=1
-/usr/bin/cc     -v CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o  -o cmTC_370fc 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+Linking C executable cmTC_8bb13
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bb13.dir/link.txt --verbose=1
+/usr/bin/cc     -v CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o  -o cmTC_8bb13 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
@@ -98,9 +98,9 @@ Thread model: posix
 gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_370fc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccPDX0bM.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_370fc /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_370fc' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8bb13' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFtgO0i.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8bb13 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8bb13' '-mtune=generic' '-march=x86-64'
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -125,11 +125,11 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_370fc/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_370fc.dir/build.make CMakeFiles/cmTC_370fc.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_8bb13/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_8bb13.dir/build.make CMakeFiles/cmTC_8bb13.dir/build]
   ignore line: [make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c]
+  ignore line: [Building C object CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
@@ -138,8 +138,8 @@ Parsed C implicit link information from above output:
   ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.3.0-10ubuntu2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
   ignore line: [gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccZUcMlj.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cc0FSocN.s]
   ignore line: [GNU C17 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)]
   ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
@@ -159,15 +159,15 @@ Parsed C implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: 18dc4c39b54390aa2b5013fb4339d43f]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ as -v --64 -o CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o /tmp/ccZUcMlj.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o /tmp/cc0FSocN.s]
   ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [Linking C executable cmTC_370fc]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_370fc.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o  -o cmTC_370fc ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking C executable cmTC_8bb13]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bb13.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o  -o cmTC_8bb13 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
@@ -179,13 +179,13 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_370fc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccPDX0bM.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_370fc /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8bb13' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFtgO0i.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8bb13 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccPDX0bM.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccFtgO0i.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -203,7 +203,7 @@ Parsed C implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_370fc] ==> ignore
+    arg [cmTC_8bb13] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> ignore
@@ -215,7 +215,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
-    arg [CMakeFiles/cmTC_370fc.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_8bb13.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -245,14 +245,14 @@ Parsed C implicit link information from above output:
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_f21e7/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_f21e7.dir/build.make CMakeFiles/cmTC_f21e7.dir/build
+Run Build Command(s):/usr/bin/make cmTC_c465e/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c465e.dir/build.make CMakeFiles/cmTC_c465e.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_f21e7.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_f21e7.dir/testCXXCompiler.cxx.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_f21e7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f21e7.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_f21e7.dir/testCXXCompiler.cxx.o  -o cmTC_f21e7 
+Building CXX object CMakeFiles/cmTC_c465e.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_c465e.dir/testCXXCompiler.cxx.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_c465e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c465e.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_c465e.dir/testCXXCompiler.cxx.o  -o cmTC_c465e 
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -261,11 +261,11 @@ make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_50e5e/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_50e5e.dir/build.make CMakeFiles/cmTC_50e5e.dir/build
+Run Build Command(s):/usr/bin/make cmTC_d34b3/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_d34b3.dir/build.make CMakeFiles/cmTC_d34b3.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++    -v -o CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp
+Building CXX object CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++    -v -o CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 OFFLOAD_TARGET_NAMES=nvptx-none:hsa
@@ -274,8 +274,8 @@ Target: x86_64-linux-gnu
 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.3.0-10ubuntu2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
 gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccoMH6Uh.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccRU4SOL.s
 GNU C++14 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)
 	compiled by GNU C version 9.3.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
 
@@ -299,15 +299,15 @@ GNU C++14 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: a3d04a02fbd98a786d710618ca593f02
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- as -v --64 -o CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccoMH6Uh.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccRU4SOL.s
 GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
-Linking CXX executable cmTC_50e5e
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50e5e.dir/link.txt --verbose=1
-/usr/bin/c++      -v CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_50e5e 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+Linking CXX executable cmTC_d34b3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d34b3.dir/link.txt --verbose=1
+/usr/bin/c++      -v CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_d34b3 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
@@ -319,9 +319,9 @@ Thread model: posix
 gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_50e5e' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cctghO4K.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_50e5e /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_50e5e' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d34b3' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNRsfte.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_d34b3 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d34b3' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -352,11 +352,11 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/usr/bin/make cmTC_50e5e/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_50e5e.dir/build.make CMakeFiles/cmTC_50e5e.dir/build]
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_d34b3/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_d34b3.dir/build.make CMakeFiles/cmTC_d34b3.dir/build]
   ignore line: [make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++    -v -o CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Building CXX object CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++    -v -o CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
@@ -365,8 +365,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.3.0-10ubuntu2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
   ignore line: [gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccoMH6Uh.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccRU4SOL.s]
   ignore line: [GNU C++14 (Ubuntu 9.3.0-10ubuntu2) version 9.3.0 (x86_64-linux-gnu)]
   ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
   ignore line: []
@@ -390,15 +390,15 @@ Parsed CXX implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: a3d04a02fbd98a786d710618ca593f02]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [ as -v --64 -o CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccoMH6Uh.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccRU4SOL.s]
   ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [Linking CXX executable cmTC_50e5e]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50e5e.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_50e5e ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking CXX executable cmTC_d34b3]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d34b3.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_d34b3 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
@@ -410,13 +410,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_50e5e' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cctghO4K.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_50e5e /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d34b3' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNRsfte.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_d34b3 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cctghO4K.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccNRsfte.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -434,7 +434,7 @@ Parsed CXX implicit link information from above output:
     arg [-znow] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_50e5e] ==> ignore
+    arg [cmTC_d34b3] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> ignore
@@ -446,7 +446,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
-    arg [CMakeFiles/cmTC_50e5e.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_d34b3.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -472,14 +472,14 @@ Parsed CXX implicit link information from above output:
 Determining if the include file unistd.h exists passed with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_075b7/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_075b7.dir/build.make CMakeFiles/cmTC_075b7.dir/build
+Run Build Command(s):/usr/bin/make cmTC_844d9/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_844d9.dir/build.make CMakeFiles/cmTC_844d9.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_075b7.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_075b7.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_075b7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_075b7.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_075b7.dir/CheckIncludeFile.c.o  -o cmTC_075b7 
+Building C object CMakeFiles/cmTC_844d9.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_844d9.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_844d9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_844d9.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_844d9.dir/CheckIncludeFile.c.o  -o cmTC_844d9 
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -488,14 +488,14 @@ make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/
 Determining if the include file fcntl.h exists passed with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_71fb7/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_71fb7.dir/build.make CMakeFiles/cmTC_71fb7.dir/build
+Run Build Command(s):/usr/bin/make cmTC_8c4ad/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_8c4ad.dir/build.make CMakeFiles/cmTC_8c4ad.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_71fb7.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_71fb7.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_71fb7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71fb7.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_71fb7.dir/CheckIncludeFile.c.o  -o cmTC_71fb7 
+Building C object CMakeFiles/cmTC_8c4ad.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_8c4ad.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_8c4ad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c4ad.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_8c4ad.dir/CheckIncludeFile.c.o  -o cmTC_8c4ad 
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
@@ -504,16 +504,611 @@ make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/
 Determining if the include file stdint.h exists passed with the following output:
 Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_45cb0/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTC_45cb0.dir/build.make CMakeFiles/cmTC_45cb0.dir/build
+Run Build Command(s):/usr/bin/make cmTC_6804e/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_6804e.dir/build.make CMakeFiles/cmTC_6804e.dir/build
 make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_45cb0.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_45cb0.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_45cb0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45cb0.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_45cb0.dir/CheckIncludeFile.c.o  -o cmTC_45cb0 
+Building C object CMakeFiles/cmTC_6804e.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_6804e.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_6804e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6804e.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_6804e.dir/CheckIncludeFile.c.o  -o cmTC_6804e 
 make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
 
 
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c4d7a/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c4d7a.dir/build.make CMakeFiles/cmTC_c4d7a.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c4d7a.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c4d7a.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_c4d7a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c4d7a.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_c4d7a.dir/CheckIncludeFile.c.o  -o cmTC_c4d7a 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4037c/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4037c.dir/build.make CMakeFiles/cmTC_4037c.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4037c.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4037c.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4037c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4037c.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_4037c.dir/CheckIncludeFile.c.o  -o cmTC_4037c 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining size of long passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7831e/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_7831e.dir/build.make CMakeFiles/cmTC_7831e.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7831e.dir/SIZEOF_LONG.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_7831e.dir/SIZEOF_LONG.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CheckTypeSize/SIZEOF_LONG.c
+Linking C executable cmTC_7831e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7831e.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_7831e.dir/SIZEOF_LONG.c.o  -o cmTC_7831e 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the posix_memalign exist passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_008ee/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_008ee.dir/build.make CMakeFiles/cmTC_008ee.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_008ee.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_008ee.dir/CheckSymbolExists.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_008ee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_008ee.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_008ee.dir/CheckSymbolExists.c.o  -o cmTC_008ee 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+File /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_memalign
+  return ((int*)(&posix_memalign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C++ SOURCE FILE Test HAVE___RESTRICT succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e4adf/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e4adf.dir/build.make CMakeFiles/cmTC_e4adf.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e4adf.dir/src.cxx.o
+/usr/bin/c++    -DHAVE___RESTRICT   -o CMakeFiles/cmTC_e4adf.dir/src.cxx.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_e4adf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e4adf.dir/link.txt --verbose=1
+/usr/bin/c++   -DHAVE___RESTRICT    -rdynamic CMakeFiles/cmTC_e4adf.dir/src.cxx.o  -o cmTC_e4adf 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int *__restrict foo;
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_LIBATOMIC succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2f961/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_2f961.dir/build.make CMakeFiles/cmTC_2f961.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_2f961.dir/src.cxx.o
+/usr/bin/c++    -DHAVE_LIBATOMIC   -o CMakeFiles/cmTC_2f961.dir/src.cxx.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_2f961
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2f961.dir/link.txt --verbose=1
+/usr/bin/c++   -DHAVE_LIBATOMIC    -rdynamic CMakeFiles/cmTC_2f961.dir/src.cxx.o  -o cmTC_2f961  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <atomic>
+std::atomic<int> foo{0};
+int main() { return foo.fetch_add(2); }
+Performing C SOURCE FILE Test HAVE_FNO_MATH_ERRNO succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_c988b/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c988b.dir/build.make CMakeFiles/cmTC_c988b.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c988b.dir/src.c.o
+/usr/bin/cc   -DHAVE_FNO_MATH_ERRNO   -fno-math-errno -o CMakeFiles/cmTC_c988b.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c988b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c988b.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_FNO_MATH_ERRNO    -rdynamic CMakeFiles/cmTC_c988b.dir/src.c.o  -o cmTC_c988b  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_PROTECTED_VISIBILITY succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_642f3/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_642f3.dir/build.make CMakeFiles/cmTC_642f3.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_642f3.dir/src.c.o
+/usr/bin/cc   -DHAVE_GCC_PROTECTED_VISIBILITY  -Wattributes -Werror   -o CMakeFiles/cmTC_642f3.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_642f3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_642f3.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_GCC_PROTECTED_VISIBILITY  -Wattributes -Werror    -rdynamic CMakeFiles/cmTC_642f3.dir/src.c.o  -o cmTC_642f3  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int foo() __attribute__((visibility("protected")));
+                             int main() {return 0;}
+Performing C SOURCE FILE Test HAVE_VISIBILITY_HIDDEN_SWITCH succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0b4b5/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_0b4b5.dir/build.make CMakeFiles/cmTC_0b4b5.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0b4b5.dir/src.c.o
+/usr/bin/cc   -DHAVE_VISIBILITY_HIDDEN_SWITCH  -Wattributes -Werror   -fvisibility=hidden -o CMakeFiles/cmTC_0b4b5.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_0b4b5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b4b5.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_VISIBILITY_HIDDEN_SWITCH  -Wattributes -Werror    -rdynamic CMakeFiles/cmTC_0b4b5.dir/src.c.o  -o cmTC_0b4b5  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE2_SWITCH succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ed63a/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ed63a.dir/build.make CMakeFiles/cmTC_ed63a.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ed63a.dir/src.c.o
+/usr/bin/cc   -DHAVE_MSSE2_SWITCH  -Werror   -msse2 -o CMakeFiles/cmTC_ed63a.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_ed63a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ed63a.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_MSSE2_SWITCH  -Werror    -rdynamic CMakeFiles/cmTC_ed63a.dir/src.c.o  -o cmTC_ed63a  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE3_SWITCH succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_d07b5/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_d07b5.dir/build.make CMakeFiles/cmTC_d07b5.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d07b5.dir/src.c.o
+/usr/bin/cc   -DHAVE_MSSE3_SWITCH  -Werror   -msse3 -o CMakeFiles/cmTC_d07b5.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_d07b5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d07b5.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_MSSE3_SWITCH  -Werror    -rdynamic CMakeFiles/cmTC_d07b5.dir/src.c.o  -o cmTC_d07b5  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_MSSE4_1_SWITCH succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e8ab5/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e8ab5.dir/build.make CMakeFiles/cmTC_e8ab5.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e8ab5.dir/src.c.o
+/usr/bin/cc   -DHAVE_MSSE4_1_SWITCH  -Werror   -msse4.1 -o CMakeFiles/cmTC_e8ab5.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_e8ab5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e8ab5.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_MSSE4_1_SWITCH  -Werror    -rdynamic CMakeFiles/cmTC_e8ab5.dir/src.c.o  -o cmTC_e8ab5  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if the include file xmmintrin.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_27be7/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_27be7.dir/build.make CMakeFiles/cmTC_27be7.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_27be7.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse2    -o CMakeFiles/cmTC_27be7.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_27be7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_27be7.dir/link.txt --verbose=1
+/usr/bin/cc  -msse2     -rdynamic CMakeFiles/cmTC_27be7.dir/CheckIncludeFile.c.o  -o cmTC_27be7  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file emmintrin.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_481b0/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_481b0.dir/build.make CMakeFiles/cmTC_481b0.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_481b0.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse2    -o CMakeFiles/cmTC_481b0.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_481b0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_481b0.dir/link.txt --verbose=1
+/usr/bin/cc  -msse2     -rdynamic CMakeFiles/cmTC_481b0.dir/CheckIncludeFile.c.o  -o cmTC_481b0  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file pmmintrin.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1138b/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_1138b.dir/build.make CMakeFiles/cmTC_1138b.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1138b.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse3    -o CMakeFiles/cmTC_1138b.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_1138b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1138b.dir/link.txt --verbose=1
+/usr/bin/cc  -msse3     -rdynamic CMakeFiles/cmTC_1138b.dir/CheckIncludeFile.c.o  -o cmTC_1138b  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file smmintrin.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_447d3/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_447d3.dir/build.make CMakeFiles/cmTC_447d3.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_447d3.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -msse4.1    -o CMakeFiles/cmTC_447d3.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_447d3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_447d3.dir/link.txt --verbose=1
+/usr/bin/cc  -msse4.1     -rdynamic CMakeFiles/cmTC_447d3.dir/CheckIncludeFile.c.o  -o cmTC_447d3  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_SSE_INTRINSICS succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_9309f/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_9309f.dir/build.make CMakeFiles/cmTC_9309f.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9309f.dir/src.c.o
+/usr/bin/cc   -DHAVE_SSE_INTRINSICS   -o CMakeFiles/cmTC_9309f.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_9309f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9309f.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_SSE_INTRINSICS    -rdynamic CMakeFiles/cmTC_9309f.dir/src.c.o  -o cmTC_9309f  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <emmintrin.h>
+                             int main() {_mm_pause(); return 0;}
+Determining if the include file malloc.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_02ee3/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_02ee3.dir/build.make CMakeFiles/cmTC_02ee3.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_02ee3.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_02ee3.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_02ee3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02ee3.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_02ee3.dir/CheckIncludeFile.c.o  -o cmTC_02ee3  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file cpuid.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0b722/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_0b722.dir/build.make CMakeFiles/cmTC_0b722.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0b722.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_0b722.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0b722
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b722.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_0b722.dir/CheckIncludeFile.c.o  -o cmTC_0b722  -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pow exists in the m passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1f7f7/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_1f7f7.dir/build.make CMakeFiles/cmTC_1f7f7.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f7f7.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pow   -o CMakeFiles/cmTC_1f7f7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+<command-line>: warning: conflicting types for built-in function ‘pow’; expected ‘double(double,  double)’ [-Wbuiltin-declaration-mismatch]
+/usr/share/cmake-3.16/Modules/CheckFunctionExists.c:7:3: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+    7 |   CHECK_FUNCTION_EXISTS(void);
+      |   ^~~~~~~~~~~~~~~~~~~~~
+/usr/share/cmake-3.16/Modules/CheckFunctionExists.c:1:1: note: ‘pow’ is declared in header ‘<math.h>’
+  +++ |+#include <math.h>
+    1 | #ifdef CHECK_FUNCTION_EXISTS
+Linking C executable cmTC_1f7f7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f7f7.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pow    -rdynamic CMakeFiles/cmTC_1f7f7.dir/CheckFunctionExists.c.o  -o cmTC_1f7f7  -lm -latomic 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function clock_gettime exists in the rt passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e9631/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e9631.dir/build.make CMakeFiles/cmTC_e9631.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e9631.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=clock_gettime   -o CMakeFiles/cmTC_e9631.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e9631
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e9631.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=clock_gettime    -rdynamic CMakeFiles/cmTC_e9631.dir/CheckFunctionExists.c.o  -o cmTC_e9631  -lrt -latomic -lm 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the include file dlfcn.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7c274/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_7c274.dir/build.make CMakeFiles/cmTC_7c274.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7c274.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_7c274.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_7c274
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c274.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_7c274.dir/CheckIncludeFile.c.o  -o cmTC_7c274  -latomic -lm 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function dlopen exists in the dl passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_a0e8c/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_a0e8c.dir/build.make CMakeFiles/cmTC_a0e8c.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a0e8c.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dlopen   -o CMakeFiles/cmTC_a0e8c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_a0e8c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a0e8c.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dlopen    -rdynamic CMakeFiles/cmTC_a0e8c.dir/CheckFunctionExists.c.o  -o cmTC_a0e8c  -ldl -latomic -lm 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_GCC_GET_CPUID succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_16524/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_16524.dir/build.make CMakeFiles/cmTC_16524.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_16524.dir/src.c.o
+/usr/bin/cc   -DHAVE_GCC_GET_CPUID   -o CMakeFiles/cmTC_16524.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_16524
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16524.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_GCC_GET_CPUID    -rdynamic CMakeFiles/cmTC_16524.dir/src.c.o  -o cmTC_16524  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <cpuid.h>
+        int main()
+        {
+            unsigned int eax, ebx, ecx, edx;
+            return __get_cpuid(0, &eax, &ebx, &ecx, &edx);
+        }
+Determining if the posix_memalign exist passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_518eb/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_518eb.dir/build.make CMakeFiles/cmTC_518eb.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_518eb.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_518eb.dir/CheckSymbolExists.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_518eb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_518eb.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_518eb.dir/CheckSymbolExists.c.o  -o cmTC_518eb  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+File /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_memalign
+  return ((int*)(&posix_memalign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_70a96/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_70a96.dir/build.make CMakeFiles/cmTC_70a96.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_70a96.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_70a96.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_70a96
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70a96.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_70a96.dir/CheckIncludeFile.c.o  -o cmTC_70a96  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test HAVE_PTHREAD succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_093bf/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_093bf.dir/build.make CMakeFiles/cmTC_093bf.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_093bf.dir/src.c.o
+/usr/bin/cc   -DHAVE_PTHREAD   -pthread -o CMakeFiles/cmTC_093bf.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_093bf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_093bf.dir/link.txt --verbose=1
+/usr/bin/cc  -DHAVE_PTHREAD    -rdynamic CMakeFiles/cmTC_093bf.dir/src.c.o  -o cmTC_093bf  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if the pthread_setschedparam exist passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_eab32/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_eab32.dir/build.make CMakeFiles/cmTC_eab32.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eab32.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -pthread   -o CMakeFiles/cmTC_eab32.dir/CheckSymbolExists.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_eab32
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eab32.dir/link.txt --verbose=1
+/usr/bin/cc   -pthread    -rdynamic CMakeFiles/cmTC_eab32.dir/CheckSymbolExists.c.o  -o cmTC_eab32  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+File /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_setschedparam
+  return ((int*)(&pthread_setschedparam))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the getopt exist passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_9d294/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_9d294.dir/build.make CMakeFiles/cmTC_9d294.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9d294.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -pthread   -o CMakeFiles/cmTC_9d294.dir/CheckSymbolExists.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_9d294
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d294.dir/link.txt --verbose=1
+/usr/bin/cc   -pthread    -rdynamic CMakeFiles/cmTC_9d294.dir/CheckSymbolExists.c.o  -o cmTC_9d294  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+File /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef getopt
+  return ((int*)(&getopt))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_7fd85/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_7fd85.dir/build.make CMakeFiles/cmTC_7fd85.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7fd85.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -pthread   -o CMakeFiles/cmTC_7fd85.dir/CheckIncludeFile.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_7fd85
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7fd85.dir/link.txt --verbose=1
+/usr/bin/cc   -pthread    -rdynamic CMakeFiles/cmTC_7fd85.dir/CheckIncludeFile.c.o  -o cmTC_7fd85  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD succeeded with the following output:
+Change Dir: /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_ff821/fast && make[2]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ff821.dir/build.make CMakeFiles/cmTC_ff821.dir/build
+make[3]: Entering directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ff821.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD  -pthread   -o CMakeFiles/cmTC_ff821.dir/src.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_ff821
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ff821.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD  -pthread    -rdynamic CMakeFiles/cmTC_ff821.dir/src.c.o  -o cmTC_ff821  -latomic -lm -ldl 
+make[3]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
 

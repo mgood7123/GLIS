@@ -40,7 +40,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/MagnumExternal/OpenGL/KHR/cmake_install.cmake")
-  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/cmake_install.cmake")
 
 endif()
 

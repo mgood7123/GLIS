@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../dependancies/openal-soft/include/AL/al.h
+
+../dependancies/openal-soft/include/AL/alc.h
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/alhelpers.c
+alhelpers.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/alhelpers.h
+stdio.h
+-
+errno.h
+-
+string.h
+-
+AL/al.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/AL/al.h
+AL/alc.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/AL/alc.h
+windows.h
+-
+mmsystem.h
+-
+sys/time.h
+-
+unistd.h
+-
+time.h
+-
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/alhelpers.h
+AL/al.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/examples/common/AL/al.h
+

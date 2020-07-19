@@ -68,18 +68,6 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -134,6 +122,18 @@ package_source:
 package_source/fast: package_source
 
 .PHONY : package_source/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # Special rule for the target package
 package: preinstall
@@ -192,6 +192,19 @@ testBuilder_executables_MYPRIVATEAPP/fast:
 .PHONY : testBuilder_executables_MYPRIVATEAPP/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
+
+# Build rule for target.
+testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
+.PHONY : testBuilder_executables_OffScreenFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_OffScreenFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
+.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_compositor
 
 # Build rule for target.
@@ -242,6 +255,19 @@ testBuilder_executables_X11_3: cmake_check_build_system
 testBuilder_executables_X11_3/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
 .PHONY : testBuilder_executables_X11_3/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_X11Cube
+
+# Build rule for target.
+testBuilder_executables_X11Cube: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11Cube
+.PHONY : testBuilder_executables_X11Cube
+
+# fast build rule for target.
+testBuilder_executables_X11Cube/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/build
+.PHONY : testBuilder_executables_X11Cube/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_shm
@@ -374,19 +400,6 @@ testBuilder_executables_compositor_start_drawing/fast:
 .PHONY : testBuilder_executables_compositor_start_drawing/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
-
-# Build rule for target.
-testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
-.PHONY : testBuilder_executables_OffScreenFramebuffer
-
-# fast build rule for target.
-testBuilder_executables_OffScreenFramebuffer/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
-.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
-
-#=============================================================================
 # Target rules for targets named WinKernel
 
 # Build rule for target.
@@ -424,6 +437,97 @@ glm_shared: cmake_check_build_system
 glm_shared/fast:
 	$(MAKE) -f dependancies/glm/glm/CMakeFiles/glm_shared.dir/build.make dependancies/glm/glm/CMakeFiles/glm_shared.dir/build
 .PHONY : glm_shared/fast
+
+#=============================================================================
+# Target rules for targets named common
+
+# Build rule for target.
+common: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 common
+.PHONY : common
+
+# fast build rule for target.
+common/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
+.PHONY : common/fast
+
+#=============================================================================
+# Target rules for targets named OpenAL
+
+# Build rule for target.
+OpenAL: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 OpenAL
+.PHONY : OpenAL
+
+# fast build rule for target.
+OpenAL/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/OpenAL.dir/build.make dependancies/openal-soft/CMakeFiles/OpenAL.dir/build
+.PHONY : OpenAL/fast
+
+#=============================================================================
+# Target rules for targets named openal-info
+
+# Build rule for target.
+openal-info: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 openal-info
+.PHONY : openal-info
+
+# fast build rule for target.
+openal-info/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/build
+.PHONY : openal-info/fast
+
+#=============================================================================
+# Target rules for targets named ex-common
+
+# Build rule for target.
+ex-common: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ex-common
+.PHONY : ex-common
+
+# fast build rule for target.
+ex-common/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/build
+.PHONY : ex-common/fast
+
+#=============================================================================
+# Target rules for targets named altonegen
+
+# Build rule for target.
+altonegen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 altonegen
+.PHONY : altonegen
+
+# fast build rule for target.
+altonegen/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/build
+.PHONY : altonegen/fast
+
+#=============================================================================
+# Target rules for targets named build_version
+
+# Build rule for target.
+build_version: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 build_version
+.PHONY : build_version
+
+# fast build rule for target.
+build_version/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/build_version.dir/build.make dependancies/openal-soft/CMakeFiles/build_version.dir/build
+.PHONY : build_version/fast
+
+#=============================================================================
+# Target rules for targets named alrecord
+
+# Build rule for target.
+alrecord: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 alrecord
+.PHONY : alrecord
+
+# fast build rule for target.
+alrecord/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/build
+.PHONY : alrecord/fast
 
 #=============================================================================
 # Target rules for targets named Corrade
@@ -565,7 +669,7 @@ MagnumFlextGLObjects: cmake_check_build_system
 
 # fast build rule for target.
 MagnumFlextGLObjects/fast:
-	$(MAKE) -f dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build.make dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/CMakeFiles/MagnumFlextGLObjects.dir/build
+	$(MAKE) -f dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/CMakeFiles/MagnumFlextGLObjects.dir/build.make dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/CMakeFiles/MagnumFlextGLObjects.dir/build
 .PHONY : MagnumFlextGLObjects/fast
 
 #=============================================================================
@@ -710,6 +814,19 @@ MagnumDebugToolsObjects: cmake_check_build_system
 MagnumDebugToolsObjects/fast:
 	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build
 .PHONY : MagnumDebugToolsObjects/fast
+
+#=============================================================================
+# Target rules for targets named MagnumDebugTools_RESOURCES-dependencies
+
+# Build rule for target.
+MagnumDebugTools_RESOURCES-dependencies: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MagnumDebugTools_RESOURCES-dependencies
+.PHONY : MagnumDebugTools_RESOURCES-dependencies
+
+# fast build rule for target.
+MagnumDebugTools_RESOURCES-dependencies/fast:
+	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/build
+.PHONY : MagnumDebugTools_RESOURCES-dependencies/fast
 
 #=============================================================================
 # Target rules for targets named MagnumGL
@@ -918,6 +1035,32 @@ MagnumTradeObjects: cmake_check_build_system
 MagnumTradeObjects/fast:
 	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build
 .PHONY : MagnumTradeObjects/fast
+
+#=============================================================================
+# Target rules for targets named MagnumUi
+
+# Build rule for target.
+MagnumUi: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MagnumUi
+.PHONY : MagnumUi
+
+# fast build rule for target.
+MagnumUi/fast:
+	$(MAKE) -f dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/build.make dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/build
+.PHONY : MagnumUi/fast
+
+#=============================================================================
+# Target rules for targets named MagnumUi_RESOURCES-dependencies
+
+# Build rule for target.
+MagnumUi_RESOURCES-dependencies: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MagnumUi_RESOURCES-dependencies
+.PHONY : MagnumUi_RESOURCES-dependencies
+
+# fast build rule for target.
+MagnumUi_RESOURCES-dependencies/fast:
+	$(MAKE) -f dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/build.make dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/build
+.PHONY : MagnumUi_RESOURCES-dependencies/fast
 
 compositor_clients/DefaultFramebuffer.o: compositor_clients/DefaultFramebuffer.cpp.o
 
@@ -1188,6 +1331,33 @@ examples/X11.s: examples/X11.cpp.s
 examples/X11.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.s
 .PHONY : examples/X11.cpp.s
+
+examples/X11Cube.o: examples/X11Cube.cpp.o
+
+.PHONY : examples/X11Cube.o
+
+# target to build an object file
+examples/X11Cube.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/examples/X11Cube.cpp.o
+.PHONY : examples/X11Cube.cpp.o
+
+examples/X11Cube.i: examples/X11Cube.cpp.i
+
+.PHONY : examples/X11Cube.i
+
+# target to preprocess a source file
+examples/X11Cube.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/examples/X11Cube.cpp.i
+.PHONY : examples/X11Cube.cpp.i
+
+examples/X11Cube.s: examples/X11Cube.cpp.s
+
+.PHONY : examples/X11Cube.s
+
+# target to generate assembly for a file
+examples/X11Cube.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/examples/X11Cube.cpp.s
+.PHONY : examples/X11Cube.cpp.s
 
 examples/X11_2.o: examples/X11_2.cpp.o
 
@@ -1513,6 +1683,33 @@ src/glis/font/font.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/font/font.cpp.s
 .PHONY : src/glis/font/font.cpp.s
 
+src/glis/internal/context.o: src/glis/internal/context.cpp.o
+
+.PHONY : src/glis/internal/context.o
+
+# target to build an object file
+src/glis/internal/context.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.o
+.PHONY : src/glis/internal/context.cpp.o
+
+src/glis/internal/context.i: src/glis/internal/context.cpp.i
+
+.PHONY : src/glis/internal/context.i
+
+# target to preprocess a source file
+src/glis/internal/context.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.i
+.PHONY : src/glis/internal/context.cpp.i
+
+src/glis/internal/context.s: src/glis/internal/context.cpp.s
+
+.PHONY : src/glis/internal/context.s
+
+# target to generate assembly for a file
+src/glis/internal/context.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.s
+.PHONY : src/glis/internal/context.cpp.s
+
 src/glis/internal/fps.o: src/glis/internal/fps.cpp.o
 
 .PHONY : src/glis/internal/fps.o
@@ -1763,17 +1960,19 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... package_source"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
+	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_compositor"
 	@echo "... testBuilder_executables_X11"
 	@echo "... testBuilder_executables_X11_2"
 	@echo "... testBuilder_executables_X11_3"
+	@echo "... install/local"
+	@echo "... testBuilder_executables_X11Cube"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_wayland"
 	@echo "... testBuilder_executables_X11_magnum"
@@ -1785,10 +1984,16 @@ help:
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
-	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
+	@echo "... common"
+	@echo "... OpenAL"
+	@echo "... openal-info"
+	@echo "... ex-common"
+	@echo "... altonegen"
+	@echo "... build_version"
+	@echo "... alrecord"
 	@echo "... Corrade"
 	@echo "... CorradeContainers-headers"
 	@echo "... CorradeInterconnect"
@@ -1811,6 +2016,7 @@ help:
 	@echo "... MagnumEglContextObjects"
 	@echo "... MagnumDebugTools"
 	@echo "... MagnumDebugToolsObjects"
+	@echo "... MagnumDebugTools_RESOURCES-dependencies"
 	@echo "... MagnumGL"
 	@echo "... MagnumGLObjects"
 	@echo "... MagnumMeshTools"
@@ -1827,6 +2033,8 @@ help:
 	@echo "... MagnumTextureTools_RCS-dependencies"
 	@echo "... MagnumTrade"
 	@echo "... MagnumTradeObjects"
+	@echo "... MagnumUi"
+	@echo "... MagnumUi_RESOURCES-dependencies"
 	@echo "... compositor_clients/DefaultFramebuffer.o"
 	@echo "... compositor_clients/DefaultFramebuffer.i"
 	@echo "... compositor_clients/DefaultFramebuffer.s"
@@ -1857,6 +2065,9 @@ help:
 	@echo "... examples/X11.o"
 	@echo "... examples/X11.i"
 	@echo "... examples/X11.s"
+	@echo "... examples/X11Cube.o"
+	@echo "... examples/X11Cube.i"
+	@echo "... examples/X11Cube.s"
 	@echo "... examples/X11_2.o"
 	@echo "... examples/X11_2.i"
 	@echo "... examples/X11_2.s"
@@ -1893,6 +2104,9 @@ help:
 	@echo "... src/glis/font/font.o"
 	@echo "... src/glis/font/font.i"
 	@echo "... src/glis/font/font.s"
+	@echo "... src/glis/internal/context.o"
+	@echo "... src/glis/internal/context.i"
+	@echo "... src/glis/internal/context.s"
 	@echo "... src/glis/internal/fps.o"
 	@echo "... src/glis/internal/fps.i"
 	@echo "... src/glis/internal/fps.s"

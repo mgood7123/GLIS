@@ -486,6 +486,11 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Initialized Magnum context");
+    if (GLIS.constructor != nullptr) {
+        LOG_INFO("Calling constructor");
+        GLIS.constructor();
+        LOG_INFO("Called constructor");
+    }
     if (debug) {
         LOG_INFO("Enabling debug callbacks");
         enable_debug_callbacks();
@@ -514,11 +519,14 @@ void GLIS::GLIS_destroy_GLIS(class GLIS_CLASS &GLIS) {
         LOG_INFO("Disabled debug callbacks");
         GLIS.init_debug = false;
     }
-
+    if (GLIS.destructor != nullptr) {
+        LOG_INFO("Calling destructor");
+        GLIS.destructor();
+        LOG_INFO("Called destructor");
+    }
     LOG_INFO("Uninitializing Magnum context");
     delete GLIS.contextMagnum;
     LOG_INFO("Uninitialized Magnum context");
-
     if (GLIS.init_eglMakeCurrent) {
         LOG_INFO("Switching context to no context");
         eglMakeCurrent(GLIS.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);

@@ -397,6 +397,60 @@ Buffer.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Buffer.cpp.s
 .PHONY : Buffer.cpp.s
 
+BufferImage.o: BufferImage.cpp.o
+
+.PHONY : BufferImage.o
+
+# target to build an object file
+BufferImage.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/BufferImage.cpp.o
+.PHONY : BufferImage.cpp.o
+
+BufferImage.i: BufferImage.cpp.i
+
+.PHONY : BufferImage.i
+
+# target to preprocess a source file
+BufferImage.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/BufferImage.cpp.i
+.PHONY : BufferImage.cpp.i
+
+BufferImage.s: BufferImage.cpp.s
+
+.PHONY : BufferImage.s
+
+# target to generate assembly for a file
+BufferImage.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/BufferImage.cpp.s
+.PHONY : BufferImage.cpp.s
+
+BufferTexture.o: BufferTexture.cpp.o
+
+.PHONY : BufferTexture.o
+
+# target to build an object file
+BufferTexture.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.o
+.PHONY : BufferTexture.cpp.o
+
+BufferTexture.i: BufferTexture.cpp.i
+
+.PHONY : BufferTexture.i
+
+# target to preprocess a source file
+BufferTexture.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.i
+.PHONY : BufferTexture.cpp.i
+
+BufferTexture.s: BufferTexture.cpp.s
+
+.PHONY : BufferTexture.s
+
+# target to generate assembly for a file
+BufferTexture.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/BufferTexture.cpp.s
+.PHONY : BufferTexture.cpp.s
+
 Context.o: Context.cpp.o
 
 .PHONY : Context.o
@@ -450,6 +504,33 @@ CubeMapTexture.s: CubeMapTexture.cpp.s
 CubeMapTexture.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/CubeMapTexture.cpp.s
 .PHONY : CubeMapTexture.cpp.s
+
+CubeMapTextureArray.o: CubeMapTextureArray.cpp.o
+
+.PHONY : CubeMapTextureArray.o
+
+# target to build an object file
+CubeMapTextureArray.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.o
+.PHONY : CubeMapTextureArray.cpp.o
+
+CubeMapTextureArray.i: CubeMapTextureArray.cpp.i
+
+.PHONY : CubeMapTextureArray.i
+
+# target to preprocess a source file
+CubeMapTextureArray.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.i
+.PHONY : CubeMapTextureArray.cpp.i
+
+CubeMapTextureArray.s: CubeMapTextureArray.cpp.s
+
+.PHONY : CubeMapTextureArray.s
+
+# target to generate assembly for a file
+CubeMapTextureArray.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/CubeMapTextureArray.cpp.s
+.PHONY : CubeMapTextureArray.cpp.s
 
 DebugOutput.o: DebugOutput.cpp.o
 
@@ -829,6 +910,33 @@ Implementation/TextureState.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TextureState.cpp.s
 .PHONY : Implementation/TextureState.cpp.s
 
+Implementation/TransformFeedbackState.o: Implementation/TransformFeedbackState.cpp.o
+
+.PHONY : Implementation/TransformFeedbackState.o
+
+# target to build an object file
+Implementation/TransformFeedbackState.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.o
+.PHONY : Implementation/TransformFeedbackState.cpp.o
+
+Implementation/TransformFeedbackState.i: Implementation/TransformFeedbackState.cpp.i
+
+.PHONY : Implementation/TransformFeedbackState.i
+
+# target to preprocess a source file
+Implementation/TransformFeedbackState.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.i
+.PHONY : Implementation/TransformFeedbackState.cpp.i
+
+Implementation/TransformFeedbackState.s: Implementation/TransformFeedbackState.cpp.s
+
+.PHONY : Implementation/TransformFeedbackState.s
+
+# target to generate assembly for a file
+Implementation/TransformFeedbackState.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Implementation/TransformFeedbackState.cpp.s
+.PHONY : Implementation/TransformFeedbackState.cpp.s
+
 Implementation/driverSpecific.o: Implementation/driverSpecific.cpp.o
 
 .PHONY : Implementation/driverSpecific.o
@@ -937,6 +1045,33 @@ MeshView.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/MeshView.cpp.s
 .PHONY : MeshView.cpp.s
 
+MultisampleTexture.o: MultisampleTexture.cpp.o
+
+.PHONY : MultisampleTexture.o
+
+# target to build an object file
+MultisampleTexture.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.o
+.PHONY : MultisampleTexture.cpp.o
+
+MultisampleTexture.i: MultisampleTexture.cpp.i
+
+.PHONY : MultisampleTexture.i
+
+# target to preprocess a source file
+MultisampleTexture.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.i
+.PHONY : MultisampleTexture.cpp.i
+
+MultisampleTexture.s: MultisampleTexture.cpp.s
+
+.PHONY : MultisampleTexture.s
+
+# target to generate assembly for a file
+MultisampleTexture.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/MultisampleTexture.cpp.s
+.PHONY : MultisampleTexture.cpp.s
+
 OpenGL.o: OpenGL.cpp.o
 
 .PHONY : OpenGL.o
@@ -990,6 +1125,33 @@ PixelFormat.s: PixelFormat.cpp.s
 PixelFormat.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/PixelFormat.cpp.s
 .PHONY : PixelFormat.cpp.s
+
+PrimitiveQuery.o: PrimitiveQuery.cpp.o
+
+.PHONY : PrimitiveQuery.o
+
+# target to build an object file
+PrimitiveQuery.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.o
+.PHONY : PrimitiveQuery.cpp.o
+
+PrimitiveQuery.i: PrimitiveQuery.cpp.i
+
+.PHONY : PrimitiveQuery.i
+
+# target to preprocess a source file
+PrimitiveQuery.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.i
+.PHONY : PrimitiveQuery.cpp.i
+
+PrimitiveQuery.s: PrimitiveQuery.cpp.s
+
+.PHONY : PrimitiveQuery.s
+
+# target to generate assembly for a file
+PrimitiveQuery.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/PrimitiveQuery.cpp.s
+.PHONY : PrimitiveQuery.cpp.s
 
 Renderbuffer.o: Renderbuffer.cpp.o
 
@@ -1126,6 +1288,33 @@ Texture.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Texture.cpp.s
 .PHONY : Texture.cpp.s
 
+TextureArray.o: TextureArray.cpp.o
+
+.PHONY : TextureArray.o
+
+# target to build an object file
+TextureArray.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.o
+.PHONY : TextureArray.cpp.o
+
+TextureArray.i: TextureArray.cpp.i
+
+.PHONY : TextureArray.i
+
+# target to preprocess a source file
+TextureArray.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.i
+.PHONY : TextureArray.cpp.i
+
+TextureArray.s: TextureArray.cpp.s
+
+.PHONY : TextureArray.s
+
+# target to generate assembly for a file
+TextureArray.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureArray.cpp.s
+.PHONY : TextureArray.cpp.s
+
 TextureFormat.o: TextureFormat.cpp.o
 
 .PHONY : TextureFormat.o
@@ -1152,6 +1341,33 @@ TextureFormat.s: TextureFormat.cpp.s
 TextureFormat.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TextureFormat.cpp.s
 .PHONY : TextureFormat.cpp.s
+
+TransformFeedback.o: TransformFeedback.cpp.o
+
+.PHONY : TransformFeedback.o
+
+# target to build an object file
+TransformFeedback.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.o
+.PHONY : TransformFeedback.cpp.o
+
+TransformFeedback.i: TransformFeedback.cpp.i
+
+.PHONY : TransformFeedback.i
+
+# target to preprocess a source file
+TransformFeedback.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.i
+.PHONY : TransformFeedback.cpp.i
+
+TransformFeedback.s: TransformFeedback.cpp.s
+
+.PHONY : TransformFeedback.s
+
+# target to generate assembly for a file
+TransformFeedback.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/build.make dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/TransformFeedback.cpp.s
+.PHONY : TransformFeedback.cpp.s
 
 Version.o: Version.cpp.o
 
@@ -1217,12 +1433,21 @@ help:
 	@echo "... Buffer.o"
 	@echo "... Buffer.i"
 	@echo "... Buffer.s"
+	@echo "... BufferImage.o"
+	@echo "... BufferImage.i"
+	@echo "... BufferImage.s"
+	@echo "... BufferTexture.o"
+	@echo "... BufferTexture.i"
+	@echo "... BufferTexture.s"
 	@echo "... Context.o"
 	@echo "... Context.i"
 	@echo "... Context.s"
 	@echo "... CubeMapTexture.o"
 	@echo "... CubeMapTexture.i"
 	@echo "... CubeMapTexture.s"
+	@echo "... CubeMapTextureArray.o"
+	@echo "... CubeMapTextureArray.i"
+	@echo "... CubeMapTextureArray.s"
 	@echo "... DebugOutput.o"
 	@echo "... DebugOutput.i"
 	@echo "... DebugOutput.s"
@@ -1265,6 +1490,9 @@ help:
 	@echo "... Implementation/TextureState.o"
 	@echo "... Implementation/TextureState.i"
 	@echo "... Implementation/TextureState.s"
+	@echo "... Implementation/TransformFeedbackState.o"
+	@echo "... Implementation/TransformFeedbackState.i"
+	@echo "... Implementation/TransformFeedbackState.s"
 	@echo "... Implementation/driverSpecific.o"
 	@echo "... Implementation/driverSpecific.i"
 	@echo "... Implementation/driverSpecific.s"
@@ -1277,12 +1505,18 @@ help:
 	@echo "... MeshView.o"
 	@echo "... MeshView.i"
 	@echo "... MeshView.s"
+	@echo "... MultisampleTexture.o"
+	@echo "... MultisampleTexture.i"
+	@echo "... MultisampleTexture.s"
 	@echo "... OpenGL.o"
 	@echo "... OpenGL.i"
 	@echo "... OpenGL.s"
 	@echo "... PixelFormat.o"
 	@echo "... PixelFormat.i"
 	@echo "... PixelFormat.s"
+	@echo "... PrimitiveQuery.o"
+	@echo "... PrimitiveQuery.i"
+	@echo "... PrimitiveQuery.s"
 	@echo "... Renderbuffer.o"
 	@echo "... Renderbuffer.i"
 	@echo "... Renderbuffer.s"
@@ -1298,9 +1532,15 @@ help:
 	@echo "... Texture.o"
 	@echo "... Texture.i"
 	@echo "... Texture.s"
+	@echo "... TextureArray.o"
+	@echo "... TextureArray.i"
+	@echo "... TextureArray.s"
 	@echo "... TextureFormat.o"
 	@echo "... TextureFormat.i"
 	@echo "... TextureFormat.s"
+	@echo "... TransformFeedback.o"
+	@echo "... TransformFeedback.i"
+	@echo "... TransformFeedback.s"
 	@echo "... Version.o"
 	@echo "... Version.i"
 	@echo "... Version.s"

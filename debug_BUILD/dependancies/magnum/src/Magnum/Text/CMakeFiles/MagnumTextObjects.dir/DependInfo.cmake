@@ -21,6 +21,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../dependancies/freetype-2.10.2/include"
   "../dependancies/glm"
+  "../dependancies/openal-soft"
   "../dependancies/corrade/src"
   "dependancies/corrade/src"
   "../dependancies/magnum/src"
