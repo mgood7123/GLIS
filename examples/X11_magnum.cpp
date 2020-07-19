@@ -23,7 +23,6 @@ GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
 int main() {
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
-    eglCreateImageKHR
     eglSwapInterval(CompositorMain.display, 0);
     glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, nullptr, close);
 }
