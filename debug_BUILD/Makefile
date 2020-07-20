@@ -56,18 +56,6 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -123,6 +111,18 @@ package_source/fast: package_source
 
 .PHONY : package_source/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -177,6 +177,19 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_RotatingCube
+
+# Build rule for target.
+testBuilder_executables_RotatingCube: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_RotatingCube
+.PHONY : testBuilder_executables_RotatingCube
+
+# fast build rule for target.
+testBuilder_executables_RotatingCube/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_RotatingCube.dir/build.make CMakeFiles/testBuilder_executables_RotatingCube.dir/build
+.PHONY : testBuilder_executables_RotatingCube/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_MYPRIVATEAPP
@@ -1197,6 +1210,33 @@ compositor_clients/OffScreenFramebuffer.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/compositor_clients/OffScreenFramebuffer.cpp.s
 .PHONY : compositor_clients/OffScreenFramebuffer.cpp.s
 
+compositor_clients/RotatingCube.o: compositor_clients/RotatingCube.cpp.o
+
+.PHONY : compositor_clients/RotatingCube.o
+
+# target to build an object file
+compositor_clients/RotatingCube.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_RotatingCube.dir/build.make CMakeFiles/testBuilder_executables_RotatingCube.dir/compositor_clients/RotatingCube.cpp.o
+.PHONY : compositor_clients/RotatingCube.cpp.o
+
+compositor_clients/RotatingCube.i: compositor_clients/RotatingCube.cpp.i
+
+.PHONY : compositor_clients/RotatingCube.i
+
+# target to preprocess a source file
+compositor_clients/RotatingCube.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_RotatingCube.dir/build.make CMakeFiles/testBuilder_executables_RotatingCube.dir/compositor_clients/RotatingCube.cpp.i
+.PHONY : compositor_clients/RotatingCube.cpp.i
+
+compositor_clients/RotatingCube.s: compositor_clients/RotatingCube.cpp.s
+
+.PHONY : compositor_clients/RotatingCube.s
+
+# target to generate assembly for a file
+compositor_clients/RotatingCube.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_RotatingCube.dir/build.make CMakeFiles/testBuilder_executables_RotatingCube.dir/compositor_clients/RotatingCube.cpp.s
+.PHONY : compositor_clients/RotatingCube.cpp.s
+
 compositor_clients/Texture.o: compositor_clients/Texture.cpp.o
 
 .PHONY : compositor_clients/Texture.o
@@ -1959,12 +1999,13 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/strip"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... package_source"
+	@echo "... install/strip"
+	@echo "... testBuilder_executables_RotatingCube"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
 	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_compositor"
@@ -2050,6 +2091,9 @@ help:
 	@echo "... compositor_clients/OffScreenFramebuffer.o"
 	@echo "... compositor_clients/OffScreenFramebuffer.i"
 	@echo "... compositor_clients/OffScreenFramebuffer.s"
+	@echo "... compositor_clients/RotatingCube.o"
+	@echo "... compositor_clients/RotatingCube.i"
+	@echo "... compositor_clients/RotatingCube.s"
 	@echo "... compositor_clients/Texture.o"
 	@echo "... compositor_clients/Texture.i"
 	@echo "... compositor_clients/Texture.s"

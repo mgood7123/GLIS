@@ -196,6 +196,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/testBuilder_executables_RotatingCube.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/DependInfo.cmake"
   "CMakeFiles/testBuilder_executables_compositor.dir/DependInfo.cmake"

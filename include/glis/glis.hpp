@@ -1,5 +1,10 @@
 #define GLIS_COMMON_WIDTH 1080
 #define GLIS_COMMON_HEIGHT 2032
+#include <Magnum/GL/Framebuffer.h>
+#include <Magnum/GL/Renderbuffer.h>
+#include <Magnum/GL/RenderbufferFormat.h>
+#include <Magnum/GL/Texture.h>
+#include <Magnum/GL/TextureFormat.h>
 #include <Magnum/Platform/GLContext.h>
 #include <Magnum/GL/Context.h>
 #include <Magnum/GL/Buffer.h>

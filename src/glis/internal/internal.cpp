@@ -408,6 +408,16 @@ void GLIS::disable_debug_callbacks(void) {
 
 bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debug) {
     if (GLIS.init_GLIS) return true;
+
+    // TODO: https://github.com/fuyufjh/GraphicBuffer#how-to-use
+    // Example for API >= 26. This repository is NOT needed,
+    // because there is an open alternative in NDK [1].
+    // The example does exactly the same thing as the one above.
+    //
+    // this uses EGLImage, however is is unclear how this could be used in an IPC situation
+    //
+    // http://www.jlekstrand.net/jason/projects/wayland/wayland-android/
+
     LOG_MAGNUM_DEBUG << "DEBUG MAGNUM TEST MESSAGE";
     LOG_MAGNUM_WARNING << "WARNING MAGNUM TEST MESSAGE";
     LOG_MAGNUM_ERROR << "ERROR MAGNUM TEST MESSAGE";
@@ -1497,8 +1507,8 @@ void GLIS::GLIS_draw_high_resolution_square() {
     // ------------------------------------------------------------------
     float vertices[] = {
             // positions          // colors           // texture coords
-            1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-            1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            1.0f,  1.0f, 0.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            1.0f, -1.0f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
             -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
             -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
     };
