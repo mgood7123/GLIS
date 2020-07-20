@@ -14,6 +14,7 @@ using namespace Magnum::Math::Literals;
 
 GL::Mesh * _mesh = nullptr;
 Shaders::Phong * _shader = nullptr;
+Magnum::
 
 Matrix4 _transformation, _projection;
 Color3 _color;
