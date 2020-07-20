@@ -20,17 +20,17 @@ Matrix4 _transformation, _projection;
 Color3 _color;
 
 GLIS_CALLBACKS_CONTEXT_CONSTRUCTOR(live) {
-    _shader = new Shaders::Phong;
-    _mesh = new GL::Mesh;
-    color = new GL::Texture2D;
+//    _shader = new Shaders::Phong;
+//    _mesh = new GL::Mesh;
+//    color = new GL::Texture2D;
 }
 
 GLIS_CALLBACKS_CONTEXT_DECONSTRUCTOR(die) {
-    delete _shader;
-    delete _mesh;
-    delete framebuffer;
-    delete depthStencil;
-    delete color;
+//    delete _shader;
+//    delete _mesh;
+//    delete framebuffer;
+//    delete depthStencil;
+//    delete color;
 }
 
 int main() {
@@ -38,6 +38,10 @@ int main() {
     int H = GLIS_COMMON_HEIGHT;
     G.setStructors(live, die);
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
+
+        _shader = new Shaders::Phong;
+        _mesh = new GL::Mesh;
+        color = new GL::Texture2D;
 
         Vector2i size = {W, H};
 
@@ -83,6 +87,11 @@ int main() {
         }
 
         LOG_INFO("Cleaning up");
+        delete _shader;
+        delete _mesh;
+        delete framebuffer;
+        delete depthStencil;
+        delete color;
         glis.GLIS_destroy_GLIS(G);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");

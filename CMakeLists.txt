@@ -12,6 +12,8 @@ include_directories(dependancies/freetype-2.10.2/include)
 add_subdirectory(dependancies/glm)
 include_directories(dependancies/glm)
 
+set(ALSOFT_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(ALSOFT_UTILS OFF CACHE BOOL "" FORCE)
 add_subdirectory(dependancies/openal-soft)
 include_directories(dependancies/openal-soft)
 

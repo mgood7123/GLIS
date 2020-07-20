@@ -452,17 +452,17 @@ glm_shared/fast:
 .PHONY : glm_shared/fast
 
 #=============================================================================
-# Target rules for targets named common
+# Target rules for targets named ex-common
 
 # Build rule for target.
-common: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 common
-.PHONY : common
+ex-common: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ex-common
+.PHONY : ex-common
 
 # fast build rule for target.
-common/fast:
-	$(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
-.PHONY : common/fast
+ex-common/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/build
+.PHONY : ex-common/fast
 
 #=============================================================================
 # Target rules for targets named OpenAL
@@ -478,43 +478,17 @@ OpenAL/fast:
 .PHONY : OpenAL/fast
 
 #=============================================================================
-# Target rules for targets named openal-info
+# Target rules for targets named common
 
 # Build rule for target.
-openal-info: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 openal-info
-.PHONY : openal-info
+common: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 common
+.PHONY : common
 
 # fast build rule for target.
-openal-info/fast:
-	$(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/build
-.PHONY : openal-info/fast
-
-#=============================================================================
-# Target rules for targets named ex-common
-
-# Build rule for target.
-ex-common: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ex-common
-.PHONY : ex-common
-
-# fast build rule for target.
-ex-common/fast:
-	$(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/build
-.PHONY : ex-common/fast
-
-#=============================================================================
-# Target rules for targets named altonegen
-
-# Build rule for target.
-altonegen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 altonegen
-.PHONY : altonegen
-
-# fast build rule for target.
-altonegen/fast:
-	$(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/build
-.PHONY : altonegen/fast
+common/fast:
+	$(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
+.PHONY : common/fast
 
 #=============================================================================
 # Target rules for targets named build_version
@@ -528,19 +502,6 @@ build_version: cmake_check_build_system
 build_version/fast:
 	$(MAKE) -f dependancies/openal-soft/CMakeFiles/build_version.dir/build.make dependancies/openal-soft/CMakeFiles/build_version.dir/build
 .PHONY : build_version/fast
-
-#=============================================================================
-# Target rules for targets named alrecord
-
-# Build rule for target.
-alrecord: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 alrecord
-.PHONY : alrecord
-
-# fast build rule for target.
-alrecord/fast:
-	$(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/build
-.PHONY : alrecord/fast
 
 #=============================================================================
 # Target rules for targets named Corrade
@@ -2028,13 +1989,10 @@ help:
 	@echo "... WinKernel"
 	@echo "... freetype"
 	@echo "... glm_shared"
-	@echo "... common"
-	@echo "... OpenAL"
-	@echo "... openal-info"
 	@echo "... ex-common"
-	@echo "... altonegen"
+	@echo "... OpenAL"
+	@echo "... common"
 	@echo "... build_version"
-	@echo "... alrecord"
 	@echo "... Corrade"
 	@echo "... CorradeContainers-headers"
 	@echo "... CorradeInterconnect"

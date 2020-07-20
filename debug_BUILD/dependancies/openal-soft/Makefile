@@ -56,6 +56,18 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -79,17 +91,38 @@ package_source/fast: package_source
 
 .PHONY : package_source/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
 
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\" \"headers\" \"pkgconfig\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # Special rule for the target package
 package: preinstall
@@ -112,39 +145,6 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\" \"headers\" \"pkgconfig\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -179,19 +179,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-dependancies/openal-soft/CMakeFiles/common.dir/rule:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/common.dir/rule
-.PHONY : dependancies/openal-soft/CMakeFiles/common.dir/rule
+dependancies/openal-soft/CMakeFiles/ex-common.dir/rule:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
+.PHONY : dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
 
 # Convenience name for target.
-common: dependancies/openal-soft/CMakeFiles/common.dir/rule
+ex-common: dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
 
-.PHONY : common
+.PHONY : ex-common
 
 # fast build rule for target.
-common/fast:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
-.PHONY : common/fast
+ex-common/fast:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/build
+.PHONY : ex-common/fast
 
 # Convenience name for target.
 dependancies/openal-soft/CMakeFiles/OpenAL.dir/rule:
@@ -209,49 +209,19 @@ OpenAL/fast:
 .PHONY : OpenAL/fast
 
 # Convenience name for target.
-dependancies/openal-soft/CMakeFiles/openal-info.dir/rule:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/openal-info.dir/rule
-.PHONY : dependancies/openal-soft/CMakeFiles/openal-info.dir/rule
+dependancies/openal-soft/CMakeFiles/common.dir/rule:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/common.dir/rule
+.PHONY : dependancies/openal-soft/CMakeFiles/common.dir/rule
 
 # Convenience name for target.
-openal-info: dependancies/openal-soft/CMakeFiles/openal-info.dir/rule
+common: dependancies/openal-soft/CMakeFiles/common.dir/rule
 
-.PHONY : openal-info
+.PHONY : common
 
 # fast build rule for target.
-openal-info/fast:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/build
-.PHONY : openal-info/fast
-
-# Convenience name for target.
-dependancies/openal-soft/CMakeFiles/ex-common.dir/rule:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
-.PHONY : dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
-
-# Convenience name for target.
-ex-common: dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
-
-.PHONY : ex-common
-
-# fast build rule for target.
-ex-common/fast:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/build
-.PHONY : ex-common/fast
-
-# Convenience name for target.
-dependancies/openal-soft/CMakeFiles/altonegen.dir/rule:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/altonegen.dir/rule
-.PHONY : dependancies/openal-soft/CMakeFiles/altonegen.dir/rule
-
-# Convenience name for target.
-altonegen: dependancies/openal-soft/CMakeFiles/altonegen.dir/rule
-
-.PHONY : altonegen
-
-# fast build rule for target.
-altonegen/fast:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/build
-.PHONY : altonegen/fast
+common/fast:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
+.PHONY : common/fast
 
 # Convenience name for target.
 dependancies/openal-soft/CMakeFiles/build_version.dir/rule:
@@ -267,21 +237,6 @@ build_version: dependancies/openal-soft/CMakeFiles/build_version.dir/rule
 build_version/fast:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/build_version.dir/build.make dependancies/openal-soft/CMakeFiles/build_version.dir/build
 .PHONY : build_version/fast
-
-# Convenience name for target.
-dependancies/openal-soft/CMakeFiles/alrecord.dir/rule:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/alrecord.dir/rule
-.PHONY : dependancies/openal-soft/CMakeFiles/alrecord.dir/rule
-
-# Convenience name for target.
-alrecord: dependancies/openal-soft/CMakeFiles/alrecord.dir/rule
-
-.PHONY : alrecord
-
-# fast build rule for target.
-alrecord/fast:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/build
-.PHONY : alrecord/fast
 
 al/auxeffectslot.o: al/auxeffectslot.cpp.o
 
@@ -1984,60 +1939,6 @@ common/threads.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/common/threads.cpp.s
 .PHONY : common/threads.cpp.s
 
-examples/alrecord.o: examples/alrecord.c.o
-
-.PHONY : examples/alrecord.o
-
-# target to build an object file
-examples/alrecord.c.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/examples/alrecord.c.o
-.PHONY : examples/alrecord.c.o
-
-examples/alrecord.i: examples/alrecord.c.i
-
-.PHONY : examples/alrecord.i
-
-# target to preprocess a source file
-examples/alrecord.c.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/examples/alrecord.c.i
-.PHONY : examples/alrecord.c.i
-
-examples/alrecord.s: examples/alrecord.c.s
-
-.PHONY : examples/alrecord.s
-
-# target to generate assembly for a file
-examples/alrecord.c.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/alrecord.dir/build.make dependancies/openal-soft/CMakeFiles/alrecord.dir/examples/alrecord.c.s
-.PHONY : examples/alrecord.c.s
-
-examples/altonegen.o: examples/altonegen.c.o
-
-.PHONY : examples/altonegen.o
-
-# target to build an object file
-examples/altonegen.c.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/examples/altonegen.c.o
-.PHONY : examples/altonegen.c.o
-
-examples/altonegen.i: examples/altonegen.c.i
-
-.PHONY : examples/altonegen.i
-
-# target to preprocess a source file
-examples/altonegen.c.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/examples/altonegen.c.i
-.PHONY : examples/altonegen.c.i
-
-examples/altonegen.s: examples/altonegen.c.s
-
-.PHONY : examples/altonegen.s
-
-# target to generate assembly for a file
-examples/altonegen.c.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/altonegen.dir/build.make dependancies/openal-soft/CMakeFiles/altonegen.dir/examples/altonegen.c.s
-.PHONY : examples/altonegen.c.s
-
 examples/common/alhelpers.o: examples/common/alhelpers.c.o
 
 .PHONY : examples/common/alhelpers.o
@@ -2065,54 +1966,24 @@ examples/common/alhelpers.c.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/ex-common.dir/build.make dependancies/openal-soft/CMakeFiles/ex-common.dir/examples/common/alhelpers.c.s
 .PHONY : examples/common/alhelpers.c.s
 
-utils/openal-info.o: utils/openal-info.c.o
-
-.PHONY : utils/openal-info.o
-
-# target to build an object file
-utils/openal-info.c.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/utils/openal-info.c.o
-.PHONY : utils/openal-info.c.o
-
-utils/openal-info.i: utils/openal-info.c.i
-
-.PHONY : utils/openal-info.i
-
-# target to preprocess a source file
-utils/openal-info.c.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/utils/openal-info.c.i
-.PHONY : utils/openal-info.c.i
-
-utils/openal-info.s: utils/openal-info.c.s
-
-.PHONY : utils/openal-info.s
-
-# target to generate assembly for a file
-utils/openal-info.c.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/openal-soft/CMakeFiles/openal-info.dir/build.make dependancies/openal-soft/CMakeFiles/openal-info.dir/utils/openal-info.c.s
-.PHONY : utils/openal-info.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/local"
-	@echo "... common"
-	@echo "... OpenAL"
-	@echo "... openal-info"
-	@echo "... package_source"
-	@echo "... ex-common"
 	@echo "... install/strip"
-	@echo "... altonegen"
-	@echo "... package"
-	@echo "... edit_cache"
-	@echo "... rebuild_cache"
-	@echo "... list_install_components"
-	@echo "... build_version"
+	@echo "... install/local"
+	@echo "... package_source"
 	@echo "... install"
-	@echo "... alrecord"
+	@echo "... list_install_components"
+	@echo "... rebuild_cache"
+	@echo "... package"
+	@echo "... ex-common"
+	@echo "... OpenAL"
+	@echo "... common"
+	@echo "... edit_cache"
+	@echo "... build_version"
 	@echo "... al/auxeffectslot.o"
 	@echo "... al/auxeffectslot.i"
 	@echo "... al/auxeffectslot.s"
@@ -2302,18 +2173,9 @@ help:
 	@echo "... common/threads.o"
 	@echo "... common/threads.i"
 	@echo "... common/threads.s"
-	@echo "... examples/alrecord.o"
-	@echo "... examples/alrecord.i"
-	@echo "... examples/alrecord.s"
-	@echo "... examples/altonegen.o"
-	@echo "... examples/altonegen.i"
-	@echo "... examples/altonegen.s"
 	@echo "... examples/common/alhelpers.o"
 	@echo "... examples/common/alhelpers.i"
 	@echo "... examples/common/alhelpers.s"
-	@echo "... utils/openal-info.o"
-	@echo "... utils/openal-info.i"
-	@echo "... utils/openal-info.s"
 .PHONY : help
 
 

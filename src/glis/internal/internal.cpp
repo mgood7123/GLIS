@@ -409,6 +409,9 @@ void GLIS::disable_debug_callbacks(void) {
 bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debug) {
     if (GLIS.init_GLIS) return true;
 
+    // this is how to debug native executables:
+    // https://stackoverflow.com/questions/40492315/how-can-i-debug-an-android-native-executable-and-library-not-directly-integrated
+
     // TODO: https://github.com/fuyufjh/GraphicBuffer#how-to-use
     // Example for API >= 26. This repository is NOT needed,
     // because there is an open alternative in NDK [1].
