@@ -1280,8 +1280,6 @@ bool GLIS::runUntilX11WindowClose(
                             glis, glis_class, glis_font, glis_fps,
                             event.xconfigure.width, event.xconfigure.height
                     );
-                if (draw != nullptr)
-                    draw(glis, glis_class, glis_font, glis_fps);
             }
         }
     }
