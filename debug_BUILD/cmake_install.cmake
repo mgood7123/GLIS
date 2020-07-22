@@ -46,6 +46,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-extras/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/testBuilder/cmake_install.cmake")
 
 endif()

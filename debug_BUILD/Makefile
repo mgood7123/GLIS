@@ -123,6 +123,17 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
+	/usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+
+.PHONY : package/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -134,17 +145,6 @@ install/local/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
-
-# Special rule for the target package
-package: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	/usr/bin/cpack --config ./CPackConfig.cmake
-.PHONY : package
-
-# Special rule for the target package
-package/fast: package
-
-.PHONY : package/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -205,17 +205,56 @@ testBuilder_executables_MYPRIVATEAPP/fast:
 .PHONY : testBuilder_executables_MYPRIVATEAPP/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
+# Target rules for targets named testBuilder_executables_Texture
 
 # Build rule for target.
-testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
-.PHONY : testBuilder_executables_OffScreenFramebuffer
+testBuilder_executables_Texture: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Texture
+.PHONY : testBuilder_executables_Texture
 
 # fast build rule for target.
-testBuilder_executables_OffScreenFramebuffer/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
-.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
+testBuilder_executables_Texture/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
+.PHONY : testBuilder_executables_Texture/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_compositor_stop_drawing
+
+# Build rule for target.
+testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_stop_drawing
+.PHONY : testBuilder_executables_compositor_stop_drawing
+
+# fast build rule for target.
+testBuilder_executables_compositor_stop_drawing/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
+.PHONY : testBuilder_executables_compositor_stop_drawing/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_DefaultFramebuffer
+
+# Build rule for target.
+testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_DefaultFramebuffer
+.PHONY : testBuilder_executables_DefaultFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_DefaultFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
+.PHONY : testBuilder_executables_DefaultFramebuffer/fast
+
+#=============================================================================
+# Target rules for targets named GLIS
+
+# Build rule for target.
+GLIS: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 GLIS
+.PHONY : GLIS
+
+# fast build rule for target.
+GLIS/fast:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
+.PHONY : GLIS/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_compositor
@@ -283,6 +322,45 @@ testBuilder_executables_X11Cube/fast:
 .PHONY : testBuilder_executables_X11Cube/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
+
+# Build rule for target.
+testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
+.PHONY : testBuilder_executables_OffScreenFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_OffScreenFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
+.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
+
+#=============================================================================
+# Target rules for targets named GLIS_RESOURCES-dependencies
+
+# Build rule for target.
+GLIS_RESOURCES-dependencies: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 GLIS_RESOURCES-dependencies
+.PHONY : GLIS_RESOURCES-dependencies
+
+# fast build rule for target.
+GLIS_RESOURCES-dependencies/fast:
+	$(MAKE) -f CMakeFiles/GLIS_RESOURCES-dependencies.dir/build.make CMakeFiles/GLIS_RESOURCES-dependencies.dir/build
+.PHONY : GLIS_RESOURCES-dependencies/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_X11_DNC_GRID
+
+# Build rule for target.
+testBuilder_executables_X11_DNC_GRID: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_DNC_GRID
+.PHONY : testBuilder_executables_X11_DNC_GRID
+
+# fast build rule for target.
+testBuilder_executables_X11_DNC_GRID/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build
+.PHONY : testBuilder_executables_X11_DNC_GRID/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_shm
 
 # Build rule for target.
@@ -320,58 +398,6 @@ testBuilder_executables_X11_magnum: cmake_check_build_system
 testBuilder_executables_X11_magnum/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/build
 .PHONY : testBuilder_executables_X11_magnum/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_Texture
-
-# Build rule for target.
-testBuilder_executables_Texture: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Texture
-.PHONY : testBuilder_executables_Texture
-
-# fast build rule for target.
-testBuilder_executables_Texture/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
-.PHONY : testBuilder_executables_Texture/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_compositor_stop_drawing
-
-# Build rule for target.
-testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_stop_drawing
-.PHONY : testBuilder_executables_compositor_stop_drawing
-
-# fast build rule for target.
-testBuilder_executables_compositor_stop_drawing/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
-.PHONY : testBuilder_executables_compositor_stop_drawing/fast
-
-#=============================================================================
-# Target rules for targets named GLIS
-
-# Build rule for target.
-GLIS: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 GLIS
-.PHONY : GLIS
-
-# fast build rule for target.
-GLIS/fast:
-	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
-.PHONY : GLIS/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_DefaultFramebuffer
-
-# Build rule for target.
-testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_DefaultFramebuffer
-.PHONY : testBuilder_executables_DefaultFramebuffer
-
-# fast build rule for target.
-testBuilder_executables_DefaultFramebuffer/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
-.PHONY : testBuilder_executables_DefaultFramebuffer/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_MovingWindows
@@ -1011,6 +1037,58 @@ MagnumTradeObjects/fast:
 .PHONY : MagnumTradeObjects/fast
 
 #=============================================================================
+# Target rules for targets named MagnumFont-metadata
+
+# Build rule for target.
+MagnumFont-metadata: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MagnumFont-metadata
+.PHONY : MagnumFont-metadata
+
+# fast build rule for target.
+MagnumFont-metadata/fast:
+	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont-metadata.dir/build.make dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont-metadata.dir/build
+.PHONY : MagnumFont-metadata/fast
+
+#=============================================================================
+# Target rules for targets named MagnumFont
+
+# Build rule for target.
+MagnumFont: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MagnumFont
+.PHONY : MagnumFont
+
+# fast build rule for target.
+MagnumFont/fast:
+	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/build.make dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/build
+.PHONY : MagnumFont/fast
+
+#=============================================================================
+# Target rules for targets named TgaImporter-metadata
+
+# Build rule for target.
+TgaImporter-metadata: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TgaImporter-metadata
+.PHONY : TgaImporter-metadata
+
+# fast build rule for target.
+TgaImporter-metadata/fast:
+	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter-metadata.dir/build.make dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter-metadata.dir/build
+.PHONY : TgaImporter-metadata/fast
+
+#=============================================================================
+# Target rules for targets named TgaImporter
+
+# Build rule for target.
+TgaImporter: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TgaImporter
+.PHONY : TgaImporter
+
+# fast build rule for target.
+TgaImporter/fast:
+	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/build.make dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/build
+.PHONY : TgaImporter/fast
+
+#=============================================================================
 # Target rules for targets named MagnumUi
 
 # Build rule for target.
@@ -1035,6 +1113,32 @@ MagnumUi_RESOURCES-dependencies: cmake_check_build_system
 MagnumUi_RESOURCES-dependencies/fast:
 	$(MAKE) -f dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/build.make dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/build
 .PHONY : MagnumUi_RESOURCES-dependencies/fast
+
+#=============================================================================
+# Target rules for targets named StbTrueTypeFont-metadata
+
+# Build rule for target.
+StbTrueTypeFont-metadata: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 StbTrueTypeFont-metadata
+.PHONY : StbTrueTypeFont-metadata
+
+# fast build rule for target.
+StbTrueTypeFont-metadata/fast:
+	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont-metadata.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont-metadata.dir/build
+.PHONY : StbTrueTypeFont-metadata/fast
+
+#=============================================================================
+# Target rules for targets named StbTrueTypeFont
+
+# Build rule for target.
+StbTrueTypeFont: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 StbTrueTypeFont
+.PHONY : StbTrueTypeFont
+
+# fast build rule for target.
+StbTrueTypeFont/fast:
+	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/build
+.PHONY : StbTrueTypeFont/fast
 
 compositor_clients/DefaultFramebuffer.o: compositor_clients/DefaultFramebuffer.cpp.o
 
@@ -1414,6 +1518,33 @@ examples/X11_3.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/examples/X11_3.cpp.s
 .PHONY : examples/X11_3.cpp.s
 
+examples/X11_DNC_GRID.o: examples/X11_DNC_GRID.cpp.o
+
+.PHONY : examples/X11_DNC_GRID.o
+
+# target to build an object file
+examples/X11_DNC_GRID.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o
+.PHONY : examples/X11_DNC_GRID.cpp.o
+
+examples/X11_DNC_GRID.i: examples/X11_DNC_GRID.cpp.i
+
+.PHONY : examples/X11_DNC_GRID.i
+
+# target to preprocess a source file
+examples/X11_DNC_GRID.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.i
+.PHONY : examples/X11_DNC_GRID.cpp.i
+
+examples/X11_DNC_GRID.s: examples/X11_DNC_GRID.cpp.s
+
+.PHONY : examples/X11_DNC_GRID.s
+
+# target to generate assembly for a file
+examples/X11_DNC_GRID.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.s
+.PHONY : examples/X11_DNC_GRID.cpp.s
+
 examples/X11_magnum.o: examples/X11_magnum.cpp.o
 
 .PHONY : examples/X11_magnum.o
@@ -1494,6 +1625,33 @@ examples/wayland.s: examples/wayland.cpp.s
 examples/wayland.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.s
 .PHONY : examples/wayland.cpp.s
+
+resource_GLIS_RESOURCES.o: resource_GLIS_RESOURCES.cpp.o
+
+.PHONY : resource_GLIS_RESOURCES.o
+
+# target to build an object file
+resource_GLIS_RESOURCES.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o
+.PHONY : resource_GLIS_RESOURCES.cpp.o
+
+resource_GLIS_RESOURCES.i: resource_GLIS_RESOURCES.cpp.i
+
+.PHONY : resource_GLIS_RESOURCES.i
+
+# target to preprocess a source file
+resource_GLIS_RESOURCES.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.i
+.PHONY : resource_GLIS_RESOURCES.cpp.i
+
+resource_GLIS_RESOURCES.s: resource_GLIS_RESOURCES.cpp.s
+
+.PHONY : resource_GLIS_RESOURCES.s
+
+# target to generate assembly for a file
+resource_GLIS_RESOURCES.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.s
+.PHONY : resource_GLIS_RESOURCES.cpp.s
 
 src/glis/backup/backup.o: src/glis/backup/backup.cpp.o
 
@@ -1941,21 +2099,23 @@ help:
 	@echo "... install/strip"
 	@echo "... testBuilder_executables_RotatingCube"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
-	@echo "... testBuilder_executables_OffScreenFramebuffer"
+	@echo "... testBuilder_executables_Texture"
+	@echo "... testBuilder_executables_compositor_stop_drawing"
+	@echo "... package"
+	@echo "... testBuilder_executables_DefaultFramebuffer"
+	@echo "... GLIS"
 	@echo "... testBuilder_executables_compositor"
 	@echo "... testBuilder_executables_X11"
 	@echo "... testBuilder_executables_X11_2"
 	@echo "... testBuilder_executables_X11_3"
 	@echo "... install/local"
 	@echo "... testBuilder_executables_X11Cube"
+	@echo "... testBuilder_executables_OffScreenFramebuffer"
+	@echo "... GLIS_RESOURCES-dependencies"
+	@echo "... testBuilder_executables_X11_DNC_GRID"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_wayland"
 	@echo "... testBuilder_executables_X11_magnum"
-	@echo "... testBuilder_executables_Texture"
-	@echo "... testBuilder_executables_compositor_stop_drawing"
-	@echo "... package"
-	@echo "... GLIS"
-	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor_start_drawing"
@@ -2005,8 +2165,14 @@ help:
 	@echo "... MagnumTextureTools_RCS-dependencies"
 	@echo "... MagnumTrade"
 	@echo "... MagnumTradeObjects"
+	@echo "... MagnumFont-metadata"
+	@echo "... MagnumFont"
+	@echo "... TgaImporter-metadata"
+	@echo "... TgaImporter"
 	@echo "... MagnumUi"
 	@echo "... MagnumUi_RESOURCES-dependencies"
+	@echo "... StbTrueTypeFont-metadata"
+	@echo "... StbTrueTypeFont"
 	@echo "... compositor_clients/DefaultFramebuffer.o"
 	@echo "... compositor_clients/DefaultFramebuffer.i"
 	@echo "... compositor_clients/DefaultFramebuffer.s"
@@ -2049,6 +2215,9 @@ help:
 	@echo "... examples/X11_3.o"
 	@echo "... examples/X11_3.i"
 	@echo "... examples/X11_3.s"
+	@echo "... examples/X11_DNC_GRID.o"
+	@echo "... examples/X11_DNC_GRID.i"
+	@echo "... examples/X11_DNC_GRID.s"
 	@echo "... examples/X11_magnum.o"
 	@echo "... examples/X11_magnum.i"
 	@echo "... examples/X11_magnum.s"
@@ -2058,6 +2227,9 @@ help:
 	@echo "... examples/wayland.o"
 	@echo "... examples/wayland.i"
 	@echo "... examples/wayland.s"
+	@echo "... resource_GLIS_RESOURCES.o"
+	@echo "... resource_GLIS_RESOURCES.i"
+	@echo "... resource_GLIS_RESOURCES.s"
 	@echo "... src/glis/backup/backup.o"
 	@echo "... src/glis/backup/backup.i"
 	@echo "... src/glis/backup/backup.s"

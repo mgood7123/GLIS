@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/backup/backup.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/backup/types/framebuffer.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.o"
@@ -17,6 +18,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
   "Debug/lib/libGLIS.pdb"
   "Debug/lib/libGLIS.so"
+  "resource_GLIS_RESOURCES.cpp"
 )
 
 # Per-language clean rules from dependency scanning.

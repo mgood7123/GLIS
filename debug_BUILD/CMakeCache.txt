@@ -571,10 +571,22 @@ MagnumExtras_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/ma
 MagnumExtras_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum-extras
 
 //Dependencies for the target
+MagnumFont_LIB_DEPENDS:STATIC=general;Magnum;general;MagnumText;general;MagnumTrade;
+
+//Dependencies for the target
 MagnumGL_LIB_DEPENDS:STATIC=general;Magnum;general;OpenGLES3::OpenGLES3;
 
 //Dependencies for the target
 MagnumMeshTools_LIB_DEPENDS:STATIC=general;Magnum;general;MagnumTrade;general;MagnumGL;
+
+//Value Computed by CMake
+MagnumPlugins_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins
+
+//The directory containing a CMake configuration file for MagnumPlugins.
+MagnumPlugins_DIR:PATH=MagnumPlugins_DIR-NOTFOUND
+
+//Value Computed by CMake
+MagnumPlugins_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum-plugins
 
 //Dependencies for the target
 MagnumPrimitives_LIB_DEPENDS:STATIC=general;Magnum;general;MagnumMeshTools;general;MagnumTrade;
@@ -672,6 +684,9 @@ SOUNDIO_INCLUDE_DIR:PATH=SOUNDIO_INCLUDE_DIR-NOTFOUND
 //The SoundIO library
 SOUNDIO_LIBRARY:FILEPATH=SOUNDIO_LIBRARY-NOTFOUND
 
+//Dependencies for the target
+StbTrueTypeFont_LIB_DEPENDS:STATIC=general;Magnum::Text;
+
 //Build for OpenGL ES on desktop
 TARGET_DESKTOP_GLES:BOOL=OFF
 
@@ -686,6 +701,9 @@ TARGET_GLES2:BOOL=OFF
 
 //Build command-line utilities for use on a headless machines
 TARGET_HEADLESS:BOOL=OFF
+
+//Dependencies for the target
+TgaImporter_LIB_DEPENDS:STATIC=general;MagnumTrade;
 
 //Build magnum-al-info utility
 WITH_AL_INFO:BOOL=OFF
@@ -705,14 +723,44 @@ WITH_ANYSCENECONVERTER:BOOL=OFF
 //Build AnySceneImporter plugin
 WITH_ANYSCENEIMPORTER:BOOL=OFF
 
+//Build AssimpImporter plugin
+WITH_ASSIMPIMPORTER:BOOL=OFF
+
 //Build Audio library
 WITH_AUDIO:BOOL=OFF
+
+//Build BasisImageConverter plugin
+WITH_BASISIMAGECONVERTER:BOOL=OFF
+
+//Build BasisImporter plugin
+WITH_BASISIMPORTER:BOOL=OFF
+
+//Build DdsImporter plugin
+WITH_DDSIMPORTER:BOOL=OFF
 
 //Build DebugTools library
 WITH_DEBUGTOOLS:BOOL=ON
 
+//Build DevIlImageImporter plugin
+WITH_DEVILIMAGEIMPORTER:BOOL=OFF
+
+//Build DrFlacAudioImporter plugin
+WITH_DRFLACAUDIOIMPORTER:BOOL=OFF
+
+//Build DrMp3AudioImporter plugin
+WITH_DRMP3AUDIOIMPORTER:BOOL=OFF
+
+//Build DrWavAudioImporter plugin
+WITH_DRWAVAUDIOIMPORTER:BOOL=OFF
+
 //Build EglContext library
 WITH_EGLCONTEXT:BOOL=ON
+
+//Build Faad2AudioImporter plugin
+WITH_FAAD2AUDIOIMPORTER:BOOL=OFF
+
+//Build FreeTypeFont plugin
+WITH_FREETYPEFONT:BOOL=OFF
 
 //Build GlfwApplication library
 WITH_GLFWAPPLICATION:BOOL=OFF
@@ -723,23 +771,47 @@ WITH_GLXAPPLICATION:BOOL=OFF
 //Build magnum-gl-info utility
 WITH_GL_INFO:BOOL=OFF
 
+//Build HarfBuzzFont plugin
+WITH_HARFBUZZFONT:BOOL=OFF
+
+//Build IcoImporter plugin
+WITH_ICOIMPORTER:BOOL=OFF
+
 //Build magnum-imageconverter utility
 WITH_IMAGECONVERTER:BOOL=OFF
 
 //Build Interconnect library
 WITH_INTERCONNECT:BOOL=ON
 
+//Build JpegImageConverter plugin
+WITH_JPEGIMAGECONVERTER:BOOL=OFF
+
+//Build JpegImporter plugin
+WITH_JPEGIMPORTER:BOOL=OFF
+
 //Build MagnumFont plugin
-WITH_MAGNUMFONT:BOOL=OFF
+WITH_MAGNUMFONT:BOOL=ON
 
 //Build MagnumFontConverter plugin
 WITH_MAGNUMFONTCONVERTER:BOOL=OFF
 
+//Build MeshOptimizerSceneConverter plugin
+WITH_MESHOPTIMIZERSCENECONVERTER:BOOL=OFF
+
 //Build MeshTools library
 WITH_MESHTOOLS:BOOL=ON
 
+//Build MiniExrImageConverter plugin
+WITH_MINIEXRIMAGECONVERTER:BOOL=OFF
+
 //Build ObjImporter plugin
 WITH_OBJIMPORTER:BOOL=OFF
+
+//Build OpenDdl library
+WITH_OPENDDL:BOOL=OFF
+
+//Build OpenGexImporter plugin
+WITH_OPENGEXIMPORTER:BOOL=OFF
 
 //Build OpenGLTester library
 WITH_OPENGLTESTER:BOOL=OFF
@@ -749,6 +821,15 @@ WITH_PLAYER:BOOL=OFF
 
 //Build PluginManager library
 WITH_PLUGINMANAGER:BOOL=ON
+
+//Build PngImageConverter plugin
+WITH_PNGIMAGECONVERTER:BOOL=OFF
+
+//Build PngImporter plugin
+WITH_PNGIMPORTER:BOOL=OFF
+
+//Build PrimitiveImporter plugin
+WITH_PRIMITIVEIMPORTER:BOOL=OFF
 
 //Builf Primitives library
 WITH_PRIMITIVES:BOOL=ON
@@ -765,17 +846,35 @@ WITH_SDL2APPLICATION:BOOL=OFF
 //Build Shaders library
 WITH_SHADERS:BOOL=ON
 
+//Build StanfordImporter plugin
+WITH_STANFORDIMPORTER:BOOL=OFF
+
+//Build StanfordSceneConverter plugin
+WITH_STANFORDSCENECONVERTER:BOOL=OFF
+
+//Build StbImageConverter plugin
+WITH_STBIMAGECONVERTER:BOOL=OFF
+
+//Build StbImageImporter plugin
+WITH_STBIMAGEIMPORTER:BOOL=OFF
+
+//Build StbTrueTypeFont plugin
+WITH_STBTRUETYPEFONT:BOOL=ON
+
+//Build StbVorbisAudioImporter plugin
+WITH_STBVORBISAUDIOIMPORTER:BOOL=OFF
+
+//Build StlImporter plugin
+WITH_STLIMPORTER:BOOL=OFF
+
 //Build TestSuite library
 WITH_TESTSUITE:BOOL=ON
-
-//Build Text library
-WITH_TEXT:BOOL=ON
 
 //Build TgaImageConverter plugin
 WITH_TGAIMAGECONVERTER:BOOL=OFF
 
-//Build TgaImporter plugin
-WITH_TGAIMPORTER:BOOL=OFF
+//Build TinyGltfImporter plugin
+WITH_TINYGLTFIMPORTER:BOOL=OFF
 
 //Build Ui library
 WITH_UI:BOOL=ON
@@ -840,7 +939,7 @@ AUDIOIO_INCLUDE_DIR-ADVANCED:INTERNAL=1
 BROTLIDEC_INCLUDE_DIRS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: BROTLIDEC_LIBRARIES
 BROTLIDEC_LIBRARIES-ADVANCED:INTERNAL=1
-//Build static libraries with position-independent code
+//Build static plugins with position-independent code
 BUILD_STATIC_PIC:INTERNAL=ON
 //ADVANCED property for variable: BZIP2_INCLUDE_DIR
 BZIP2_INCLUDE_DIR-ADVANCED:INTERNAL=1
@@ -984,7 +1083,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=45
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=55
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1167,6 +1266,7 @@ JACK_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: JACK_LIBRARY
 JACK_LIBRARY-ADVANCED:INTERNAL=1
 MAGNUMEXTRAS_INCLUDE_DIR:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum-extras/src
+MAGNUMPLUGINS_INCLUDE_DIR:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum-plugins/src
 //ADVANCED property for variable: MAGNUM_INCLUDE_DIR
 MAGNUM_INCLUDE_DIR-ADVANCED:INTERNAL=1
 MAGNUM_INCLUDE_DIR:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src

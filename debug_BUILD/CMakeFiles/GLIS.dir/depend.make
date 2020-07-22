@@ -3,6 +3,24 @@
 
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o: ../src/glis/internal/xdg-shell-protocol.c
 
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Corrade.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Resource.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardVector.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: ../dependancies/corrade/src/Corrade/Utility/visibility.h
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: resource_GLIS_RESOURCES.cpp
+CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o: dependancies/corrade/src/Corrade/configure.h
+
 CMakeFiles/GLIS.dir/src/glis/backup/backup.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
 CMakeFiles/GLIS.dir/src/glis/backup/backup.cpp.o: ../dependancies/magnum/src/Magnum/GL/GL.h
 CMakeFiles/GLIS.dir/src/glis/backup/backup.cpp.o: ../dependancies/magnum/src/Magnum/GL/OpenGL.h

@@ -10,6 +10,11 @@ macro(testBuilder_add_library testName libraryName)
     set(testBuilder_LIBRARIES_LIST_${testName} ${testBuilder_LIBRARIES_LIST_${testName}};${libraryName})
 endmacro()
 
+# libraries can be specified as a space seperated list, or as individual calls
+macro(testBuilder_add_dependency testName dependencyName)
+    set(testBuilder_DEPENDENCY_LIST_${testName} ${testBuilder_DEPENDENCY_LIST_${testName}};${dependencyName})
+endmacro()
+
 macro(testBuilder_build testName outDirectory)
     add_executable(testBuilder_executables_${testName} ${testBuilder_SOURCES_LIST_${testName}})
     target_link_libraries(testBuilder_executables_${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
@@ -28,5 +33,10 @@ endmacro()
 
 macro(testBuilder_build_shared_library testName)
     add_library(${testName} SHARED ${testBuilder_SOURCES_LIST_${testName}})
-    target_link_libraries(${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
+    if (testBuilder_DEPENDENCY_LIST_${testName})
+        add_dependencies(${testName} ${testBuilder_DEPENDENCY_LIST_${testName}})
+    endif()
+    if (testBuilder_LIBRARIES_LIST_${testName})
+        target_link_libraries(${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
+    endif()
 endmacro()

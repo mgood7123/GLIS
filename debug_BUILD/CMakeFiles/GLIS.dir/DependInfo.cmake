@@ -31,6 +31,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../dependancies/glm/glm/.."
   )
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/resource_GLIS_RESOURCES.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/resource_GLIS_RESOURCES.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/backup/backup.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/backup/backup.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/backup/types/framebuffer.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/backup/types/framebuffer.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/backup/types/program.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/backup/types/program.cpp.o"

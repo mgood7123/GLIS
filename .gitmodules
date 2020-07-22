@@ -10,3 +10,9 @@
 [submodule "dependancies/openal-soft"]
 	path = dependancies/openal-soft
 	url = https://github.com/kcat/openal-soft
+[submodule "dependancies/magnum-plugins"]
+	path = dependancies/magnum-plugins
+	url = https://github.com/mosra/magnum-plugins
+[submodule "dependancies/magnum-examples"]
+	path = dependancies/magnum-examples
+	url = https://github.com/mosra/magnum-examples
