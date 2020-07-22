@@ -34,26 +34,20 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
 
 GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(CompositorMain);
+    delete _shader;
+    delete _mesh;
     glis.GLIS_destroy_GLIS(CompositorMain);
 }
 
-GLIS_CALLBACKS_CONTEXT_CONSTRUCTOR(live) {
-    _shader = new Shaders::Phong;
-    _mesh = new GL::Mesh;
-}
-
-GLIS_CALLBACKS_CONTEXT_DECONSTRUCTOR(die) {
-    delete _shader;
-    delete _mesh;
-}
-
 int main() {
-    CompositorMain.setStructors(live, die);
     glis.getX11Window(CompositorMain, 400, 400);
     glis.GLIS_setupOnScreenRendering(CompositorMain);
+    CompositorMain.contextMagnum.create();
+    _shader = new Shaders::Phong;
+    _mesh = new GL::Mesh;
     GL::Renderer::enable(GL::Renderer::Feature::DepthTest);
     GL::Renderer::enable(GL::Renderer::Feature::FaceCulling);
-    *_mesh = MeshTools::compile(Primitives::cubeWireframe());
+    *_mesh = MeshTools::compile(Primitives::cubeSolid());
     _transformation = Matrix4::rotationX(0.0_degf)*Matrix4::rotationY(0.0_degf);
     _projection = Matrix4::perspectiveProjection(35.0_degf, Vector2{static_cast<float>(CompositorMain.width*CompositorMain.height)}.aspectRatio(), 0.01f, 100.0f)*Matrix4::translation(Vector3::zAxis(-10.0f));
     _color = Color3::fromHsv({35.0_degf, 1.0f, 1.0f});

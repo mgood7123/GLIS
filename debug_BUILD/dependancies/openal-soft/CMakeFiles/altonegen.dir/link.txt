@@ -1,1 +1,0 @@
-/usr/bin/cc -g  -rdynamic CMakeFiles/altonegen.dir/examples/altonegen.c.o  -o ../../Debug/bin/altonegen  -Wl,-rpath,/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/Debug/lib: -pthread -lm ../../Debug/lib/libex-common.a ../../Debug/lib/libopenal.so.1.20.1 -lrt 

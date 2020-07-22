@@ -98,8 +98,8 @@ Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libCorradePluginManager-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libCorradeInterconnect-d.so.2.4
 Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libCorradeUtility-d.so.2.4
-Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libfreetyped.so.6.17.2
-Debug/bin/testBuilder_executables_MovingWindowsB: Debug/lib/libWinKernel.a
+Debug/bin/testBuilder_executables_MovingWindowsB: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
+Debug/bin/testBuilder_executables_MovingWindowsB: dependancies/WINAPI/SDK/src/Windows/Kernel/libWinKernel.a
 Debug/bin/testBuilder_executables_MovingWindowsB: CMakeFiles/testBuilder_executables_MovingWindowsB.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Debug/bin/testBuilder_executables_MovingWindowsB"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/testBuilder_executables_MovingWindowsB.dir/link.txt --verbose=$(VERBOSE)

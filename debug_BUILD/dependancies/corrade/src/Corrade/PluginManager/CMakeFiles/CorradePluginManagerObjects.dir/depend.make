@@ -4,6 +4,9 @@
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Pointer.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/PluginManager/AbstractManager.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/AbstractPlugin.cpp.o: ../dependancies/corrade/src/Corrade/PluginManager/PluginManager.h
@@ -28,12 +31,19 @@ dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerOb
 
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/PluginManager/PluginManager.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/PluginManager/visibility.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/ConfigurationGroup.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/ConfigurationValue.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManagerObjects.dir/PluginMetadata.cpp.o: ../dependancies/corrade/src/Corrade/Utility/visibility.h

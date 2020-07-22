@@ -57,6 +57,9 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
     "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/ScopeGuard.h"
     "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StaticArray.h"
     "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StridedArrayView.h"
+    "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/String.h"
+    "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StringStl.h"
+    "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StringView.h"
     "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/Tags.h"
     "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/ScopedExit.h"
     )

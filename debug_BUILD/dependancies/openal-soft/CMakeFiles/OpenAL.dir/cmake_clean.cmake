@@ -1,8 +1,4 @@
 file(REMOVE_RECURSE
-  "../../Debug/lib/libopenal.pdb"
-  "../../Debug/lib/libopenal.so"
-  "../../Debug/lib/libopenal.so.1"
-  "../../Debug/lib/libopenal.so.1.20.1"
   "CMakeFiles/OpenAL.dir/al/auxeffectslot.cpp.o"
   "CMakeFiles/OpenAL.dir/al/buffer.cpp.o"
   "CMakeFiles/OpenAL.dir/al/effect.cpp.o"
@@ -58,6 +54,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/OpenAL.dir/alc/uiddefs.cpp.o"
   "CMakeFiles/OpenAL.dir/alc/voice.cpp.o"
   "hrtf_default.h"
+  "libopenal.pdb"
+  "libopenal.so"
+  "libopenal.so.1"
+  "libopenal.so.1.20.1"
 )
 
 # Per-language clean rules from dependency scanning.

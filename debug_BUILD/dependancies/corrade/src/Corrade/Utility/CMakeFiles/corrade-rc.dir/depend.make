@@ -6,6 +6,9 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/GrowableArray.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Arguments.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
@@ -29,6 +32,9 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
@@ -51,6 +57,9 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Configuration
 
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/ConfigurationGroup.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Configuration.h
@@ -71,6 +80,8 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: 
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.hpp
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Debug.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
@@ -133,6 +144,9 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Implementation/RawForwardList.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Corrade.h
@@ -159,15 +173,21 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Resource.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/Resource.cpp.o: dependancies/corrade/src/Corrade/configure.h
 
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Array.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/GrowableArray.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StaticArray.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
@@ -176,10 +196,54 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o:
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/String.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/String.cpp.o: dependancies/corrade/src/Corrade/configure.h
 
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/DebugStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Utility/visibility.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.cpp
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o: dependancies/corrade/src/Corrade/configure.h
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.hpp
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Assert.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Debug.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/DebugStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Macros.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Utility.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Utility/visibility.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.cpp
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o: dependancies/corrade/src/Corrade/configure.h
+
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Array.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Containers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/rc.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Arguments.h

@@ -230,6 +230,9 @@ dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: 
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Optional.h
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Pointer.h
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StaticArray.h
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGLObjects.dir/Context.cpp.o: ../dependancies/corrade/src/Corrade/Utility/Arguments.h

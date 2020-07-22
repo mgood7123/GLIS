@@ -20,9 +20,6 @@
 #include <Magnum/Shaders/Phong.h>
 #include <Magnum/Trade/MeshData.h>
 
-#define GLIS_CALLBACKS_CONTEXT_CONSTRUCTOR(functionName) void functionName ()
-#define GLIS_CALLBACKS_CONTEXT_DECONSTRUCTOR(functionName) void functionName ()
-
 #include <glis/ipc/ipc.hpp>
 #include <glis/font/font.hpp>
 #include <glis/internal/internal.hpp>

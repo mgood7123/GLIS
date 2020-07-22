@@ -558,15 +558,6 @@ MSVC2015_COMPATIBILITY:BOOL=OFF
 //Enable compatibility mode for MSVC 2017 (might disable some features)
 MSVC2017_COMPATIBILITY:BOOL=OFF
 
-//The MySOFA include directory
-MYSOFA_INCLUDE_DIR:PATH=MYSOFA_INCLUDE_DIR-NOTFOUND
-
-//The MySOFA library
-MYSOFA_LIBRARY:FILEPATH=MYSOFA_LIBRARY-NOTFOUND
-
-//The math library for MySOFA
-MYSOFA_M_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libm.so
-
 //Dependencies for the target
 MagnumDebugTools_LIB_DEPENDS:STATIC=general;Magnum;general;Corrade::TestSuite;general;MagnumTrade;general;MagnumGL;general;MagnumMeshTools;general;MagnumPrimitives;general;MagnumSceneGraph;general;MagnumShaders;
 
@@ -666,9 +657,6 @@ PULSEAUDIO_INCLUDE_DIR:PATH=PULSEAUDIO_INCLUDE_DIR-NOTFOUND
 //The PulseAudio library
 PULSEAUDIO_LIBRARY:FILEPATH=PULSEAUDIO_LIBRARY-NOTFOUND
 
-//The directory containing a CMake configuration file for Qt5Widgets.
-Qt5Widgets_DIR:PATH=Qt5Widgets_DIR-NOTFOUND
-
 //Path to a library.
 SDL2MAIN_LIBRARY:FILEPATH=SDL2MAIN_LIBRARY-NOTFOUND
 
@@ -677,12 +665,6 @@ SDL2_CORE_LIBRARY:FILEPATH=SDL2_CORE_LIBRARY-NOTFOUND
 
 //Path to a file.
 SDL2_INCLUDE_DIR:PATH=SDL2_INCLUDE_DIR-NOTFOUND
-
-//Path to a file.
-SNDFILE_INCLUDE_DIR:PATH=SNDFILE_INCLUDE_DIR-NOTFOUND
-
-//Path to a library.
-SNDFILE_LIBRARY:FILEPATH=SNDFILE_LIBRARY-NOTFOUND
 
 //The SoundIO include directory
 SOUNDIO_INCLUDE_DIR:PATH=SOUNDIO_INCLUDE_DIR-NOTFOUND
@@ -821,12 +803,6 @@ ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
 
 //Path to a library.
 ZLIB_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libz.so
-
-//Value Computed by CMake
-alsoft-config_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft/utils/alsoft-config
-
-//Value Computed by CMake
-alsoft-config_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/utils/alsoft-config
 
 //Dependencies for the target
 ex-common_LIB_DEPENDS:STATIC=general;OpenAL;general;rt;
@@ -1194,10 +1170,6 @@ MAGNUMEXTRAS_INCLUDE_DIR:INTERNAL=/home/smallville7123/AndroidCompositor/app/src
 //ADVANCED property for variable: MAGNUM_INCLUDE_DIR
 MAGNUM_INCLUDE_DIR-ADVANCED:INTERNAL=1
 MAGNUM_INCLUDE_DIR:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src
-//ADVANCED property for variable: MYSOFA_INCLUDE_DIR
-MYSOFA_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: MYSOFA_LIBRARY
-MYSOFA_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGLES3_LIBRARY
 OPENGLES3_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENSL_ANDROID_INCLUDE_DIR
@@ -1288,10 +1260,6 @@ PULSEAUDIO_INCLUDE_DIR-ADVANCED:INTERNAL=1
 PULSEAUDIO_LIBRARY-ADVANCED:INTERNAL=1
 //CHECK_TYPE_SIZE: sizeof(long)
 SIZEOF_LONG:INTERNAL=8
-//ADVANCED property for variable: SNDFILE_INCLUDE_DIR
-SNDFILE_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: SNDFILE_LIBRARY
-SNDFILE_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SOUNDIO_INCLUDE_DIR
 SOUNDIO_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SOUNDIO_LIBRARY

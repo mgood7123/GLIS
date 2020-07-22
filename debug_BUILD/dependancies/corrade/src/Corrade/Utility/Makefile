@@ -706,6 +706,66 @@ Unicode.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/Unicode.cpp.s
 .PHONY : Unicode.cpp.s
 
+__/Containers/String.o: __/Containers/String.cpp.o
+
+.PHONY : __/Containers/String.o
+
+# target to build an object file
+__/Containers/String.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o
+.PHONY : __/Containers/String.cpp.o
+
+__/Containers/String.i: __/Containers/String.cpp.i
+
+.PHONY : __/Containers/String.i
+
+# target to preprocess a source file
+__/Containers/String.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.i
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.i
+.PHONY : __/Containers/String.cpp.i
+
+__/Containers/String.s: __/Containers/String.cpp.s
+
+.PHONY : __/Containers/String.s
+
+# target to generate assembly for a file
+__/Containers/String.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.s
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.s
+.PHONY : __/Containers/String.cpp.s
+
+__/Containers/StringView.o: __/Containers/StringView.cpp.o
+
+.PHONY : __/Containers/StringView.o
+
+# target to build an object file
+__/Containers/StringView.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o
+.PHONY : __/Containers/StringView.cpp.o
+
+__/Containers/StringView.i: __/Containers/StringView.cpp.i
+
+.PHONY : __/Containers/StringView.i
+
+# target to preprocess a source file
+__/Containers/StringView.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.i
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.i
+.PHONY : __/Containers/StringView.cpp.i
+
+__/Containers/StringView.s: __/Containers/StringView.cpp.s
+
+.PHONY : __/Containers/StringView.s
+
+# target to generate assembly for a file
+__/Containers/StringView.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.s
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.s
+.PHONY : __/Containers/StringView.cpp.s
+
 rc.o: rc.cpp.o
 
 .PHONY : rc.o
@@ -801,6 +861,12 @@ help:
 	@echo "... Unicode.o"
 	@echo "... Unicode.i"
 	@echo "... Unicode.s"
+	@echo "... __/Containers/String.o"
+	@echo "... __/Containers/String.i"
+	@echo "... __/Containers/String.s"
+	@echo "... __/Containers/StringView.o"
+	@echo "... __/Containers/StringView.i"
+	@echo "... __/Containers/StringView.s"
 	@echo "... rc.o"
 	@echo "... rc.i"
 	@echo "... rc.s"

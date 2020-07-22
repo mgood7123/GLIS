@@ -2505,6 +2505,8 @@ Magnum/GL/OpenGL.h
 -
 Magnum/Platform/WindowlessEglApplication.h
 -
+Magnum/Platform/GLContext.h
+-
 glis/font/font.hpp
 -
 glis/ipc/server_core.hpp

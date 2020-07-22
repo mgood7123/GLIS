@@ -19,35 +19,21 @@ GL::Texture2D * color = nullptr;
 Matrix4 _transformation, _projection;
 Color3 _color;
 
-GLIS_CALLBACKS_CONTEXT_CONSTRUCTOR(live) {
-//    _shader = new Shaders::Phong;
-//    _mesh = new GL::Mesh;
-//    color = new GL::Texture2D;
-}
-
-GLIS_CALLBACKS_CONTEXT_DECONSTRUCTOR(die) {
-//    delete _shader;
-//    delete _mesh;
-//    delete framebuffer;
-//    delete depthStencil;
-//    delete color;
-}
-
 int main() {
     int W = GLIS_COMMON_WIDTH;
     int H = GLIS_COMMON_HEIGHT;
-    G.setStructors(live, die);
     if (glis.GLIS_setupOffScreenRendering(G, W, H)) {
 
-        _shader = new Shaders::Phong;
-        _mesh = new GL::Mesh;
-        color = new GL::Texture2D;
+        G.contextMagnum.create();
 
         Vector2i size = {W, H};
 
         // these will be deleted in destructor callback
         framebuffer = new GL::Framebuffer {{{}, size}};
         depthStencil = new GL::Renderbuffer;
+        _shader = new Shaders::Phong;
+        _mesh = new GL::Mesh;
+        color = new GL::Texture2D;
 
         color->setStorage(1, GL::TextureFormat::RGBA8, size);
         depthStencil->setStorage(GL::RenderbufferFormat::Depth24Stencil8, size);

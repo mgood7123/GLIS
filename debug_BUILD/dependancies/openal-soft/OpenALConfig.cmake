@@ -51,7 +51,7 @@ set_target_properties(OpenAL::OpenAL PROPERTIES
 # Import target "OpenAL::OpenAL" for configuration "Debug"
 set_property(TARGET OpenAL::OpenAL APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(OpenAL::OpenAL PROPERTIES
-  IMPORTED_LOCATION_DEBUG "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/Debug/lib/libopenal.so.1.20.1"
+  IMPORTED_LOCATION_DEBUG "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft/libopenal.so.1.20.1"
   IMPORTED_SONAME_DEBUG "libopenal.so.1"
   )
 

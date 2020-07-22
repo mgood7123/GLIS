@@ -1684,33 +1684,6 @@ src/glis/font/font.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/font/font.cpp.s
 .PHONY : src/glis/font/font.cpp.s
 
-src/glis/internal/context.o: src/glis/internal/context.cpp.o
-
-.PHONY : src/glis/internal/context.o
-
-# target to build an object file
-src/glis/internal/context.cpp.o:
-	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.o
-.PHONY : src/glis/internal/context.cpp.o
-
-src/glis/internal/context.i: src/glis/internal/context.cpp.i
-
-.PHONY : src/glis/internal/context.i
-
-# target to preprocess a source file
-src/glis/internal/context.cpp.i:
-	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.i
-.PHONY : src/glis/internal/context.cpp.i
-
-src/glis/internal/context.s: src/glis/internal/context.cpp.s
-
-.PHONY : src/glis/internal/context.s
-
-# target to generate assembly for a file
-src/glis/internal/context.cpp.s:
-	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.s
-.PHONY : src/glis/internal/context.cpp.s
-
 src/glis/internal/fps.o: src/glis/internal/fps.cpp.o
 
 .PHONY : src/glis/internal/fps.o
@@ -2106,9 +2079,6 @@ help:
 	@echo "... src/glis/font/font.o"
 	@echo "... src/glis/font/font.i"
 	@echo "... src/glis/font/font.s"
-	@echo "... src/glis/internal/context.o"
-	@echo "... src/glis/internal/context.i"
-	@echo "... src/glis/internal/context.s"
 	@echo "... src/glis/internal/fps.o"
 	@echo "... src/glis/internal/fps.i"
 	@echo "... src/glis/internal/fps.s"

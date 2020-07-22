@@ -10,6 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CorradeUtility.dir/Resource.cpp.o"
   "CMakeFiles/CorradeUtility.dir/String.cpp.o"
   "CMakeFiles/CorradeUtility.dir/Unicode.cpp.o"
+  "CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o"
+  "CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

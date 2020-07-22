@@ -9,6 +9,9 @@ dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.d
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Optional.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Pointer.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Reference.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringStl.h
+dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
 dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/AbstractManager.cpp.o: ../dependancies/corrade/src/Corrade/PluginManager/AbstractPlugin.h

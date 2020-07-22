@@ -2,6 +2,7 @@
 
 #include <Magnum/GL/OpenGL.h>
 #include <Magnum/Platform/WindowlessEglApplication.h> // EGL
+#include <Magnum/Platform/GLContext.h>
 #include <glis/font/font.hpp>
 #include <glis/ipc/server_core.hpp>
 #include "internal.hpp"
@@ -34,7 +35,7 @@ public:
     EGLContext
             context = EGL_NO_CONTEXT,
             shared_context = EGL_NO_CONTEXT;
-    Magnum::Platform::GLContext * contextMagnum = nullptr;
+    Magnum::Platform::GLContext contextMagnum {Magnum::NoCreate};
     bool debug_context = false;
     EGLSurface surface = EGL_NO_SURFACE;
     // previously: ANativeWindow *native_window = nullptr;
@@ -44,11 +45,4 @@ public:
             height = 0;
     SOCKET_SERVER server;
     Kernel KERNEL;
-
-    void setStructors(void (*fun)(),
-                      void (*fun1)());
-
-    void (*constructor)() = nullptr;
-
-    void (*destructor)() = nullptr;
 };

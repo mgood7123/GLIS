@@ -148,6 +148,32 @@ dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/Unicode.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CorradeUtility.dir/Unicode.cpp.s"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Utility/Unicode.cpp -o CMakeFiles/CorradeUtility.dir/Unicode.cpp.s
 
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/flags.make
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o: ../dependancies/corrade/src/Corrade/Containers/String.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/String.cpp
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/String.cpp > CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.i
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/String.cpp -o CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.s
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/flags.make
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StringView.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StringView.cpp
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StringView.cpp > CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.i
+
+dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src/Corrade/Containers/StringView.cpp -o CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.s
+
 # Object files for target CorradeUtility
 CorradeUtility_OBJECTS = \
 "CMakeFiles/CorradeUtility.dir/Algorithms.cpp.o" \
@@ -156,7 +182,9 @@ CorradeUtility_OBJECTS = \
 "CMakeFiles/CorradeUtility.dir/Format.cpp.o" \
 "CMakeFiles/CorradeUtility.dir/Resource.cpp.o" \
 "CMakeFiles/CorradeUtility.dir/String.cpp.o" \
-"CMakeFiles/CorradeUtility.dir/Unicode.cpp.o"
+"CMakeFiles/CorradeUtility.dir/Unicode.cpp.o" \
+"CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o" \
+"CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o"
 
 # External object files for target CorradeUtility
 CorradeUtility_EXTERNAL_OBJECTS = \
@@ -178,6 +206,8 @@ Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/C
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/Resource.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/String.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/Unicode.cpp.o
+Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/String.cpp.o
+Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/__/Containers/StringView.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/Debug.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/Directory.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/Configuration.cpp.o
@@ -190,7 +220,7 @@ Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/C
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtilityObjects.dir/TweakableParser.cpp.o
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/build.make
 Debug/lib/libCorradeUtility-d.so.2.4: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared library ../../../../../Debug/lib/libCorradeUtility-d.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX shared library ../../../../../Debug/lib/libCorradeUtility-d.so"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CorradeUtility.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/Utility && $(CMAKE_COMMAND) -E cmake_symlink_library ../../../../../Debug/lib/libCorradeUtility-d.so.2.4 ../../../../../Debug/lib/libCorradeUtility-d.so.2 ../../../../../Debug/lib/libCorradeUtility-d.so
 

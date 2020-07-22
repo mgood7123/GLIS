@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/corrade-rc.dir/Format.cpp.o"
   "CMakeFiles/corrade-rc.dir/Resource.cpp.o"
   "CMakeFiles/corrade-rc.dir/String.cpp.o"
+  "CMakeFiles/corrade-rc.dir/__/Containers/String.cpp.o"
+  "CMakeFiles/corrade-rc.dir/__/Containers/StringView.cpp.o"
   "CMakeFiles/corrade-rc.dir/rc.cpp.o"
 )
 

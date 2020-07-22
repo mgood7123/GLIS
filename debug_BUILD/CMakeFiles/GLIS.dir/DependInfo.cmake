@@ -38,7 +38,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/backup/types/texture.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/compositor/compositor.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/font/font.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o"
-  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/context.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/internal/context.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/fps.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/internal.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/log.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o"

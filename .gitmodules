@@ -1,6 +1,6 @@
 [submodule "dependancies/corrade"]
 	path = dependancies/corrade
-	url = git://github.com/mosra/corrade.git
+	url = git://github.com/mosra/corrade
 [submodule "dependancies/magnum"]
 	path = dependancies/magnum
 	url = https://github.com/mosra/magnum
