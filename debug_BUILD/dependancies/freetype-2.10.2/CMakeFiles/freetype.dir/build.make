@@ -623,66 +623,66 @@ freetype_OBJECTS = \
 # External object files for target freetype
 freetype_EXTERNAL_OBJECTS =
 
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/autofit/autofit.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbase.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbbox.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbdf.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbitmap.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftcid.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftfstype.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftgasp.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftglyph.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftgxval.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftinit.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftmm.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftotval.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftpatent.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftpfr.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftstroke.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftsynth.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/fttype1.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftwinfnt.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/bdf/bdf.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/bzip2/ftbzip2.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cache/ftcache.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cff/cff.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cid/type1cid.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/gzip/ftgzip.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/lzw/ftlzw.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pcf/pcf.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pfr/pfr.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/psaux/psaux.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pshinter/pshinter.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/psnames/psnames.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/raster/raster.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/sfnt/sfnt.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/smooth/smooth.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/truetype/truetype.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/type1/type1.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/type42/type42.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/winfonts/winfnt.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/builds/unix/ftsystem.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftdebug.c.o
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
-dependancies/freetype-2.10.2/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Linking C shared library libfreetyped.so"
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/autofit/autofit.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbase.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbbox.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbdf.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftbitmap.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftcid.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftfstype.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftgasp.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftglyph.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftgxval.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftinit.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftmm.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftotval.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftpatent.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftpfr.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftstroke.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftsynth.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/fttype1.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftwinfnt.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/bdf/bdf.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/bzip2/ftbzip2.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cache/ftcache.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cff/cff.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/cid/type1cid.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/gzip/ftgzip.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/lzw/ftlzw.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pcf/pcf.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pfr/pfr.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/psaux/psaux.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/pshinter/pshinter.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/psnames/psnames.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/raster/raster.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/sfnt/sfnt.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/smooth/smooth.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/truetype/truetype.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/type1/type1.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/type42/type42.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/winfonts/winfnt.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/builds/unix/ftsystem.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/src/base/ftdebug.c.o
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build.make
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libz.so
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libpng.so
+Debug/lib/libfreetyped.so.6.17.2: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
+Debug/lib/libfreetyped.so.6.17.2: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Linking C shared library ../../Debug/lib/libfreetyped.so"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2 && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/freetype.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2 && $(CMAKE_COMMAND) -E cmake_symlink_library libfreetyped.so.6.17.2 libfreetyped.so.6 libfreetyped.so
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2 && $(CMAKE_COMMAND) -E cmake_symlink_library ../../Debug/lib/libfreetyped.so.6.17.2 ../../Debug/lib/libfreetyped.so.6 ../../Debug/lib/libfreetyped.so
 
-dependancies/freetype-2.10.2/libfreetyped.so.6: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
-	@$(CMAKE_COMMAND) -E touch_nocreate dependancies/freetype-2.10.2/libfreetyped.so.6
+Debug/lib/libfreetyped.so.6: Debug/lib/libfreetyped.so.6.17.2
+	@$(CMAKE_COMMAND) -E touch_nocreate Debug/lib/libfreetyped.so.6
 
-dependancies/freetype-2.10.2/libfreetyped.so: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
-	@$(CMAKE_COMMAND) -E touch_nocreate dependancies/freetype-2.10.2/libfreetyped.so
+Debug/lib/libfreetyped.so: Debug/lib/libfreetyped.so.6.17.2
+	@$(CMAKE_COMMAND) -E touch_nocreate Debug/lib/libfreetyped.so
 
 # Rule to build all files generated by this target.
-dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build: dependancies/freetype-2.10.2/libfreetyped.so
+dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build: Debug/lib/libfreetyped.so
 
 .PHONY : dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/build
 

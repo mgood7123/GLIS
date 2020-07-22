@@ -28,12 +28,11 @@ int main() {
 
         Vector2i size = {W, H};
 
-        // these will be deleted in destructor callback
         framebuffer = new GL::Framebuffer {{{}, size}};
         depthStencil = new GL::Renderbuffer;
+        color = new GL::Texture2D;
         _shader = new Shaders::Phong;
         _mesh = new GL::Mesh;
-        color = new GL::Texture2D;
 
         color->setStorage(1, GL::TextureFormat::RGBA8, size);
         depthStencil->setStorage(GL::RenderbufferFormat::Depth24Stencil8, size);
@@ -58,6 +57,7 @@ int main() {
         SERVER_LOG_TRANSFER_INFO = true;
 
         while(true) {
+//            GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
             framebuffer->clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
             _transformation =
                     _transformation * Matrix4::rotationX(1.0_degf) * Matrix4::rotationY(1.0_degf);
@@ -75,9 +75,9 @@ int main() {
         LOG_INFO("Cleaning up");
         delete _shader;
         delete _mesh;
-        delete framebuffer;
-        delete depthStencil;
         delete color;
+        delete depthStencil;
+        delete framebuffer;
         glis.GLIS_destroy_GLIS(G);
         LOG_INFO("Destroyed sub Compositor GLIS");
         LOG_INFO("Cleaned up");

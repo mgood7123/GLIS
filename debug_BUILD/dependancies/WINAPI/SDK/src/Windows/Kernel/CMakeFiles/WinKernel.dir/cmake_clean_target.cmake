@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libWinKernel.a"
+  "../../../../../../Debug/lib/libWinKernel.a"
 )

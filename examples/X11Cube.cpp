@@ -32,6 +32,10 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     glis.GLIS_SwapBuffers(CompositorMain);
 }
 
+GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
+    glViewport(0, 0, width, height);
+}
+
 GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(CompositorMain);
     delete _shader;
@@ -51,5 +55,5 @@ int main() {
     _transformation = Matrix4::rotationX(0.0_degf)*Matrix4::rotationY(0.0_degf);
     _projection = Matrix4::perspectiveProjection(35.0_degf, Vector2{static_cast<float>(CompositorMain.width*CompositorMain.height)}.aspectRatio(), 0.01f, 100.0f)*Matrix4::translation(Vector3::zAxis(-10.0f));
     _color = Color3::fromHsv({35.0_degf, 1.0f, 1.0f});
-    glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, nullptr, close);
+    glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, resize, close);
 }

@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libex-common.a"
+  "../../Debug/lib/libex-common.a"
 )

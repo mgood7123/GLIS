@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "../../Debug/lib/libcommon.a"
+  "../../Debug/lib/libcommon.pdb"
   "CMakeFiles/common.dir/common/alcomplex.cpp.o"
   "CMakeFiles/common.dir/common/alexcpt.cpp.o"
   "CMakeFiles/common.dir/common/alfstream.cpp.o"
@@ -8,8 +10,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/common.dir/common/polyphase_resampler.cpp.o"
   "CMakeFiles/common.dir/common/strutils.cpp.o"
   "CMakeFiles/common.dir/common/threads.cpp.o"
-  "libcommon.a"
-  "libcommon.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

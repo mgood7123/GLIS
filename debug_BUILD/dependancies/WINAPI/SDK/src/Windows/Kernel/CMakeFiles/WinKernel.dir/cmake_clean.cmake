@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
+  "../../../../../../Debug/lib/libWinKernel.a"
+  "../../../../../../Debug/lib/libWinKernel.pdb"
   "CMakeFiles/WinKernel.dir/WindowsAPIHandle.cpp.o"
   "CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o"
   "CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o"
   "CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o"
-  "libWinKernel.a"
-  "libWinKernel.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
