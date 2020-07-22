@@ -133,20 +133,6 @@ GL::Buffer * vertexBuffer = nullptr, *indexBuffer = nullptr;
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
     dnc_x1.draw();
-    /* Render the text, centered */
-    std::tie(*mesh, std::ignore) = Text::Renderer2D::render(
-            **_font,
-            *cache,
-            0.15f,
-            "Hello World!",
-            *vertexBuffer,
-            *indexBuffer,
-            GL::BufferUsage::StaticDraw,
-            Text::Alignment::LineCenter
-    );
-    /* Draw the text on the screen */
-    shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
-    shader->bindVectorTexture(cache->texture());
     shader->draw(*mesh);
     glis.GLIS_SwapBuffers(CompositorMain);
 }
@@ -178,19 +164,39 @@ int main() {
     _font = new Containers::Pointer<Text::AbstractFont>;
 
     Utility::Resource rs("fonts");
+    // better performance can be obtained by using FreeTypeFont
     *_font = _manager.loadAndInstantiate("TrueTypeFont");
     if(!_font || !_font[0]->openData(rs.getRaw("Vera.ttf"), 180.0f))
         LOG_MAGNUM_FATAL << "Cannot open font file";
 
     cache = new Text::GlyphCache{Vector2i{512*2}};
     LOG_MAGNUM_DEBUG << "filling glyph cache";
+    auto s = now_ms();
     _font[0]->fillGlyphCache(*cache, "Hello World!");
-    LOG_MAGNUM_DEBUG << "filled glyph cache";
+    auto e = now_ms();
+    LOG_MAGNUM_DEBUG << "filled glyph cache in" << e - s << "milliseconds";
 
     mesh = new GL::Mesh;
     shader = new Shaders::Vector2D;
     vertexBuffer = new GL::Buffer;
     indexBuffer = new GL::Buffer;
+
+    /* Render the text, centered */
+    std::tie(*mesh, std::ignore) = Text::Renderer2D::render(
+            **_font,
+            *cache,
+            0.15f,
+            "Hello World!",
+            *vertexBuffer,
+            *indexBuffer,
+            GL::BufferUsage::StaticDraw,
+            Text::Alignment::LineCenter
+    );
+
+    /* Draw the text on the screen */
+    shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
+    shader->bindVectorTexture(cache->texture());
+
 
     dnc_x1.create();
     dnc_x1.setSize(10, 10);
