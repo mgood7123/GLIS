@@ -52,6 +52,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../dependancies/magnum-plugins/src/Magnum/versionPlugins.h.cmake"
   "../dependancies/magnum-plugins/src/MagnumExternal/CMakeLists.txt"
   "../dependancies/magnum-plugins/src/MagnumPlugins/CMakeLists.txt"
+  "../dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeLists.txt"
+  "../dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/configure.h.cmake"
   "../dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeLists.txt"
   "../dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/configure.h.cmake"
   "../dependancies/magnum-plugins/src/external/CMakeLists.txt"
@@ -134,6 +136,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-3.16/Modules/Compiler/GNU.cmake"
   "/usr/share/cmake-3.16/Modules/FindBZip2.cmake"
+  "/usr/share/cmake-3.16/Modules/FindFreetype.cmake"
   "/usr/share/cmake-3.16/Modules/FindGit.cmake"
   "/usr/share/cmake-3.16/Modules/FindPNG.cmake"
   "/usr/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake"
@@ -214,6 +217,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "dependancies/magnum-plugins/src/Magnum/CMakeFiles/CMakeDirectoryInformation.cmake"
   "dependancies/magnum-plugins/src/MagnumExternal/CMakeFiles/CMakeDirectoryInformation.cmake"
   "dependancies/magnum-plugins/src/MagnumPlugins/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/CMakeDirectoryInformation.cmake"
   "dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/CMakeDirectoryInformation.cmake"
   "testBuilder/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
@@ -292,6 +296,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/DependInfo.cmake"
   "dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/DependInfo.cmake"
   "dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/DependInfo.cmake"
+  "dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont-metadata.dir/DependInfo.cmake"
+  "dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/DependInfo.cmake"
   "dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont-metadata.dir/DependInfo.cmake"
   "dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/DependInfo.cmake"
   )

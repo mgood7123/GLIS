@@ -164,9 +164,8 @@ int main() {
     _font = new Containers::Pointer<Text::AbstractFont>;
 
     Utility::Resource rs("fonts");
-    // better performance can be obtained by using FreeTypeFont
-    *_font = _manager.loadAndInstantiate("TrueTypeFont");
-    if(!_font || !_font[0]->openData(rs.getRaw("Vera.ttf"), 180.0f))
+    *_font = _manager.loadAndInstantiate("FreeTypeFont");
+    if(!_font || !_font[0]->openData(rs.getRaw("Vera.ttf"), 200.0f))
         LOG_MAGNUM_FATAL << "Cannot open font file";
 
     cache = new Text::GlyphCache{Vector2i{512*2}};
@@ -185,12 +184,12 @@ int main() {
     std::tie(*mesh, std::ignore) = Text::Renderer2D::render(
             **_font,
             *cache,
-            0.15f,
+            0.09f,
             "Hello World!",
             *vertexBuffer,
             *indexBuffer,
             GL::BufferUsage::StaticDraw,
-            Text::Alignment::LineCenter
+            Text::Alignment::TopCenter
     );
 
     /* Draw the text on the screen */

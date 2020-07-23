@@ -492,6 +492,18 @@ EGL_INCLUDE_DIR:PATH=/usr/include
 //Path to a library.
 EGL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libEGL.so
 
+//Path to a file.
+FREETYPE_INCLUDE_DIR_freetype2:PATH=/usr/include/freetype2
+
+//Path to a file.
+FREETYPE_INCLUDE_DIR_ft2build:PATH=/usr/include/freetype2
+
+//Path to a library.
+FREETYPE_LIBRARY_DEBUG:FILEPATH=FREETYPE_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+FREETYPE_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libfreetype.so
+
 //Support compressed WOFF2 fonts.
 FT_WITH_BROTLI:BOOL=OFF
 
@@ -506,6 +518,9 @@ FT_WITH_PNG:BOOL=OFF
 
 //Use system zlib instead of internal library.
 FT_WITH_ZLIB:BOOL=OFF
+
+//Dependencies for the target
+FreeTypeFont_LIB_DEPENDS:STATIC=general;Magnum::Text;general;/usr/lib/x86_64-linux-gnu/libfreetype.so;
 
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
@@ -760,7 +775,7 @@ WITH_EGLCONTEXT:BOOL=ON
 WITH_FAAD2AUDIOIMPORTER:BOOL=OFF
 
 //Build FreeTypeFont plugin
-WITH_FREETYPEFONT:BOOL=OFF
+WITH_FREETYPEFONT:BOOL=ON
 
 //Build GlfwApplication library
 WITH_GLFWAPPLICATION:BOOL=OFF
@@ -1083,7 +1098,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=55
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=56
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1149,6 +1164,8 @@ EGL_LIBRARY-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_Corrade:INTERNAL=[/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/src][/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/corrade/modules][/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/corrade/src/Corrade/configure.h][cfound components: Containers rc Utility PluginManager ][v()]
 //Details about finding EGL
 FIND_PACKAGE_MESSAGE_DETAILS_EGL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libEGL.so][/usr/include][v()]
+//Details about finding Freetype
+FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/usr/lib/x86_64-linux-gnu/libfreetype.so][/usr/include/freetype2][v2.10.1()]
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[/usr/bin/git][v2.25.1()]
 //Details about finding Magnum
@@ -1167,6 +1184,14 @@ FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[/usr/lib/x86_64-linux-gnu/libz.so][/usr/include][v1.2.11()]
 //Details about finding harfbuzz
 FIND_PACKAGE_MESSAGE_DETAILS_harfbuzz:INTERNAL=[/usr/include/harfbuzz][/usr/lib/x86_64-linux-gnu/libharfbuzz.so][v2.6.4()]
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
+FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build
+FREETYPE_INCLUDE_DIR_ft2build-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_DEBUG
+FREETYPE_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FREETYPE_LIBRARY_RELEASE
+FREETYPE_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GIT_EXECUTABLE
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: HARFBUZZ_INCLUDE_DIRS

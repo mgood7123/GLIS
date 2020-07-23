@@ -1115,6 +1115,32 @@ MagnumUi_RESOURCES-dependencies/fast:
 .PHONY : MagnumUi_RESOURCES-dependencies/fast
 
 #=============================================================================
+# Target rules for targets named FreeTypeFont-metadata
+
+# Build rule for target.
+FreeTypeFont-metadata: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 FreeTypeFont-metadata
+.PHONY : FreeTypeFont-metadata
+
+# fast build rule for target.
+FreeTypeFont-metadata/fast:
+	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont-metadata.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont-metadata.dir/build
+.PHONY : FreeTypeFont-metadata/fast
+
+#=============================================================================
+# Target rules for targets named FreeTypeFont
+
+# Build rule for target.
+FreeTypeFont: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 FreeTypeFont
+.PHONY : FreeTypeFont
+
+# fast build rule for target.
+FreeTypeFont/fast:
+	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/build
+.PHONY : FreeTypeFont/fast
+
+#=============================================================================
 # Target rules for targets named StbTrueTypeFont-metadata
 
 # Build rule for target.
@@ -2171,6 +2197,8 @@ help:
 	@echo "... TgaImporter"
 	@echo "... MagnumUi"
 	@echo "... MagnumUi_RESOURCES-dependencies"
+	@echo "... FreeTypeFont-metadata"
+	@echo "... FreeTypeFont"
 	@echo "... StbTrueTypeFont-metadata"
 	@echo "... StbTrueTypeFont"
 	@echo "... compositor_clients/DefaultFramebuffer.o"

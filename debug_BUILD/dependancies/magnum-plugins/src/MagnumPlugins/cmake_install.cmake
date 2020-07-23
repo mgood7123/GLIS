@@ -39,6 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/cmake_install.cmake")
 
 endif()

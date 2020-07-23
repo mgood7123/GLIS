@@ -494,6 +494,16 @@
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/CMakeFiles/list_install_components.dir
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/CMakeFiles/rebuild_cache.dir
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/CMakeFiles/package.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/install/strip.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/install/local.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/edit_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/package_source.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/install.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/list_install_components.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/rebuild_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/package.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont-metadata.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/install/strip.dir
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/install/local.dir
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/package_source.dir
