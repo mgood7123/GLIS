@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Magnum.dir/Animation/Player.cpp.o"
   "CMakeFiles/Magnum.dir/Image.cpp.o"
   "CMakeFiles/Magnum.dir/ImageView.cpp.o"
+  "CMakeFiles/Magnum.dir/Math/Functions.cpp.o"
   "CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o"
   "CMakeFiles/Magnum.dir/Mesh.cpp.o"
   "CMakeFiles/Magnum.dir/PixelFormat.cpp.o"

@@ -554,6 +554,26 @@ Magnum/PixelStorage.h
 Magnum/Math/Vector3.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Math/Vector3.h
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp
+Corrade/Utility/Assert.h
+-
+Functions.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.h
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.h
+cstdlib
+-
+type_traits
+-
+utility
+-
+Corrade/Utility/StlMath.h
+-
+Magnum/visibility.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Magnum/visibility.h
+Magnum/Math/Vector.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Magnum/Math/Vector.h
+
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/PackingBatch.cpp
 PackingBatch.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/PackingBatch.h

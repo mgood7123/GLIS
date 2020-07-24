@@ -13,11 +13,13 @@
 #include <magnum/src/Magnum/Text/Alignment.h>
 #include <Magnum/Text/Renderer.h>
 #include <Magnum/Trade/AbstractImporter.h>
-#include <corrade/src/Corrade/PluginManager/Manager.h>
+#include <Corrade/PluginManager/Manager.h>
 #include <MagnumPlugins/MagnumFont/MagnumFont.h>
-#include <corrade/src/Corrade/Utility/Resource.h>
+#include <Corrade/Utility/Resource.h>
+#include <Magnum/Math/Matrix3.h>
+#include <magnum/src/Magnum/GL/DebugOutput.h>
 
-GLIS_CLASS CompositorMain;
+GLIS_CLASS screen;
 GLIS glis;
 GLIS_FONT font;
 GLIS_FPS fps;
@@ -121,20 +123,164 @@ void line::release() {
     delete _mesh;
 }
 
-grid dnc_x1, dnc_x2, dnc_x3;
+namespace Magnum {
+    namespace Font {
+        class BasicFont {
+            Shaders::Vector2D *shader = nullptr;
+            Containers::Pointer<Text::AbstractFont> *font = nullptr;
+            Containers::Pointer<PluginManager::Manager<Text::AbstractFont>> *manager = nullptr;
+            Containers::Pointer<Text::Renderer2D> *text = nullptr;
+            Containers::Pointer<Text::GlyphCache> *cache = nullptr;
+            float openData_size = 0;
 
-GL::Mesh * mesh = nullptr;
-Shaders::Vector2D * shader = nullptr;
-/* Font instance, received from a plugin manager */
-Containers::Pointer<Text::AbstractFont> * _font = nullptr;
-Text::GlyphCache * cache = nullptr;
-GL::Buffer * vertexBuffer = nullptr, *indexBuffer = nullptr;
+        public:
+            void create();
+
+            void load(
+                    const Containers::ArrayView<const char> resource,
+                    const Containers::ArrayView<const char> fontPlugin,
+                    const Containers::ArrayView<const char> font,
+                    const float dpi
+            );
+
+            void draw(const Containers::ArrayView<const char> str, float size, float x, float y,
+                      Text::Alignment alignment);
+
+            void release();
+        };
+
+        void BasicFont::create() {
+            shader = new Shaders::Vector2D;
+            font = new Containers::Pointer<Text::AbstractFont>;
+            manager = new Containers::Pointer<PluginManager::Manager<Text::AbstractFont>>(
+                    new PluginManager::Manager<Text::AbstractFont>
+            );
+            cache = new Containers::Pointer<Text::GlyphCache>(new Text::GlyphCache{Vector2i{4096}});
+        }
+
+        void BasicFont::load(
+                const Containers::ArrayView<const char> resource,
+                const Containers::ArrayView<const char> fontPlugin,
+                const Containers::ArrayView<const char> fontFile,
+                const float dpi
+        ) {
+            /* Load a TrueTypeFont plugin and open the font */
+
+            Utility::Resource rs(resource.data());
+            font[0] = manager->get()->loadAndInstantiate(fontPlugin.data());
+            openData_size = dpi * 2;
+            if (!font[0] || !font[0]->openData(rs.getRaw(fontFile.data()), openData_size))
+                LOG_MAGNUM_FATAL << "Cannot open font file";
+
+            /* Prepare glyph cache */
+            font[0]->fillGlyphCache(**cache,
+                                    "abcdefghijklmnopqrstuvwxyz"
+                                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    "0123456789 _.,-+=*:;?!@$&#/"
+                                    "\\|`\"'<>()[]{}%…"
+            );
+        }
+
+        template<class T> void deleteContainer(T & container) {
+            if (container != nullptr) {
+                if (container->get() != nullptr)
+                    delete container->get();
+                container->release();
+                delete container;
+            }
+        }
+
+        void
+        BasicFont::draw(const Containers::ArrayView<const char> str, float size, float x, float y,
+                        Text::Alignment alignment) {
+            float pt = size;
+            float fontSize = pt * 1.3333f;
+            float render2D_size = fontSize / openData_size;
+            deleteContainer(text);
+            text = new Containers::Pointer<Text::Renderer2D>{
+                    new Text::Renderer2D(**font, **cache, render2D_size, alignment)
+            };
+            text->get()->reserve(str.size(), GL::BufferUsage::DynamicDraw,
+                                 GL::BufferUsage::StaticDraw);
+
+            /* Draw the text on the screen */
+            shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
+            shader->bindVectorTexture(cache->get()->texture());
+            text->get()->render(str.data());
+
+            GL::DefaultFramebuffer &fb = GL::defaultFramebuffer;
+            auto viewport = fb.viewport();
+            auto viewportSize = viewport.size();
+            auto vector2 = Vector2(viewportSize);
+            auto aspectRatio = vector2.aspectRatio();
+            auto yScale = Vector2::yScale(aspectRatio);
+            auto viewportScaling = Matrix3::scaling(yScale);
+            // set text position to -1.0f, 1.0f, top left
+            auto translation = Matrix3::translation({x, y});
+            auto matrix = translation * viewportScaling;
+            shader->setTransformationProjectionMatrix(matrix);
+            shader->draw(text->get()->mesh());
+        }
+
+        void BasicFont::release() {
+            delete shader;
+            deleteContainer(this->manager);
+            deleteContainer(this->cache);
+            deleteContainer(this->font);
+            deleteContainer(this->text);
+        }
+    }
+}
+
+grid grid_10x10, dnc_x2, dnc_x3;
+Font::BasicFont _font;
 
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
-    dnc_x1.draw();
-    shader->draw(*mesh);
-    glis.GLIS_SwapBuffers(CompositorMain);
+    grid_10x10.draw();
+    #define draw_coordinateX(x, alignment) _font.draw(#x, 5, x, 1.0f, alignment)
+    draw_coordinateX(-1.0f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.9f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.8f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.7f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.6f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.5f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.4f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.3f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.2f, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.1f, Text::Alignment::TopLeft);
+    draw_coordinateX(0.1f, Text::Alignment::TopRight);
+    draw_coordinateX(0.2f, Text::Alignment::TopRight);
+    draw_coordinateX(0.3f, Text::Alignment::TopRight);
+    draw_coordinateX(0.4f, Text::Alignment::TopRight);
+    draw_coordinateX(0.5f, Text::Alignment::TopRight);
+    draw_coordinateX(0.6f, Text::Alignment::TopRight);
+    draw_coordinateX(0.7f, Text::Alignment::TopRight);
+    draw_coordinateX(0.8f, Text::Alignment::TopRight);
+    draw_coordinateX(0.9f, Text::Alignment::TopRight);
+    draw_coordinateX(1.0f, Text::Alignment::TopRight);
+    #define draw_coordinateY(y, alignment) _font.draw(#y, 5, 1.0f, y+0.01f, alignment)
+    draw_coordinateY(0.9f, Text::Alignment::LineRight);
+    draw_coordinateY(0.8f, Text::Alignment::LineRight);
+    draw_coordinateY(0.7f, Text::Alignment::LineRight);
+    draw_coordinateY(0.6f, Text::Alignment::LineRight);
+    draw_coordinateY(0.5f, Text::Alignment::LineRight);
+    draw_coordinateY(0.4f, Text::Alignment::LineRight);
+    draw_coordinateY(0.3f, Text::Alignment::LineRight);
+    draw_coordinateY(0.2f, Text::Alignment::LineRight);
+    draw_coordinateY(0.1f, Text::Alignment::LineRight);
+    draw_coordinateY(0.0f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.1f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.2f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.3f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.4f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.5f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.6f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.7f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.8f, Text::Alignment::LineRight);
+    draw_coordinateY(-0.9f, Text::Alignment::LineRight);
+    draw_coordinateY(-1.0f, Text::Alignment::LineRight);
+    glis.GLIS_SwapBuffers(screen);
 }
 
 GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
@@ -142,66 +288,26 @@ GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
 }
 
 GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
-    glis.destroyX11Window(CompositorMain);
+    glis.destroyX11Window(screen);
     // order does not matter
-    dnc_x1.release();
-    delete vertexBuffer;
-    delete indexBuffer;
-    delete cache;
-    delete _font;
-    delete shader;
-    delete mesh;
-    glis.GLIS_destroy_GLIS(CompositorMain);
+    grid_10x10.release();
+    glis.GLIS_destroy_GLIS(screen);
 }
 
 int main() {
-    glis.getX11Window(CompositorMain, 400, 400);
-    glis.GLIS_setupOnScreenRendering(CompositorMain);
-    CompositorMain.contextMagnum.create();
+    glis.getX11Window(screen, 800, 800);
+    glis.GLIS_setupOnScreenRendering(screen);
+    screen.contextMagnum.create();
+//    GL::DebugOutput::Callback on_gl_errorMagnum = NULL;
+//    GL::DebugOutput::setCallback(on_gl_errorMagnum, nullptr);
 
-    /* Load a TrueTypeFont plugin and open the font */
-    PluginManager::Manager<Text::AbstractFont> _manager;
-    _font = new Containers::Pointer<Text::AbstractFont>;
-
-    Utility::Resource rs("fonts");
-    *_font = _manager.loadAndInstantiate("FreeTypeFont");
-    if(!_font || !_font[0]->openData(rs.getRaw("Vera.ttf"), 200.0f))
-        LOG_MAGNUM_FATAL << "Cannot open font file";
-
-    cache = new Text::GlyphCache{Vector2i{512*2}};
-    LOG_MAGNUM_DEBUG << "filling glyph cache";
-    auto s = now_ms();
-    _font[0]->fillGlyphCache(*cache, "Hello World!");
-    auto e = now_ms();
-    LOG_MAGNUM_DEBUG << "filled glyph cache in" << e - s << "milliseconds";
-
-    mesh = new GL::Mesh;
-    shader = new Shaders::Vector2D;
-    vertexBuffer = new GL::Buffer;
-    indexBuffer = new GL::Buffer;
-
-    /* Render the text, centered */
-    std::tie(*mesh, std::ignore) = Text::Renderer2D::render(
-            **_font,
-            *cache,
-            0.09f,
-            "Hello World!",
-            *vertexBuffer,
-            *indexBuffer,
-            GL::BufferUsage::StaticDraw,
-            Text::Alignment::TopCenter
-    );
-
-    /* Draw the text on the screen */
-    shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
-    shader->bindVectorTexture(cache->texture());
-
-
-    dnc_x1.create();
-    dnc_x1.setSize(10, 10);
-    dnc_x1.setColor({1.0f, 0.0f, 0.0f, 1.0f});
-    dnc_x1.createMesh();
-    dnc_x1.drawLabels = true;
+    _font.create();
+    _font.load("fonts", "FreeTypeFont", "Vera.ttf", 96.0f);
+    grid_10x10.create();
+    grid_10x10.setSize(20, 20);
+    grid_10x10.setColor({1.0f, 0.0f, 0.0f, 1.0f});
+    grid_10x10.createMesh();
+    grid_10x10.drawLabels = true;
 
 //    dnc_x2.create();
 //    dnc_x2.setSize(20, 20);
@@ -213,5 +319,5 @@ int main() {
 //    dnc_x3.setColor({0.0f, 0.0f, 1.0f, 1.0f});
 //    dnc_x3.createMesh();
 
-    glis.runUntilX11WindowClose(glis, CompositorMain, font, fps, draw, resize, close);
+    glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }

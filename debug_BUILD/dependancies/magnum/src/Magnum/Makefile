@@ -418,7 +418,7 @@ Math/Functions.o: Math/Functions.cpp.o
 
 # target to build an object file
 Math/Functions.cpp.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.o
 .PHONY : Math/Functions.cpp.o
 
 Math/Functions.i: Math/Functions.cpp.i
@@ -427,7 +427,7 @@ Math/Functions.i: Math/Functions.cpp.i
 
 # target to preprocess a source file
 Math/Functions.cpp.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.i
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.i
 .PHONY : Math/Functions.cpp.i
 
 Math/Functions.s: Math/Functions.cpp.s
@@ -436,7 +436,7 @@ Math/Functions.s: Math/Functions.cpp.s
 
 # target to generate assembly for a file
 Math/Functions.cpp.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.s
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.s
 .PHONY : Math/Functions.cpp.s
 
 Math/Half.o: Math/Half.cpp.o

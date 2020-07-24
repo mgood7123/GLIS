@@ -18,6 +18,11 @@ extern std::ostream streamFatal;
 #define LOG_MAGNUM_FATAL Corrade::Utility::Fatal{-1} << Corrade::Utility::Debug::color(Corrade::Utility::Debug::Color::Red)
 #endif
 
+#define LOG_MAGNUM_DEBUG_FUNCTION(x) LOG_MAGNUM_DEBUG << #x << " =" << (x)
+#define LOG_MAGNUM_WARNING_FUNCTION(x) LOG_MAGNUM_WARNING << #x << " =" << (x)
+#define LOG_MAGNUM_ERROR_FUNCTION(x) LOG_MAGNUM_ERROR << #x << " =" << (x)
+#define LOG_MAGNUM_FATAL_FUNCTION(x) LOG_MAGNUM_FATAL << #x << " =" << (x)
+
 int LOG_INFO(const char* format, ... );
 int LOG_ERROR(const char* format, ... );
 void LOG_ALWAYS_FATAL(const char* format, ... );

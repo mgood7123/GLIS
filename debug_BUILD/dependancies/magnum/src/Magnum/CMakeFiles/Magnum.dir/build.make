@@ -57,9 +57,22 @@ include dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/progress.make
 # Include the compile flags for this target's objects.
 include dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.o: ../dependancies/magnum/src/Magnum/Math/Functions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.o"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Math/Functions.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp
+
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Magnum.dir/Math/Functions.cpp.i"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp > CMakeFiles/Magnum.dir/Math/Functions.cpp.i
+
+dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Magnum.dir/Math/Functions.cpp.s"
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp -o CMakeFiles/Magnum.dir/Math/Functions.cpp.s
+
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o: ../dependancies/magnum/src/Magnum/Math/PackingBatch.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/PackingBatch.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.i: cmake_force
@@ -72,7 +85,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.s: cm
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.o: ../dependancies/magnum/src/Magnum/Image.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Image.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Image.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.i: cmake_force
@@ -85,7 +98,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.s: cmake_force
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.o: ../dependancies/magnum/src/Magnum/ImageView.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/ImageView.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/ImageView.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.i: cmake_force
@@ -98,7 +111,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.s: cmake_forc
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.o: ../dependancies/magnum/src/Magnum/Mesh.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Mesh.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Mesh.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.i: cmake_force
@@ -111,7 +124,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Mesh.cpp.s: cmake_force
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.o: ../dependancies/magnum/src/Magnum/PixelFormat.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/PixelFormat.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/PixelFormat.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.i: cmake_force
@@ -124,7 +137,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/PixelFormat.cpp.s: cmake_fo
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.o: ../dependancies/magnum/src/Magnum/VertexFormat.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/VertexFormat.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/VertexFormat.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.i: cmake_force
@@ -137,7 +150,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/VertexFormat.cpp.s: cmake_f
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.o: ../dependancies/magnum/src/Magnum/Animation/Player.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Animation/Player.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Animation/Player.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.i: cmake_force
@@ -150,7 +163,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Player.cpp.s: cma
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.o: ../dependancies/magnum/src/Magnum/Animation/Interpolation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Animation/Interpolation.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp.i: cmake_force
@@ -163,6 +176,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Animation/Interpolation.cpp
 
 # Object files for target Magnum
 Magnum_OBJECTS = \
+"CMakeFiles/Magnum.dir/Math/Functions.cpp.o" \
 "CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o" \
 "CMakeFiles/Magnum.dir/Image.cpp.o" \
 "CMakeFiles/Magnum.dir/ImageView.cpp.o" \
@@ -177,7 +191,6 @@ Magnum_EXTERNAL_OBJECTS = \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Angle.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Color.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.o" \
-"/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/FileCallback.cpp.o" \
@@ -186,6 +199,7 @@ Magnum_EXTERNAL_OBJECTS = \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/Sampler.cpp.o" \
 "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/Timeline.cpp.o"
 
+Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/Functions.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Math/PackingBatch.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/Image.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/ImageView.cpp.o
@@ -197,7 +211,6 @@ Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.d
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Angle.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Color.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.o
-Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumObjects.dir/FileCallback.cpp.o
@@ -208,7 +221,7 @@ Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/MagnumOb
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make
 Debug/lib/libMagnum-d.so.2.4: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/lib/libMagnum-d.so.2.4: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX shared library ../../../../Debug/lib/libMagnum-d.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX shared library ../../../../Debug/lib/libMagnum-d.so"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Magnum.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && $(CMAKE_COMMAND) -E cmake_symlink_library ../../../../Debug/lib/libMagnum-d.so.2.4 ../../../../Debug/lib/libMagnum-d.so.2 ../../../../Debug/lib/libMagnum-d.so
 

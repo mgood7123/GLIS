@@ -96,22 +96,9 @@ dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.s:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.s"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Half.cpp -o CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.s
 
-dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/flags.make
-dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o: ../dependancies/magnum/src/Magnum/Math/Functions.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp
-
-dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.i"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp > CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.i
-
-dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.s"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Functions.cpp -o CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.s
-
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o: ../dependancies/magnum/src/Magnum/Math/Packing.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Packing.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.i: cmake_force
@@ -124,7 +111,7 @@ dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/flags.make
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o: ../dependancies/magnum/src/Magnum/Math/instantiation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/instantiation.cpp
 
 dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.i: cmake_force
@@ -138,7 +125,6 @@ dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiati
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Angle.cpp.o
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Color.cpp.o
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Half.cpp.o
-MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Functions.cpp.o
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/Packing.cpp.o
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/Math/instantiation.cpp.o
 MagnumMathObjects: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/build.make

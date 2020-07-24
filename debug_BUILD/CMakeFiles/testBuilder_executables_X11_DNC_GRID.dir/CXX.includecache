@@ -1894,6 +1894,18 @@ Magnum/GL/OpenGL.h
 Magnum/GL/visibility.h
 ../dependancies/magnum/src/Magnum/GL/Magnum/GL/visibility.h
 
+../dependancies/magnum/src/Magnum/GL/DebugOutput.h
+string
+-
+Corrade/Containers/ArrayView.h
+-
+Magnum/Magnum.h
+../dependancies/magnum/src/Magnum/GL/Magnum/Magnum.h
+Magnum/GL/OpenGL.h
+../dependancies/magnum/src/Magnum/GL/Magnum/GL/OpenGL.h
+Magnum/GL/visibility.h
+../dependancies/magnum/src/Magnum/GL/Magnum/GL/visibility.h
+
 ../dependancies/magnum/src/Magnum/GL/DefaultFramebuffer.h
 Magnum/GL/AbstractFramebuffer.h
 ../dependancies/magnum/src/Magnum/GL/Magnum/GL/AbstractFramebuffer.h
@@ -2099,6 +2111,12 @@ Magnum/Types.h
 ../dependancies/magnum/src/Magnum/Math/Matrix.h
 Magnum/Math/RectangularMatrix.h
 ../dependancies/magnum/src/Magnum/Math/Magnum/Math/RectangularMatrix.h
+
+../dependancies/magnum/src/Magnum/Math/Matrix3.h
+Magnum/Math/Matrix.h
+../dependancies/magnum/src/Magnum/Math/Magnum/Math/Matrix.h
+Magnum/Math/Vector3.h
+../dependancies/magnum/src/Magnum/Math/Magnum/Math/Vector3.h
 
 ../dependancies/magnum/src/Magnum/Math/Matrix4.h
 Magnum/Math/Matrix.h
@@ -2841,11 +2859,15 @@ Magnum/Text/Renderer.h
 -
 Magnum/Trade/AbstractImporter.h
 -
-corrade/src/Corrade/PluginManager/Manager.h
+Corrade/PluginManager/Manager.h
 -
 MagnumPlugins/MagnumFont/MagnumFont.h
 -
-corrade/src/Corrade/Utility/Resource.h
+Corrade/Utility/Resource.h
+-
+Magnum/Math/Matrix3.h
+-
+magnum/src/Magnum/GL/DebugOutput.h
 -
 
 dependancies/corrade/src/Corrade/configure.h

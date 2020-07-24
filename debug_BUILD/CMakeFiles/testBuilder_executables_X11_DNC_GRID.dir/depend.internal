@@ -253,6 +253,7 @@ CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o
  ../dependancies/magnum/src/Magnum/GL/Attribute.h
  ../dependancies/magnum/src/Magnum/GL/Buffer.h
  ../dependancies/magnum/src/Magnum/GL/Context.h
+ ../dependancies/magnum/src/Magnum/GL/DebugOutput.h
  ../dependancies/magnum/src/Magnum/GL/DefaultFramebuffer.h
  ../dependancies/magnum/src/Magnum/GL/Framebuffer.h
  ../dependancies/magnum/src/Magnum/GL/GL.h
@@ -274,6 +275,7 @@ CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o
  ../dependancies/magnum/src/Magnum/Math/Half.h
  ../dependancies/magnum/src/Magnum/Math/Math.h
  ../dependancies/magnum/src/Magnum/Math/Matrix.h
+ ../dependancies/magnum/src/Magnum/Math/Matrix3.h
  ../dependancies/magnum/src/Magnum/Math/Matrix4.h
  ../dependancies/magnum/src/Magnum/Math/Packing.h
  ../dependancies/magnum/src/Magnum/Math/Range.h
