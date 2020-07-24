@@ -185,58 +185,68 @@ void drawLine(const Color4 &color, float startX, float startY, float endX, float
     mesh = MeshTools::compile(Primitives::line2D({startX, startY}, {endX, endY}));
     shader.draw(mesh);
 }
+void drawLineX(const Color4 &color, float y, float startX, float endX) {
+    drawLine(color, startX, y, endX, y);
+}
 
-GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
-    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
-//    grid_10x10.draw();
-    #define draw_coordinateX(x, alignment) _font.draw(#x, 5, x, 1.0f, alignment)
-    #define draw_lineX(color, y, startX, endX) drawLine(color, startX, y, endX, y)
-    #define draw_lineY(color, x, startY, endY) drawLine(color, x, startY, x, endY)
+void drawLineY(const Color4 &color, float x, float startY, float endY) {
+    drawLine(color, x, startY, x, endY);
+}
+
+void drawDeviceNormalizedCoordinateGrid_10x10() {
     Color4 color = {0.0f, 1.0f, 0.0f, 1.0f};
-    // draw top grid
-    draw_lineX(color, -1.0f, 1.0f, -1.0f);
-    draw_lineX(color, -0.9f, 1.0f, -1.0f);
-    draw_lineX(color, -0.8f, 1.0f, -1.0f);
-    draw_lineX(color, -0.7f, 1.0f, -1.0f);
-    draw_lineX(color, -0.6f, 1.0f, -1.0f);
-    draw_lineX(color, -0.5f, 1.0f, -1.0f);
-    draw_lineX(color, -0.4f, 1.0f, -1.0f);
-    draw_lineX(color, -0.3f, 1.0f, -1.0f);
-    draw_lineX(color, -0.2f, 1.0f, -1.0f);
-    draw_lineX(color, -0.1f, 1.0f, -1.0f);
-    draw_lineX(color, 0.0f, 1.0f, -1.0f);
-    draw_lineX(color, 0.1f, 1.0f, -1.0f);
-    draw_lineX(color, 0.2f, 1.0f, -1.0f);
-    draw_lineX(color, 0.3f, 1.0f, -1.0f);
-    draw_lineX(color, 0.4f, 1.0f, -1.0f);
-    draw_lineX(color, 0.5f, 1.0f, -1.0f);
-    draw_lineX(color, 0.6f, 1.0f, -1.0f);
-    draw_lineX(color, 0.7f, 1.0f, -1.0f);
-    draw_lineX(color, 0.8f, 1.0f, -1.0f);
-    draw_lineX(color, 0.9f, 1.0f, -1.0f);
-    draw_lineX(color, 1.0f, 1.0f, -1.0f);
 
-    draw_lineY(color, -1.0f, 1.0f, -1.0f);
-    draw_lineY(color, -0.9f, 1.0f, -1.0f);
-    draw_lineY(color, -0.8f, 1.0f, -1.0f);
-    draw_lineY(color, -0.7f, 1.0f, -1.0f);
-    draw_lineY(color, -0.6f, 1.0f, -1.0f);
-    draw_lineY(color, -0.5f, 1.0f, -1.0f);
-    draw_lineY(color, -0.4f, 1.0f, -1.0f);
-    draw_lineY(color, -0.3f, 1.0f, -1.0f);
-    draw_lineY(color, -0.2f, 1.0f, -1.0f);
-    draw_lineY(color, -0.1f, 1.0f, -1.0f);
-    draw_lineY(color, 0.0f, 1.0f, -1.0f);
-    draw_lineY(color, 0.1f, 1.0f, -1.0f);
-    draw_lineY(color, 0.2f, 1.0f, -1.0f);
-    draw_lineY(color, 0.3f, 1.0f, -1.0f);
-    draw_lineY(color, 0.4f, 1.0f, -1.0f);
-    draw_lineY(color, 0.5f, 1.0f, -1.0f);
-    draw_lineY(color, 0.6f, 1.0f, -1.0f);
-    draw_lineY(color, 0.7f, 1.0f, -1.0f);
-    draw_lineY(color, 0.8f, 1.0f, -1.0f);
-    draw_lineY(color, 0.9f, 1.0f, -1.0f);
-    draw_lineY(color, 1.0f, 1.0f, -1.0f);
+    // draw lines
+
+    drawLineX(color, -1.0f, 1.0f, -1.0f);
+    drawLineX(color, -0.9f, 1.0f, -1.0f);
+    drawLineX(color, -0.8f, 1.0f, -1.0f);
+    drawLineX(color, -0.7f, 1.0f, -1.0f);
+    drawLineX(color, -0.6f, 1.0f, -1.0f);
+    drawLineX(color, -0.5f, 1.0f, -1.0f);
+    drawLineX(color, -0.4f, 1.0f, -1.0f);
+    drawLineX(color, -0.3f, 1.0f, -1.0f);
+    drawLineX(color, -0.2f, 1.0f, -1.0f);
+    drawLineX(color, -0.1f, 1.0f, -1.0f);
+    drawLineX(color, 0.0f, 1.0f, -1.0f);
+    drawLineX(color, 0.1f, 1.0f, -1.0f);
+    drawLineX(color, 0.2f, 1.0f, -1.0f);
+    drawLineX(color, 0.3f, 1.0f, -1.0f);
+    drawLineX(color, 0.4f, 1.0f, -1.0f);
+    drawLineX(color, 0.5f, 1.0f, -1.0f);
+    drawLineX(color, 0.6f, 1.0f, -1.0f);
+    drawLineX(color, 0.7f, 1.0f, -1.0f);
+    drawLineX(color, 0.8f, 1.0f, -1.0f);
+    drawLineX(color, 0.9f, 1.0f, -1.0f);
+    drawLineX(color, 1.0f, 1.0f, -1.0f);
+
+    drawLineY(color, -1.0f, 1.0f, -1.0f);
+    drawLineY(color, -0.9f, 1.0f, -1.0f);
+    drawLineY(color, -0.8f, 1.0f, -1.0f);
+    drawLineY(color, -0.7f, 1.0f, -1.0f);
+    drawLineY(color, -0.6f, 1.0f, -1.0f);
+    drawLineY(color, -0.5f, 1.0f, -1.0f);
+    drawLineY(color, -0.4f, 1.0f, -1.0f);
+    drawLineY(color, -0.3f, 1.0f, -1.0f);
+    drawLineY(color, -0.2f, 1.0f, -1.0f);
+    drawLineY(color, -0.1f, 1.0f, -1.0f);
+    drawLineY(color, 0.0f, 1.0f, -1.0f);
+    drawLineY(color, 0.1f, 1.0f, -1.0f);
+    drawLineY(color, 0.2f, 1.0f, -1.0f);
+    drawLineY(color, 0.3f, 1.0f, -1.0f);
+    drawLineY(color, 0.4f, 1.0f, -1.0f);
+    drawLineY(color, 0.5f, 1.0f, -1.0f);
+    drawLineY(color, 0.6f, 1.0f, -1.0f);
+    drawLineY(color, 0.7f, 1.0f, -1.0f);
+    drawLineY(color, 0.8f, 1.0f, -1.0f);
+    drawLineY(color, 0.9f, 1.0f, -1.0f);
+    drawLineY(color, 1.0f, 1.0f, -1.0f);
+
+    // draw co-ordinates
+
+    #define draw_coordinateX(x, alignment) _font.draw(#x, 5, x, 1.0f, alignment)
+    #define draw_coordinateY(y, alignment) _font.draw(#y, 5, 1.0f, y+0.01f, alignment)
+
     draw_coordinateX(-1.0f, Text::Alignment::TopLeft);
     draw_coordinateX(-0.9f, Text::Alignment::TopLeft);
     draw_coordinateX(-0.8f, Text::Alignment::TopLeft);
@@ -257,7 +267,6 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     draw_coordinateX(0.8f, Text::Alignment::TopRight);
     draw_coordinateX(0.9f, Text::Alignment::TopRight);
     draw_coordinateX(1.0f, Text::Alignment::TopRight);
-    #define draw_coordinateY(y, alignment) _font.draw(#y, 5, 1.0f, y+0.01f, alignment)
     draw_coordinateY(0.9f, Text::Alignment::LineRight);
     draw_coordinateY(0.8f, Text::Alignment::LineRight);
     draw_coordinateY(0.7f, Text::Alignment::LineRight);
@@ -278,6 +287,12 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     draw_coordinateY(-0.8f, Text::Alignment::LineRight);
     draw_coordinateY(-0.9f, Text::Alignment::LineRight);
     draw_coordinateY(-1.0f, Text::Alignment::LineRight);
+
+}
+
+GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
+    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
+    drawDeviceNormalizedCoordinateGrid_10x10();
     glis.GLIS_SwapBuffers(screen);
 }
 
