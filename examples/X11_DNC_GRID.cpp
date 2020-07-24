@@ -117,10 +117,11 @@ namespace Magnum {
 
         void BasicFont::release() {
             delete shader;
+            font->get()->close();
+            deleteContainer(this->font);
             delete manager;
             delete cache;
             delete text;
-            deleteContainer(this->font);
         }
     }
     namespace Shapes {
@@ -262,8 +263,7 @@ GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
 
 GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(screen);
-    // PluginManager::Manager::unload(): plugin FreeTypeFont is currently used and cannot be deleted
-//    _font.release();
+    _font.release();
     glis.GLIS_destroy_GLIS(screen);
 }
 
