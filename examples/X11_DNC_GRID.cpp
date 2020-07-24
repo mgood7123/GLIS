@@ -206,56 +206,27 @@ namespace Magnum {
             drawLine(color, x, startY, x, endY);
         }
 
+        void drawDNC(Color4 color, float ratio) {
+            float s;
+            s= -1.0f;
+            while(true) {
+                drawLineX(color, s, 1.0f, -1.0f);
+                if (s >= 0.0f) s += ratio;
+                else s -= -ratio;
+                if (s >= 1.0f) break;
+            }
+
+            s = -1.0f;
+            while(true) {
+                drawLineY(color, s, 1.0f, -1.0f);
+                if (s >= 0.0f) s += ratio;
+                else s -= -ratio;
+                if (s >= 1.0f) break;
+            }
+        }
+
         void drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne(Font::BasicFont::Instance & font) {
-            Color4 color = {0.0f, 1.0f, 0.0f, 1.0f};
-
-            // draw lines
-
-            // TODO: optimize
-
-            drawLineX(color, -1.0f, 1.0f, -1.0f);
-            drawLineX(color, -0.9f, 1.0f, -1.0f);
-            drawLineX(color, -0.8f, 1.0f, -1.0f);
-            drawLineX(color, -0.7f, 1.0f, -1.0f);
-            drawLineX(color, -0.6f, 1.0f, -1.0f);
-            drawLineX(color, -0.5f, 1.0f, -1.0f);
-            drawLineX(color, -0.4f, 1.0f, -1.0f);
-            drawLineX(color, -0.3f, 1.0f, -1.0f);
-            drawLineX(color, -0.2f, 1.0f, -1.0f);
-            drawLineX(color, -0.1f, 1.0f, -1.0f);
-            drawLineX(color,  0.0f, 1.0f, -1.0f);
-            drawLineX(color,  0.1f, 1.0f, -1.0f);
-            drawLineX(color,  0.2f, 1.0f, -1.0f);
-            drawLineX(color,  0.3f, 1.0f, -1.0f);
-            drawLineX(color,  0.4f, 1.0f, -1.0f);
-            drawLineX(color,  0.5f, 1.0f, -1.0f);
-            drawLineX(color,  0.6f, 1.0f, -1.0f);
-            drawLineX(color,  0.7f, 1.0f, -1.0f);
-            drawLineX(color,  0.8f, 1.0f, -1.0f);
-            drawLineX(color,  0.9f, 1.0f, -1.0f);
-            drawLineX(color,  1.0f, 1.0f, -1.0f);
-
-            drawLineY(color, -1.0f, 1.0f, -1.0f);
-            drawLineY(color, -0.9f, 1.0f, -1.0f);
-            drawLineY(color, -0.8f, 1.0f, -1.0f);
-            drawLineY(color, -0.7f, 1.0f, -1.0f);
-            drawLineY(color, -0.6f, 1.0f, -1.0f);
-            drawLineY(color, -0.5f, 1.0f, -1.0f);
-            drawLineY(color, -0.4f, 1.0f, -1.0f);
-            drawLineY(color, -0.3f, 1.0f, -1.0f);
-            drawLineY(color, -0.2f, 1.0f, -1.0f);
-            drawLineY(color, -0.1f, 1.0f, -1.0f);
-            drawLineY(color,  0.0f, 1.0f, -1.0f);
-            drawLineY(color,  0.1f, 1.0f, -1.0f);
-            drawLineY(color,  0.2f, 1.0f, -1.0f);
-            drawLineY(color,  0.3f, 1.0f, -1.0f);
-            drawLineY(color,  0.4f, 1.0f, -1.0f);
-            drawLineY(color,  0.5f, 1.0f, -1.0f);
-            drawLineY(color,  0.6f, 1.0f, -1.0f);
-            drawLineY(color,  0.7f, 1.0f, -1.0f);
-            drawLineY(color,  0.8f, 1.0f, -1.0f);
-            drawLineY(color,  0.9f, 1.0f, -1.0f);
-            drawLineY(color,  1.0f, 1.0f, -1.0f);
+            drawDNC({0.0f, 1.0f, 0.0f, 1.0f}, 0.1f);
 
             // draw co-ordinates
 
@@ -303,6 +274,10 @@ namespace Magnum {
             draw_coordinateY(-0.9F, Text::Alignment::LineRight);
             draw_coordinateY(-1.0F, Text::Alignment::LineRight);
         }
+        void drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(Font::BasicFont::Instance & font) {
+            drawDNC({1.0f, 0.0f, 0.0f, 1.0f}, 0.01f);
+
+        }
     }
 }
 
@@ -311,6 +286,7 @@ Magnum::Font::BasicFont::Instance fontA, fontB;
 
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color|Magnum::GL::FramebufferClear::Depth);
+    Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(fontA);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne(fontA);
     fontB.draw("A", 1, 0.0f, 0.0f, Magnum::Text::Alignment::TopLeft);
     {
