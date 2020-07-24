@@ -26,51 +26,33 @@ GLIS_FPS fps;
 
 using namespace Magnum;
 
-class grid {
-    GL::Mesh * _mesh = nullptr;
-    Shaders::Flat2D * _shader = nullptr;
-    int grid_rows = 0;
-    int grid_columns = 0;
-
-public:
-    bool drawLabels = false;
-    void create();
-    void setSize(int rows, int columns);
-    void setColor(const Color4 &color);
-    void createMesh();
-    void draw();
-    void release();
-};
-
-void grid::create() {
-    _shader = new Shaders::Flat2D;
-    _mesh = new GL::Mesh;
-}
-
-void grid::setSize(int rows, int columns) {
-    grid_rows = rows;
-    grid_columns = columns;
-}
-
-void grid::setColor(const Color4 &color) {
-    _shader->setColor(color);
-}
-
-void grid::createMesh(){
-    Vector2i subDivisions = {grid_columns-1, grid_rows-1};
-    *_mesh = MeshTools::compile(Primitives::grid3DWireframe(subDivisions));
-}
-
-void grid::draw() {
-    _shader->draw(*_mesh);
-}
-
-void grid::release() {
-    delete _shader;
-    delete _mesh;
-}
-
 namespace Magnum {
+    namespace Shapes {
+        void drawGrid(const Color4 &color, int columns, int rows) {
+            Shaders::Flat2D shader;
+            shader.setColor(color);
+            GL::Mesh mesh;
+            Vector2i subDivisions = {columns-1, rows-1};
+            mesh = MeshTools::compile(Primitives::grid3DWireframe(subDivisions));
+            shader.draw(mesh);
+        }
+
+        void drawLine(const Color4 &color, float startX, float startY, float endX, float endY) {
+            GL::Mesh mesh;
+            Shaders::Flat2D shader;
+            shader.setColor(color);
+            mesh = MeshTools::compile(Primitives::line2D({startX, startY}, {endX, endY}));
+            shader.draw(mesh);
+        }
+        void drawLineX(const Color4 &color, float y, float startX, float endX) {
+            drawLine(color, startX, y, endX, y);
+        }
+
+        void drawLineY(const Color4 &color, float x, float startY, float endY) {
+            drawLine(color, x, startY, x, endY);
+        }
+    }
+
     namespace Font {
         class BasicFont {
             Shaders::Vector2D *shader = nullptr;
@@ -109,15 +91,12 @@ namespace Magnum {
                 const Containers::ArrayView<const char> fontFile,
                 const float dpi
         ) {
-            /* Load a TrueTypeFont plugin and open the font */
-
             Utility::Resource rs(resource.data());
             font[0] = manager->loadAndInstantiate(fontPlugin.data());
             openData_size = dpi * 2;
             if (!font[0] || !font[0]->openData(rs.getRaw(fontFile.data()), openData_size))
                 LOG_MAGNUM_FATAL << "Cannot open font file";
 
-            /* Prepare glyph cache */
             font[0]->fillGlyphCache(*cache,
                                     "abcdefghijklmnopqrstuvwxyz"
                                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -158,7 +137,6 @@ namespace Magnum {
             auto aspectRatio = vector2.aspectRatio();
             auto yScale = Vector2::yScale(aspectRatio);
             auto viewportScaling = Matrix3::scaling(yScale);
-            // set text position to -1.0f, 1.0f, top left
             auto translation = Matrix3::translation({x, y});
             auto matrix = translation * viewportScaling;
             shader->setTransformationProjectionMatrix(matrix);
@@ -175,124 +153,107 @@ namespace Magnum {
     }
 }
 
-grid grid_10x10, dnc_x2, dnc_x3;
 Font::BasicFont _font;
 
-void drawLine(const Color4 &color, float startX, float startY, float endX, float endY) {
-    GL::Mesh mesh;
-    Shaders::Flat2D shader;
-    shader.setColor(color);
-    mesh = MeshTools::compile(Primitives::line2D({startX, startY}, {endX, endY}));
-    shader.draw(mesh);
-}
-void drawLineX(const Color4 &color, float y, float startX, float endX) {
-    drawLine(color, startX, y, endX, y);
-}
-
-void drawLineY(const Color4 &color, float x, float startY, float endY) {
-    drawLine(color, x, startY, x, endY);
-}
-
-void drawDeviceNormalizedCoordinateGrid_10x10() {
+void drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne() {
     Color4 color = {0.0f, 1.0f, 0.0f, 1.0f};
 
     // draw lines
 
-    drawLineX(color, -1.0f, 1.0f, -1.0f);
-    drawLineX(color, -0.9f, 1.0f, -1.0f);
-    drawLineX(color, -0.8f, 1.0f, -1.0f);
-    drawLineX(color, -0.7f, 1.0f, -1.0f);
-    drawLineX(color, -0.6f, 1.0f, -1.0f);
-    drawLineX(color, -0.5f, 1.0f, -1.0f);
-    drawLineX(color, -0.4f, 1.0f, -1.0f);
-    drawLineX(color, -0.3f, 1.0f, -1.0f);
-    drawLineX(color, -0.2f, 1.0f, -1.0f);
-    drawLineX(color, -0.1f, 1.0f, -1.0f);
-    drawLineX(color, 0.0f, 1.0f, -1.0f);
-    drawLineX(color, 0.1f, 1.0f, -1.0f);
-    drawLineX(color, 0.2f, 1.0f, -1.0f);
-    drawLineX(color, 0.3f, 1.0f, -1.0f);
-    drawLineX(color, 0.4f, 1.0f, -1.0f);
-    drawLineX(color, 0.5f, 1.0f, -1.0f);
-    drawLineX(color, 0.6f, 1.0f, -1.0f);
-    drawLineX(color, 0.7f, 1.0f, -1.0f);
-    drawLineX(color, 0.8f, 1.0f, -1.0f);
-    drawLineX(color, 0.9f, 1.0f, -1.0f);
-    drawLineX(color, 1.0f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -1.0f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.9f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.8f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.7f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.6f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.5f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.4f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.3f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.2f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, -0.1f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.0f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.1f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.2f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.3f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.4f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.5f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.6f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.7f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.8f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 0.9f, 1.0f, -1.0f);
+    Shapes::drawLineX(color, 1.0f, 1.0f, -1.0f);
 
-    drawLineY(color, -1.0f, 1.0f, -1.0f);
-    drawLineY(color, -0.9f, 1.0f, -1.0f);
-    drawLineY(color, -0.8f, 1.0f, -1.0f);
-    drawLineY(color, -0.7f, 1.0f, -1.0f);
-    drawLineY(color, -0.6f, 1.0f, -1.0f);
-    drawLineY(color, -0.5f, 1.0f, -1.0f);
-    drawLineY(color, -0.4f, 1.0f, -1.0f);
-    drawLineY(color, -0.3f, 1.0f, -1.0f);
-    drawLineY(color, -0.2f, 1.0f, -1.0f);
-    drawLineY(color, -0.1f, 1.0f, -1.0f);
-    drawLineY(color, 0.0f, 1.0f, -1.0f);
-    drawLineY(color, 0.1f, 1.0f, -1.0f);
-    drawLineY(color, 0.2f, 1.0f, -1.0f);
-    drawLineY(color, 0.3f, 1.0f, -1.0f);
-    drawLineY(color, 0.4f, 1.0f, -1.0f);
-    drawLineY(color, 0.5f, 1.0f, -1.0f);
-    drawLineY(color, 0.6f, 1.0f, -1.0f);
-    drawLineY(color, 0.7f, 1.0f, -1.0f);
-    drawLineY(color, 0.8f, 1.0f, -1.0f);
-    drawLineY(color, 0.9f, 1.0f, -1.0f);
-    drawLineY(color, 1.0f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -1.0f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.9f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.8f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.7f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.6f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.5f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.4f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.3f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.2f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, -0.1f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.0f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.1f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.2f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.3f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.4f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.5f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.6f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.7f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.8f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 0.9f, 1.0f, -1.0f);
+    Shapes::drawLineY(color, 1.0f, 1.0f, -1.0f);
 
     // draw co-ordinates
 
     #define draw_coordinateX(x, alignment) _font.draw(#x, 5, x, 1.0f, alignment)
     #define draw_coordinateY(y, alignment) _font.draw(#y, 5, 1.0f, y+0.01f, alignment)
 
-    draw_coordinateX(-1.0f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.9f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.8f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.7f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.6f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.5f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.4f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.3f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.2f, Text::Alignment::TopLeft);
-    draw_coordinateX(-0.1f, Text::Alignment::TopLeft);
-    draw_coordinateX(0.1f, Text::Alignment::TopRight);
-    draw_coordinateX(0.2f, Text::Alignment::TopRight);
-    draw_coordinateX(0.3f, Text::Alignment::TopRight);
-    draw_coordinateX(0.4f, Text::Alignment::TopRight);
-    draw_coordinateX(0.5f, Text::Alignment::TopRight);
-    draw_coordinateX(0.6f, Text::Alignment::TopRight);
-    draw_coordinateX(0.7f, Text::Alignment::TopRight);
-    draw_coordinateX(0.8f, Text::Alignment::TopRight);
-    draw_coordinateX(0.9f, Text::Alignment::TopRight);
-    draw_coordinateX(1.0f, Text::Alignment::TopRight);
-    draw_coordinateY(0.9f, Text::Alignment::LineRight);
-    draw_coordinateY(0.8f, Text::Alignment::LineRight);
-    draw_coordinateY(0.7f, Text::Alignment::LineRight);
-    draw_coordinateY(0.6f, Text::Alignment::LineRight);
-    draw_coordinateY(0.5f, Text::Alignment::LineRight);
-    draw_coordinateY(0.4f, Text::Alignment::LineRight);
-    draw_coordinateY(0.3f, Text::Alignment::LineRight);
-    draw_coordinateY(0.2f, Text::Alignment::LineRight);
-    draw_coordinateY(0.1f, Text::Alignment::LineRight);
-    draw_coordinateY(0.0f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.1f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.2f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.3f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.4f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.5f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.6f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.7f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.8f, Text::Alignment::LineRight);
-    draw_coordinateY(-0.9f, Text::Alignment::LineRight);
-    draw_coordinateY(-1.0f, Text::Alignment::LineRight);
-
+    draw_coordinateX(-1.0F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.9F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.8F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.7F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.6F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.5F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.4F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.3F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.2F, Text::Alignment::TopLeft);
+    draw_coordinateX(-0.1F, Text::Alignment::TopLeft);
+    draw_coordinateX(0.1F, Text::Alignment::TopRight);
+    draw_coordinateX(0.2F, Text::Alignment::TopRight);
+    draw_coordinateX(0.3F, Text::Alignment::TopRight);
+    draw_coordinateX(0.4F, Text::Alignment::TopRight);
+    draw_coordinateX(0.5F, Text::Alignment::TopRight);
+    draw_coordinateX(0.6F, Text::Alignment::TopRight);
+    draw_coordinateX(0.7F, Text::Alignment::TopRight);
+    draw_coordinateX(0.8F, Text::Alignment::TopRight);
+    draw_coordinateX(0.9F, Text::Alignment::TopRight);
+    draw_coordinateX(1.0F, Text::Alignment::TopRight);
+    draw_coordinateY(0.9F, Text::Alignment::LineRight);
+    draw_coordinateY(0.8F, Text::Alignment::LineRight);
+    draw_coordinateY(0.7F, Text::Alignment::LineRight);
+    draw_coordinateY(0.6F, Text::Alignment::LineRight);
+    draw_coordinateY(0.5F, Text::Alignment::LineRight);
+    draw_coordinateY(0.4F, Text::Alignment::LineRight);
+    draw_coordinateY(0.3F, Text::Alignment::LineRight);
+    draw_coordinateY(0.2F, Text::Alignment::LineRight);
+    draw_coordinateY(0.1F, Text::Alignment::LineRight);
+    draw_coordinateY(0.0F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.1F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.2F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.3F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.4F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.5F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.6F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.7F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.8F, Text::Alignment::LineRight);
+    draw_coordinateY(-0.9F, Text::Alignment::LineRight);
+    draw_coordinateY(-1.0F, Text::Alignment::LineRight);
 }
 
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     GL::defaultFramebuffer.clear(GL::FramebufferClear::Color|GL::FramebufferClear::Depth);
-    drawDeviceNormalizedCoordinateGrid_10x10();
+    drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne();
     glis.GLIS_SwapBuffers(screen);
 }
 
@@ -302,8 +263,8 @@ GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
 
 GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(screen);
-    // order does not matter
-    grid_10x10.release();
+    // PluginManager::Manager::unload(): plugin FreeTypeFont is currently used and cannot be deleted
+//    _font.release();
     glis.GLIS_destroy_GLIS(screen);
 }
 
@@ -316,21 +277,6 @@ int main() {
 
     _font.create();
     _font.load("fonts", "FreeTypeFont", "Vera.ttf", 96.0f);
-    grid_10x10.create();
-    grid_10x10.setSize(20, 20);
-    grid_10x10.setColor({1.0f, 0.0f, 0.0f, 1.0f});
-    grid_10x10.createMesh();
-    grid_10x10.drawLabels = true;
-
-//    dnc_x2.create();
-//    dnc_x2.setSize(20, 20);
-//    dnc_x2.setColor({0.0f, 1.0f, 0.0f, 1.0f});
-//    dnc_x2.createMesh();
-//
-//    dnc_x3.create();
-//    dnc_x3.setSize(40, 40);
-//    dnc_x3.setColor({0.0f, 0.0f, 1.0f, 1.0f});
-//    dnc_x3.createMesh();
 
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
