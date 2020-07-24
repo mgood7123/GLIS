@@ -153,6 +153,8 @@ namespace Magnum {
 
             // draw lines
 
+            // TODO: optimize
+
             drawLineX(color, -1.0f, 1.0f, -1.0f);
             drawLineX(color, -0.9f, 1.0f, -1.0f);
             drawLineX(color, -0.8f, 1.0f, -1.0f);
