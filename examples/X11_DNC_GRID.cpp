@@ -276,7 +276,6 @@ namespace Magnum {
         }
         void drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(Font::BasicFont::Instance & font) {
             drawDNC({1.0f, 0.0f, 0.0f, 1.0f}, 0.01f);
-
         }
     }
 }
