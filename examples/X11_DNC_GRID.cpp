@@ -268,7 +268,7 @@ GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
 }
 
 int main() {
-    glis.getX11Window(screen, 800, 800);
+    glis.getX11Window(screen, 800, 600);
     glis.GLIS_setupOnScreenRendering(screen);
     screen.contextMagnum.create();
 //    GL::DebugOutput::Callback on_gl_errorMagnum = NULL;
