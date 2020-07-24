@@ -102,7 +102,7 @@ namespace Magnum {
             x.create();
             x.font = new Containers::Pointer<Text::AbstractFont>;
             x.font[0] = manager->instantiate(fontPlugin.data());
-            x.openData_size = dpi * 2;
+            x.openData_size = dpi;
             if (!x.font[0] || !x.font[0]->openData(resource->getRaw(fontFile.data()), x.openData_size))
                 LOG_MAGNUM_FATAL << "Cannot open font file";
 
@@ -283,11 +283,13 @@ namespace Magnum {
 Magnum::Font::BasicFont basicFont;
 Magnum::Font::BasicFont::Instance fontA, fontB;
 
+int si = 1;
+
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color|Magnum::GL::FramebufferClear::Depth);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(fontA);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne(fontA);
-    fontB.draw("A", 1, 0.0f, 0.0f, Magnum::Text::Alignment::TopLeft);
+    fontB.draw("A", si, 0.0f, 0.0f, Magnum::Text::Alignment::TopLeft);
     {
         auto rect = fontB.text->rectangle();
         int rangeDimensions = 2;
@@ -334,7 +336,8 @@ int main() {
 
     basicFont.create();
     basicFont.load("fonts", "FreeTypeFont");
-    fontA = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 96.0f);
-    fontB = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 10.0f);
+    fontA = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 96.0f*2);
+    fontB = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 30.0f);
+    si = 5;
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
