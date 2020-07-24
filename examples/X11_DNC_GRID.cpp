@@ -128,9 +128,9 @@ namespace Magnum {
         class BasicFont {
             Shaders::Vector2D *shader = nullptr;
             Containers::Pointer<Text::AbstractFont> *font = nullptr;
-            Containers::Pointer<PluginManager::Manager<Text::AbstractFont>> *manager = nullptr;
-            Containers::Pointer<Text::Renderer2D> *text = nullptr;
-            Containers::Pointer<Text::GlyphCache> *cache = nullptr;
+            PluginManager::Manager<Text::AbstractFont> *manager = nullptr;
+            Text::Renderer2D *text = nullptr;
+            Text::GlyphCache *cache = nullptr;
             float openData_size = 0;
 
         public:
@@ -152,10 +152,8 @@ namespace Magnum {
         void BasicFont::create() {
             shader = new Shaders::Vector2D;
             font = new Containers::Pointer<Text::AbstractFont>;
-            manager = new Containers::Pointer<PluginManager::Manager<Text::AbstractFont>>(
-                    new PluginManager::Manager<Text::AbstractFont>
-            );
-            cache = new Containers::Pointer<Text::GlyphCache>(new Text::GlyphCache{Vector2i{4096}});
+            manager = new PluginManager::Manager<Text::AbstractFont>;
+            cache = new Text::GlyphCache{Vector2i{4096}};
         }
 
         void BasicFont::load(
@@ -167,13 +165,13 @@ namespace Magnum {
             /* Load a TrueTypeFont plugin and open the font */
 
             Utility::Resource rs(resource.data());
-            font[0] = manager->get()->loadAndInstantiate(fontPlugin.data());
+            font[0] = manager->loadAndInstantiate(fontPlugin.data());
             openData_size = dpi * 2;
             if (!font[0] || !font[0]->openData(rs.getRaw(fontFile.data()), openData_size))
                 LOG_MAGNUM_FATAL << "Cannot open font file";
 
             /* Prepare glyph cache */
-            font[0]->fillGlyphCache(**cache,
+            font[0]->fillGlyphCache(*cache,
                                     "abcdefghijklmnopqrstuvwxyz"
                                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                     "0123456789 _.,-+=*:;?!@$&#/"
@@ -196,17 +194,15 @@ namespace Magnum {
             float pt = size;
             float fontSize = pt * 1.3333f;
             float render2D_size = fontSize / openData_size;
-            deleteContainer(text);
-            text = new Containers::Pointer<Text::Renderer2D>{
-                    new Text::Renderer2D(**font, **cache, render2D_size, alignment)
-            };
-            text->get()->reserve(str.size(), GL::BufferUsage::DynamicDraw,
+            if (text != nullptr) delete text;
+            text = new Text::Renderer2D(**font, *cache, render2D_size, alignment);
+            text->reserve(str.size(), GL::BufferUsage::DynamicDraw,
                                  GL::BufferUsage::StaticDraw);
 
             /* Draw the text on the screen */
             shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
-            shader->bindVectorTexture(cache->get()->texture());
-            text->get()->render(str.data());
+            shader->bindVectorTexture(cache->texture());
+            text->render(str.data());
 
             GL::DefaultFramebuffer &fb = GL::defaultFramebuffer;
             auto viewport = fb.viewport();
@@ -219,15 +215,15 @@ namespace Magnum {
             auto translation = Matrix3::translation({x, y});
             auto matrix = translation * viewportScaling;
             shader->setTransformationProjectionMatrix(matrix);
-            shader->draw(text->get()->mesh());
+            shader->draw(text->mesh());
         }
 
         void BasicFont::release() {
             delete shader;
-            deleteContainer(this->manager);
-            deleteContainer(this->cache);
+            delete manager;
+            delete cache;
+            delete text;
             deleteContainer(this->font);
-            deleteContainer(this->text);
         }
     }
 }
