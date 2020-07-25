@@ -112,7 +112,6 @@ namespace Magnum {
             auto r = resource->getRaw(fontFile.data());
             // this calls FT_Set_Char_Size(ftFont, 0, size*64, 0, 0)
             // in which `size` is x.openData_size
-            LOG_MAGNUM_DEBUG_FUNCTION(x.openData_size);
             auto file = f->openData(r, x.openData_size);
             if (!file) LOG_MAGNUM_FATAL << "Cannot open font file";
 
@@ -343,8 +342,10 @@ int main() {
     basicFont.load("fonts", "FreeTypeFont");
     float pt = 12.0f;
     float pixelCount = pt * (1.0f/72.0f) * static_cast<float>(screen.dpi); // d3x0r
-    render2D_size = 0.15f/2.0f; // ???
+    render2D_size = 1.0f; // ???
     LOG_MAGNUM_DEBUG_FUNCTION(render2D_size);
+    LOG_MAGNUM_DEBUG_FUNCTION(screen.dpi);
+    LOG_MAGNUM_DEBUG_FUNCTION(pixelCount);
     fontA = basicFont.newInstance("FreeTypeFont", "Vera.ttf", pixelCount);
     fontB = basicFont.newInstance("FreeTypeFont", "Vera.ttf", pixelCount);
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
