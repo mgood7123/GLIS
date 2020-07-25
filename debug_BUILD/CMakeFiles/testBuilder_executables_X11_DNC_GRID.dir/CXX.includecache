@@ -1494,6 +1494,8 @@ cstring
 ../ext/vector_uint1_sized.hpp
 ../dependancies/glm/glm/ext/vector_uint1_sized.hpp
 
+../dependancies/glm/glm/gtx/fast_exponential.inl
+
 ../dependancies/glm/glm/integer.hpp
 detail/qualifier.hpp
 ../dependancies/glm/glm/detail/qualifier.hpp
@@ -2868,6 +2870,8 @@ Corrade/Utility/Resource.h
 Magnum/Math/Matrix3.h
 -
 magnum/src/Magnum/GL/DebugOutput.h
+-
+glm/gtx/fast_exponential.inl
 -
 
 dependancies/corrade/src/Corrade/configure.h

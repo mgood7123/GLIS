@@ -6,7 +6,14 @@
 
 #ifndef __ANDROID__
 // X11
-#include  <X11/Xlib.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#ifndef Status
+#define Status int
+#include <X11/Xresource.h>
+#undef Status
+#endif
+#include <X11/Xresource.h>
 // Wayland
 #include <wayland-client.h>
 #include <wayland-client-protocol.h>
@@ -1237,6 +1244,26 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     GLIS.height = height;
     XMapWindow(GLIS.display_id, GLIS.native_window);
     XStoreName(GLIS.display_id, GLIS.native_window, "Compositor");
+
+    // obtain the current dpi
+
+    char *resourceString = XResourceManagerString(GLIS.display_id);
+    XrmDatabase db;
+    XrmValue value;
+    char *type = NULL;
+
+    XrmInitialize(); /* Need to initialize the DB before calling Xrm* functions */
+
+    db = XrmGetStringDatabase(resourceString);
+
+    if (resourceString) {
+        if (XrmGetResource(db, "Xft.dpi", "String", &type, &value) == True) {
+            if (value.addr) {
+                GLIS.dpi = atoi(value.addr);
+            }
+        }
+    }
+    LOG_INFO("DPI: %d", GLIS.dpi);
     return true;
 #endif
 }

@@ -43,6 +43,7 @@ public:
     GLint
             width = 0,
             height = 0;
+    int dpi;
     SOCKET_SERVER server;
     Kernel KERNEL;
 };

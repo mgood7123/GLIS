@@ -18,11 +18,14 @@
 #include <Corrade/Utility/Resource.h>
 #include <Magnum/Math/Matrix3.h>
 #include <magnum/src/Magnum/GL/DebugOutput.h>
+#include <glm/gtx/fast_exponential.inl>
 
 GLIS_CLASS screen;
 GLIS glis;
 GLIS_FONT font;
 GLIS_FPS fps;
+
+float render2D_size = 1.0f;
 
 namespace Magnum {
     namespace Font {
@@ -41,14 +44,14 @@ namespace Magnum {
 
                 void create();
 
-                void draw(std::string str, float size, float x, float y,
+                void draw(std::string str, float render2D_size, float x, float y,
                           Text::Alignment alignment);
 
-                void draw(const char * str, float size, float x, float y,
+                void draw(const char * str, float render2D_size, float x, float y,
                           Text::Alignment alignment);
 
-                void draw(const Containers::ArrayView<const char> str, float size, float x, float y,
-                          Text::Alignment alignment);
+                void draw(const Containers::ArrayView<const char> str, float render2D_size,
+                        float x, float y, Text::Alignment alignment);
 
                 void release();
             };
@@ -103,10 +106,17 @@ namespace Magnum {
             x.font = new Containers::Pointer<Text::AbstractFont>;
             x.font[0] = manager->instantiate(fontPlugin.data());
             x.openData_size = dpi;
-            if (!x.font[0] || !x.font[0]->openData(resource->getRaw(fontFile.data()), x.openData_size))
-                LOG_MAGNUM_FATAL << "Cannot open font file";
+            Containers::Pointer <Text::AbstractFont> & f = x.font[0];
+            if (!f) LOG_MAGNUM_FATAL << "Cannot open font file";
+            Text::AbstractFont * ff = f.get();
+            auto r = resource->getRaw(fontFile.data());
+            // this calls FT_Set_Char_Size(ftFont, 0, size*64, 0, 0)
+            // in which `size` is x.openData_size
+            LOG_MAGNUM_DEBUG_FUNCTION(x.openData_size);
+            auto file = f->openData(r, x.openData_size);
+            if (!file) LOG_MAGNUM_FATAL << "Cannot open font file";
 
-            x.font[0]->fillGlyphCache(*x.cache,
+            f->fillGlyphCache(*x.cache,
                                       "abcdefghijklmnopqrstuvwxyz"
                                       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                       "0123456789 _.,-+=*:;?!@$&#/"
@@ -130,24 +140,21 @@ namespace Magnum {
         }
 
         void
-        BasicFont::Instance::draw(std::string str, float size, float x, float y,
+        BasicFont::Instance::draw(std::string str, float render2D_size, float x, float y,
                         Text::Alignment alignment) {
-            draw(str.c_str(), size, x, y, alignment);
+            draw(str.c_str(), render2D_size, x, y, alignment);
         }
 
         void
-        BasicFont::Instance::draw(const char * str, float size, float x, float y,
+        BasicFont::Instance::draw(const char * str, float render2D_size, float x, float y,
                         Text::Alignment alignment) {
             Containers::ArrayView<const char> s(str, strlen(str));
-            draw(s, size, x, y, alignment);
+            draw(s, render2D_size, x, y, alignment);
         }
 
         void
-        BasicFont::Instance::draw(const Containers::ArrayView<const char> str, float size, float x, float y,
-                        Text::Alignment alignment) {
-            float pt = size;
-            float fontSize = pt * 1.3333f;
-            float render2D_size = fontSize / openData_size;
+        BasicFont::Instance::draw(const Containers::ArrayView<const char> str, float render2D_size,
+                float x, float y, Text::Alignment alignment) {
             if (text != nullptr) delete text;
             text = new Text::Renderer2D(**font, *cache, render2D_size, alignment);
             text->reserve(str.size(), GL::BufferUsage::DynamicDraw,
@@ -230,8 +237,8 @@ namespace Magnum {
 
             // draw co-ordinates
 
-#define draw_coordinateX(x, alignment) font.draw(#x, 5, x, 1.0f, alignment)
-#define draw_coordinateY(y, alignment) font.draw(#y, 5, 1.0f, y+0.01f, alignment)
+#define draw_coordinateX(x, alignment) font.draw(#x, render2D_size, x, 1.0f, alignment)
+#define draw_coordinateY(y, alignment) font.draw(#y, render2D_size, 1.0f, y+0.01f, alignment)
 
             draw_coordinateX(-1.0F, Text::Alignment::TopLeft);
             draw_coordinateX(-0.9F, Text::Alignment::TopLeft);
@@ -283,13 +290,11 @@ namespace Magnum {
 Magnum::Font::BasicFont basicFont;
 Magnum::Font::BasicFont::Instance fontA, fontB;
 
-int si = 1;
-
 GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color|Magnum::GL::FramebufferClear::Depth);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(fontA);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne(fontA);
-    fontB.draw("A", si, 0.0f, 0.0f, Magnum::Text::Alignment::TopLeft);
+    fontB.draw("A", render2D_size, 0.0f, 0.0f, Magnum::Text::Alignment::TopLeft);
     {
         auto rect = fontB.text->rectangle();
         int rangeDimensions = 2;
@@ -309,7 +314,7 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
             r += std::to_string(max[i]);
         }
         r += "})";
-        fontA.draw(r, 10, -1.0f, -0.4f, Magnum::Text::Alignment::TopLeft);
+        fontA.draw(r, render2D_size, -1.0f, -0.4f, Magnum::Text::Alignment::TopLeft);
     }
     glis.GLIS_SwapBuffers(screen);
 }
@@ -336,8 +341,11 @@ int main() {
 
     basicFont.create();
     basicFont.load("fonts", "FreeTypeFont");
-    fontA = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 96.0f*2);
-    fontB = basicFont.newInstance("FreeTypeFont", "Vera.ttf", 30.0f);
-    si = 5;
+    float pt = 12.0f;
+    float pixelCount = pt * (1.0f/72.0f) * static_cast<float>(screen.dpi); // d3x0r
+    render2D_size = 0.15f/2.0f; // ???
+    LOG_MAGNUM_DEBUG_FUNCTION(render2D_size);
+    fontA = basicFont.newInstance("FreeTypeFont", "Vera.ttf", pixelCount);
+    fontB = basicFont.newInstance("FreeTypeFont", "Vera.ttf", pixelCount);
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
