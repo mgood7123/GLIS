@@ -450,13 +450,13 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
     if (debug) {
         LOG_INFO("Debug mode enabled");
         const EGLint context_attributes[] = {
-                EGL_CONTEXT_CLIENT_VERSION, 3, EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR, EGL_NONE
+                EGL_CONTEXT_CLIENT_VERSION, GLIS.eglMajVers, EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR, EGL_NONE
         };
         GLIS.context_attributes = context_attributes;
         GLIS.debug_context = true;
     } else {
         LOG_INFO("Debug mode disabled");
-        const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
+        const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, GLIS.eglMajVers, EGL_NONE};
         GLIS.context_attributes = context_attributes;
     }
 
