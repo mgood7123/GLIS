@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(GLIS)
 
+set(CWD ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_subdirectory(dependancies/WINAPI)
 
 set(BUILD_SHARED_LIBS ON)
@@ -18,33 +20,39 @@ add_subdirectory(dependancies/openal-soft)
 include_directories(dependancies/openal-soft)
 
 add_subdirectory(dependancies/corrade)
+
 set(WITH_GL ON CACHE BOOL "" FORCE)
 set(TARGET_GLES ON CACHE BOOL "" FORCE)
 set(TARGET_GLES2 OFF CACHE BOOL "" FORCE)
 set(WITH_EGLCONTEXT ON CACHE BOOL "" FORCE)
 set(WITH_MAGNUMFONT ON CACHE BOOL "" FORCE)
-# not all platforms have Vulkan
-#set(TARGET_VK ON CACHE BOOL "" FORCE)
 add_subdirectory(dependancies/magnum)
+
+set(IMGUI_DIR ${CWD}/dependancies/imgui)
+set(WITH_IMGUI ON CACHE BOOL "" FORCE)
+add_subdirectory(dependancies/magnum-integration)
 
 set(WITH_UI ON CACHE BOOL "" FORCE)
 add_subdirectory(dependancies/magnum-extras)
 
 set(WITH_STBTRUETYPEFONT ON CACHE BOOL "" FORCE)
 set(WITH_FREETYPEFONT ON CACHE BOOL "" FORCE)
+set(WITH_FREETYPEFONT ON CACHE BOOL "" FORCE)
+set(FREETYPE_LIBRARY ${CWD}/dependancies/freetype-2.10.2)
+set(FREETYPE_INCLUDE_DIRS ${CWD}/dependancies/freetype-2.10.2)
 add_subdirectory(dependancies/magnum-plugins)
 
 include_directories(dependancies)
 include_directories(include)
 
-set(cwd ${CMAKE_CURRENT_SOURCE_DIR})
-set(GLIS_INCLUDE_DIRECTORIES ${cwd}/include ${cwd}/dependancies PARENT_SCOPE)
+set(GLIS_INCLUDE_DIRECTORIES ${CWD}/include ${CWD}/dependancies PARENT_SCOPE)
 
-corrade_add_resource(GLIS_RESOURCES /home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/resource.conf)
 
 add_subdirectory(testBuilder)
 
-testBuilder_add_source(GLIS ${GLIS_RESOURCES})
+# corrade::rc cannot be found, unknow why this happens in android build, disable for now
+#corrade_add_resource(GLIS_RESOURCES /home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/resource.conf)
+#testBuilder_add_source(GLIS ${GLIS_RESOURCES})
 testBuilder_add_source(GLIS src/glis/backup/backup.cpp)
 testBuilder_add_source(GLIS src/glis/backup/types/framebuffer.cpp)
 testBuilder_add_source(GLIS src/glis/backup/types/renderbuffer.cpp)
@@ -87,6 +95,7 @@ testBuilder_add_library(GLIS Magnum::Text)
 testBuilder_add_library(GLIS Magnum::TextureTools)
 testBuilder_add_library(GLIS Magnum::Trade)
 testBuilder_add_library(GLIS MagnumExtras::Ui)
+testBuilder_add_library(GLIS MagnumIntegration::ImGui)
 testBuilder_add_dependency(GLIS MagnumPlugins::StbTrueTypeFont)
 testBuilder_add_dependency(GLIS MagnumPlugins::FreeTypeFont)
 testBuilder_add_library(GLIS freetype)
@@ -112,9 +121,11 @@ build_program(examples X11)
 build_program(examples X11_2)
 build_program(examples X11_3)
 build_program(examples wayland)
+
+# magnum
 build_program(examples X11_magnum)
 build_program(examples X11Cube)
-build_program(examples X11_DNC_GRID)
+#build_program(examples X11_DNC_GRID)
 
 build_program(compositor_clients MovingWindows)
 build_program(compositor_clients MovingWindowsB)
@@ -125,4 +136,5 @@ build_program(compositor_clients OffScreenFramebuffer)
 build_program(compositor_clients Texture)
 build_program(compositor_clients MYPRIVATEAPP)
 build_program(compositor_clients shm)
+#magnum
 build_program(compositor_clients RotatingCube)

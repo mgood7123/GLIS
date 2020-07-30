@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../../../../Debug/lib/libWinKernel.a  CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIHandle.cpp.o
-/usr/bin/ranlib ../../../../../../Debug/lib/libWinKernel.a

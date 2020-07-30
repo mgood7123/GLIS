@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../../../Debug/lib/libMagnumEglContext-d.a  CMakeFiles/MagnumEglContext.dir/__/__/dummy.cpp.o CMakeFiles/MagnumEglContextObjects.dir/Implementation/OpenGLFunctionLoader.cpp.o CMakeFiles/MagnumEglContextObjects.dir/__/__/MagnumExternal/OpenGL/GLES3/flextGLPlatform.cpp.o
-/usr/bin/ranlib ../../../../../Debug/lib/libMagnumEglContext-d.a

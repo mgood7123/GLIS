@@ -158,11 +158,14 @@ namespace Magnum {
             text = new Text::Renderer2D(**font, *cache, render2D_size, alignment);
             text->reserve(str.size(), GL::BufferUsage::DynamicDraw,
                           GL::BufferUsage::StaticDraw);
+            text->render(str.data());
+            LOG_MAGNUM_DEBUG_FUNCTION(text);
+            GL::Mesh & mesh = text->mesh();
+//            LOG_MAGNUM_DEBUG_FUNCTION(mesh);
 
             /* Draw the text on the screen */
             shader->setColor({1.0f, 1.0f, 1.0f, 1.0f});
             shader->bindVectorTexture(cache->texture());
-            text->render(str.data());
 
             GL::DefaultFramebuffer &fb = GL::defaultFramebuffer;
             auto viewport = fb.viewport();
@@ -174,7 +177,7 @@ namespace Magnum {
             auto translation = Matrix3::translation({x, y});
             auto matrix = translation * viewportScaling;
             shader->setTransformationProjectionMatrix(matrix);
-            shader->draw(text->mesh());
+            shader->draw(mesh);
         }
 
         void BasicFont::Instance::release() {
@@ -337,6 +340,7 @@ int main() {
     screen.contextMagnum.create();
 //    GL::DebugOutput::Callback on_gl_errorMagnum = NULL;
 //    GL::DebugOutput::setCallback(on_gl_errorMagnum, nullptr);
+
 
     basicFont.create();
     basicFont.load("fonts", "FreeTypeFont");

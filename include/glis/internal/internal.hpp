@@ -84,7 +84,7 @@ public:
 
     bool GLIS_setupOffScreenRendering(class GLIS_CLASS &GLIS, int w, int h);
 
-    GLboolean GLIS_ShaderCompilerSupported();
+    static GLboolean GLIS_ShaderCompilerSupported();
 
     GLuint GLIS_createShader(GLenum shaderType, const char *&src);
 

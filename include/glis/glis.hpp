@@ -19,6 +19,7 @@
 #include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/Phong.h>
 #include <Magnum/Trade/MeshData.h>
+#include <Magnum/ImGuiIntegration/Widgets.h>
 
 #include <glis/ipc/ipc.hpp>
 #include <glis/font/font.hpp>

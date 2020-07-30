@@ -379,8 +379,11 @@ void GLIS_COMPOSITOR_DO_MAIN(
         void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
 ) {
     LOG_INFO("initializing main Compositor");
+    glis.GLIS_error_to_string_GL("before onscreen setup");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
+        glis.GLIS_error_to_string_GL("after onscreen setup");
         glViewport(0, 0, CompositorMain.width, CompositorMain.height);
+        glis.GLIS_error_to_string_GL("glViewPort");
         assert(font.GLIS_load_font(font_path, 0, font_size));
         font.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);

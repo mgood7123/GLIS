@@ -16,3 +16,9 @@
 [submodule "dependancies/magnum-examples"]
 	path = dependancies/magnum-examples
 	url = https://github.com/mosra/magnum-examples
+[submodule "dependancies/imgui"]
+	path = dependancies/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "dependancies/magnum-integration"]
+	path = dependancies/magnum-integration
+	url = https://github.com/mosra/magnum-integration
