@@ -210,25 +210,38 @@ void GLIS::GLIS_error_to_string(const char *name) {
 
 void GLIS::GLIS_GL_INFORMATION() {
     const GLubyte *vendor = glGetString(GL_VENDOR);
-    const GLubyte *renderer = glGetString(GL_RENDERER);
-    const GLubyte *version = glGetString(GL_VERSION);
-    const GLubyte *slv = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    const GLubyte *extentions = glGetString(GL_EXTENSIONS);
+    GLIS_error_to_string_GL("glGetString(GL_VENDOR)");
     LOG_INFO("GL_VENDOR: %s", vendor);
+
+    const GLubyte *renderer = glGetString(GL_RENDERER);
+    GLIS_error_to_string_GL("glGetString(GL_RENDERER)");
     LOG_INFO("GL_RENDERER: %s", renderer);
+
+    const GLubyte *version = glGetString(GL_VERSION);
+    GLIS_error_to_string_GL("glGetString(GL_VERSION)");
     LOG_INFO("GL_VERSION: %s", version);
-    LOG_INFO("GL_SHADING_LANGUAGE_VERSION: %s", slv);
+
+    if (GLIS_ShaderCompilerSupported() == GL_TRUE) {
+        const GLubyte *slv = glGetString(GL_SHADING_LANGUAGE_VERSION);
+        GLIS_error_to_string_GL("glGetString(GL_SHADING_LANGUAGE_VERSION)");
+        LOG_INFO("GL_SHADING_LANGUAGE_VERSION: %s", slv);
+    } else {
+        LOG_INFO("GL_SHADING_LANGUAGE_VERSION: (Not Supported)");
+    }
+
+    const GLubyte *extentions = glGetString(GL_EXTENSIONS);
+    GLIS_error_to_string_GL("glGetString(GL_EXTENSIONS)");
     LOG_INFO("GL_EXTENSIONS: %s", extentions);
 }
 
 void GLIS::GLIS_EGL_INFORMATION(EGLDisplay &DISPLAY) {
     const char *client_apis = eglQueryString(DISPLAY, EGL_CLIENT_APIS);
-    const char *vendor = eglQueryString(DISPLAY, EGL_VENDOR);
-    const char *version = eglQueryString(DISPLAY, EGL_VERSION);
-    const char *extentions = eglQueryString(DISPLAY, EGL_EXTENSIONS);
     LOG_INFO("EGL_CLIENT_APIS: %s", client_apis);
+    const char *vendor = eglQueryString(DISPLAY, EGL_VENDOR);
     LOG_INFO("EGL_VENDOR: %s", vendor);
+    const char *version = eglQueryString(DISPLAY, EGL_VERSION);
     LOG_INFO("EGL_VERSION: %s", version);
+    const char *extentions = eglQueryString(DISPLAY, EGL_EXTENSIONS);
     LOG_INFO("EGL_EXTENSIONS: %s", extentions);
 }
 
@@ -287,7 +300,9 @@ bool GLIS::GLIS_switch_to_context(class GLIS_CLASS &GLIS) {
     GLIS_error_to_string_EGL("eglMakeCurrent");
     if (r == EGL_FALSE) return false;
     GLIS.init_eglMakeCurrent = true;
+    GLIS_error_to_string_GL("before GLINFO");
     GLIS_GL_INFORMATION();
+    GLIS_error_to_string_GL("after GLINFO");
     return true;
 }
 
@@ -415,6 +430,7 @@ void GLIS::disable_debug_callbacks(void) {
 
 bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debug) {
     if (GLIS.init_GLIS) return true;
+    GLIS_error_to_string_GL("initializing");
 
     // this is how to debug native executables:
     // https://stackoverflow.com/questions/40492315/how-can-i-debug-an-android-native-executable-and-library-not-directly-integrated
@@ -446,19 +462,21 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Initialized display");
+    GLIS_error_to_string_GL("stage");
 
     if (debug) {
         LOG_INFO("Debug mode enabled");
         const EGLint context_attributes[] = {
-                EGL_CONTEXT_CLIENT_VERSION, GLIS.eglMajVers, EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR, EGL_NONE
+                EGL_CONTEXT_CLIENT_VERSION, GLIS.EGL_CONTEXT_CLIENT_VERSION_, EGL_CONTEXT_FLAGS_KHR, EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR, EGL_NONE
         };
         GLIS.context_attributes = context_attributes;
         GLIS.debug_context = true;
     } else {
         LOG_INFO("Debug mode disabled");
-        const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, GLIS.eglMajVers, EGL_NONE};
+        const EGLint context_attributes[] = {EGL_CONTEXT_CLIENT_VERSION, GLIS.EGL_CONTEXT_CLIENT_VERSION_, EGL_NONE};
         GLIS.context_attributes = context_attributes;
     }
+    GLIS_error_to_string_GL("stage");
 
     LOG_INFO("Initializing configuration");
     if (!GLIS_initialize_configuration(GLIS)) {
@@ -467,6 +485,8 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Initialized configuration");
+    GLIS_error_to_string_GL("stage");
+
     LOG_INFO("Initializing surface");
     if (surface_type == EGL_WINDOW_BIT) {
         LOG_INFO("Creating window surface");
@@ -484,6 +504,8 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         }
     }
     LOG_INFO("Initialized surface");
+    GLIS_error_to_string_GL("stage");
+
     LOG_INFO("Initializing context");
     if (!GLIS_create_context(GLIS)) {
         LOG_ERROR("Failed to initialize context");
@@ -491,6 +513,8 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Initialized context");
+    GLIS_error_to_string_GL("stage");
+
     LOG_INFO("Switching to context");
     if (!GLIS_switch_to_context(GLIS)) {
         LOG_ERROR("Failed to switch to context");
@@ -498,6 +522,8 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Switched to context");
+    GLIS_error_to_string_GL("stage");
+
     // Magnum does not support glDebugMessageCallback
 //    if (debug) {
 //        LOG_INFO("Enabling debug callbacks");
@@ -505,6 +531,7 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
 //        LOG_INFO("Enabled debug callbacks");
 //        GLIS.init_debug = true;
 //    }
+
     LOG_INFO("Obtaining surface width and height");
     if (!GLIS_get_width_height(GLIS)) {
         LOG_ERROR("Failed to obtain surface width and height");
@@ -512,8 +539,11 @@ bool GLIS::GLIS_initialize(class GLIS_CLASS &GLIS, GLint surface_type, bool debu
         return false;
     }
     LOG_INFO("Obtained surface width and height");
+    GLIS_error_to_string_GL("stage");
+
     GLIS.init_GLIS = true;
     LOG_INFO("Initialized");
+    GLIS_error_to_string_GL("initialized");
     return true;
 }
 
@@ -607,10 +637,9 @@ bool GLIS::GLIS_setupOffScreenRendering(class GLIS_CLASS &GLIS, int w, int h) {
 
 GLboolean GLIS::GLIS_ShaderCompilerSupported() {
     GLboolean GLSC_supported;
-    GLIS_error_to_string_GL("before GLIS_ShaderCompilerSupported invocation");
     glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported);
-    GLIS_error_to_string_GL("glGetBooleanv");
-    LOG_INFO("Supports Shader Compiler: %s", GLSC_supported == GL_TRUE ? "true" : "false");
+    GLIS_error_to_string_GL("glGetBooleanv(GL_SHADER_COMPILER, &GLSC_supported)");
+    LOG_INFO("Supports Shader Compiler: %s", GLIS_boolean_to_string(GLSC_supported, GL_TRUE));
     return GLSC_supported;
 }
 
