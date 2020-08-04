@@ -102,19 +102,6 @@ bool GLIS_ABORT_ON_DEBUG_LEVEL_API = false;
 
 #define GLIS_boolean_to_string(val, TRUE_VALUE) val == TRUE_VALUE ? "true" : "false"
 
-void GLIS::GLIS_FORK(const char *__file, char *const *__argv) {
-    errno = 0;
-
-    LOG_INFO("LD_LIBRARY_PATH=%s", getenv("LD_LIBRARY_PATH"));
-    pid_t pid = fork();
-    LOG_ERROR("pid: %d", pid);
-    if (pid == 0) {
-        execvp(__file, __argv);
-        LOG_ERROR("Cannot exec(%s) - %s", __file, strerror(errno));
-        exit(1);
-    }
-}
-
 void GLIS::GLIS_error_to_string_GL(const char *name, GLint err) {
     GLIS_INTERNAL_MESSAGE_PREFIX = "OpenGL:          ";
     switch (err) {
@@ -206,6 +193,20 @@ void GLIS::GLIS_error_to_string_EGL(const char *name) {
 void GLIS::GLIS_error_to_string(const char *name) {
     GLIS_error_to_string_GL(name);
     GLIS_error_to_string_EGL(name);
+}
+
+
+void GLIS::GLIS_FORK(const char *__file, char *const *__argv) {
+    errno = 0;
+
+    LOG_INFO("LD_LIBRARY_PATH=%s", getenv("LD_LIBRARY_PATH"));
+    pid_t pid = fork();
+    LOG_ERROR("pid: %d", pid);
+    if (pid == 0) {
+        execvp(__file, __argv);
+        LOG_ERROR("Cannot exec(%s) - %s", __file, strerror(errno));
+        exit(1);
+    }
 }
 
 void GLIS::GLIS_GL_INFORMATION() {
@@ -764,6 +765,35 @@ GLboolean GLIS::GLIS_validate_program(GLuint &Program) {
     return GL_FALSE;
 }
 
+void GLIS::GLIS_build_simple_shader_program(
+        GLuint & vertexShader, const char *vertexSource,
+        GLuint & fragmentShader, const char *fragmentSource,
+        GLuint &shaderProgram
+) {
+    vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
+    fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
+    LOG_INFO("Creating Shader program");
+    shaderProgram = glCreateProgram();
+    GLIS_error_to_string_GL("glCreateProgram");
+    LOG_INFO("Created Shader program");
+    LOG_INFO("Attaching vertex Shader to program");
+    glAttachShader(shaderProgram, vertexShader);
+    GLIS_error_to_string_GL("glAttachShader");
+    LOG_INFO("Attached vertex Shader to program");
+    LOG_INFO("Attaching fragment Shader to program");
+    glAttachShader(shaderProgram, fragmentShader);
+    GLIS_error_to_string_GL("glAttachShader");
+    LOG_INFO("Attached fragment Shader to program");
+    LOG_INFO("Linking Shader program");
+    glLinkProgram(shaderProgram);
+    GLIS_error_to_string_GL("glLinkProgram");
+    LOG_INFO("Linked Shader program");
+    LOG_INFO("Validating Shader program");
+    GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
+    assert(ProgramIsValid == GL_TRUE);
+    LOG_INFO("Validated Shader program");
+}
+
 void GLIS::GLIS_set_conversion_origin(int origin) {
     GLIS_CONVERSION_ORIGIN = origin;
     if (GLIS_LOG_PRINT_CONVERSIONS)
@@ -1231,13 +1261,13 @@ bool GLIS::runUntilAndroidWindowClose(
         GLIS_CLASS & glis_class,
         GLIS_FONT & glis_font,
         GLIS_FPS & glis_fps,
-        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
 ) {
     while (glis.SYNC_STATE != glis.STATE.request_shutdown) {
-        if (draw != nullptr)
-            draw(glis, glis_class, glis_font, glis_fps);
+        if (onWindowDraw != nullptr)
+            onWindowDraw(glis, glis_class, glis_font, glis_fps);
     }
     return true;
 }
@@ -1308,9 +1338,9 @@ bool GLIS::runUntilX11WindowClose(
         GLIS_CLASS & glis_class,
         GLIS_FONT & glis_font,
         GLIS_FPS & glis_fps,
-        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
 ) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
@@ -1322,7 +1352,8 @@ bool GLIS::runUntilX11WindowClose(
     bool running = true;
 
     while (running) {
-        if (draw != nullptr) draw(glis, glis_class, glis_font, glis_fps);
+        if (onWindowDraw != nullptr)
+            onWindowDraw(glis, glis_class, glis_font, glis_fps);
         if (XCheckIfEvent(glis_class.display_id, &event, predicate, nullptr)) {
             if (event.type == ClientMessage) {
                 if (event.xclient.data.l[0] == wmDeleteMessage) {
@@ -1331,11 +1362,10 @@ bool GLIS::runUntilX11WindowClose(
                     running = false;
                 }
             } else if (event.type == ConfigureNotify) {
+                glis_class.width = event.xconfigure.width;
+                glis_class.height = event.xconfigure.height;
                 if (onWindowResize != nullptr)
-                    onWindowResize(
-                            glis, glis_class, glis_font, glis_fps,
-                            event.xconfigure.width, event.xconfigure.height
-                    );
+                    onWindowResize(glis, glis_class, glis_font, glis_fps);
             }
         }
     }
@@ -1479,17 +1509,17 @@ bool GLIS::runUntilWaylandWindowClose(
         GLIS_CLASS & glis_class,
         GLIS_FONT & glis_font,
         GLIS_FPS & glis_fps,
-        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
 ) {
 #ifdef __ANDROID__
     LOG_ERROR("function not implemented in android");
     return false;
 #else
     while(wl_display_dispatch(reinterpret_cast<struct wl_display *>(glis_class.display_id)) != -1 && running) {
-        if (draw != nullptr)
-            draw(glis, glis_class, glis_font, glis_fps);
+        if (onWindowDraw != nullptr)
+            onWindowDraw(glis, glis_class, glis_font, glis_fps);
     }
     if (onWindowClose != nullptr)
         onWindowClose(glis, glis_class, glis_font, glis_fps);
@@ -1510,44 +1540,15 @@ bool GLIS::destroyWaylandWindow(GLIS_CLASS & GLIS) {
 #endif
 }
 
-void GLIS::GLIS_build_simple_shader_program(
-    GLuint & vertexShader, const char *vertexSource,
-    GLuint & fragmentShader, const char *fragmentSource,
-    GLuint &shaderProgram
-) {
-    vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
-    fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
-    LOG_INFO("Creating Shader program");
-    shaderProgram = glCreateProgram();
-    GLIS_error_to_string_GL("glCreateProgram");
-    LOG_INFO("Created Shader program");
-    LOG_INFO("Attaching vertex Shader to program");
-    glAttachShader(shaderProgram, vertexShader);
-    GLIS_error_to_string_GL("glAttachShader");
-    LOG_INFO("Attached vertex Shader to program");
-    LOG_INFO("Attaching fragment Shader to program");
-    glAttachShader(shaderProgram, fragmentShader);
-    GLIS_error_to_string_GL("glAttachShader");
-    LOG_INFO("Attached fragment Shader to program");
-    LOG_INFO("Linking Shader program");
-    glLinkProgram(shaderProgram);
-    GLIS_error_to_string_GL("glLinkProgram");
-    LOG_INFO("Linked Shader program");
-    LOG_INFO("Validating Shader program");
-    GLboolean ProgramIsValid = GLIS_validate_program(shaderProgram);
-    assert(ProgramIsValid == GL_TRUE);
-    LOG_INFO("Validated Shader program");
-}
-
 void GLIS::GLIS_draw_high_resolution_square() {
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-            // positions          // colors           // texture coords
-            1.0f,  1.0f, 0.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-            1.0f, -1.0f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-            -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-            -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+            // positions           // colors           // texture coords
+            1.0f,   1.0f, 0.0f,    1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            1.0f,  -1.0f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -1.0f, -1.0f, 0.0f,    0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -1.0f,  1.0f, 0.0f,    1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
     };
     unsigned int indices[] = {
             0, 1, 3, // first triangle

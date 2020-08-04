@@ -2,9 +2,17 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(GLIS)
 
+# cmake does not know how to enable C++17
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(dependancies/WINAPI)
+include_directories(${WINAPI_INCLUDE_DIRECTORIES})
+add_subdirectory(dependancies/testBuilder)
+
+add_subdirectory(dependancies/font)
 
 set(BUILD_SHARED_LIBS ON)
 
@@ -46,9 +54,6 @@ include_directories(dependancies)
 include_directories(include)
 
 set(GLIS_INCLUDE_DIRECTORIES ${CWD}/include ${CWD}/dependancies PARENT_SCOPE)
-
-
-add_subdirectory(testBuilder)
 
 # corrade::rc cannot be found, unknow why this happens in android build, disable for now
 #corrade_add_resource(GLIS_RESOURCES /home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/resource.conf)
@@ -101,7 +106,7 @@ testBuilder_add_dependency(GLIS MagnumPlugins::FreeTypeFont)
 testBuilder_add_library(GLIS freetype)
 testBuilder_add_library(GLIS glm)
 testBuilder_add_library(GLIS EGL)
-testBuilder_add_library(GLIS WinKernel)
+testBuilder_add_library(GLIS ${WINAPI_LIBRARY})
 testBuilder_build_shared_library(GLIS)
 
 # BUILD PROGRAMS
@@ -116,17 +121,25 @@ macro(build_program directory name)
     endif()
 endmacro()
 
+# compositor
 build_program(examples compositor)
+
+# basic window
 build_program(examples X11)
+build_program(examples wayland)
+
+# usages
 build_program(examples X11_2)
 build_program(examples X11_3)
-build_program(examples wayland)
+build_program(examples X11_font_1)
 
 # magnum
 build_program(examples X11_magnum)
 build_program(examples X11Cube)
-#build_program(examples X11_DNC_GRID)
+build_program(examples X11_DNC_GRID)
+build_program(examples wrap)
 
+# compositor clients
 build_program(compositor_clients MovingWindows)
 build_program(compositor_clients MovingWindowsB)
 build_program(compositor_clients compositor_start_drawing)

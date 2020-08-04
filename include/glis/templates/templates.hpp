@@ -454,3 +454,52 @@ void GLIS_draw_rectangle(
     GLIS_set_texture(textureUnit, texture);
     GLIS_draw_rectangle<TYPE>(INITIALIZER, x1, y1, x2, y2, max_x, max_y);
 }
+
+enum GLIS_WRAP_MODE {
+    /*
+     * 1 2 3 4 1 2 3 4
+     */
+    LOOP,
+
+    /*
+     * 1 2 3 4 4 3 2 1
+     */
+    PING_PONG
+};
+
+template<typename TYPE>
+TYPE GLIS_wrap_to_range(GLIS_WRAP_MODE mode, TYPE value, TYPE min, TYPE max, TYPE representation_of_zero, TYPE representation_of_addition_or_subtraction_by_one) {
+    if (value < min) return min;
+    else if (value > max) {
+        TYPE counter = representation_of_zero;
+        TYPE tmp = representation_of_zero;
+        if (mode == GLIS_WRAP_MODE::LOOP) {
+            while (counter < value) {
+                // LOOP
+                tmp += representation_of_addition_or_subtraction_by_one;
+                if (tmp > max) tmp = min;
+                counter += representation_of_addition_or_subtraction_by_one;
+            }
+        } else {
+            bool reverse = false;
+            while (counter < value) {
+                // PING PONG
+                if (!reverse) {
+                    tmp += representation_of_addition_or_subtraction_by_one;
+                    if (tmp > max) {
+                        tmp = max-representation_of_addition_or_subtraction_by_one;
+                        reverse = true;
+                    }
+                } else {
+                    tmp -= representation_of_addition_or_subtraction_by_one;
+                    if (tmp < min) {
+                        tmp = min+representation_of_addition_or_subtraction_by_one;
+                        reverse = false;
+                    }
+                }
+                counter += representation_of_addition_or_subtraction_by_one;
+            }
+        }
+        return tmp;
+    } else return value;
+}

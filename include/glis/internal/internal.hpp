@@ -19,6 +19,8 @@ extern bool GLIS_LOG_PRINT_SHAPE_INFO;
 extern bool GLIS_ABORT_ON_ERROR;
 extern bool GLIS_ABORT_ON_DEBUG_LEVEL_API;
 
+#define GLIS_val_to_string(ch) std::to_string(ch).c_str()
+
 class GLIS {
 public:
     void GLIS_FORK(const char *__file, char *const *__argv);
@@ -131,6 +133,9 @@ public:
      *
      * if vsync is enabled, eglSwapBuffers always waits for
      * the screen to be refreshed once between eglSwapBuffers calls
+     *
+     * vsync can be set using
+     * @code EGLBoolean eglSwapInterval(EGLDisplay dpy, EGLint interval)
      */
     EGLBoolean GLIS_SwapBuffers(class GLIS_CLASS &GLIS);
 
@@ -337,19 +342,19 @@ public:
 
     bool getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int width, int height);
 
-    bool runUntilAndroidWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
+    bool runUntilAndroidWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose));
 
     bool destroyAndroidWindow(GLIS_CLASS & GLIS);
     
     bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
 
-    bool runUntilX11WindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
+    bool runUntilX11WindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose));
 
     bool destroyX11Window(GLIS_CLASS & GLIS);
 
     bool getWaylandWindow(GLIS_CLASS & GLIS, int width, int height);
 
-    bool runUntilWaylandWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &));
+    bool runUntilWaylandWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose));
 
     bool destroyWaylandWindow(GLIS_CLASS & GLIS);
 

@@ -65,16 +65,6 @@ public:
     bool connected = false;
 };
 
-// memory leak somewhere
-/*
-using client with CLIENT ID: 0
-server: SERVER: SOCKET_SERVER : CLIENT ID: 0, command: 1 (Texture Upload)
-CLIENT ID: 0, received id: 2
-CLIENT ID: 0, received w: 1080, h: 2032
-CLIENT ID: 0, CLIENT has uploaded
-rendering
-*/
-
 void handleCommands(
         GLIS & glis, GLIS_CLASS & CompositorMain,
         int & command, Client * client, bool & stop_drawing, serializer & in, serializer & out
@@ -212,7 +202,7 @@ void handleCommands(
     }
 }
 
-void GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, CompositorMain, font, fps) {
     fps.onFrameStart();
 
     // TODO: migrate to texture buffers:
@@ -309,11 +299,11 @@ void GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorM
     glis.GLIS_Sync_GPU();
 }
 
-void GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps, GLsizei width, GLsizei height) {
-    glViewport(0, 0, width, height);
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION, glis, CompositorMain, font, fps) {
+    glViewport(0, 0, CompositorMain.width, CompositorMain.height);
 }
 
-void GLIS_COMPOSITOR_DEFAULT_CLOSE_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_CLOSE_FUNCTION, glis, CompositorMain, font, fps) {
     GLIS_COMPOSITOR_REQUEST_SHUTDOWN(glis, CompositorMain);
 }
 
@@ -370,13 +360,13 @@ void GLIS_COMPOSITOR_DO_MAIN(
                 GLIS_CLASS & glis_class,
                 GLIS_FONT & font,
                 GLIS_FPS & fps,
-                void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-                void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-                void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
         ),
-        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
 ) {
     LOG_INFO("initializing main Compositor");
     glis.GLIS_error_to_string_GL("before onscreen setup");
@@ -402,7 +392,7 @@ void GLIS_COMPOSITOR_DO_MAIN(
         glis.SYNC_STATE = glis.STATE.response_started_up;
         LOG_INFO("started up");
         while(glis.SYNC_STATE != glis.STATE.request_shutdown) {
-            compositorLoop(glis, CompositorMain, font, fps, draw, onWindowResize, onWindowClose);
+            compositorLoop(glis, CompositorMain, font, fps, onWindowDraw, onWindowResize, onWindowClose);
         }
         GLIS_COMPOSITOR_HANDLE_SHUTDOWN_REQUEST(glis, CompositorMain, vertexShader, fragmentShader,
                                                 shaderProgram);

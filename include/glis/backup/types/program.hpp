@@ -7,7 +7,7 @@
 #include <Magnum/GL/OpenGL.h>
 
 class GLIS_BACKUP_PROGRAM {
-    GLint __GL_CURRENT_PROGRAM;
+    GLint __GL_CURRENT_PROGRAM = -1;
 public:
     void backup();
 

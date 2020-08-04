@@ -5,5 +5,6 @@ add_library(WinKernel STATIC
         WindowsAPITable.cpp
         WindowsAPIObject.cpp
         WindowsAPIHandle.cpp
-        )
+)
 target_link_libraries(WinKernel)
+set(WINAPI_KERNEL_LIBRARY WinKernel PARENT_SCOPE)

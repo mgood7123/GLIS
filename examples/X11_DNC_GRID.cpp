@@ -292,7 +292,7 @@ namespace Magnum {
 Magnum::Font::BasicFont basicFont;
 Magnum::Font::BasicFont::Instance fontA, fontB;
 
-GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color|Magnum::GL::FramebufferClear::Depth);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointZeroOne(fontA);
     Magnum::Shapes::drawDeviceNormalizedCoordinateGrid_Ratio_ZeroPointOne(fontA);
@@ -321,11 +321,11 @@ GLIS_CALLBACKS_DRAW(draw, glis, renderer, font, fps) {
     glis.GLIS_SwapBuffers(screen);
 }
 
-GLIS_CALLBACKS_RESIZE(resize, glis, renderer, font, fps, width, height) {
-    glViewport(0, 0, width, height);
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
+    glViewport(0, 0, renderer.width, renderer.height);
 }
 
-GLIS_CALLBACKS_CLOSE(close, glis, renderer, font, fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(screen);
     fontB.release();
     fontA.release();

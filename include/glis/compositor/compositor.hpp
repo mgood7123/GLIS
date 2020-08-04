@@ -4,11 +4,11 @@
 
 #include <glis/glis.hpp>
 
-extern void GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps);
+extern GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, CompositorMain, font, fps);
 
-extern void GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps, GLsizei width, GLsizei height);
+extern GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION, glis, CompositorMain, font, fps);
 
-extern void GLIS_COMPOSITOR_DEFAULT_CLOSE_FUNCTION(GLIS & glis, GLIS_CLASS & CompositorMain, GLIS_FONT & font, GLIS_FPS & fps);
+extern GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_CLOSE_FUNCTION, glis, CompositorMain, font, fps);
 
 extern void GLIS_COMPOSITOR_BEFORE_REQUEST_STARTUP(GLIS & glis);
 
@@ -24,13 +24,13 @@ extern void GLIS_COMPOSITOR_DO_MAIN(
                 GLIS_CLASS & glis_class,
                 GLIS_FONT & font,
                 GLIS_FPS & fps,
-                void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-                void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-                void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+                GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
         ),
-        void (*draw)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &),
-        void (*onWindowResize)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei),
-        void (*onWindowClose)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize),
+        GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose)
 );
 
 extern void GLIS_COMPOSITOR_REQUEST_SHUTDOWN(GLIS & glis, GLIS_CLASS & CompositorMain);
@@ -42,4 +42,4 @@ extern void GLIS_COMPOSITOR_HANDLE_SHUTDOWN_REQUEST(
         GLuint & vertexShader, GLuint & fragmentShader, GLuint & shaderProgram
 );
 
-#define GLIS_COMPOSITOR_LOOP_FUNCTION(functionName, GLIS_name, GLIS_CLASS_name, GLIS_FONT_name, GLIS_FPS_name, draw_function_name, resize_function_name, close_function_name) void functionName (GLIS & GLIS_name, GLIS_CLASS & GLIS_CLASS_name, GLIS_FONT & GLIS_FONT_name, GLIS_FPS & GLIS_FPS_name, void (*draw_function_name)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &), void (*resize_function_name)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &, GLsizei, GLsizei), void (*close_function_name)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &))
+#define GLIS_COMPOSITOR_LOOP_FUNCTION(functionName, GLIS_name, GLIS_CLASS_name, GLIS_FONT_name, GLIS_FPS_name, draw_function_name, resize_function_name, close_function_name) void functionName (GLIS & GLIS_name, GLIS_CLASS & GLIS_CLASS_name, GLIS_FONT & GLIS_FONT_name, GLIS_FPS & GLIS_FPS_name, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(draw_function_name), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(resize_function_name), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(close_function_name))

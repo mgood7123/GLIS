@@ -1,3 +1,5 @@
 cmake_minimum_required(VERSION 3.4.1)
 include_directories(SDK/include)
 add_subdirectory(SDK/src/Windows/Kernel)
+set(WINAPI_LIBRARY ${WINAPI_KERNEL_LIBRARY} PARENT_SCOPE)
+set(WINAPI_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/SDK/include PARENT_SCOPE)

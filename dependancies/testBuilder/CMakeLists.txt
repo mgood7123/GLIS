@@ -1,5 +1,26 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+macro(testBuilder_get_current_working_directory_of_this_cmake_file variable_name)
+    set(${variable_name} ${CMAKE_CURRENT_SOURCE_DIR})
+endmacro()
+
+macro(testBuilder_add_include includeDirectory)
+    set(testBuilder_INCLUDES_LIST ${testBuilder_INCLUDES_LIST} ${includeDirectory})
+endmacro()
+
+macro(testBuilder_add_include_and_include_in_project includeDirectory)
+    testBuilder_add_include(${includeDirectory})
+    include_directories(${includeDirectory})
+endmacro()
+
+macro(testBuilder_get_includes variable_name)
+    set(${variable_name} testBuilder_INCLUDES_LIST)
+endmacro()
+
+macro(testBuilder_get_includes_and_set_in_parent_scope variable_name)
+    set(${variable_name} testBuilder_INCLUDES_LIST PARENT_SCOPE)
+endmacro()
+
 macro(testBuilder_add_source testName sourceFile)
     set(testBuilder_SOURCES_LIST_${testName} ${testBuilder_SOURCES_LIST_${testName}};${sourceFile})
 endmacro()
