@@ -18,19 +18,21 @@ class Kernel {
 
         ~Kernel();
 
+        static const DWORD FLAG_AUTO_DEALLOCATE_RESOURCE = 1;
+
         WindowsAPITable *table = nullptr;
 
         bool validateHandle(HANDLE hObject);
 
         HANDLE newHandle(ObjectType type);
 
-        HANDLE newHandle(ObjectType type, PVOID resource);
+        HANDLE newHandle(ObjectType type, ResourceType resource);
 
         Handle *getHandle(HANDLE handle);
 
-        Object *newObject(ObjectType type, DWORD flags);
+        Object *newObject(ObjectType type, ObjectFlag flags);
 
-        Object *newObject(ObjectType type, DWORD flags, PVOID resource);
+        Object *newObject(ObjectType type, ObjectFlag flags, ResourceType resource);
 
         void deleteObject(Object *object);
 

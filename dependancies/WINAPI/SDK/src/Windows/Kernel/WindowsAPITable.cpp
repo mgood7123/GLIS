@@ -42,13 +42,14 @@ size_t Table::nextFreeIndex() {
 }
 
 bool Table::hasObject(Object *object) {
+    if (object == nullptr) return false;
     int page = 1;
     size_t index = 0;
     size_t page_size = this->page_size;
     for (; page <= this->Page.count(); page++) {
         index = ((page_size * page) - page_size);
         for (; index < page_size * page; index++)
-            if (this->table[index] != nullptr && object != nullptr)
+            if (this->table[index] != nullptr)
                 if (*this->table[index] == *object) return true;
     }
     return false;
@@ -67,11 +68,30 @@ size_t Table::findObject(Object *object) {
     return 0;
 }
 
-Object *Table::add(ObjectType type, DWORD flags) {
-    return this->add(type, flags, nullptr);
+Object * Table::objectAt(size_t index) {
+    if (index < this->table.size()) return this->table[index];
+    else return nullptr;
 }
 
-Object *Table::add(ObjectType type, DWORD flags, PVOID resource) {
+std::pair<size_t, bool> Table::findResource(ResourceType resource) {
+    int page = 1;
+    size_t index = 0;
+    size_t page_size = this->page_size;
+    for (; page <= this->Page.count(); page++) {
+        index = ((page_size * page) - page_size);
+        for (; index < page_size * page; index++)
+            if (this->table[index] != nullptr)
+                if (this->table[index]->resource.get() == resource.get()) return {index, true};
+    }
+    return {0, false};
+}
+
+Object *Table::add(ObjectType type, ObjectFlag flags) {
+    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
+    return this->add(type, flags, r);
+}
+
+Object *Table::add(ObjectType type, ObjectFlag flags, ResourceType resource) {
     if (this->Page.count() == 0 || !this->hasFreeIndex()) this->Page.add();
     size_t i = this->nextFreeIndex();
     this->table[i] = new Object();

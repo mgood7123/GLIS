@@ -125,11 +125,13 @@ bool Kernel::validateHandle(HANDLE hObject) {
 }
 
 HANDLE Kernel::newHandle(ObjectType type) {
-    return this->newHandle(type, nullptr);
+    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
+    return this->newHandle(type, r);
 }
 
-HANDLE Kernel::newHandle(ObjectType type, PVOID resource) {
+HANDLE Kernel::newHandle(ObjectType type, ResourceType resource) {
     Handle *hObject = new Handle();
+    hObject->object = this->newObject(type, 0, resource);
     hObject->object = this->newObject(type, 0, resource);
     assert(hObject->object != nullptr);
     hObject->invalidated = false;

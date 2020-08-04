@@ -6,16 +6,20 @@
 #include <Windows/Kernel/WindowsAPITable.h>
 #include <Windows/Kernel/WindowsAPIKernel.h>
 
-extern const ObjectType ObjectTypeNone = 0;
-extern const ObjectType ObjectTypeProcess = 1;
-extern const ObjectType ObjectTypeThread = 2;
-extern const ObjectType ObjectTypeWindow = 3;
+const ObjectType ObjectTypeNone = 0;
+const ObjectType ObjectTypeProcess = 1;
+const ObjectType ObjectTypeThread = 2;
+const ObjectType ObjectTypeWindow = 3;
 
-Object *Kernel::newObject(ObjectType type, DWORD flags) {
-    return this->table->add(type, flags, nullptr);
+const ObjectFlag ObjectFlagNone = 0;
+const ObjectFlag ObjectFlagAutoDeallocateResource = 1;
+
+Object *Kernel::newObject(ObjectType type, ObjectFlag flags) {
+    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
+    return this->table->add(type, flags, r);
 }
 
-Object *Kernel::newObject(ObjectType type, DWORD flags, PVOID resource) {
+Object *Kernel::newObject(ObjectType type, ObjectFlag flags, ResourceType resource) {
     return this->table->add(type, flags, resource);
 }
 
@@ -40,10 +44,12 @@ void Object::clean() {
 }
 
 void Object::clean(Object &object) {
-    if (object.name != nullptr) {
-        memset(object.name, '\0', strlen(object.name));
-        this->init(object);
+    if (object.name != nullptr) memset(object.name, '\0', strlen(object.name));
+    if (object.flags & ObjectFlagAutoDeallocateResource) {
+        // if resource points to a class that has a destructor, it will not be called
+//        delete object.resource;
     }
+    this->init(object);
 }
 
 void Object::init() {
@@ -55,7 +61,8 @@ void Object::init(Object &object) {
     object.type = ObjectTypeNone;
     object.flags = 0;
     object.handles = 0;
-    object.resource = nullptr;
+    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
+    object.resource = r;
 }
 
 Object &Object::operator=(const Object &object) {
@@ -79,5 +86,5 @@ bool Object::compare(const Object &lhs, const Object &rhs) {
     if (lhs.name != nullptr && rhs.name != nullptr) {
         if (strcmp(lhs.name, rhs.name) != 0) return false;
     }
-    return lhs.resource == rhs.resource;
+    return lhs.resource.get() == rhs.resource.get();
 }

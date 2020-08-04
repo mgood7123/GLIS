@@ -1,0 +1,10 @@
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles/rebuild_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles/edit_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles/testBuilder_executables_f.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/WINAPI/CMakeFiles/rebuild_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/WINAPI/CMakeFiles/edit_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/rebuild_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/edit_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/testBuilder/CMakeFiles/rebuild_cache.dir
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/testBuilder/CMakeFiles/edit_cache.dir

@@ -25,9 +25,13 @@ typedef class Table {
 
         size_t findObject(Object *object);
 
-        Object *add(ObjectType type, DWORD flags);
+        Object * objectAt(size_t index);
 
-        Object *add(ObjectType type, DWORD flags, PVOID resource);
+        std::pair<size_t, bool> findResource(ResourceType resource);
+
+        Object *add(ObjectType type, ObjectFlag flags);
+
+        Object *add(ObjectType type, ObjectFlag flags, ResourceType resource);
 
         Object *add(Object *object);
 

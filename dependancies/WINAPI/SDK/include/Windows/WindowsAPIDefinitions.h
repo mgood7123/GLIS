@@ -31,6 +31,7 @@ typedef long LONG;
 typedef int INT;
 
 typedef void *PVOID;
+typedef const void * CONSTPVOID;
 typedef PVOID HANDLE;
 #define DECLARE_HANDLE(name) typedef HANDLE name
 

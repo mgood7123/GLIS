@@ -8,12 +8,43 @@
 #include "../WindowsAPIDefinitions.h"
 #include <cstring>
 
-typedef int ObjectType;
+typedef DWORD ObjectType;
+typedef DWORD ObjectFlag;
+
 extern const ObjectType ObjectTypeNone;
 extern const ObjectType ObjectTypeProcess;
 extern const ObjectType ObjectTypeThread;
 extern const ObjectType ObjectTypeWindow;
 
+extern const ObjectFlag ObjectFlagNone;
+extern const ObjectFlag ObjectFlagAutoDeallocateResource;
+
+class myany {
+protected:
+    class dummybase {
+    public:
+        virtual ~dummybase() = default;
+    };
+    template<typename T> class dummyderive : public dummybase {
+    protected:
+        T data2;
+    public:
+        dummyderive(T &&x) : data2(std::forward<T>(x)) {}
+    };
+public:
+
+    dummybase *data = nullptr;
+
+    template<typename T> myany &operator=(T &&what) {
+        data = new dummyderive<T>(std::forward<T>(what));
+        return *this;
+    }
+    ~myany() {
+        if (data != nullptr) delete data;
+    }
+};
+
+typedef std::reference_wrapper<std::unique_ptr<myany>> ResourceType;
 
 typedef class Object {
     public:
@@ -23,9 +54,10 @@ typedef class Object {
 
         ObjectType type;
         char *name;
-        DWORD flags;
+        ObjectFlag flags;
         int handles;
-        PVOID resource;
+        std::unique_ptr<myany> r = std::make_unique<myany>(myany());
+        ResourceType resource = r;
 
         void clean();
 
