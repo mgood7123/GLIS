@@ -5,6 +5,7 @@
 #include <Windows/Kernel/WindowsAPIObject.h>
 #include <Windows/Kernel/WindowsAPIHandle.h>
 #include <Windows/Kernel/WindowsAPIKernel.h>
+#include <Windows/Kernel/WindowsApiAny.h>
 
 // As each application finishes using the event, it closes its handle to the object.
 // When there are no remaining open handles to the event object, the system destroys the event object.
@@ -125,13 +126,11 @@ bool Kernel::validateHandle(HANDLE hObject) {
 }
 
 HANDLE Kernel::newHandle(ObjectType type) {
-    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
-    return this->newHandle(type, r);
+    return this->newHandle(type, WindowsApiAny::NullOpt());
 }
 
 HANDLE Kernel::newHandle(ObjectType type, ResourceType resource) {
     Handle *hObject = new Handle();
-    hObject->object = this->newObject(type, 0, resource);
     hObject->object = this->newObject(type, 0, resource);
     assert(hObject->object != nullptr);
     hObject->invalidated = false;

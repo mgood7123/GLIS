@@ -3,7 +3,6 @@
 //
 
 #include <Windows/Kernel/WindowsAPITable.h>
-
 #include <cassert> // assert
 
 Table::Table() {
@@ -73,22 +72,8 @@ Object * Table::objectAt(size_t index) {
     else return nullptr;
 }
 
-std::pair<size_t, bool> Table::findResource(ResourceType resource) {
-    int page = 1;
-    size_t index = 0;
-    size_t page_size = this->page_size;
-    for (; page <= this->Page.count(); page++) {
-        index = ((page_size * page) - page_size);
-        for (; index < page_size * page; index++)
-            if (this->table[index] != nullptr)
-                if (this->table[index]->resource.get() == resource.get()) return {index, true};
-    }
-    return {0, false};
-}
-
 Object *Table::add(ObjectType type, ObjectFlag flags) {
-    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
-    return this->add(type, flags, r);
+    return this->add(type, flags, WindowsApiAny());
 }
 
 Object *Table::add(ObjectType type, ObjectFlag flags, ResourceType resource) {
@@ -97,7 +82,12 @@ Object *Table::add(ObjectType type, ObjectFlag flags, ResourceType resource) {
     this->table[i] = new Object();
     this->table[i]->type = type;
     this->table[i]->flags = flags;
+    printf("assigning resource to object at index %zu\n", i);
+    printf("resource.isNullOpt is %s\n", resource.isNullOpt ? "true" : "false");
+    fflush(stdout);
     this->table[i]->resource = resource;
+    printf("resource.isNullOpt is %s\n", resource.isNullOpt ? "true" : "false");
+    printf("this->table[i]->resource.isNullOpt is %s\n", this->table[i]->resource.isNullOpt ? "true" : "false");
     return this->table[i];
 }
 
@@ -173,20 +163,10 @@ void Table::Page::clean(int page) {
         this->table->DELETE(index);
 }
 
-void Table::Page::cleanAll() {
-    for (int page = 1; page <= count(); page++)
-        this->clean(page);
-}
-
 void Table::Page::zero(int page) {
     size_t index = 0;
     size_t page_size = this->table->page_size;
     index = ((page_size * page) - page_size);
     for (; index < page_size * page; index++)
         this->table->table[index] = nullptr;
-}
-
-void Table::Page::zeroAll() {
-    for (int page = 1; page <= count(); page++)
-        this->zero(page);
 }

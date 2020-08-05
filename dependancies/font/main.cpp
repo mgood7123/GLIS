@@ -11,21 +11,39 @@ struct font {
 
     struct atlas {
         int size = 0;
+
+        int * data;
         atlas () {
-            cout << "constructor" << endl;
+            cout << "atlas constructor" << endl << flush;
+            data = new int;
         }
+
+        /* Copy constructor */
+        atlas(const atlas &p2) {
+            puts("atlas copy constructor");
+            fflush(stdout);
+            if (p2.data != nullptr)
+                data = new int(*p2.data);
+        }
+
+        /* Move constructor */
+        atlas(atlas &&p2) {
+            puts("atlas move constructor");
+            fflush(stdout);
+            data = p2.data; // this is moving the pointer, so this should not affect the data pointed to
+            p2.data = nullptr;
+        }
+
         ~atlas () {
-            cout << "destructor" << endl;
+            cout << "atlas destructor" << endl << flush;
+            if (data != nullptr) delete data;
         }
     };
 
     typedef std::pair <const char*, Kernel *> ATLAS_PAIR;
 
     void add_font(const char * id) {
-        myany tmp;
-        tmp = ATLAS_PAIR {id, new Kernel};
-        std::unique_ptr<myany> atlasPair = std::make_unique<myany>(tmp);
-        font.newObject(0, 0, atlasPair);
+        font.newObject(0, 0, ATLAS_PAIR {id, new Kernel()});
     }
 
     Object * find_font(const char * id) {
@@ -38,12 +56,12 @@ struct font {
             index = ((page_size * page) - page_size);
             for (; index < page_size * page; index++)
                 if (font.table->table[index] != nullptr) {
-                    const char * data = reinterpret_cast<ATLAS_PAIR *>(font.table->table[index]->resource.get().get())->first;
+                    const char * data = font.table->table[index]->resource.get<ATLAS_PAIR>()->first;
                     printf("testing %s\n", data);
                     if (!memcmp(data, id, resource_len))
                         return font.table->table[index];
                 } else {
-                    printf("font.table->table[%d] is nullptr\n", index);
+                    printf("font.table->table[%zu] is nullptr\n", index);
                 }
         }
         return nullptr;
@@ -52,55 +70,66 @@ struct font {
     ATLAS_PAIR * get_font(const char * id) {
         auto x = find_font(id);
         if (x == nullptr) return nullptr;
-        return reinterpret_cast<ATLAS_PAIR *>(x->resource.get().get());
+        return x->resource.get<ATLAS_PAIR>();
     }
 
     void remove_font(const char * id) {
         auto o = find_font(id);
-//        auto font_ = static_cast<ATLAS_PAIR *>(o->resource);
-//        delete font_->second;
+        auto font_ = o->resource.get<ATLAS_PAIR>();
+        delete font_->second;
         font.deleteObject(o);
     }
 
     Kernel * get_atlas(const char * id) {
         auto o = find_font(id);
         assert(o != nullptr);
-        assert(o->resource.get() != nullptr);
-        return reinterpret_cast<ATLAS_PAIR *>(o->resource.get()->data)->second;
+        assert(o->resource.has_value());
+        return o->resource.get<ATLAS_PAIR>()->second;
     }
 
     void add_font_size(const char * id, int size) {
         auto atlas_ = get_atlas(id);
-        myany tmp;
-        tmp = atlas();
-        std::unique_ptr<myany> atlas__ = std::make_unique<myany>(tmp);
-        reinterpret_cast<atlas*>(atlas__.get())->size = size;
-        atlas_->newObject(0, 0, atlas__);
+        atlas x = atlas();
+        x.size = size;
+        // this works if atlas is allocated
+        // this is meant to work even if atlas is not allocated
+        atlas_->newObject(0, 0, x);
     }
 
     void list_fonts() {
+        if (font.table->Page.count() == 0) {
+            printf("no fonts have been added\n");
+            return;
+        }
         int page = 1;
         size_t index = 0;
         size_t page_size = font.table->page_size;
         for (; page <= font.table->Page.count(); page++) {
             index = ((page_size * page) - page_size);
             for (; index < page_size * page; index++)
-                if (font.table->table[index] != nullptr)
-                    if (font.table->table[index]->resource.get()->data != nullptr)
-                        printf("%s\n", reinterpret_cast<ATLAS_PAIR *>(font.table->table[index]->resource.get().get())->first);
+                if (font.table->table[index] != nullptr) {
+                    if (font.table->table[index]->resource.has_value())
+                        printf("%s\n", font.table->table[index]->resource.get<ATLAS_PAIR>()->first);
+                    else
+                        printf("index %zu has no resource\n", index);
+                }
         }
     }
 
     void list_sizes() {
+        if (font.table->Page.count() == 0) {
+            printf("no fonts have been added\n");
+            return;
+        }
         int page = 1;
         size_t index = 0;
         size_t page_size = font.table->page_size;
         for (; page <= font.table->Page.count(); page++) {
             index = ((page_size * page) - page_size);
             for (; index < page_size * page; index++)
-                if (font.table->table[index] != nullptr)
-                    if (font.table->table[index]->resource.get()->data != nullptr) {
-                        ATLAS_PAIR * a = reinterpret_cast<ATLAS_PAIR *>(font.table->table[index]->resource.get().get());
+                if (font.table->table[index] != nullptr) {
+                    if (font.table->table[index]->resource.has_value()) {
+                        ATLAS_PAIR *a = font.table->table[index]->resource.get<ATLAS_PAIR>();
                         Kernel *x = a->second;
                         if (x->table->Page.count() == 0) {
                             printf("font %s has no sizes created\n", a->first);
@@ -111,12 +140,18 @@ struct font {
                             for (; page <= x->table->Page.count(); page++) {
                                 index = ((page_size * page) - page_size);
                                 for (; index < page_size * page; index++)
-                                    if (x->table->table[index] != nullptr)
-                                        if (x->table->table[index]->resource.get()->data != nullptr)
-                                            printf("font %s has a size of %d\n", a->first, reinterpret_cast<atlas *>(x->table->table[index]->resource.get().get())->size);
+                                    if (x->table->table[index] != nullptr) {
+                                        if (x->table->table[index]->resource.has_value())
+                                            printf("font %s has a size of %d\n", a->first,
+                                                   x->table->table[index]->resource.get<atlas>()->size);
+                                        else
+                                            printf("index %zu has no resource\n", index);
+                                    }
                             }
                         }
-                    }
+                    } else
+                        printf("index %zu has no resource\n", index);
+                }
         }
     }
 };
@@ -129,7 +164,7 @@ int main(int argc, char **argv) {
     f.add_font_size("f1", 12);
     f.list_fonts();
     f.list_sizes();
-    f.remove_font("f1");
-    f.remove_font("f2");
+//    f.remove_font("f1");
+//    f.remove_font("f2");
     return 0;
 }

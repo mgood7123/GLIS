@@ -29,6 +29,8 @@ cstdint
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
 ../WindowsAPIDefinitions.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
+WindowsApiAny.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsApiAny.h
 cstring
 -
 
@@ -39,6 +41,16 @@ vector
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
 WindowsAPIObject.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsApiAny.h
+iostream
+-
+memory
+-
+string.h
+-
+assert.h
+-
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WinUser.h
 macwin32.h

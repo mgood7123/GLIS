@@ -18,8 +18,6 @@ class Kernel {
 
         ~Kernel();
 
-        static const DWORD FLAG_AUTO_DEALLOCATE_RESOURCE = 1;
-
         WindowsAPITable *table = nullptr;
 
         bool validateHandle(HANDLE hObject);

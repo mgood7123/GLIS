@@ -15,8 +15,7 @@ const ObjectFlag ObjectFlagNone = 0;
 const ObjectFlag ObjectFlagAutoDeallocateResource = 1;
 
 Object *Kernel::newObject(ObjectType type, ObjectFlag flags) {
-    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
-    return this->table->add(type, flags, r);
+    return this->table->add(type, flags, ResourceType::NullOpt());
 }
 
 Object *Kernel::newObject(ObjectType type, ObjectFlag flags, ResourceType resource) {
@@ -61,8 +60,7 @@ void Object::init(Object &object) {
     object.type = ObjectTypeNone;
     object.flags = 0;
     object.handles = 0;
-    std::unique_ptr<myany> r = std::make_unique<myany>(myany());
-    object.resource = r;
+    object.resource = ResourceType::NullOpt();
 }
 
 Object &Object::operator=(const Object &object) {
@@ -86,5 +84,9 @@ bool Object::compare(const Object &lhs, const Object &rhs) {
     if (lhs.name != nullptr && rhs.name != nullptr) {
         if (strcmp(lhs.name, rhs.name) != 0) return false;
     }
-    return lhs.resource.get() == rhs.resource.get();
+    return lhs.resource.data == rhs.resource.data;
 }
+
+bool Object::operator!=(const Object &rhs) { return !compare(*this, rhs); }
+
+bool Object::operator==(const Object &rhs) { return compare(*this, rhs); }

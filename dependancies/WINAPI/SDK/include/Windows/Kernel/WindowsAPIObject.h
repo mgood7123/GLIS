@@ -6,6 +6,7 @@
 #define MEDIA_PLAYER_PRO_WINDOWSAPIOBJECT_H
 
 #include "../WindowsAPIDefinitions.h"
+#include "WindowsApiAny.h"
 #include <cstring>
 
 typedef DWORD ObjectType;
@@ -19,32 +20,7 @@ extern const ObjectType ObjectTypeWindow;
 extern const ObjectFlag ObjectFlagNone;
 extern const ObjectFlag ObjectFlagAutoDeallocateResource;
 
-class myany {
-protected:
-    class dummybase {
-    public:
-        virtual ~dummybase() = default;
-    };
-    template<typename T> class dummyderive : public dummybase {
-    protected:
-        T data2;
-    public:
-        dummyderive(T &&x) : data2(std::forward<T>(x)) {}
-    };
-public:
-
-    dummybase *data = nullptr;
-
-    template<typename T> myany &operator=(T &&what) {
-        data = new dummyderive<T>(std::forward<T>(what));
-        return *this;
-    }
-    ~myany() {
-        if (data != nullptr) delete data;
-    }
-};
-
-typedef std::reference_wrapper<std::unique_ptr<myany>> ResourceType;
+typedef WindowsApiAny ResourceType;
 
 typedef class Object {
     public:
@@ -56,8 +32,7 @@ typedef class Object {
         char *name;
         ObjectFlag flags;
         int handles;
-        std::unique_ptr<myany> r = std::make_unique<myany>(myany());
-        ResourceType resource = r;
+        ResourceType resource;
 
         void clean();
 
@@ -71,9 +46,9 @@ typedef class Object {
 
         void inherit(const Object &object);
 
-        inline bool operator==(const Object &rhs) { return compare(*this, rhs); }
+        bool operator==(const Object &rhs);
 
-        inline bool operator!=(const Object &rhs) { return !compare(*this, rhs); }
+        bool operator!=(const Object &rhs);
 
         static bool compare(const Object &lhs, const Object &rhs);
 

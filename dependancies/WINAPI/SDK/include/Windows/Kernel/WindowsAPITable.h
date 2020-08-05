@@ -27,9 +27,7 @@ typedef class Table {
 
         Object * objectAt(size_t index);
 
-        std::pair<size_t, bool> findResource(ResourceType resource);
-
-        Object *add(ObjectType type, ObjectFlag flags);
+    Object *add(ObjectType type, ObjectFlag flags);
 
         Object *add(ObjectType type, ObjectFlag flags, ResourceType resource);
 
@@ -61,11 +59,8 @@ typedef class Table {
 
                 void clean(int page);
 
-                void cleanAll();
+            void zero(int page);
 
-                void zero(int page);
-
-                void zeroAll();
         } Page;
 
 } WindowsAPITable;
