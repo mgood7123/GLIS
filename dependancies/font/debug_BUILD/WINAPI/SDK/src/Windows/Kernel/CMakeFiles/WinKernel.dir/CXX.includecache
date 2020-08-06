@@ -84,3 +84,21 @@ Windows/Kernel/WindowsAPIKernel.h
 Windows/Kernel/AnyOpt.h
 -
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/src/Windows/Kernel/WindowsAPIKernel.cpp
+Windows/Kernel/WindowsAPIKernel.h
+-
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/src/Windows/Kernel/WindowsAPIObject.cpp
+Windows/Kernel/WindowsAPIObject.h
+-
+Windows/Kernel/WindowsAPITable.h
+-
+Windows/Kernel/WindowsAPIKernel.h
+-
+
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/src/Windows/Kernel/WindowsAPITable.cpp
+Windows/Kernel/WindowsAPITable.h
+-
+cassert
+-
+

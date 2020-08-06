@@ -20,11 +20,7 @@ extern const ObjectType ObjectTypeWindow;
 extern const ObjectFlag ObjectFlagNone;
 extern const ObjectFlag ObjectFlagAutoDeallocateResource;
 
-typedef AnyOpt<
-AnyOpt_FLAG_COPY_OR_MOVE |
-AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE |
-AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE
->ResourceType;
+typedef AnyOpt ResourceType;
 
 typedef class Object {
     public:

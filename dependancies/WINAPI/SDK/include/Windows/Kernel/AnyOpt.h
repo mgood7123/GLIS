@@ -14,12 +14,15 @@
 #define AnyOpt_FLAG_COPY_OR_MOVE 1 << 2
 #define AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE 1 << 3
 #define AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE 1 << 4
+#define AnyOpt_FLAGS_DEFAULT AnyOpt_FLAG_COPY_OR_MOVE | \
+                                 AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
+                                 AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE
 
 class AnyNullOpt_t {};
 
 constexpr AnyNullOpt_t AnyNullOpt {};
 
-template <int FLAGS> class AnyOpt {
+template <int FLAGS> class AnyOptCustomFlags {
 public:
     class dummy {
     public:
@@ -34,57 +37,57 @@ public:
         bool is_pointer = false;
 
         virtual storage * clone() const {
-            puts("storage clone");
+            puts("AnyOptCustomFlags::storage clone");
             fflush(stdout);
             return is_pointer ? new storage(data, pointer_is_allocated) : new storage(*data);
         }
 
         storage(T &x) : data(new T(x)), pointer_is_allocated(true) {
-            puts("storage copy constructor");
+            puts("AnyOptCustomFlags::storage copy constructor");
             fflush(stdout);
         }
 
         storage(T &&x) : data(new T(std::forward<T>(x))), pointer_is_allocated(true) {
-            puts("storage move constructor ");
+            puts("AnyOptCustomFlags::storage move constructor ");
             fflush(stdout);
         }
 
         storage(T * x, bool allocation) : data(x), is_pointer(true), pointer_is_allocated(allocation) {
-            puts("storage pointer constructor");
+            puts("AnyOptCustomFlags::storage pointer constructor");
             fflush(stdout);
         }
 
         ~storage() {
-            puts("storage destructor ");
+            puts("AnyOptCustomFlags::storage destructor ");
             fflush(stdout);
             if (pointer_is_allocated) {
                 if (is_pointer) {
-                    puts("storage data an allocated pointer");
+                    puts("AnyOptCustomFlags::storage data an allocated pointer");
                     fflush(stdout);
                     if (data != nullptr) {
                         delete data;
                         data = nullptr;
                     } else {
-                        puts("storage data is an allocated pointer however it is assigned to nullptr, this is likely a bug");
+                        puts("AnyOptCustomFlags::storage data is an allocated pointer however it is assigned to nullptr, this is likely a bug");
                         fflush(stdout);
                     }
                 } else {
-                    puts("storage data is a synthetic allocated pointer");
+                    puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer");
                     fflush(stdout);
                     if (data != nullptr) {
                         delete data;
                         data = nullptr;
                     } else {
-                        puts("storage data is a synthetic allocated pointer however it is assigned to nullptr, this is likely a bug");
+                        puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer however it is assigned to nullptr, this is likely a bug");
                         fflush(stdout);
                     }
                 }
             } else {
                 if (is_pointer) {
-                    puts("storage data a pointer however it is not allocated");
+                    puts("AnyOptCustomFlags::storage data a pointer however it is not allocated");
                     fflush(stdout);
                 } else {
-                    puts("storage data a synthetic pointer however it is not allocated, this is a bug");
+                    puts("AnyOptCustomFlags::storage data a synthetic pointer however it is not allocated, this is a bug");
                     fflush(stdout);
                 }
             }
@@ -99,12 +102,12 @@ public:
         return !isAnyNullOpt;
     }
 
-    AnyOpt(AnyNullOpt_t && opt): isAnyNullOpt(true) {
-        puts("AnyOpt AnyNullOpt_t move assignment");
+    AnyOptCustomFlags(AnyNullOpt_t && opt): isAnyNullOpt(true) {
+        puts("AnyOptCustomFlags AnyNullOpt_t move assignment");
         fflush(stdout);
     }
 
-    void move(AnyOpt * obj) {
+    void move(AnyOptCustomFlags * obj) {
         data = obj->data;
         data_is_allocated = obj->data_is_allocated;
         isAnyNullOpt = obj->isAnyNullOpt;
@@ -113,26 +116,26 @@ public:
         obj->data_is_allocated = false;
     }
 
-    void copy(const AnyOpt * obj) {
+    void copy(const AnyOptCustomFlags * obj) {
         data = obj->data->clone();
     }
 
     template<typename T> void store_move(T && what, const char * type) {
-        bool A = std::is_same<typename std::remove_reference<T>::type, AnyOpt>::value;
-        bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOpt>::value;
-        printf("AnyOpt move %s\n", type);
+        bool A = std::is_same<typename std::remove_reference<T>::type, AnyOptCustomFlags>::value;
+        bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOptCustomFlags>::value;
+        printf("AnyOptCustomFlags move %s\n", type);
         fflush(stdout);
         if (A || B) {
-            puts("AnyOpt moving data");
+            puts("AnyOptCustomFlags moving data");
             fflush(stdout);
-            move(const_cast<AnyOpt*>(reinterpret_cast<const AnyOpt*>(&what)));
-            puts("AnyOpt moved data");
+            move(const_cast<AnyOptCustomFlags*>(reinterpret_cast<const AnyOptCustomFlags*>(&what)));
+            puts("AnyOptCustomFlags moved data");
             fflush(stdout);
         } else {
-            puts("AnyOpt allocating and assigning data");
+            puts("AnyOptCustomFlags allocating and assigning data");
             fflush(stdout);
             data = new storage<typename std::remove_reference<T>::type>(std::forward<T>(what));
-            puts("AnyOpt allocated and assigned data");
+            puts("AnyOptCustomFlags allocated and assigned data");
             fflush(stdout);
             isAnyNullOpt = false;
             data_is_allocated = true;
@@ -140,11 +143,11 @@ public:
     }
 
     template<typename T> void store_copy(const T * what, const char * type) {
-        printf("AnyOpt copy %s\n", type);
+        printf("AnyOptCustomFlags copy %s\n", type);
         fflush(stdout);
         if (what->data != nullptr) {
             if (what->data_is_allocated) {
-                puts("AnyOpt needs to be moved because it has been marked as allocated");
+                puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
                 fflush(stdout);
                 store_move(*what, type);
             } else {
@@ -154,116 +157,116 @@ public:
     }
 
     template<typename T> void store_pointer(T * what, bool allocated, const char * type) {
-        printf("AnyOpt pointer %s\n", type);
+        printf("AnyOptCustomFlags pointer %s\n", type);
         fflush(stdout);
         deallocate();
-        puts("AnyOpt allocating and assigning data");
+        puts("AnyOptCustomFlags allocating and assigning data");
         fflush(stdout);
         data = new storage<T>(what, allocated);
         data_is_allocated = allocated;
-        puts("AnyOpt allocated and assigned data");
+        puts("AnyOptCustomFlags allocated and assigned data");
         fflush(stdout);
         isAnyNullOpt = false;
     }
 
-    template<typename T> AnyOpt(T &&what) {
+    template<typename T> AnyOptCustomFlags(T &&what) {
         store_move(what, "constructor");
     }
 
-    template<typename T> AnyOpt(T * what) {
+    template<typename T> AnyOptCustomFlags(T * what) {
         store_pointer(what, false, "constructor");
     }
 
-    template<typename T> AnyOpt(T * what, bool allocation) {
+    template<typename T> AnyOptCustomFlags(T * what, bool allocation) {
         store_pointer(what, allocation, "constructor");
     }
 
     /* Copy constructor */
-    AnyOpt(const AnyOpt &what) {
+    AnyOptCustomFlags(const AnyOptCustomFlags &what) {
         store_copy(&what, "constructor");
     }
 
     /* Move constructor */
-    AnyOpt(AnyOpt &&what) {
-        puts("AnyOpt move constructor");
+    AnyOptCustomFlags(AnyOptCustomFlags &&what) {
+        puts("AnyOptCustomFlags move constructor");
         fflush(stdout);
         move(&what);
     }
 
     void deallocate() {
-        puts("AnyOpt deallocating data");
+        puts("AnyOptCustomFlags deallocating data");
         fflush(stdout);
         if (data != nullptr) {
-            puts("AnyOpt data is not nullptr");
+            puts("AnyOptCustomFlags data is not nullptr");
             fflush(stdout);
-            puts("AnyOpt deleting data");
+            puts("AnyOptCustomFlags deleting data");
             fflush(stdout);
             delete data;
             data = nullptr;
             data_is_allocated = false;
-            puts("AnyOpt deleted data");
+            puts("AnyOptCustomFlags deleted data");
             fflush(stdout);
         } else {
-            puts("AnyOpt data is nullptr, data has not been allocated or has already been deallocated");
+            puts("AnyOptCustomFlags data is nullptr, data has not been allocated or has already been deallocated");
             fflush(stdout);
         }
         isAnyNullOpt = true;
     }
 
-    AnyOpt &operator=(const AnyOpt & what) {
+    AnyOptCustomFlags &operator=(const AnyOptCustomFlags & what) {
         store_copy(&what, "assignment");
         return *this;
     }
 
-    AnyOpt &operator=(const AnyNullOpt_t & what) {
-        puts("AnyOpt AnyNullOpt_t copy assignment");
+    AnyOptCustomFlags &operator=(const AnyNullOpt_t & what) {
+        puts("AnyOptCustomFlags AnyNullOpt_t copy assignment");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    AnyOpt &operator=(AnyNullOpt_t && what) {
-        puts("AnyOpt AnyNullOpt_t move assignment");
+    AnyOptCustomFlags &operator=(AnyNullOpt_t && what) {
+        puts("AnyOptCustomFlags AnyNullOpt_t move assignment");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    template<typename T> AnyOpt &operator=(T &&what) {
+    template<typename T> AnyOptCustomFlags &operator=(T &&what) {
         store_move(what, "assignment");
         return *this;
     }
 
-    template<typename T> AnyOpt &operator=(T * what) {
+    template<typename T> AnyOptCustomFlags &operator=(T * what) {
         store_pointer(what, false, "assignment");
         return *this;
     }
 
-    AnyOpt &store(AnyNullOpt_t && what) {
-        puts("AnyOpt AnyNullOpt_t move store");
+    AnyOptCustomFlags &store(AnyNullOpt_t && what) {
+        puts("AnyOptCustomFlags AnyNullOpt_t move store");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    template<typename T> AnyOpt &store(T && what) {
+    template<typename T> AnyOptCustomFlags &store(T && what) {
         store_move(what, "assignment");
         return *this;
     }
 
-    template<typename T> AnyOpt &store(T * what, bool allocated) {
+    template<typename T> AnyOptCustomFlags &store(T * what, bool allocated) {
         store_pointer(what, allocated, "assignment");
         return *this;
     }
 
-    AnyOpt() {
-        puts("AnyOpt constructor");
+    AnyOptCustomFlags() {
+        puts("AnyOptCustomFlags constructor");
         fflush(stdout);
     }
-    ~AnyOpt() {
-        puts("AnyOpt destructor");
+    ~AnyOptCustomFlags() {
+        puts("AnyOptCustomFlags destructor");
         fflush(stdout);
-        printf("AnyOpt isAnyNullOpt is %s\n", isAnyNullOpt ? "true" : "false");
+        printf("AnyOptCustomFlags isAnyNullOpt is %s\n", isAnyNullOpt ? "true" : "false");
         fflush(stdout);
         if (!isAnyNullOpt) deallocate();
     }
@@ -275,5 +278,7 @@ public:
         } else return nullptr;
     }
 };
+
+#define AnyOpt AnyOptCustomFlags<AnyOpt_FLAGS_DEFAULT>
 
 #endif //ANDROIDCOMPOSITOR_AnyOpt_H
