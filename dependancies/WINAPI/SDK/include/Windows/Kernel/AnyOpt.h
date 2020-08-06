@@ -9,18 +9,18 @@
 #include <string.h>
 #include <assert.h>
 
-#define AnyOpt_FLAG_COPY_ONLY 1 << 0
-#define AnyOpt_FLAG_MOVE_ONLY 1 << 1
-#define AnyOpt_FLAG_COPY_OR_MOVE 1 << 2
-#define AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE 1 << 3
-#define AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE 1 << 4
-#define AnyOpt_FLAGS_DEFAULT AnyOpt_FLAG_COPY_OR_MOVE | \
+static constexpr int AnyOpt_FLAG_COPY_ONLY = 1 << 0;
+static constexpr int AnyOpt_FLAG_MOVE_ONLY = 1 << 1;
+static constexpr int AnyOpt_FLAG_COPY_OR_MOVE = 1 << 2;
+static constexpr int AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE = 1 << 3;
+static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 4;
+static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_OR_MOVE | \
                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
-                                 AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE
+                                 AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE;
 
 class AnyNullOpt_t {};
 
-constexpr AnyNullOpt_t AnyNullOpt {};
+static constexpr AnyNullOpt_t AnyNullOpt {};
 
 template <int FLAGS> class AnyOptCustomFlags {
 public:
@@ -279,6 +279,6 @@ public:
     }
 };
 
-#define AnyOpt AnyOptCustomFlags<AnyOpt_FLAGS_DEFAULT>
+typedef AnyOptCustomFlags<AnyOpt_FLAGS_DEFAULT> AnyOpt;
 
 #endif //ANDROIDCOMPOSITOR_AnyOpt_H
