@@ -11,36 +11,31 @@ struct font {
 
     struct atlas {
         int size = 0;
-
-        int * data;
         atlas () {
             cout << "atlas constructor" << endl << flush;
-            data = new int;
         }
 
         /* Copy constructor */
         atlas(const atlas &p2) {
             puts("atlas copy constructor");
             fflush(stdout);
-            if (p2.data != nullptr)
-                data = new int(*p2.data);
+            size = p2.size;
         }
 
         /* Move constructor */
         atlas(atlas &&p2) {
             puts("atlas move constructor");
             fflush(stdout);
-            data = p2.data; // this is moving the pointer, so this should not affect the data pointed to
-            p2.data = nullptr;
+            size = p2.size;
+            p2.size = 0;
         }
 
         ~atlas () {
             cout << "atlas destructor" << endl << flush;
-            if (data != nullptr) delete data;
         }
     };
 
-    typedef std::pair <const char*, Kernel *> ATLAS_PAIR;
+    typedef std::pair <const char*, ResourceType> ATLAS_PAIR;
 
     void add_font(const char * id) {
         font.newObject(0, 0, ATLAS_PAIR {id, new Kernel()});
@@ -75,8 +70,6 @@ struct font {
 
     void remove_font(const char * id) {
         auto o = find_font(id);
-        auto font_ = o->resource.get<ATLAS_PAIR>();
-        delete font_->second;
         font.deleteObject(o);
     }
 
@@ -84,16 +77,14 @@ struct font {
         auto o = find_font(id);
         assert(o != nullptr);
         assert(o->resource.has_value());
-        return o->resource.get<ATLAS_PAIR>()->second;
+        return *o->resource.get<ATLAS_PAIR>()->second.get<Kernel*>();
     }
 
     void add_font_size(const char * id, int size) {
-        auto atlas_ = get_atlas(id);
+        Kernel* kernel = get_atlas(id);
         atlas x = atlas();
         x.size = size;
-        // this works if atlas is allocated
-        // this is meant to work even if atlas is not allocated
-        atlas_->newObject(0, 0, x);
+        kernel->newObject(0, 0, x);
     }
 
     void list_fonts() {
@@ -130,7 +121,7 @@ struct font {
                 if (font.table->table[index] != nullptr) {
                     if (font.table->table[index]->resource.has_value()) {
                         ATLAS_PAIR *a = font.table->table[index]->resource.get<ATLAS_PAIR>();
-                        Kernel *x = a->second;
+                        Kernel *x = *a->second.get<Kernel*>();
                         if (x->table->Page.count() == 0) {
                             printf("font %s has no sizes created\n", a->first);
                         } else {
@@ -160,10 +151,10 @@ int main(int argc, char **argv) {
     cout << "Hello, world!" << endl;
     font f;
     f.add_font("f1");
-    f.add_font("f2");
-    f.add_font_size("f1", 12);
-    f.list_fonts();
-    f.list_sizes();
+//    f.add_font("f2");
+//    f.add_font_size("f1", 12);
+//    f.list_fonts();
+//    f.list_sizes();
 //    f.remove_font("f1");
 //    f.remove_font("f2");
     return 0;

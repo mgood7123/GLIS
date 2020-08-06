@@ -73,22 +73,7 @@ Object * Table::objectAt(size_t index) {
 }
 
 Object *Table::add(ObjectType type, ObjectFlag flags) {
-    return this->add(type, flags, WindowsApiAny());
-}
-
-Object *Table::add(ObjectType type, ObjectFlag flags, ResourceType resource) {
-    if (this->Page.count() == 0 || !this->hasFreeIndex()) this->Page.add();
-    size_t i = this->nextFreeIndex();
-    this->table[i] = new Object();
-    this->table[i]->type = type;
-    this->table[i]->flags = flags;
-    printf("assigning resource to object at index %zu\n", i);
-    printf("resource.isNullOpt is %s\n", resource.isNullOpt ? "true" : "false");
-    fflush(stdout);
-    this->table[i]->resource = resource;
-    printf("resource.isNullOpt is %s\n", resource.isNullOpt ? "true" : "false");
-    printf("this->table[i]->resource.isNullOpt is %s\n", this->table[i]->resource.isNullOpt ? "true" : "false");
-    return this->table[i];
+    return this->add(type, flags, WindowsAPIAny());
 }
 
 Object *Table::add(Object *object) {

@@ -18,10 +18,6 @@ Object *Kernel::newObject(ObjectType type, ObjectFlag flags) {
     return this->table->add(type, flags, ResourceType::NullOpt());
 }
 
-Object *Kernel::newObject(ObjectType type, ObjectFlag flags, ResourceType resource) {
-    return this->table->add(type, flags, resource);
-}
-
 void Kernel::deleteObject(Object *object) {
     this->table->remove(object);
 }

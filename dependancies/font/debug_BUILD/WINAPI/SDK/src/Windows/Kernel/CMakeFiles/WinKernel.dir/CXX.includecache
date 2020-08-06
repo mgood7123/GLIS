@@ -6,6 +6,16 @@
 
 #IncludeRegexTransform: 
 
+../WINAPI/SDK/include/Windows/Kernel/WindowsAPIAny.h
+iostream
+-
+memory
+-
+string.h
+-
+assert.h
+-
+
 ../WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 ../WindowsAPIDefinitions.h
 ../WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
@@ -29,8 +39,8 @@ cstdint
 ../WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
 ../WindowsAPIDefinitions.h
 ../WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
-WindowsApiAny.h
-../WINAPI/SDK/include/Windows/Kernel/WindowsApiAny.h
+WindowsAPIAny.h
+../WINAPI/SDK/include/Windows/Kernel/WindowsAPIAny.h
 cstring
 -
 
@@ -41,16 +51,6 @@ vector
 ../WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
 WindowsAPIObject.h
 ../WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
-
-../WINAPI/SDK/include/Windows/Kernel/WindowsApiAny.h
-iostream
--
-memory
--
-string.h
--
-assert.h
--
 
 ../WINAPI/SDK/include/Windows/WinUser.h
 macwin32.h
@@ -81,7 +81,7 @@ Windows/Kernel/WindowsAPIHandle.h
 -
 Windows/Kernel/WindowsAPIKernel.h
 -
-Windows/Kernel/WindowsApiAny.h
+Windows/Kernel/WindowsAPIAny.h
 -
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/src/Windows/Kernel/WindowsAPIKernel.cpp

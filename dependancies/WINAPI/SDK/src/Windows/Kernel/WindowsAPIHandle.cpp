@@ -5,7 +5,7 @@
 #include <Windows/Kernel/WindowsAPIObject.h>
 #include <Windows/Kernel/WindowsAPIHandle.h>
 #include <Windows/Kernel/WindowsAPIKernel.h>
-#include <Windows/Kernel/WindowsApiAny.h>
+#include <Windows/Kernel/WindowsAPIAny.h>
 
 // As each application finishes using the event, it closes its handle to the object.
 // When there are no remaining open handles to the event object, the system destroys the event object.
@@ -126,7 +126,7 @@ bool Kernel::validateHandle(HANDLE hObject) {
 }
 
 HANDLE Kernel::newHandle(ObjectType type) {
-    return this->newHandle(type, WindowsApiAny::NullOpt());
+    return this->newHandle(type, WindowsAPIAny::NullOpt());
 }
 
 HANDLE Kernel::newHandle(ObjectType type, ResourceType resource) {
