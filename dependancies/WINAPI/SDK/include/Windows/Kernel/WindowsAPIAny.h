@@ -92,26 +92,31 @@ public:
     }
 
     WindowsAPIAny(NullOpt && opt): isNullOpt(true) {
-        puts("WindowsAPIAny NullOpt move assignment constructor");
+        puts("WindowsAPIAny NullOpt move assignment");
         fflush(stdout);
+    }
+
+    void move(WindowsAPIAny * obj) {
+        data = obj->data;
+        data_is_allocated = obj->data_is_allocated;
+        isNullOpt = obj->isNullOpt;
+        obj->data = nullptr;
+        obj->isNullOpt = true;
+        obj->data_is_allocated = false;
     }
 
     template<typename T> WindowsAPIAny(T &&what) {
         if (std::is_same<typename std::remove_reference<T>::type, WindowsAPIAny>::value) {
-            puts("WindowsAPIAny WindowsAPIAny move assignment constructor");
+            puts("WindowsAPIAny WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny allocating and assigning data");
             fflush(stdout);
             WindowsAPIAny * obj = reinterpret_cast<WindowsAPIAny*>(const_cast<WindowsAPIAny*>(&what));
-            if (obj->data != nullptr) {
-                data = obj->data;
-                obj->data = nullptr;
-                obj->isNullOpt = true;
-            }
+            move(obj);
             puts("WindowsAPIAny allocated and assigned data");
             fflush(stdout);
         } else {
-            puts("WindowsAPIAny move assignment constructor");
+            puts("WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny allocating and assigning data");
             fflush(stdout);
@@ -122,7 +127,7 @@ public:
     }
 
     template<typename T> WindowsAPIAny(T * what) {
-        puts("WindowsAPIAny pointer assignment constructor");
+        puts("WindowsAPIAny pointer assignment");
         fflush(stdout);
         puts("WindowsAPIAny allocating and assigning data");
         fflush(stdout);
@@ -132,7 +137,7 @@ public:
     }
 
     template<typename T> WindowsAPIAny(T * what, bool allocation) {
-        puts("WindowsAPIAny pointer assignment constructor");
+        puts("WindowsAPIAny pointer assignment");
         fflush(stdout);
         puts("WindowsAPIAny allocating and assigning data");
         fflush(stdout);
@@ -146,13 +151,15 @@ public:
     WindowsAPIAny(const WindowsAPIAny &what) {
         puts("WindowsAPIAny copy constructor");
         fflush(stdout);
+        printf("WindowsAPIAny data_is_allocated is %s\n", data_is_allocated ? "true" : "false");
+        fflush(stdout);
+        printf("WindowsAPIAny what.data_is_allocated is %s\n", what.data_is_allocated ? "true" : "false");
+        fflush(stdout);
         if (what.data != nullptr) {
-            printf("WindowsAPIAny data_is_allocated is %s\n", what.data_is_allocated ? "true" : "false");
-            fflush(stdout);
             if (what.data_is_allocated) {
                 puts("WindowsAPIAny needs to be moved because it has been marked as allocated");
                 fflush(stdout);
-                *this = std::move(what);
+                move(const_cast<WindowsAPIAny *>(&what));
             } else {
                 data = what.data->clone();
             }
@@ -163,10 +170,7 @@ public:
     WindowsAPIAny(WindowsAPIAny &&what) {
         puts("WindowsAPIAny move constructor");
         fflush(stdout);
-        data = what.data; // this is moving the pointer, so this should not affect the data pointed to
-        what.data = nullptr;
-        what.data_is_allocated = false;
-        what.isNullOpt = true;
+        move(&what);
     }
 
     void deallocate() {
@@ -190,7 +194,11 @@ public:
     }
 
     WindowsAPIAny &operator=(const WindowsAPIAny & what) {
-        puts("WindowsAPIAny WindowsAPIAny copy assignment constructor");
+        puts("WindowsAPIAny WindowsAPIAny copy assignment");
+        fflush(stdout);
+        printf("WindowsAPIAny data_is_allocated is %s\n", data_is_allocated ? "true" : "false");
+        fflush(stdout);
+        printf("WindowsAPIAny what.data_is_allocated is %s\n", what.data_is_allocated ? "true" : "false");
         fflush(stdout);
         if (what.data != nullptr) {
             if (what.data_is_allocated) {
@@ -223,27 +231,19 @@ public:
     }
 
     template<typename T> WindowsAPIAny &operator=(T &&what) {
-        if (std::is_same<typename std::remove_reference<T>::type, WindowsAPIAny>::value) {
-            puts("WindowsAPIAny WindowsAPIAny move assignment constructor");
+        bool A = std::is_same<typename std::remove_reference<T>::type, WindowsAPIAny>::value;
+        bool B = std::is_same<typename std::remove_reference<T>::type, const WindowsAPIAny>::value;
+        if (A || B) {
+            puts("WindowsAPIAny WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny assigning data");
             fflush(stdout);
-            WindowsAPIAny * obj = reinterpret_cast<WindowsAPIAny*>(const_cast<WindowsAPIAny*>(&what));
-            if (obj->data != nullptr) {
-                data = obj->data;
-                obj->data = nullptr;
-                obj->isNullOpt = true;
-                obj->data_is_allocated = false;
-                isNullOpt = false;
-                data_is_allocated = true;
-            } else {
-                isNullOpt = true;
-                data_is_allocated = false;
-            }
+            WindowsAPIAny * obj = const_cast<WindowsAPIAny*>(&what);
+            move(obj);
             puts("WindowsAPIAny assigned data");
             fflush(stdout);
         } else {
-            puts("WindowsAPIAny move assignment constructor");
+            puts("WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny allocating and assigning data");
             fflush(stdout);
@@ -278,26 +278,16 @@ public:
 
     template<typename T> WindowsAPIAny &store(T && what) {
         if (std::is_same<typename std::remove_reference<T>::type, WindowsAPIAny>::value) {
-            puts("WindowsAPIAny WindowsAPIAny move assignment constructor");
+            puts("WindowsAPIAny WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny assigning data");
             fflush(stdout);
             WindowsAPIAny * obj = reinterpret_cast<WindowsAPIAny*>(const_cast<WindowsAPIAny*>(reinterpret_cast<const WindowsAPIAny*>(&what)));
-            if (obj->data != nullptr) {
-                data = obj->data;
-                obj->data = nullptr;
-                obj->isNullOpt = true;
-                obj->data_is_allocated = false;
-                isNullOpt = false;
-                data_is_allocated = true;
-            } else {
-                isNullOpt = true;
-                data_is_allocated = false;
-            }
+            move(obj);
             puts("WindowsAPIAny assigned data");
             fflush(stdout);
         } else {
-            puts("WindowsAPIAny move assignment constructor");
+            puts("WindowsAPIAny move assignment");
             fflush(stdout);
             puts("WindowsAPIAny allocating and assigning data");
             fflush(stdout);

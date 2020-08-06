@@ -30,8 +30,8 @@ class Kernel {
 
         Object *newObject(ObjectType type, ObjectFlag flags);
 
-        template <typename T> Object * newObject(ObjectType type, ObjectFlag flags, T resource) {
-            return this->table->add(type, flags, std::move(resource));
+        template <typename T> Object * newObject(ObjectType type, ObjectFlag flags, T && resource) {
+            return this->table->add(type, flags, resource);
         }
 
         void deleteObject(Object *object);

@@ -39,17 +39,13 @@ typedef class Table {
             return this->table[i];
         }
 
-        template <typename T> Object * add(ObjectType type, ObjectFlag flags, T resource) {
+        template <typename T> Object * add(ObjectType type, ObjectFlag flags, T && resource) {
             if (this->Page.count() == 0 || !this->hasFreeIndex()) this->Page.add();
             size_t i = this->nextFreeIndex();
             this->table[i] = new Object();
             this->table[i]->type = type;
             this->table[i]->flags = flags;
-            puts("adding");
-            fflush(stdout);
             this->table[i]->resource.store(resource);
-            puts("added");
-            fflush(stdout);
             return this->table[i];
         }
 
