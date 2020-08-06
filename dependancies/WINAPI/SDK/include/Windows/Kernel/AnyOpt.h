@@ -39,7 +39,7 @@ public:
         virtual storage * clone() const {
             puts("AnyOptCustomFlags::storage clone");
             fflush(stdout);
-            return is_pointer ? new storage(data, pointer_is_allocated) : new storage(*data);
+            return new storage(*data);
         }
 
         storage(T &x) : data(new T(x)), pointer_is_allocated(true) {
@@ -154,6 +154,7 @@ public:
                 puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
                 fflush(stdout);
                 store_move(*what, type);
+//                copy(what);
             } else {
                 copy(what);
             }
@@ -173,7 +174,10 @@ public:
         isAnyNullOpt = false;
     }
 
-    template<class tmp, typename = typename std::enable_if<true, tmp>::type> AnyOptCustomFlags(tmp &&what) { store_move(what, "constructor"); }
+    template<class tmp, typename = typename std::enable_if<true, tmp>::type>
+    AnyOptCustomFlags(tmp &&what) {
+        store_move(what, "constructor");
+    }
 
     template<typename T> AnyOptCustomFlags(T * what) {
         store_pointer(what, false, "constructor");
