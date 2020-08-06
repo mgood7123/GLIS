@@ -11,10 +11,10 @@
 
 static constexpr int AnyOpt_FLAG_COPY_ONLY = 1 << 0;
 static constexpr int AnyOpt_FLAG_MOVE_ONLY = 1 << 1;
-static constexpr int AnyOpt_FLAG_COPY_OR_MOVE = 1 << 2;
-static constexpr int AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE = 1 << 3;
-static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 4;
-static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_OR_MOVE | \
+static constexpr int AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY = AnyOpt_FLAG_COPY_ONLY | AnyOpt_FLAG_MOVE_ONLY;
+static constexpr int AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE = 1 << 2;
+static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 3;
+static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY | \
                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
                                  AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE;
 
@@ -118,6 +118,8 @@ public:
 
     void copy(const AnyOptCustomFlags * obj) {
         data = obj->data->clone();
+        isAnyNullOpt = false;
+        data_is_allocated = false;
     }
 
     template<typename T> void store_move(T && what, const char * type) {
@@ -125,6 +127,7 @@ public:
         bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOptCustomFlags>::value;
         printf("AnyOptCustomFlags move %s\n", type);
         fflush(stdout);
+        deallocate();
         if (A || B) {
             puts("AnyOptCustomFlags moving data");
             fflush(stdout);
@@ -145,6 +148,7 @@ public:
     template<typename T> void store_copy(const T * what, const char * type) {
         printf("AnyOptCustomFlags copy %s\n", type);
         fflush(stdout);
+        deallocate();
         if (what->data != nullptr) {
             if (what->data_is_allocated) {
                 puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
@@ -169,9 +173,7 @@ public:
         isAnyNullOpt = false;
     }
 
-    template<typename T> AnyOptCustomFlags(T &&what) {
-        store_move(what, "constructor");
-    }
+    template<class tmp, typename = typename std::enable_if<true, tmp>::type> AnyOptCustomFlags(tmp &&what) { store_move(what, "constructor"); }
 
     template<typename T> AnyOptCustomFlags(T * what) {
         store_pointer(what, false, "constructor");

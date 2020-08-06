@@ -148,23 +148,25 @@ struct font {
 };
 
 int main(int argc, char **argv) {
-    font f;
-    f.add_font("f1");
-    f.add_font("f2");
-    f.add_font("f3");
-    f.add_font_size("f1", 12);
-    f.add_font_size("f1", 16);
-    f.add_font_size("f3", 48);
-    f.list_fonts();
-    f.list_sizes();
-    f.remove_font("f2");
-    f.list_fonts();
-    f.list_sizes();
-    f.remove_font("f1");
-    f.list_fonts();
-    f.list_sizes();
-    f.remove_font("f3");
-    f.list_fonts();
-    f.list_sizes();
+    AnyOpt x = AnyNullOpt; { int y = 5; x = y; } cout << x.get<int>()[0] << endl << flush;
+    cout << "end" << endl << flush;
+//    font f;
+//    f.add_font("f1");
+//    f.add_font("f2");
+//    f.add_font("f3");
+//    f.add_font_size("f1", 12);
+//    f.add_font_size("f1", 16);
+//    f.add_font_size("f3", 48);
+//    f.list_fonts();
+//    f.list_sizes();
+//    f.remove_font("f2");
+//    f.list_fonts();
+//    f.list_sizes();
+//    f.remove_font("f1");
+//    f.list_fonts();
+//    f.list_sizes();
+//    f.remove_font("f3");
+//    f.list_fonts();
+//    f.list_sizes();
     return 0;
 }
