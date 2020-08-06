@@ -15,7 +15,7 @@ const ObjectFlag ObjectFlagNone = 0;
 const ObjectFlag ObjectFlagAutoDeallocateResource = 1;
 
 Object *Kernel::newObject(ObjectType type, ObjectFlag flags) {
-    return this->table->add(type, flags, ResourceType::NullOpt());
+    return this->table->add(type, flags, AnyNullOpt);
 }
 
 void Kernel::deleteObject(Object *object) {
@@ -56,7 +56,7 @@ void Object::init(Object &object) {
     object.type = ObjectTypeNone;
     object.flags = 0;
     object.handles = 0;
-    object.resource = ResourceType::NullOpt();
+    object.resource = AnyNullOpt;
 }
 
 Object &Object::operator=(const Object &object) {

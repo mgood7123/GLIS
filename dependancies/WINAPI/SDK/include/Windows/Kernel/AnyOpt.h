@@ -2,14 +2,24 @@
 // Created by smallville7123 on 5/08/20.
 //
 
-#ifndef ANDROIDCOMPOSITOR_WindowsAPIAny_H
-#define ANDROIDCOMPOSITOR_WindowsAPIAny_H
+#ifndef ANDROIDCOMPOSITOR_AnyOpt_H
+#define ANDROIDCOMPOSITOR_AnyOpt_H
 #include <iostream>
 #include <memory>
 #include <string.h>
 #include <assert.h>
 
-class WindowsAPIAny {
+#define AnyOpt_FLAG_COPY_ONLY 1 << 0
+#define AnyOpt_FLAG_MOVE_ONLY 1 << 1
+#define AnyOpt_FLAG_COPY_OR_MOVE 1 << 2
+#define AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE 1 << 3
+#define AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE 1 << 4
+
+class AnyNullOpt_t {};
+
+constexpr AnyNullOpt_t AnyNullOpt {};
+
+template <int FLAGS> class AnyOpt {
 public:
     class dummy {
     public:
@@ -82,61 +92,59 @@ public:
     };
 
     dummy *data = nullptr;
-    bool isNullOpt = false;
+    bool isAnyNullOpt = false;
     bool data_is_allocated = false; // to auto move if data cannot be copied
 
-    class NullOpt {};
-
     bool has_value() {
-        return !isNullOpt;
+        return !isAnyNullOpt;
     }
 
-    WindowsAPIAny(NullOpt && opt): isNullOpt(true) {
-        puts("WindowsAPIAny NullOpt move assignment");
+    AnyOpt(AnyNullOpt_t && opt): isAnyNullOpt(true) {
+        puts("AnyOpt AnyNullOpt_t move assignment");
         fflush(stdout);
     }
 
-    void move(WindowsAPIAny * obj) {
+    void move(AnyOpt * obj) {
         data = obj->data;
         data_is_allocated = obj->data_is_allocated;
-        isNullOpt = obj->isNullOpt;
+        isAnyNullOpt = obj->isAnyNullOpt;
         obj->data = nullptr;
-        obj->isNullOpt = true;
+        obj->isAnyNullOpt = true;
         obj->data_is_allocated = false;
     }
 
-    void copy(const WindowsAPIAny * obj) {
+    void copy(const AnyOpt * obj) {
         data = obj->data->clone();
     }
 
     template<typename T> void store_move(T && what, const char * type) {
-        bool A = std::is_same<typename std::remove_reference<T>::type, WindowsAPIAny>::value;
-        bool B = std::is_same<typename std::remove_reference<T>::type, const WindowsAPIAny>::value;
-        printf("WindowsAPIAny move %s\n", type);
+        bool A = std::is_same<typename std::remove_reference<T>::type, AnyOpt>::value;
+        bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOpt>::value;
+        printf("AnyOpt move %s\n", type);
         fflush(stdout);
         if (A || B) {
-            puts("WindowsAPIAny moving data");
+            puts("AnyOpt moving data");
             fflush(stdout);
-            move(const_cast<WindowsAPIAny*>(reinterpret_cast<const WindowsAPIAny*>(&what)));
-            puts("WindowsAPIAny moved data");
+            move(const_cast<AnyOpt*>(reinterpret_cast<const AnyOpt*>(&what)));
+            puts("AnyOpt moved data");
             fflush(stdout);
         } else {
-            puts("WindowsAPIAny allocating and assigning data");
+            puts("AnyOpt allocating and assigning data");
             fflush(stdout);
             data = new storage<typename std::remove_reference<T>::type>(std::forward<T>(what));
-            puts("WindowsAPIAny allocated and assigned data");
+            puts("AnyOpt allocated and assigned data");
             fflush(stdout);
-            isNullOpt = false;
+            isAnyNullOpt = false;
             data_is_allocated = true;
         }
     }
 
     template<typename T> void store_copy(const T * what, const char * type) {
-        printf("WindowsAPIAny copy %s\n", type);
+        printf("AnyOpt copy %s\n", type);
         fflush(stdout);
         if (what->data != nullptr) {
             if (what->data_is_allocated) {
-                puts("WindowsAPIAny needs to be moved because it has been marked as allocated");
+                puts("AnyOpt needs to be moved because it has been marked as allocated");
                 fflush(stdout);
                 store_move(*what, type);
             } else {
@@ -146,118 +154,118 @@ public:
     }
 
     template<typename T> void store_pointer(T * what, bool allocated, const char * type) {
-        printf("WindowsAPIAny pointer %s\n", type);
+        printf("AnyOpt pointer %s\n", type);
         fflush(stdout);
         deallocate();
-        puts("WindowsAPIAny allocating and assigning data");
+        puts("AnyOpt allocating and assigning data");
         fflush(stdout);
         data = new storage<T>(what, allocated);
         data_is_allocated = allocated;
-        puts("WindowsAPIAny allocated and assigned data");
+        puts("AnyOpt allocated and assigned data");
         fflush(stdout);
-        isNullOpt = false;
+        isAnyNullOpt = false;
     }
 
-    template<typename T> WindowsAPIAny(T &&what) {
+    template<typename T> AnyOpt(T &&what) {
         store_move(what, "constructor");
     }
 
-    template<typename T> WindowsAPIAny(T * what) {
+    template<typename T> AnyOpt(T * what) {
         store_pointer(what, false, "constructor");
     }
 
-    template<typename T> WindowsAPIAny(T * what, bool allocation) {
+    template<typename T> AnyOpt(T * what, bool allocation) {
         store_pointer(what, allocation, "constructor");
     }
 
     /* Copy constructor */
-    WindowsAPIAny(const WindowsAPIAny &what) {
+    AnyOpt(const AnyOpt &what) {
         store_copy(&what, "constructor");
     }
 
     /* Move constructor */
-    WindowsAPIAny(WindowsAPIAny &&what) {
-        puts("WindowsAPIAny move constructor");
+    AnyOpt(AnyOpt &&what) {
+        puts("AnyOpt move constructor");
         fflush(stdout);
         move(&what);
     }
 
     void deallocate() {
-        puts("WindowsAPIAny deallocating data");
+        puts("AnyOpt deallocating data");
         fflush(stdout);
         if (data != nullptr) {
-            puts("WindowsAPIAny data is not nullptr");
+            puts("AnyOpt data is not nullptr");
             fflush(stdout);
-            puts("WindowsAPIAny deleting data");
+            puts("AnyOpt deleting data");
             fflush(stdout);
             delete data;
             data = nullptr;
             data_is_allocated = false;
-            puts("WindowsAPIAny deleted data");
+            puts("AnyOpt deleted data");
             fflush(stdout);
         } else {
-            puts("WindowsAPIAny data is nullptr, data has not been allocated or has already been deallocated");
+            puts("AnyOpt data is nullptr, data has not been allocated or has already been deallocated");
             fflush(stdout);
         }
-        isNullOpt = true;
+        isAnyNullOpt = true;
     }
 
-    WindowsAPIAny &operator=(const WindowsAPIAny & what) {
+    AnyOpt &operator=(const AnyOpt & what) {
         store_copy(&what, "assignment");
         return *this;
     }
 
-    WindowsAPIAny &operator=(const NullOpt & what) {
-        puts("WindowsAPIAny NullOpt copy assignment");
+    AnyOpt &operator=(const AnyNullOpt_t & what) {
+        puts("AnyOpt AnyNullOpt_t copy assignment");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    WindowsAPIAny &operator=(NullOpt && what) {
-        puts("WindowsAPIAny NullOpt move assignment");
+    AnyOpt &operator=(AnyNullOpt_t && what) {
+        puts("AnyOpt AnyNullOpt_t move assignment");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    template<typename T> WindowsAPIAny &operator=(T &&what) {
+    template<typename T> AnyOpt &operator=(T &&what) {
         store_move(what, "assignment");
         return *this;
     }
 
-    template<typename T> WindowsAPIAny &operator=(T * what) {
+    template<typename T> AnyOpt &operator=(T * what) {
         store_pointer(what, false, "assignment");
         return *this;
     }
 
-    WindowsAPIAny &store(NullOpt && what) {
-        puts("WindowsAPIAny NullOpt move store");
+    AnyOpt &store(AnyNullOpt_t && what) {
+        puts("AnyOpt AnyNullOpt_t move store");
         fflush(stdout);
         deallocate();
         return *this;
     }
 
-    template<typename T> WindowsAPIAny &store(T && what) {
+    template<typename T> AnyOpt &store(T && what) {
         store_move(what, "assignment");
         return *this;
     }
 
-    template<typename T> WindowsAPIAny &store(T * what, bool allocated) {
+    template<typename T> AnyOpt &store(T * what, bool allocated) {
         store_pointer(what, allocated, "assignment");
         return *this;
     }
 
-    WindowsAPIAny() {
-        puts("WindowsAPIAny constructor");
+    AnyOpt() {
+        puts("AnyOpt constructor");
         fflush(stdout);
     }
-    ~WindowsAPIAny() {
-        puts("WindowsAPIAny destructor");
+    ~AnyOpt() {
+        puts("AnyOpt destructor");
         fflush(stdout);
-        printf("WindowsAPIAny isNullOpt is %s\n", isNullOpt ? "true" : "false");
+        printf("AnyOpt isAnyNullOpt is %s\n", isAnyNullOpt ? "true" : "false");
         fflush(stdout);
-        if (!isNullOpt) deallocate();
+        if (!isAnyNullOpt) deallocate();
     }
 
     template <typename T> T * get() {
@@ -268,4 +276,4 @@ public:
     }
 };
 
-#endif //ANDROIDCOMPOSITOR_WindowsAPIAny_H
+#endif //ANDROIDCOMPOSITOR_AnyOpt_H

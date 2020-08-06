@@ -6,7 +6,7 @@
 #define MEDIA_PLAYER_PRO_WINDOWSAPIOBJECT_H
 
 #include "../WindowsAPIDefinitions.h"
-#include "WindowsAPIAny.h"
+#include "AnyOpt.h"
 #include <cstring>
 
 typedef DWORD ObjectType;
@@ -20,7 +20,11 @@ extern const ObjectType ObjectTypeWindow;
 extern const ObjectFlag ObjectFlagNone;
 extern const ObjectFlag ObjectFlagAutoDeallocateResource;
 
-typedef WindowsAPIAny ResourceType;
+typedef AnyOpt<
+AnyOpt_FLAG_COPY_OR_MOVE |
+AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE |
+AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE
+>ResourceType;
 
 typedef class Object {
     public:

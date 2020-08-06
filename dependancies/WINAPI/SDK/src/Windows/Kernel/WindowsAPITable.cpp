@@ -73,7 +73,9 @@ Object * Table::objectAt(size_t index) {
 }
 
 Object *Table::add(ObjectType type, ObjectFlag flags) {
-    return this->add(type, flags, WindowsAPIAny());
+    return this->add(type, flags, AnyOpt<AnyOpt_FLAG_COPY_OR_MOVE |
+                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE |
+                                  AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE>());
 }
 
 Object *Table::add(Object *object) {

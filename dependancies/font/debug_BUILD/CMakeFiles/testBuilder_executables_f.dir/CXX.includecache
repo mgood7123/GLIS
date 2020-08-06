@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIAny.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
 iostream
 -
 memory
@@ -39,8 +39,8 @@ cstdint
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
 ../WindowsAPIDefinitions.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
-WindowsAPIAny.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIAny.h
+AnyOpt.h
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
 cstring
 -
 
