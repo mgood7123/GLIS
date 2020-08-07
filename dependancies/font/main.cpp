@@ -148,7 +148,12 @@ struct font {
 };
 
 int main(int argc, char **argv) {
-    AnyOpt x = AnyNullOpt; { int y = 5; x = y; } cout << x.get<int>()[0] << endl << flush;
+    cout << "start" << endl << flush;
+    cout << "assign 1" << endl << flush;
+    AnyOpt x = 5; // fine
+    cout << "assign 2" << endl << flush;
+    x = 6; // double free
+    // { int y = 5; x = y; } cout << x.get<int>()[0] << endl << flush;
     cout << "end" << endl << flush;
 //    font f;
 //    f.add_font("f1");

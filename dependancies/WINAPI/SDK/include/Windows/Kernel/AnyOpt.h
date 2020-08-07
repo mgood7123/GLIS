@@ -42,55 +42,69 @@ public:
             return new storage(*data);
         }
 
-        storage(T &x) : data(new T(x)), pointer_is_allocated(true) {
+        storage(const T &x) {
             puts("AnyOptCustomFlags::storage copy constructor");
             fflush(stdout);
+            deallocate();
+            data = new T(x);
+            pointer_is_allocated = true;
         }
 
-        storage(T &&x) : data(new T(std::forward<T>(x))), pointer_is_allocated(true) {
-            puts("AnyOptCustomFlags::storage move constructor ");
+        storage(T &&x) {
+            puts("AnyOptCustomFlags::storage move constructor");
             fflush(stdout);
+            if (data == nullptr) {
+                data = new T(std::forward<T>(x));
+                pointer_is_allocated = true;
+            } else {
+                std::swap(*data, x);
+            }
         }
 
-        storage(T * x, bool allocation) : data(x), is_pointer(true), pointer_is_allocated(allocation) {
+        storage(T * x, bool allocation) {
             puts("AnyOptCustomFlags::storage pointer constructor");
             fflush(stdout);
+            deallocate();
+            data = x;
+            is_pointer = true;
+            pointer_is_allocated = allocation;
+        }
+
+        void deallocate() {
+            if (!pointer_is_allocated) {
+                if (is_pointer) {
+                    puts("AnyOptCustomFlags::storage data a pointer however it is not allocated");
+                    fflush(stdout);
+                }
+            } else {
+                if (!is_pointer) {
+                    puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer");
+                    fflush(stdout);
+                    if (data == nullptr) {
+                        puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer however it is assigned to nullptr, this is likely a bug");
+                        fflush(stdout);
+                    } else {
+                        delete data;
+                        data = nullptr;
+                    }
+                } else {
+                    puts("AnyOptCustomFlags::storage data an allocated pointer");
+                    fflush(stdout);
+                    if (data == nullptr) {
+                        puts("AnyOptCustomFlags::storage data is an allocated pointer however it is assigned to nullptr, this is likely a bug");
+                        fflush(stdout);
+                    } else {
+                        delete data;
+                        data = nullptr;
+                    }
+                }
+            }
         }
 
         ~storage() {
             puts("AnyOptCustomFlags::storage destructor ");
             fflush(stdout);
-            if (pointer_is_allocated) {
-                if (is_pointer) {
-                    puts("AnyOptCustomFlags::storage data an allocated pointer");
-                    fflush(stdout);
-                    if (data != nullptr) {
-                        delete data;
-                        data = nullptr;
-                    } else {
-                        puts("AnyOptCustomFlags::storage data is an allocated pointer however it is assigned to nullptr, this is likely a bug");
-                        fflush(stdout);
-                    }
-                } else {
-                    puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer");
-                    fflush(stdout);
-                    if (data != nullptr) {
-                        delete data;
-                        data = nullptr;
-                    } else {
-                        puts("AnyOptCustomFlags::storage data is a synthetic allocated pointer however it is assigned to nullptr, this is likely a bug");
-                        fflush(stdout);
-                    }
-                }
-            } else {
-                if (is_pointer) {
-                    puts("AnyOptCustomFlags::storage data a pointer however it is not allocated");
-                    fflush(stdout);
-                } else {
-                    puts("AnyOptCustomFlags::storage data a synthetic pointer however it is not allocated, this is a bug");
-                    fflush(stdout);
-                }
-            }
+            deallocate();
         }
     };
 
@@ -127,19 +141,29 @@ public:
         bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOptCustomFlags>::value;
         printf("AnyOptCustomFlags move %s\n", type);
         fflush(stdout);
-        deallocate();
         if (A || B) {
+            deallocate();
             puts("AnyOptCustomFlags moving data");
             fflush(stdout);
             move(const_cast<AnyOptCustomFlags*>(reinterpret_cast<const AnyOptCustomFlags*>(&what)));
             puts("AnyOptCustomFlags moved data");
             fflush(stdout);
         } else {
-            puts("AnyOptCustomFlags allocating and assigning data");
-            fflush(stdout);
-            data = new storage<typename std::remove_reference<T>::type>(std::forward<T>(what));
-            puts("AnyOptCustomFlags allocated and assigned data");
-            fflush(stdout);
+            // use swap, move the data
+            if (data == nullptr) {
+                puts("AnyOptCustomFlags allocating and assigning data");
+                fflush(stdout);
+                data = new storage<typename std::remove_reference<T>::type>(std::forward<T>(what));
+                puts("AnyOptCustomFlags allocated and assigned data");
+                fflush(stdout);
+            } else {
+                puts("AnyOptCustomFlags swapping data");
+                fflush(stdout);
+                storage<typename std::remove_reference<T>::type> * s = static_cast<storage<typename std::remove_reference<T>::type>*>(data);
+                *s = std::forward<T>(what);
+                puts("AnyOptCustomFlags swapped data");
+                fflush(stdout);
+            }
             isAnyNullOpt = false;
             data_is_allocated = true;
         }
@@ -202,7 +226,10 @@ public:
     void deallocate() {
         puts("AnyOptCustomFlags deallocating data");
         fflush(stdout);
-        if (data != nullptr) {
+        if (data == nullptr) {
+            puts("AnyOptCustomFlags data is nullptr, data has not been allocated or has already been deallocated");
+            fflush(stdout);
+        } else {
             puts("AnyOptCustomFlags data is not nullptr");
             fflush(stdout);
             puts("AnyOptCustomFlags deleting data");
@@ -211,9 +238,6 @@ public:
             data = nullptr;
             data_is_allocated = false;
             puts("AnyOptCustomFlags deleted data");
-            fflush(stdout);
-        } else {
-            puts("AnyOptCustomFlags data is nullptr, data has not been allocated or has already been deallocated");
             fflush(stdout);
         }
         isAnyNullOpt = true;
@@ -256,6 +280,7 @@ public:
     }
 
     template<typename T> AnyOptCustomFlags &store(T && what) {
+        // function accepting a forward reference
         store_move(what, "assignment");
         return *this;
     }
