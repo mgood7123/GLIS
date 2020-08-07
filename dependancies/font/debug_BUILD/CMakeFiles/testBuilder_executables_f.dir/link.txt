@@ -1,0 +1,1 @@
+/usr/bin/c++  -g3 -O0   CMakeFiles/testBuilder_executables_f.dir/main.cpp.o  -o testBuilder_executables_f  WINAPI/SDK/src/Windows/Kernel/libWinKernel.a 

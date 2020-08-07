@@ -62,13 +62,13 @@ release_directories: | $(release_build_dir_target) $(release_executable_dir_targ
 debug_asan_directories: | $(debug_asan_build_dir_target) $(debug_asan_executable_dir_target)
 
 build_debug: debug_directories
-	cd ${debug_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Debug .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(debug_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
+	cd ${debug_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG="-g3 -O0" .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(debug_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
 
 build_release: release_directories
-	cd ${release_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Release .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(release_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
+	cd ${release_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-g0 -O3" .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(release_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
 
 build_debug_asan: debug_asan_directories
-	cd ${debug_asan_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG="-fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope" .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(debug_asan_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
+	cd ${debug_asan_build_dir} ; mkdir EXECUTABLES; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG="-g3 -O0 -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope" .. ; make && if test -e EXECUTABLES ; then cd EXECUTABLES; for file in * ; do mv -v $$file ../../$(debug_asan_executable_dir)/$$FILE ; done ; cd ..; rmdir EXECUTABLES; fi
 
 .PHONY: all
 

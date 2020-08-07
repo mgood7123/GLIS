@@ -1,1 +1,1 @@
-/usr/bin/c++  -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope   CMakeFiles/testBuilder_executables_f.dir/main.cpp.o  -o testBuilder_executables_f  WINAPI/SDK/src/Windows/Kernel/libWinKernel.a 
+/usr/bin/c++  -g3 -O0 -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope   CMakeFiles/testBuilder_executables_f.dir/main.cpp.o  -o testBuilder_executables_f  WINAPI/SDK/src/Windows/Kernel/libWinKernel.a 

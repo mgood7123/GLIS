@@ -16,18 +16,28 @@ struct font {
         }
 
         /* Copy constructor */
-        atlas(const atlas &p2) {
-            puts("atlas copy constructor");
-            fflush(stdout);
+        constexpr atlas(const atlas &p2) {
             size = p2.size;
         }
 
         /* Move constructor */
-        atlas(atlas &&p2) {
-            puts("atlas move constructor");
-            fflush(stdout);
+        constexpr atlas(atlas &&p2) {
             size = p2.size;
             p2.size = 0;
+        }
+
+        atlas &operator=(const atlas &x) const {
+            puts("atlas copy assignment");
+            fflush(stdout);
+            const_cast<atlas*>(this)->size = x.size;
+            return *const_cast<atlas*>(this);
+        }
+
+        atlas &operator=(atlas &&x) const {
+            puts("atlas move assignment");
+            fflush(stdout);
+            std::swap(const_cast<atlas*>(this)->size, x.size);
+            return *const_cast<atlas*>(this);
         }
 
         ~atlas () {
@@ -152,26 +162,29 @@ int main(int argc, char **argv) {
     cout << "assign 1" << endl << flush;
     AnyOpt x = 5; // fine
     cout << "assign 2" << endl << flush;
-    x = 6; // double free
-    // { int y = 5; x = y; } cout << x.get<int>()[0] << endl << flush;
+    x = 6;
     cout << "end" << endl << flush;
-//    font f;
-//    f.add_font("f1");
-//    f.add_font("f2");
-//    f.add_font("f3");
-//    f.add_font_size("f1", 12);
-//    f.add_font_size("f1", 16);
-//    f.add_font_size("f3", 48);
-//    f.list_fonts();
-//    f.list_sizes();
-//    f.remove_font("f2");
-//    f.list_fonts();
-//    f.list_sizes();
-//    f.remove_font("f1");
-//    f.list_fonts();
-//    f.list_sizes();
-//    f.remove_font("f3");
-//    f.list_fonts();
-//    f.list_sizes();
+    font f;
+    cout << "add_font start" << endl << flush;
+    f.add_font("f1");
+    cout << "add_font end" << endl << flush;
+    cout << "add_font_size start" << endl << flush;
+    f.add_font_size("f1", 12);
+    cout << "add_font_size end" << endl << flush;
+    f.add_font("f2");
+    f.add_font("f3");
+    f.add_font_size("f1", 16);
+    f.add_font_size("f3", 48);
+    f.list_fonts();
+    f.list_sizes();
+    f.remove_font("f2");
+    f.list_fonts();
+    f.list_sizes();
+    f.remove_font("f1");
+    f.list_fonts();
+    f.list_sizes();
+    f.remove_font("f3");
+    f.list_fonts();
+    f.list_sizes();
     return 0;
 }

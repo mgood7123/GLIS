@@ -12,7 +12,7 @@
 typedef class Table {
     public:
         std::vector<Object *> table;
-        const size_t page_size = 1_kilobyte;
+        size_t page_size = 1_kilobyte;
 
         Table();
         ~Table();

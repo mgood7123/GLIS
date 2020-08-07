@@ -42,7 +42,7 @@ CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-9
 CMAKE_CXX_FLAGS:STRING=
 
 //Flags used by the CXX compiler during DEBUG builds.
-CMAKE_CXX_FLAGS_DEBUG:STRING=-fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope
+CMAKE_CXX_FLAGS_DEBUG:STRING=-g3 -O0 -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope
 
 //Flags used by the CXX compiler during MINSIZEREL builds.
 CMAKE_CXX_FLAGS_MINSIZEREL:STRING=-Os -DNDEBUG

@@ -16,6 +16,13 @@ class Kernel {
     public:
         Kernel();
 
+        Kernel(const Kernel &x);
+        Kernel(Kernel &&x);
+
+        Kernel & operator=(const Kernel &x) const;
+
+        Kernel & operator=(Kernel &&x) const;
+
         ~Kernel();
 
         WindowsAPITable *table = nullptr;
