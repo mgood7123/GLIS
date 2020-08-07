@@ -2,6 +2,8 @@
 // Created by smallville7123 on 14/07/20.
 //
 
+// file created in commit c04b9a80992c063cd379ab1d1ce572dcf03bf6cd - "upload"
+
 #include <glis/glis.hpp>
 
 GLIS_CLASS screen;
@@ -61,7 +63,7 @@ GLIS_FONT::ATLAS atlas;
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    font.A.display(font);
+    atlas.display(font);
 //    for (int i = 1; i < 6001; ++i) {
 //        wrap ? font.GLIS_font_RenderText(
 //                GLIS_val_to_string(i),
@@ -85,7 +87,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(screen);
-    font.A.free_resources();
+    atlas.free_resources();
     glis.GLIS_destroy_GLIS(screen);
 }
 
@@ -95,6 +97,8 @@ int main() {
     glViewport(0, 0, screen.width, screen.height);
     atlas.set_width_height(screen.width, screen.height);
     atlas.load_font("vera", "/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf");
-    atlas.generate_font_size(12);
+    atlas.a12 = new GLIS_FONT::ATLAS::atlas(atlas.face, 12);
+    atlas.a24 = new GLIS_FONT::ATLAS::atlas(atlas.face, 24);
+    atlas.a48 = new GLIS_FONT::ATLAS::atlas(atlas.face, 48);
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
