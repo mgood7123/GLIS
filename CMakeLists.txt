@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(GLIS)
 
-# cmake does not know how to enable C++17
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -10,7 +9,11 @@ set(CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(dependancies/WINAPI)
 include_directories(${WINAPI_INCLUDE_DIRECTORIES})
-add_subdirectory(dependancies/testBuilder)
+
+if(NOT COMMAND testBuilder_build)
+    add_subdirectory(dependancies/testBuilder)
+    testBuilder_set_current_working_directory_to_default_binary_directory()
+endif()
 
 add_subdirectory(dependancies/font)
 

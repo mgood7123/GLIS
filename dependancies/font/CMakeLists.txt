@@ -9,8 +9,9 @@ if(NOT WINAPI_LIBRARY)
     include_directories(${WINAPI_INCLUDE})
 endif()
 
-if(NOT testBuilder_build)
+if(NOT COMMAND testBuilder_build)
     add_subdirectory(testBuilder)
+    testBuilder_set_current_working_directory_to_default_binary_directory()
 endif()
 
 testBuilder_add_source(f main.cpp)

@@ -65,6 +65,7 @@ bool SHM_create(int &fd, int8_t **data, size_t size) {
 bool SHM_resize(int &fd, int8_t **data, size_t size) {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL("SHM_resize", "ashmem is not supported in linux");
+    return false;
 #else
     int ret = TEMP_FAILURE_RETRY(ioctl(fd, ASHMEM_SET_SIZE, size));
     if (ret < 0) {

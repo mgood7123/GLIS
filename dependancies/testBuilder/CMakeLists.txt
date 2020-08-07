@@ -36,20 +36,32 @@ macro(testBuilder_add_dependency testName dependencyName)
     set(testBuilder_DEPENDENCY_LIST_${testName} ${testBuilder_DEPENDENCY_LIST_${testName}};${dependencyName})
 endmacro()
 
+macro(testBuilder_set_current_working_directory workingDirectory)
+    set(testBuilder_WORKING_DIRECTORY ${workingDirectory})
+endmacro()
+
+macro(testBuilder_set_current_working_directory_to_default_binary_directory)
+    set(testBuilder_WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endmacro()
+
 macro(testBuilder_build testName outDirectory)
     add_executable(testBuilder_executables_${testName} ${testBuilder_SOURCES_LIST_${testName}})
     target_link_libraries(testBuilder_executables_${testName} ${testBuilder_LIBRARIES_LIST_${testName}})
+
+    set(testBuilder_IN_FILE testBuilder_executables_${testName})
+
     if(CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-        add_custom_command(
-                TARGET testBuilder_executables_${testName}
-                POST_BUILD
-                COMMAND cp -v ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/testBuilder_executables_${testName} ${outDirectory}/${testName})
-    else()
-        add_custom_command(
-                TARGET testBuilder_executables_${testName}
-                POST_BUILD
-                COMMAND cp -v testBuilder_executables_${testName} ${outDirectory}/${testName})
+        set(testBuilder_IN_FILE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${testBuilder_IN_FILE})
     endif()
+
+    set(testBuilder_OUT_FILE ${testBuilder_WORKING_DIRECTORY}/${outDirectory}/${testName})
+
+
+    add_custom_command(
+            TARGET testBuilder_executables_${testName}
+            POST_BUILD
+            COMMAND cp -v ${testBuilder_IN_FILE} ${testBuilder_OUT_FILE}
+    )
 endmacro()
 
 macro(testBuilder_build_shared_library testName)

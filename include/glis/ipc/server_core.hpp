@@ -139,6 +139,8 @@ class SOCKET_SERVER {
 
         SOCKET_SERVER(const char *name);
 
+        SOCKET_SERVER& operator=(const SOCKET_SERVER&);
+
         ~SOCKET_SERVER();
 
         bool socket_create(int &socket_fd, int __af, int __type, int __protocol);

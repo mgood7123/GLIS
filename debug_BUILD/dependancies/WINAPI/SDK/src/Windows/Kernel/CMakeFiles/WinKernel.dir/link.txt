@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g3 -O0  -shared -Wl,-soname,libWinKernel.so -o ../../../../../../Debug/lib/libWinKernel.so CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIHandle.cpp.o 

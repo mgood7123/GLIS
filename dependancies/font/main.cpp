@@ -45,10 +45,22 @@ struct font {
         }
     };
 
-    typedef std::pair <const char*, ResourceType> ATLAS_PAIR;
+    template <typename A, typename B, typename C> class triple {
+    public:
+        A first;
+        B second;
+        C third;
+        triple(A first, B second, C third) {
+            this->first = first;
+            this->second = second;
+            this->third = third;
+        }
+    };
 
-    void add_font(const char * id) {
-        font.newObject(0, 0, ATLAS_PAIR {id, ResourceType(new Kernel(), true)});
+    typedef triple <const char*, const char*, ResourceType> ATLAS_PAIR;
+
+    void add_font(const char * id, const char * path) {
+        font.newObject(0, 0, ATLAS_PAIR {id, path, ResourceType(new Kernel(), true)});
     }
 
     Object * find_font(const char * id) {
@@ -86,7 +98,7 @@ struct font {
     Kernel * get_atlas(const char * id) {
         auto o = find_font(id);
         if (o == nullptr) return nullptr;
-        return o->resource.get<ATLAS_PAIR>()->second.get<Kernel>();
+        return o->resource.get<ATLAS_PAIR>()->third.get<Kernel>();
     }
 
     void add_font_size(const char * id, int size) {
@@ -131,7 +143,7 @@ struct font {
                 if (font.table->table[index] != nullptr) {
                     if (font.table->table[index]->resource.has_value()) {
                         ATLAS_PAIR *a = font.table->table[index]->resource.get<ATLAS_PAIR>();
-                        Kernel *x = a->second.get<Kernel>();
+                        Kernel *x = a->third.get<Kernel>();
                         if (x->table->Page.count() == 0) {
                             printf("font %s has no sizes created\n", a->first);
                         } else {
@@ -158,21 +170,11 @@ struct font {
 };
 
 int main(int argc, char **argv) {
-    cout << "start" << endl << flush;
-    cout << "assign 1" << endl << flush;
-    AnyOpt x = 5; // fine
-    cout << "assign 2" << endl << flush;
-    x = 6;
-    cout << "end" << endl << flush;
     font f;
-    cout << "add_font start" << endl << flush;
-    f.add_font("f1");
-    cout << "add_font end" << endl << flush;
-    cout << "add_font_size start" << endl << flush;
+    f.add_font("f1", "/F1");
     f.add_font_size("f1", 12);
-    cout << "add_font_size end" << endl << flush;
-    f.add_font("f2");
-    f.add_font("f3");
+    f.add_font("f2", "/F2");
+    f.add_font("f3", "/F3");
     f.add_font_size("f1", 16);
     f.add_font_size("f3", 48);
     f.list_fonts();

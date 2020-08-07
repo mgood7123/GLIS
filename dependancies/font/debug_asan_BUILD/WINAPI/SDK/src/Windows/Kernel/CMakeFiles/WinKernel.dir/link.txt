@@ -1,2 +1,1 @@
-/usr/bin/ar qc libWinKernel.a  CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIHandle.cpp.o
-/usr/bin/ranlib libWinKernel.a
+/usr/bin/c++ -fPIC -g3 -O0 -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope  -shared -Wl,-soname,libWinKernel.so -o libWinKernel.so CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o CMakeFiles/WinKernel.dir/WindowsAPIHandle.cpp.o 

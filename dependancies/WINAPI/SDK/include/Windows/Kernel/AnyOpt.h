@@ -372,4 +372,8 @@ public:
 
 typedef AnyOptCustomFlags<AnyOpt_FLAGS_DEFAULT> AnyOpt;
 
+template <typename T> constexpr T AnyOpt_Cast(const AnyOpt & val)  {
+    return val.get<T>();
+}
+
 #endif //ANDROIDCOMPOSITOR_AnyOpt_H

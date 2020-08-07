@@ -5,6 +5,10 @@
 
 bool useAtlas = true;
 
+GLint uniform_projection;
+GLint uniform_tex;
+GLint uniform_color;
+
 bool GLIS_FONT::GLIS_font_init() {
     if (FT_Init_FreeType(&GLIS_font)) {
         LOG_ERROR("ERROR::FREETYPE: Could not init FreeType Library");
@@ -680,8 +684,8 @@ void GLIS_FONT::ATLAS::set_width_height(int w, int h) {
 int GLIS_FONT::ATLAS::load_font(const char * font_name, const char * font_path) {
 //    if (atlas_index.at(font_name))
     /* Load a font */
-    if (FT_New_Face(ft, fontfilename, 0, &face)) {
-        LOG_ERROR("Could not open font %s", fontfilename);
+    if (FT_New_Face(ft, font_path, 0, &face)) {
+        LOG_ERROR("Could not open font %s", font_path);
         return 0;
     }
 
@@ -732,6 +736,5 @@ int GLIS_FONT::ATLAS::load_font(const char * font_name, const char * font_path) 
     return 1;
 }
 
-void GLIS_FONT::ATLAS::generate_font_size() {
-
+void GLIS_FONT::ATLAS::generate_font_size(int size) {
 }

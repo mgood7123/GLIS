@@ -4,6 +4,10 @@
 #include <zconf.h>
 #include <sys/time.h> // gettimeofday
 
+SOCKET_SERVER& SOCKET_SERVER::operator=(const SOCKET_SERVER&) {
+    abort();
+}
+
 bool SERVER_LOG_TRANSFER_INFO = true;
 const char * LOG_TAG_SERVER = "server";
 Kernel SERVER_KERNEL;
@@ -393,7 +397,7 @@ bool SOCKET_CLOSE(const char *TAG, int &socket_fd) {
 }
 
 SOCKET_SERVER *SERVER_get(size_t id) {
-    SOCKET_SERVER * S = static_cast<SOCKET_SERVER *>(SERVER_KERNEL.table->table[id]->resource);
+    SOCKET_SERVER * S = SERVER_KERNEL.table->table[id]->resource.get<SOCKET_SERVER>();
     assert(S != nullptr);
     return S;
 }
@@ -401,19 +405,21 @@ SOCKET_SERVER *SERVER_get(size_t id) {
 char *SERVER_allocate_new_server(void *(*SERVER_MAIN)(void *), size_t &id) {
     Object *o = SERVER_KERNEL.newObject(0, 0, new SOCKET_SERVER);
     id = SERVER_KERNEL.table->findObject(o);
-    static_cast<SOCKET_SERVER *>(o->resource)->set_name(std::to_string(id).c_str());
-    if (SERVER_MAIN != nullptr) static_cast<SOCKET_SERVER *>(o->resource)->startServer(SERVER_MAIN);
-    return static_cast<SOCKET_SERVER *>(o->resource)->server_name;
+    o->resource.get<SOCKET_SERVER>()->set_name(std::to_string(id).c_str());
+    if (SERVER_MAIN != nullptr) o->resource.get<SOCKET_SERVER>()->startServer(SERVER_MAIN);
+    return o->resource.get<SOCKET_SERVER>()->server_name;
 }
 
-char *SERVER_allocate_new_server(size_t &id) { return SERVER_allocate_new_server(nullptr, id); }
+char *SERVER_allocate_new_server(size_t &id) {
+    return SERVER_allocate_new_server(nullptr, id);
+}
 
 void SERVER_deallocate_server(size_t &id) {
-    Object * o = SERVER_KERNEL.table->table[id];
-    SOCKET_SERVER * x = static_cast<SOCKET_SERVER *>(o->resource);
-    x->shutdownServer();
-    delete static_cast<SOCKET_SERVER *>(o->resource);
-    SERVER_KERNEL.table->DELETE(id);
+//    Object * o = SERVER_KERNEL.table->table[id];
+//    SOCKET_SERVER * x = o->resource.get<SOCKET_SERVER>();
+//    x->shutdownServer();
+//    o->resource = AnyNullOpt;
+//    SERVER_KERNEL.table->DELETE(id);
 }
 
 void *SERVER_START_REPLY_MANUALLY(void *na) {

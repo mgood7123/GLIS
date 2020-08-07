@@ -8,7 +8,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Magnum/GL/OpenGL.h>
-#include <optional>
 
 extern GLint attribute_coord;
 extern GLint uniform_projection;
@@ -168,8 +167,6 @@ public:
         // a map of atlas's corresponding to loaded fonts and sizes
 
         // an atlas map tailored specifically for font access
-
-        #include "atlas.hpp"
 
 //        atlas_map<const char *, atlas_map<const char *, atlas*>> atlas_index;
 

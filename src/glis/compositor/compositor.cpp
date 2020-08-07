@@ -146,9 +146,7 @@ void handleCommands(
         LOG_INFO("CLIENT ID: %zu, received id: %zu", client->id, window_id);
         assert(window_id >= 0);
         assert(CompositorMain.KERNEL.table->table[window_id] != nullptr);
-        Client_Window *x = reinterpret_cast<Client_Window *>(
-                CompositorMain.KERNEL.table->table[window_id]->resource
-        );
+        Client_Window *x = CompositorMain.KERNEL.table->table[window_id]->resource.get<Client_Window>();
         int64_t w = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         int64_t h = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
         LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, w, h);
@@ -176,9 +174,7 @@ void handleCommands(
         LOG_INFO("CLIENT ID: %zu, modifying window (ID: %zu)", client->id, window_id);
         assert(window_id >= 0);
         assert(CompositorMain.KERNEL.table->table[window_id] != nullptr);
-        class Client_Window *x = reinterpret_cast<Client_Window *>(
-                CompositorMain.KERNEL.table->table[window_id]->resource
-        );
+        Client_Window *x = CompositorMain.KERNEL.table->table[window_id]->resource.get<Client_Window>();
         x->x = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         x->y = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
         x->w = client->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
@@ -237,9 +233,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             ==
                             ObjectTypeProcess
                             ) {
-                        Client *client = static_cast<Client *>(
-                                CompositorMain.KERNEL.table->table[index]->resource
-                        );
+                        Client *client = CompositorMain.KERNEL.table->table[index]->resource.get<Client>();
                         if (client->shared_memory.data == nullptr) {
                             CompositorMain.KERNEL.table->DELETE(index);
                         } else if (client->shared_memory.slot.status.load_int8_t() != client->shared_memory.status.standby) {
@@ -273,9 +267,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             ==
                             ObjectTypeWindow
                             ) {
-                        class Client_Window *CW = static_cast<Client_Window *>(
-                                CompositorMain.KERNEL.table->table[index]->resource
-                        );
+                        Client_Window *CW = CompositorMain.KERNEL.table->table[index]->resource.get<Client_Window>();
                         glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
                                                         0,
                                                         // pos
