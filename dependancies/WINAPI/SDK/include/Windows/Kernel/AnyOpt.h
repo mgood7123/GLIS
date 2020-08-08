@@ -22,7 +22,7 @@ static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 4;
 static constexpr int AnyOpt_FLAG_ENABLE_POINTERS = 1 << 5;
 static constexpr int AnyOpt_FLAG_IS_ALLOCATED = 1 << 6;
 
-static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY | \
+static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_ONLY | \
                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
                                  AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE | \
                                  AnyOpt_FLAG_ENABLE_POINTERS | \
@@ -36,6 +36,15 @@ constexpr bool flag_is_set(uint64_t flags, uint64_t flag) {
 constexpr bool flag_is_not_set(uint64_t flags, uint64_t flag) {
     return !flag_is_set(flags, flag);
 }
+
+#define ensure_flag_enabled(FLAGS, flag, message)         static_assert(flag_is_set(FLAGS, flag), \
+message "\n" \
+"you can set it by appending\n" \
+"|" #flag "\n" \
+"to the flag list:\n" \
+"AnyOptCustomFlags<Your_Flags|" #flag "> Your_Variable_Name;" \
+)
+
 
 #define enableFunctionIf(T, E) template<class T, typename = typename std::enable_if<E, T>::type>
 #define enableFunctionIfFlagIsSet(T, FLAGS, FLAG) enableFunctionIf(T, (FLAGS & FLAG) == 0)
@@ -243,12 +252,10 @@ public:
     }
 
     template<typename T> void store_copy(const T * what, const char * type) const {
-        static_assert(flag_is_set(FLAGS, AnyOpt_FLAG_COPY_ONLY),
-                      "this function is not allowed unless the copy flag is set\n"
-                      "you can set it by appending\n"
-                      "|AnyOpt_FLAG_COPY_ONLY\n"
-                      "to the flag list:\n"
-                      "AnyOptCustomFlags<Your_Flags|AnyOpt_FLAG_COPY_ONLY> Your_Variable_Name"
+        ensure_flag_enabled(
+                FLAGS,
+                AnyOpt_FLAG_COPY_ONLY,
+                "this function is not allowed unless the copy flag is set"
         );
         printf("AnyOptCustomFlags copy %s\n", type);
         fflush(stdout);
@@ -267,15 +274,20 @@ public:
                             AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE
                     )
                     ) {
-                static_assert(
-                        flag_is_set(FLAGS, AnyOpt_FLAG_MOVE_ONLY) &&
-                        flag_is_set(
-                                FLAGS,
-                                AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE
-                        ),
-                        "AnyOptCustomFlags is eligible for moving however, it has not been granted the ability to move data"
+                ensure_flag_enabled(
+                        FLAGS,
+                        AnyOpt_FLAG_MOVE_ONLY,
+                        "AnyOptCustomFlags is eligible for moving,"
+                        " however it has not been granted the ability to move data"
                 );
-                puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
+                puts(
+                        "AnyOptCustomFlags is being moved "
+                        "because it has been marked as allocated and the "
+                        "AnyOpt_FLAG_MOVE_ONLY "
+                        "and "
+                        "AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE "
+                        "flags are set"
+                );
                 fflush(stdout);
                 store_move(*obj, type);
             }
