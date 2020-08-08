@@ -9,7 +9,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Magnum/GL/OpenGL.h>
 
-extern GLint attribute_coord;
 extern GLint uniform_projection;
 extern GLint uniform_tex;
 extern GLint uniform_color;

@@ -733,6 +733,12 @@ int GLIS_FONT::ATLAS::load_font(const char * font_name, const char * font_path) 
 
     // Create the vertex buffer object
     glGenBuffers(1, &vbo);
+
+    /* Create texture atlasses for several font sizes */
+    a48 = new atlas(face, 48);
+    a24 = new atlas(face, 24);
+    a12 = new atlas(face, 12);
+
     return 1;
 }
 

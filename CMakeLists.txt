@@ -127,13 +127,14 @@ endmacro()
 # compositor
 build_program(examples compositor)
 
-# basic window
+# basic window creation
 build_program(examples X11)
 build_program(examples wayland)
 
 # usages
 build_program(examples X11_2)
 build_program(examples X11_3)
+build_program(examples X11_font_0)
 build_program(examples X11_font_1)
 
 # magnum

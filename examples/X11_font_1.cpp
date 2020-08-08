@@ -63,7 +63,7 @@ GLIS_FONT::ATLAS atlas;
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    atlas.display(font);
+    font.A.display(font);
 //    for (int i = 1; i < 6001; ++i) {
 //        wrap ? font.GLIS_font_RenderText(
 //                GLIS_val_to_string(i),
@@ -87,7 +87,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
     glis.destroyX11Window(screen);
-    atlas.free_resources();
+    font.A.free_resources();
     glis.GLIS_destroy_GLIS(screen);
 }
 
@@ -95,10 +95,12 @@ int main() {
     glis.getX11Window(screen, 640, 480);
     glis.GLIS_setupOnScreenRendering(screen);
     glViewport(0, 0, screen.width, screen.height);
-    atlas.set_width_height(screen.width, screen.height);
-    atlas.load_font("vera", "/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf");
-    atlas.a12 = new GLIS_FONT::ATLAS::atlas(atlas.face, 12);
-    atlas.a24 = new GLIS_FONT::ATLAS::atlas(atlas.face, 24);
-    atlas.a48 = new GLIS_FONT::ATLAS::atlas(atlas.face, 48);
-    glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
+    font.A.set_width_height(screen.width, screen.height);
+    font.A.load_font("vera", "/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf");
+//    font.A.a12 = new GLIS_FONT::ATLAS::atlas(font.A.face, 12);
+//    font.A.a24 = new GLIS_FONT::ATLAS::atlas(font.A.face, 24);
+//    font.A.a48 = new GLIS_FONT::ATLAS::atlas(font.A.face, 48);
+    font.A.display(font);
+    glis.GLIS_SwapBuffers(screen);
+    glis.runUntilX11WindowClose(glis, screen, font, fps, nullptr, resize, close);
 }
