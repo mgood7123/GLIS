@@ -11,6 +11,8 @@
 
 // TODO: test flags
 
+// https://stackoverflow.com/a/17431484 - How to write runnable tests of static_assert?
+
 // const AnyOpt a(new int, true);
 // alternative to
 // const AnyOpt a; a.store(new int, true);
