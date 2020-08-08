@@ -21,16 +21,25 @@ static constexpr int AnyOpt_FLAG_ENABLE_NON_POINTERS = 1 << 3;
 static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 4;
 static constexpr int AnyOpt_FLAG_ENABLE_POINTERS = 1 << 5;
 static constexpr int AnyOpt_FLAG_IS_ALLOCATED = 1 << 6;
+
 static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY | \
                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
                                  AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE | \
                                  AnyOpt_FLAG_ENABLE_POINTERS | \
                                  AnyOpt_FLAG_ENABLE_NON_POINTERS;
 
-#define enableFunctionIf(T, E) template<class T, typename = typename std::enable_if<false, T>::type>
-#define enableFunctionIfFlagIsSet(T, FLAGS, FLAG) enableFunctionIf(T, (FLAGS & FLAG) == 0)
+// most of the time, this is the function you want
+constexpr bool flag_is_set(uint64_t flags, uint64_t flag) {
+    return (flags & flag) != 0;
+}
 
-// use static_cast
+constexpr bool flag_is_not_set(uint64_t flags, uint64_t flag) {
+    return !flag_is_set(flags, flag);
+}
+
+#define enableFunctionIf(T, E) template<class T, typename = typename std::enable_if<E, T>::type>
+#define enableFunctionIfFlagIsSet(T, FLAGS, FLAG) enableFunctionIf(T, (FLAGS & FLAG) == 0)
+#define enableFunctionIfFlagIsNotSet(T, FLAGS, FLAG) enableFunctionIf(T, (FLAGS & FLAG) != 0)
 
 class AnyNullOpt_t {
 public:
@@ -234,18 +243,43 @@ public:
     }
 
     template<typename T> void store_copy(const T * what, const char * type) const {
+        static_assert(flag_is_set(FLAGS, AnyOpt_FLAG_COPY_ONLY),
+                      "this function is not allowed unless the copy flag is set\n"
+                      "you can set it by appending\n"
+                      "|AnyOpt_FLAG_COPY_ONLY\n"
+                      "to the flag list:\n"
+                      "AnyOptCustomFlags<Your_Flags|AnyOpt_FLAG_COPY_ONLY> Your_Variable_Name"
+        );
         printf("AnyOptCustomFlags copy %s\n", type);
         fflush(stdout);
-        copy(what);
-//        if (what->data != nullptr) {
-//            if (what->data_is_allocated) {
-//                puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
-//                fflush(stdout);
-//                store_move(*what, type);
-//            } else {
-//                copy(what);
-//            }
-//        }
+        bool A = std::is_same<typename std::remove_reference<T>::type, AnyOptCustomFlags>::value;
+        bool B = std::is_same<typename std::remove_reference<T>::type, const AnyOptCustomFlags>::value;
+        printf("AnyOptCustomFlags move %s\n", type);
+        fflush(stdout);
+        if (A || B) {
+            const AnyOptCustomFlags * constobj = reinterpret_cast<const AnyOptCustomFlags*>(what);
+            AnyOptCustomFlags * obj = const_cast<AnyOptCustomFlags*>(constobj);
+            if (
+                    obj->data &&
+                    obj->data_is_allocated &&
+                    flag_is_set(
+                            FLAGS,
+                            AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE
+                    )
+                    ) {
+                static_assert(
+                        flag_is_set(FLAGS, AnyOpt_FLAG_MOVE_ONLY) &&
+                        flag_is_set(
+                                FLAGS,
+                                AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE
+                        ),
+                        "AnyOptCustomFlags is eligible for moving however, it has not been granted the ability to move data"
+                );
+                puts("AnyOptCustomFlags needs to be moved because it has been marked as allocated");
+                fflush(stdout);
+                store_move(*obj, type);
+            }
+        } else copy(what);
     }
 
     template<typename T> void store_pointer(T * what, bool allocated, const char * type) const {
