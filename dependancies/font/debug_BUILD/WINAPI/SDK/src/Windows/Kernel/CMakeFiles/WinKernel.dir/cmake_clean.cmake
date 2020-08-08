@@ -3,8 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/WinKernel.dir/WindowsAPIKernel.cpp.o"
   "CMakeFiles/WinKernel.dir/WindowsAPIObject.cpp.o"
   "CMakeFiles/WinKernel.dir/WindowsAPITable.cpp.o"
-  "libWinKernel.a"
   "libWinKernel.pdb"
+  "libWinKernel.so"
 )
 
 # Per-language clean rules from dependency scanning.

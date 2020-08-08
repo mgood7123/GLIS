@@ -9,14 +9,28 @@
 #include <string.h>
 #include <assert.h>
 
+// const AnyOpt a(new int, true);
+// alternative to
+// const AnyOpt a; a.store(new int, true);
+
 static constexpr int AnyOpt_FLAG_COPY_ONLY = 1 << 0;
 static constexpr int AnyOpt_FLAG_MOVE_ONLY = 1 << 1;
 static constexpr int AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY = AnyOpt_FLAG_COPY_ONLY | AnyOpt_FLAG_MOVE_ONLY;
 static constexpr int AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE = 1 << 2;
-static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 3;
+static constexpr int AnyOpt_FLAG_ENABLE_NON_POINTERS = 1 << 3;
+static constexpr int AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE = 1 << 4;
+static constexpr int AnyOpt_FLAG_ENABLE_POINTERS = 1 << 5;
+static constexpr int AnyOpt_FLAG_IS_ALLOCATED = 1 << 6;
 static constexpr int AnyOpt_FLAGS_DEFAULT = AnyOpt_FLAG_COPY_ONLY_AND_MOVE_ONLY | \
                                  AnyOpt_FLAG_ENABLE_CONVERSION_OF_ALLOCATION_COPY_TO_ALLOCATION_MOVE | \
-                                 AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE;
+                                 AnyOpt_FLAG_ENABLE_OPTIONAL_VALUE | \
+                                 AnyOpt_FLAG_ENABLE_POINTERS | \
+                                 AnyOpt_FLAG_ENABLE_NON_POINTERS;
+
+#define enableFunctionIf(T, E) template<class T, typename = typename std::enable_if<false, T>::type>
+#define enableFunctionIfFlagIsSet(T, FLAGS, FLAG) enableFunctionIf(T, (FLAGS & FLAG) == 0)
+
+// use static_cast
 
 class AnyNullOpt_t {
 public:
@@ -24,13 +38,13 @@ public:
     constexpr AnyNullOpt_t(const AnyNullOpt_t &x) {}
     constexpr AnyNullOpt_t(AnyNullOpt_t &&x) {}
 
-    AnyNullOpt_t &operator=(const AnyNullOpt_t &x) const {
+    AnyNullOpt_t &operator=(const AnyNullOpt_t &x)  {
         puts("AnyNullOpt_t copy assignment");
         fflush(stdout);
         return *const_cast<AnyNullOpt_t*>(this);
     }
 
-    AnyNullOpt_t &operator=(AnyNullOpt_t &&x) const {
+    AnyNullOpt_t &operator=(AnyNullOpt_t &&x)  {
         puts("AnyNullOpt_t move assignment");
         fflush(stdout);
         return *const_cast<AnyNullOpt_t*>(this);
@@ -94,7 +108,7 @@ public:
             fflush(stdout);
         }
 
-        storage &operator=(const T &x) const {
+        storage &operator=(const T &x)  {
             puts("AnyOptCustomFlags::storage copy assignment");
             fflush(stdout);
             if (data == nullptr) {
@@ -105,7 +119,7 @@ public:
             return *const_cast<storage<T>*>(this);
         }
 
-        storage &operator=(T &&x) const {
+        storage &operator=(T &&x)  {
             puts("AnyOptCustomFlags::storage move assignment");
             fflush(stdout);
             if (data == nullptr) {
@@ -164,6 +178,11 @@ public:
 
     bool has_value() const {
         return !isAnyNullOpt;
+    }
+
+    AnyOptCustomFlags(const AnyNullOpt_t & opt): isAnyNullOpt(true) {
+        puts("AnyOptCustomFlags AnyNullOpt_t copy assignment");
+        fflush(stdout);
     }
 
     AnyOptCustomFlags(AnyNullOpt_t && opt): isAnyNullOpt(true) {
@@ -242,8 +261,7 @@ public:
         const_cast<AnyOptCustomFlags*>(this)->isAnyNullOpt = false;
     }
 
-    template<class tmp, typename = typename std::enable_if<true, tmp>::type>
-    AnyOptCustomFlags(tmp &&what) {
+    template<typename T> AnyOptCustomFlags(T &&what) {
         store_move(what, "constructor");
     }
 
@@ -287,36 +305,36 @@ public:
         const_cast<AnyOptCustomFlags*>(this)->isAnyNullOpt = true;
     }
 
-    AnyOptCustomFlags &operator=(const AnyOptCustomFlags & what) const {
+    AnyOptCustomFlags &operator=(const AnyOptCustomFlags & what)  {
         store_copy(&what, "assignment");
         return *const_cast<AnyOptCustomFlags*>(this);
     }
 
-    AnyOptCustomFlags &operator=(const AnyNullOpt_t & what) const {
+    AnyOptCustomFlags &operator=(const AnyNullOpt_t & what)  {
         puts("AnyOptCustomFlags AnyNullOpt_t copy assignment");
         fflush(stdout);
         deallocate();
         return *const_cast<AnyOptCustomFlags*>(this);
     }
 
-    AnyOptCustomFlags &operator=(AnyNullOpt_t && what) const {
+    AnyOptCustomFlags &operator=(AnyNullOpt_t && what)  {
         puts("AnyOptCustomFlags AnyNullOpt_t move assignment");
         fflush(stdout);
         deallocate();
         return *const_cast<AnyOptCustomFlags*>(this);
     }
 
-    template<typename T> AnyOptCustomFlags &operator=(const T & what) const {
+    template<typename T> AnyOptCustomFlags &operator=(const T & what)  {
         store_copy(&what, "assignment");
         return *const_cast<AnyOptCustomFlags*>(this);
     }
 
-    template<typename T> AnyOptCustomFlags &operator=(T &&what) const {
+    template<typename T> AnyOptCustomFlags &operator=(T &&what)  {
         store_move(what, "assignment");
         return *const_cast<AnyOptCustomFlags*>(this);
     }
 
-    template<typename T> AnyOptCustomFlags &operator=(T * what) const {
+    template<typename T> AnyOptCustomFlags &operator=(T * what)  {
         store_pointer(what, false, "assignment");
         return *const_cast<AnyOptCustomFlags*>(this);
     }
