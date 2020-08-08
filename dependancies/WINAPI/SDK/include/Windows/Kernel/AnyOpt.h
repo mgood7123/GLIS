@@ -13,6 +13,12 @@
 
 // https://stackoverflow.com/a/17431484 - How to write runnable tests of static_assert?
 
+// https://stackoverflow.com/questions/31607928/is-it-possible-to-assert-does-not-compile-with-gtest
+// -
+// Just a random stupid idea:
+// #define static_assert assert
+// at the top of the test file. Ugly but maybe it's what you want.
+
 // const AnyOpt a(new int, true);
 // alternative to
 // const AnyOpt a; a.store(new int, true);
