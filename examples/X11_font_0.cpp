@@ -278,12 +278,15 @@ struct miniatlas {
         return 1;
     }
 
-/**
- * Render text using the currently loaded font and currently set font size.
- * Rendering starts at coordinates (x, y), z is always 0.
- * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
- */
+    /**
+     * Render text using the currently loaded font and currently set font size.
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
     void render_text(const char *text, atlas * a, float x, float y, float sx, float sy) {
+        // flip y axis
+        float y_ = static_cast<float>(height)-y;
+
         printf("text: %s\n", text);
         printf("x: %G, y: %G\n", x, y);
         printf("sx: %G, sy: %G\n", 1.0f, 1.0f);
@@ -306,7 +309,7 @@ struct miniatlas {
         for (p = (const uint8_t *)text; *p; p++) {
             /* Calculate the vertex and texture coordinates */
             float x2 = x + a->c[*p].bl * sx;
-            float y2 = -y - a->c[*p].bt * sy;
+            float y2 = -y_ - a->c[*p].bt * sy;
             float w = a->c[*p].bw * sx;
             float h = a->c[*p].bh * sy;
 
