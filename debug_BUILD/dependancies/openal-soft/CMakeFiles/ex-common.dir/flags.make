@@ -6,5 +6,5 @@ C_FLAGS = -g   -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-alig
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/include 
+C_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/WINAPI/SDK/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/include 
 

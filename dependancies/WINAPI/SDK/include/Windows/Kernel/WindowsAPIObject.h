@@ -6,7 +6,7 @@
 #define MEDIA_PLAYER_PRO_WINDOWSAPIOBJECT_H
 
 #include "../WindowsAPIDefinitions.h"
-#include "AnyOpt.h"
+#include <AnyOpt.h>
 #include <cstring>
 
 typedef DWORD ObjectType;

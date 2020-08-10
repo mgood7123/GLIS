@@ -635,8 +635,6 @@ Magnum/Magnum.h
 ../dependancies/magnum/src/Magnum/Trade/Magnum/Magnum.h
 Magnum/Trade/visibility.h
 ../dependancies/magnum/src/Magnum/Trade/Magnum/Trade/visibility.h
-Corrade/Utility/Macros.h
--
 
 ../dependancies/magnum/src/Magnum/Trade/AnimationData.h
 Magnum/Magnum.h

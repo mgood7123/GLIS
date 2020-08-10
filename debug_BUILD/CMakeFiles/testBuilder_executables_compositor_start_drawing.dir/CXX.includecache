@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+../dependancies/AnyOpt/include/AnyOpt.h
 iostream
 -
 memory
@@ -40,7 +40,7 @@ cstdint
 ../WindowsAPIDefinitions.h
 ../dependancies/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
 AnyOpt.h
-../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+-
 cstring
 -
 

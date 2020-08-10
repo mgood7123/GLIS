@@ -93,7 +93,7 @@ CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o
  dependancies/corrade/src/Corrade/configure.h
  dependancies/magnum/src/Magnum/configure.h
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o
- ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+ ../dependancies/AnyOpt/include/AnyOpt.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -427,7 +427,7 @@ CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o
  dependancies/magnum-integration/src/Magnum/ImGuiIntegration/configure.h
  dependancies/magnum/src/Magnum/configure.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o
- ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+ ../dependancies/AnyOpt/include/AnyOpt.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -764,7 +764,7 @@ CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o
  ../include/glis/internal/fps.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/fps.cpp
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o
- ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+ ../dependancies/AnyOpt/include/AnyOpt.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -1145,7 +1145,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/serializer.cpp
  dependancies/corrade/src/Corrade/configure.h
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o
- ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+ ../dependancies/AnyOpt/include/AnyOpt.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h

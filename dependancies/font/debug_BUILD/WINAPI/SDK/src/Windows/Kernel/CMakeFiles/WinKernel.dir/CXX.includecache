@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+../AnyOpt/include/AnyOpt.h
 iostream
 -
 memory
@@ -40,7 +40,7 @@ cstdint
 ../WindowsAPIDefinitions.h
 ../WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
 AnyOpt.h
-../WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+-
 cstring
 -
 
@@ -74,16 +74,6 @@ WinUser.h
 
 ../WINAPI/SDK/include/Windows/no_sal2.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
-iostream
--
-memory
--
-string.h
--
-assert.h
--
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 ../WindowsAPIDefinitions.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
@@ -108,7 +98,7 @@ cstdint
 ../WindowsAPIDefinitions.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
 AnyOpt.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+-
 cstring
 -
 
@@ -149,7 +139,7 @@ Windows/Kernel/WindowsAPIHandle.h
 -
 Windows/Kernel/WindowsAPIKernel.h
 -
-Windows/Kernel/AnyOpt.h
+AnyOpt.h
 -
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/src/Windows/Kernel/WindowsAPIKernel.cpp

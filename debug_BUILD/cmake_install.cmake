@@ -39,8 +39,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/WINAPI/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/testBuilder/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt/cmake_install.cmake")
+  include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/WINAPI/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/font/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/freetype-2.10.2/cmake_install.cmake")
   include("/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/glm/cmake_install.cmake")

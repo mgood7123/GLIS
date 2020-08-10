@@ -413,8 +413,6 @@ Magnum/Magnum.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/Magnum/Magnum.h
 Magnum/Trade/visibility.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/Magnum/Trade/visibility.h
-Corrade/Utility/Macros.h
--
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/ArrayAllocator.cpp
 ArrayAllocator.h

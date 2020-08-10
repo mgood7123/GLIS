@@ -92,7 +92,7 @@ CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o: ../src/glis/backup/type
 CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o: dependancies/corrade/src/Corrade/configure.h
 CMakeFiles/GLIS.dir/src/glis/backup/types/texture.cpp.o: dependancies/magnum/src/Magnum/configure.h
 
-CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../dependancies/AnyOpt/include/AnyOpt.h
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -426,7 +426,7 @@ CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: dependancies/corrade/s
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: dependancies/magnum-integration/src/Magnum/ImGuiIntegration/configure.h
 CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o: dependancies/magnum/src/Magnum/configure.h
 
-CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/AnyOpt/include/AnyOpt.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -763,7 +763,7 @@ CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: dependancies/magnum/src/Magnum/con
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o: ../include/glis/internal/fps.hpp
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o: ../src/glis/internal/fps.cpp
 
-CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../dependancies/AnyOpt/include/AnyOpt.h
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
@@ -1144,7 +1144,7 @@ CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o: ../include/glis/ipc/serialize
 CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o: ../src/glis/ipc/serializer.cpp
 CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o: dependancies/corrade/src/Corrade/configure.h
 
-CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/AnyOpt.h
+CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../dependancies/AnyOpt/include/AnyOpt.h
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
 CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o: ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h

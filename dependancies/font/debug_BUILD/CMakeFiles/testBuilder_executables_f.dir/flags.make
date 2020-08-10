@@ -6,5 +6,5 @@ CXX_FLAGS = -g3 -O0
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include 
+CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/AnyOpt/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/WINAPI/SDK/include 
 

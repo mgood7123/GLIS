@@ -73,7 +73,7 @@ struct font {
             index = ((page_size * page) - page_size);
             for (; index < page_size * page; index++)
                 if (font.table->table[index] != nullptr) {
-                    const char * data = font.table->table[index]->resource.get<ATLAS_PAIR>()->first;
+                    const char * data = font.table->table[index]->resource.get<ATLAS_PAIR*>()->first;
                     if (!memcmp(data, id, resource_len))
                         return font.table->table[index];
                 } else {
@@ -86,7 +86,7 @@ struct font {
     ATLAS_PAIR * get_font(const char * id) {
         auto o = find_font(id);
         if (o == nullptr) return nullptr;
-        return o->resource.get<ATLAS_PAIR>();
+        return o->resource.get<ATLAS_PAIR*>();
     }
 
     void remove_font(const char * id) {
@@ -98,7 +98,7 @@ struct font {
     Kernel * get_atlas(const char * id) {
         auto o = find_font(id);
         if (o == nullptr) return nullptr;
-        return o->resource.get<ATLAS_PAIR>()->third.get<Kernel>();
+        return o->resource.get<ATLAS_PAIR*>()->third.get<Kernel*>();
     }
 
     void add_font_size(const char * id, int size) {
@@ -122,7 +122,7 @@ struct font {
             for (; index < page_size * page; index++)
                 if (font.table->table[index] != nullptr) {
                     if (font.table->table[index]->resource.has_value())
-                        printf("%s\n", font.table->table[index]->resource.get<ATLAS_PAIR>()->first);
+                        printf("%s\n", font.table->table[index]->resource.get<ATLAS_PAIR*>()->first);
                     else
                         printf("index %zu has no resource\n", index);
                 }
@@ -142,8 +142,8 @@ struct font {
             for (; index < page_size * page; index++)
                 if (font.table->table[index] != nullptr) {
                     if (font.table->table[index]->resource.has_value()) {
-                        ATLAS_PAIR *a = font.table->table[index]->resource.get<ATLAS_PAIR>();
-                        Kernel *x = a->third.get<Kernel>();
+                        ATLAS_PAIR *a = font.table->table[index]->resource.get<ATLAS_PAIR*>();
+                        Kernel *x = a->third.get<Kernel*>();
                         if (x->table->Page.count() == 0) {
                             printf("font %s has no sizes created\n", a->first);
                         } else {
@@ -156,7 +156,7 @@ struct font {
                                     if (x->table->table[index] != nullptr) {
                                         if (x->table->table[index]->resource.has_value())
                                             printf("font %s has a size of %d\n", a->first,
-                                                   x->table->table[index]->resource.get<atlas>()->size);
+                                                   x->table->table[index]->resource.get<atlas*>()->size);
                                         else
                                             printf("index %zu has no resource\n", index);
                                     }

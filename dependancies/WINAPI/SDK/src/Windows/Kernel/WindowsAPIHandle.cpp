@@ -5,7 +5,7 @@
 #include <Windows/Kernel/WindowsAPIObject.h>
 #include <Windows/Kernel/WindowsAPIHandle.h>
 #include <Windows/Kernel/WindowsAPIKernel.h>
-#include <Windows/Kernel/AnyOpt.h>
+#include <AnyOpt.h>
 
 // As each application finishes using the event, it closes its handle to the object.
 // When there are no remaining open handles to the event object, the system destroys the event object.

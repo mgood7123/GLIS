@@ -54,23 +54,125 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 
 # The main recursive "all" target.
 all: CMakeFiles/testBuilder_executables_f.dir/all
-all: WINAPI/all
 all: testBuilder/all
+all: AnyOpt/all
+all: WINAPI/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall: WINAPI/preinstall
 preinstall: testBuilder/preinstall
+preinstall: AnyOpt/preinstall
+preinstall: WINAPI/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/testBuilder_executables_f.dir/clean
-clean: WINAPI/clean
 clean: testBuilder/clean
+clean: AnyOpt/clean
+clean: WINAPI/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory AnyOpt
+
+# Recursive "all" directory target.
+AnyOpt/all: AnyOpt/googletest/all
+AnyOpt/all: AnyOpt/tests/all
+
+.PHONY : AnyOpt/all
+
+# Recursive "preinstall" directory target.
+AnyOpt/preinstall: AnyOpt/googletest/preinstall
+AnyOpt/preinstall: AnyOpt/tests/preinstall
+
+.PHONY : AnyOpt/preinstall
+
+# Recursive "clean" directory target.
+AnyOpt/clean: AnyOpt/googletest/clean
+AnyOpt/clean: AnyOpt/tests/clean
+
+.PHONY : AnyOpt/clean
+
+#=============================================================================
+# Directory level rules for directory AnyOpt/googletest
+
+# Recursive "all" directory target.
+AnyOpt/googletest/all: AnyOpt/googletest/googlemock/all
+
+.PHONY : AnyOpt/googletest/all
+
+# Recursive "preinstall" directory target.
+AnyOpt/googletest/preinstall: AnyOpt/googletest/googlemock/preinstall
+
+.PHONY : AnyOpt/googletest/preinstall
+
+# Recursive "clean" directory target.
+AnyOpt/googletest/clean: AnyOpt/googletest/googlemock/clean
+
+.PHONY : AnyOpt/googletest/clean
+
+#=============================================================================
+# Directory level rules for directory AnyOpt/googletest/googlemock
+
+# Recursive "all" directory target.
+AnyOpt/googletest/googlemock/all: AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all
+AnyOpt/googletest/googlemock/all: AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
+AnyOpt/googletest/googlemock/all: AnyOpt/googletest/googletest/all
+
+.PHONY : AnyOpt/googletest/googlemock/all
+
+# Recursive "preinstall" directory target.
+AnyOpt/googletest/googlemock/preinstall: AnyOpt/googletest/googletest/preinstall
+
+.PHONY : AnyOpt/googletest/googlemock/preinstall
+
+# Recursive "clean" directory target.
+AnyOpt/googletest/googlemock/clean: AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/clean
+AnyOpt/googletest/googlemock/clean: AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/clean
+AnyOpt/googletest/googlemock/clean: AnyOpt/googletest/googletest/clean
+
+.PHONY : AnyOpt/googletest/googlemock/clean
+
+#=============================================================================
+# Directory level rules for directory AnyOpt/googletest/googletest
+
+# Recursive "all" directory target.
+AnyOpt/googletest/googletest/all: AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all
+AnyOpt/googletest/googletest/all: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+
+.PHONY : AnyOpt/googletest/googletest/all
+
+# Recursive "preinstall" directory target.
+AnyOpt/googletest/googletest/preinstall:
+
+.PHONY : AnyOpt/googletest/googletest/preinstall
+
+# Recursive "clean" directory target.
+AnyOpt/googletest/googletest/clean: AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/clean
+AnyOpt/googletest/googletest/clean: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/clean
+
+.PHONY : AnyOpt/googletest/googletest/clean
+
+#=============================================================================
+# Directory level rules for directory AnyOpt/tests
+
+# Recursive "all" directory target.
+AnyOpt/tests/all: AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/all
+
+.PHONY : AnyOpt/tests/all
+
+# Recursive "preinstall" directory target.
+AnyOpt/tests/preinstall:
+
+.PHONY : AnyOpt/tests/preinstall
+
+# Recursive "clean" directory target.
+AnyOpt/tests/clean: AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/clean
+
+.PHONY : AnyOpt/tests/clean
 
 #=============================================================================
 # Directory level rules for directory WINAPI
@@ -133,7 +235,7 @@ testBuilder/clean:
 CMakeFiles/testBuilder_executables_f.dir/all: WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_f.dir/build.make CMakeFiles/testBuilder_executables_f.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_f.dir/build.make CMakeFiles/testBuilder_executables_f.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=6,7 "Built target testBuilder_executables_f"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=16,17 "Built target testBuilder_executables_f"
 .PHONY : CMakeFiles/testBuilder_executables_f.dir/all
 
 # Build rule for subdir invocation for target.
@@ -152,6 +254,143 @@ testBuilder_executables_f: CMakeFiles/testBuilder_executables_f.dir/rule
 CMakeFiles/testBuilder_executables_f.dir/clean:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_f.dir/build.make CMakeFiles/testBuilder_executables_f.dir/clean
 .PHONY : CMakeFiles/testBuilder_executables_f.dir/clean
+
+#=============================================================================
+# Target rules for target AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir
+
+# All Build rule for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all: AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
+AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/depend
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=8,9 "Built target gmock_main"
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all
+
+# Build rule for subdir invocation for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 0
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/rule
+
+# Convenience name for target.
+gmock_main: AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/rule
+
+.PHONY : gmock_main
+
+# clean rule for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/clean:
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/clean
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/clean
+
+#=============================================================================
+# Target rules for target AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir
+
+# All Build rule for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/depend
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=6,7 "Built target gmock"
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
+
+# Build rule for subdir invocation for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 0
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/rule
+
+# Convenience name for target.
+gmock: AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/rule
+
+.PHONY : gmock
+
+# clean rule for target.
+AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/clean:
+	$(MAKE) -f AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build.make AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/clean
+.PHONY : AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/clean
+
+#=============================================================================
+# Target rules for target AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir
+
+# All Build rule for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/depend
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=12,13 "Built target gtest_main"
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all
+
+# Build rule for subdir invocation for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 0
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/rule
+
+# Convenience name for target.
+gtest_main: AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/rule
+
+.PHONY : gtest_main
+
+# clean rule for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/clean:
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/clean
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/clean
+
+#=============================================================================
+# Target rules for target AnyOpt/googletest/googletest/CMakeFiles/gtest.dir
+
+# All Build rule for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all:
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/depend
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=10,11 "Built target gtest"
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+
+# Build rule for subdir invocation for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 0
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/rule
+
+# Convenience name for target.
+gtest: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/rule
+
+.PHONY : gtest
+
+# clean rule for target.
+AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/clean:
+	$(MAKE) -f AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build.make AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/clean
+.PHONY : AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/clean
+
+#=============================================================================
+# Target rules for target AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir
+
+# All Build rule for target.
+AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/all: AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all
+AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/all: AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/build.make AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/depend
+	$(MAKE) -f AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/build.make AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles --progress-num=14,15 "Built target testBuilder_executables_AnyOpt_Tests"
+.PHONY : AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/all
+
+# Build rule for subdir invocation for target.
+AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/font/debug_BUILD/CMakeFiles 0
+.PHONY : AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/rule
+
+# Convenience name for target.
+testBuilder_executables_AnyOpt_Tests: AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/rule
+
+.PHONY : testBuilder_executables_AnyOpt_Tests
+
+# clean rule for target.
+AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/clean:
+	$(MAKE) -f AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/build.make AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/clean
+.PHONY : AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/clean
 
 #=============================================================================
 # Target rules for target WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir

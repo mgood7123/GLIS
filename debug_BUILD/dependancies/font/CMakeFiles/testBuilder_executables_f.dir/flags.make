@@ -6,5 +6,5 @@ CXX_FLAGS = -g3 -O0   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/WINAPI/SDK/include 
 

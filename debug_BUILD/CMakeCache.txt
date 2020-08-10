@@ -146,6 +146,12 @@ AUDIOIO_INCLUDE_DIR:PATH=AUDIOIO_INCLUDE_DIR-NOTFOUND
 //Path to a file.
 AUDIOUNIT_INCLUDE_DIR:PATH=AUDIOUNIT_INCLUDE_DIR-NOTFOUND
 
+//Value Computed by CMake
+AnyOpt_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt
+
+//Value Computed by CMake
+AnyOpt_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt
+
 //Path to a file.
 BROTLIDEC_INCLUDE_DIRS:PATH=BROTLIDEC_INCLUDE_DIRS-NOTFOUND
 
@@ -154,6 +160,9 @@ BROTLIDEC_LIBRARIES:FILEPATH=BROTLIDEC_LIBRARIES-NOTFOUND
 
 //Include deprecated API in the build
 BUILD_DEPRECATED:BOOL=ON
+
+//Builds the googlemock subproject
+BUILD_GMOCK:BOOL=ON
 
 //Build in a way that makes it possible to safely use certain Corrade
 // features simultaenously in multiple threads
@@ -366,19 +375,19 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 CMAKE_PROJECT_NAME:STATIC=GLIS
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION:STATIC=0.9.9.9
+CMAKE_PROJECT_VERSION:STATIC=1.10.0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MAJOR:STATIC=0
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=1
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MINOR:STATIC=9
+CMAKE_PROJECT_VERSION_MINOR:STATIC=10
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_PATCH:STATIC=9
+CMAKE_PROJECT_VERSION_PATCH:STATIC=0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_TWEAK:STATIC=9
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -536,6 +545,10 @@ HARFBUZZ_LIBRARIES:FILEPATH=/usr/lib/x86_64-linux-gnu/libharfbuzz.so
 
 //Get dependencies (Corrade, GLFW, SDL2, ...) via Hunter
 HUNTER_ENABLED:BOOL=OFF
+
+//Enable installation of googletest. (Projects embedding googletest
+// may want to turn this OFF.)
+INSTALL_GTEST:BOOL=ON
 
 //Path to a file.
 ImGui_INCLUDE_DIR:PATH=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/imgui
@@ -698,6 +711,9 @@ PULSEAUDIO_INCLUDE_DIR:PATH=PULSEAUDIO_INCLUDE_DIR-NOTFOUND
 
 //The PulseAudio library
 PULSEAUDIO_LIBRARY:FILEPATH=PULSEAUDIO_LIBRARY-NOTFOUND
+
+//Path to a program.
+PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python
 
 //Path to a library.
 SDL2MAIN_LIBRARY:FILEPATH=SDL2MAIN_LIBRARY-NOTFOUND
@@ -975,6 +991,52 @@ glm_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GL
 //Value Computed by CMake
 glm_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm
 
+//Value Computed by CMake
+gmock_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt/googletest/googlemock
+
+//Dependencies for the target
+gmock_LIB_DEPENDS:STATIC=general;gtest;
+
+//Value Computed by CMake
+gmock_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/googletest/googlemock
+
+//Build all of Google Mock's own tests.
+gmock_build_tests:BOOL=OFF
+
+//Dependencies for the target
+gmock_main_LIB_DEPENDS:STATIC=general;gmock;
+
+//Value Computed by CMake
+googletest-distribution_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt/googletest
+
+//Value Computed by CMake
+googletest-distribution_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/googletest
+
+//Value Computed by CMake
+gtest_BINARY_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt/googletest/googletest
+
+//Value Computed by CMake
+gtest_SOURCE_DIR:STATIC=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/googletest/googletest
+
+//Build gtest's sample programs.
+gtest_build_samples:BOOL=OFF
+
+//Build all of gtest's own tests.
+gtest_build_tests:BOOL=OFF
+
+//Disable uses of pthreads in gtest.
+gtest_disable_pthreads:BOOL=OFF
+
+//Use shared (DLL) run-time lib even when Google Test is built
+// as static lib.
+gtest_force_shared_crt:BOOL=ON
+
+//Build gtest with internal symbols hidden in shared libraries.
+gtest_hide_internal_symbols:BOOL=OFF
+
+//Dependencies for the target
+gtest_main_LIB_DEPENDS:STATIC=general;gtest;
+
 //Path to a library.
 pkgcfg_lib_PC_HARFBUZZ_harfbuzz:FILEPATH=/usr/lib/x86_64-linux-gnu/libharfbuzz.so
 
@@ -1080,7 +1142,11 @@ CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Test CMAKE_HAVE_LIBC_PTHREAD
-CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=
+//Have library pthreads
+CMAKE_HAVE_PTHREADS_CREATE:INTERNAL=
+//Have library pthread
+CMAKE_HAVE_PTHREAD_CREATE:INTERNAL=1
 //Have include pthread.h
 CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
@@ -1137,7 +1203,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=63
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=68
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1219,6 +1285,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_OpenGLES3:INTERNAL=[/usr/lib/x86_64-linux-gnu/libGL
 FIND_PACKAGE_MESSAGE_DETAILS_PNG:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpng.so][/usr/include][v1.6.37()]
 //Details about finding PkgConfig
 FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/usr/bin/pkg-config][v0.29.1()]
+//Details about finding PythonInterp
+FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python][v2.7.18()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
@@ -1431,6 +1499,8 @@ PORTAUDIO_LIBRARY-ADVANCED:INTERNAL=1
 PULSEAUDIO_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PULSEAUDIO_LIBRARY
 PULSEAUDIO_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PYTHON_EXECUTABLE
+PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 //CHECK_TYPE_SIZE: sizeof(long)
 SIZEOF_LONG:INTERNAL=8
 //ADVANCED property for variable: SOUNDIO_INCLUDE_DIR
@@ -1459,7 +1529,21 @@ _MAGNUM_CONFIGURE_FILE:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/m
 __pkg_config_arguments_PC_HARFBUZZ:INTERNAL=QUIET;harfbuzz
 __pkg_config_checked_PC_BROTLIDEC:INTERNAL=1
 __pkg_config_checked_PC_HARFBUZZ:INTERNAL=1
+generated_dir:INTERNAL=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/AnyOpt/googletest/googletest/generated
+//ADVANCED property for variable: gmock_build_tests
+gmock_build_tests-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_build_samples
+gtest_build_samples-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_build_tests
+gtest_build_tests-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_disable_pthreads
+gtest_disable_pthreads-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_force_shared_crt
+gtest_force_shared_crt-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_hide_internal_symbols
+gtest_hide_internal_symbols-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_HARFBUZZ_harfbuzz
 pkgcfg_lib_PC_HARFBUZZ_harfbuzz-ADVANCED:INTERNAL=1
 prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu
+targets_export_name:INTERNAL=GTestTargets
 

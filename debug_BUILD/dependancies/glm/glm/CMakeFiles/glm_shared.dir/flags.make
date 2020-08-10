@@ -6,5 +6,5 @@ CXX_FLAGS = -g3 -O0 -fPIC   -std=gnu++14
 
 CXX_DEFINES = -Dglm_shared_EXPORTS
 
-CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm/glm/.. 
+CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/WINAPI/SDK/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm/glm/.. 
 

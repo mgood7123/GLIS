@@ -6,5 +6,5 @@ CXX_FLAGS = -g3 -O0 -fPIC   -Winline -Wunused -Wall -Wextra -Wshadow -Wconversio
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/include 
+CXX_INCLUDES = -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/AnyOpt/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/WINAPI/SDK/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/freetype-2.10.2/include -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/glm -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft -I/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/include 
 

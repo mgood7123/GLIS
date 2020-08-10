@@ -17,6 +17,8 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
+  "../dependancies/AnyOpt/include"
+  "../dependancies/WINAPI/SDK/include"
   "../dependancies/freetype-2.10.2/include"
   "../dependancies/glm"
   "../dependancies/openal-soft"
@@ -61,6 +63,8 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "../dependancies/AnyOpt/include"
+  "../dependancies/WINAPI/SDK/include"
   "../dependancies/freetype-2.10.2/include"
   "../dependancies/glm"
   "../dependancies/openal-soft"

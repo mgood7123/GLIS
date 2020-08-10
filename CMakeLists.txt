@@ -5,15 +5,18 @@ project(GLIS)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
-add_subdirectory(dependancies/WINAPI)
-include_directories(${WINAPI_INCLUDE_DIRECTORIES})
-
 if(NOT COMMAND testBuilder_build)
     add_subdirectory(dependancies/testBuilder)
     testBuilder_set_current_working_directory_to_default_binary_directory()
 endif()
+
+testBuilder_get_current_working_directory_of_this_cmake_file(CWD)
+
+add_subdirectory(dependancies/AnyOpt)
+include_directories(${AnyOpt_INCLUDE})
+
+add_subdirectory(dependancies/WINAPI)
+include_directories(${WINAPI_INCLUDE})
 
 add_subdirectory(dependancies/font)
 
@@ -153,5 +156,6 @@ build_program(compositor_clients OffScreenFramebuffer)
 build_program(compositor_clients Texture)
 build_program(compositor_clients MYPRIVATEAPP)
 build_program(compositor_clients shm)
+
 #magnum
 build_program(compositor_clients RotatingCube)

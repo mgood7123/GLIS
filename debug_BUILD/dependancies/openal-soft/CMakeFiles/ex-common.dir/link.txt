@@ -1,2 +1,2 @@
-/usr/bin/ar qc ../../Debug/lib/libex-common.a  CMakeFiles/ex-common.dir/examples/common/alhelpers.c.o
-/usr/bin/ranlib ../../Debug/lib/libex-common.a
+/usr/bin/ar qc libex-common.a  CMakeFiles/ex-common.dir/examples/common/alhelpers.c.o
+/usr/bin/ranlib libex-common.a
