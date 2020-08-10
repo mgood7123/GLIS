@@ -824,75 +824,75 @@ OpenAL_OBJECTS = \
 # External object files for target OpenAL
 OpenAL_EXTERNAL_OBJECTS =
 
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/auxeffectslot.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/buffer.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/effect.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/error.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/event.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/extension.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/filter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/listener.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/source.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/state.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alc.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alu.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alconfig.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/ambdec.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bformatdec.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bs2b.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bsinc_tables.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/converter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/cpu_caps.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/autowah.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/chorus.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/compressor.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/dedicated.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/distortion.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/echo.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/equalizer.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/fshifter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/modulator.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/null.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/pshifter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/reverb.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/vmorpher.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/biquad.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/nfc.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/splitter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/fpu_ctrl.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/helpers.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/hrtf.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mastering.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/panning.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/ringbuffer.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/uhjfilter.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/uiddefs.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/voice.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_c.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse2.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse3.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse41.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/base.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/loopback.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/null.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/oss.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/wave.cpp.o
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/build.make
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/libcommon.a
-dependancies/openal-soft/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Linking CXX shared library libopenal.so"
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/auxeffectslot.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/buffer.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/effect.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/error.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/event.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/extension.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/filter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/listener.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/source.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/al/state.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alc.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alu.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/alconfig.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/ambdec.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bformatdec.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bs2b.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/bsinc_tables.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/converter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/cpu_caps.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/autowah.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/chorus.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/compressor.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/dedicated.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/distortion.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/echo.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/equalizer.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/fshifter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/modulator.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/null.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/pshifter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/reverb.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/effects/vmorpher.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/biquad.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/nfc.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/filters/splitter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/fpu_ctrl.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/helpers.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/hrtf.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mastering.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/panning.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/ringbuffer.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/uhjfilter.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/uiddefs.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/voice.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_c.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse2.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse3.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/mixer/mixer_sse41.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/base.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/loopback.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/null.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/oss.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/alc/backends/wave.cpp.o
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/build.make
+Debug/lib/libopenal.so.1.20.1: Debug/lib/libcommon.a
+Debug/lib/libopenal.so.1.20.1: dependancies/openal-soft/CMakeFiles/OpenAL.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Linking CXX shared library ../../Debug/lib/libopenal.so"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/OpenAL.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft && $(CMAKE_COMMAND) -E cmake_symlink_library libopenal.so.1.20.1 libopenal.so.1 libopenal.so
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/openal-soft && $(CMAKE_COMMAND) -E cmake_symlink_library ../../Debug/lib/libopenal.so.1.20.1 ../../Debug/lib/libopenal.so.1 ../../Debug/lib/libopenal.so
 
-dependancies/openal-soft/libopenal.so.1: dependancies/openal-soft/libopenal.so.1.20.1
-	@$(CMAKE_COMMAND) -E touch_nocreate dependancies/openal-soft/libopenal.so.1
+Debug/lib/libopenal.so.1: Debug/lib/libopenal.so.1.20.1
+	@$(CMAKE_COMMAND) -E touch_nocreate Debug/lib/libopenal.so.1
 
-dependancies/openal-soft/libopenal.so: dependancies/openal-soft/libopenal.so.1.20.1
-	@$(CMAKE_COMMAND) -E touch_nocreate dependancies/openal-soft/libopenal.so
+Debug/lib/libopenal.so: Debug/lib/libopenal.so.1.20.1
+	@$(CMAKE_COMMAND) -E touch_nocreate Debug/lib/libopenal.so
 
 # Rule to build all files generated by this target.
-dependancies/openal-soft/CMakeFiles/OpenAL.dir/build: dependancies/openal-soft/libopenal.so
+dependancies/openal-soft/CMakeFiles/OpenAL.dir/build: Debug/lib/libopenal.so
 
 .PHONY : dependancies/openal-soft/CMakeFiles/OpenAL.dir/build
 

@@ -40,10 +40,6 @@ void Object::clean() {
 
 void Object::clean(Object &object) {
     if (object.name != nullptr) memset(object.name, '\0', strlen(object.name));
-    if (object.flags & ObjectFlagAutoDeallocateResource) {
-        // if resource points to a class that has a destructor, it will not be called
-//        delete object.resource;
-    }
     this->init(object);
 }
 
@@ -72,17 +68,20 @@ void Object::inherit(const Object &object) {
     this->resource = object.resource;
 }
 
-bool Object::compare(const Object &lhs, const Object &rhs) {
-    if (lhs.type != rhs.type) return false;
-    if (lhs.handles != rhs.handles) return false;
-    if (lhs.flags != rhs.flags) return false;
-    if (lhs.name == nullptr && rhs.name == nullptr) {}
-    if (lhs.name != nullptr && rhs.name != nullptr) {
-        if (strcmp(lhs.name, rhs.name) != 0) return false;
-    }
-    return lhs.resource.data == rhs.resource.data;
+bool compare_const_char(const char * lhs, const char * rhs) {
+    if (lhs == nullptr) return rhs == nullptr;
+    if (rhs == nullptr) return lhs == nullptr;
+    return strcmp(lhs, rhs) == 0;
 }
 
-bool Object::operator!=(const Object &rhs) { return !compare(*this, rhs); }
+bool Object::compare(const Object &lhs, const Object &rhs) const {
+    return (lhs.type == rhs.type) &&
+        (lhs.handles == rhs.handles) &&
+        (lhs.flags == rhs.flags) &&
+        (lhs.resource.data == rhs.resource.data) &&
+        compare_const_char(lhs.name, rhs.name);
+}
 
-bool Object::operator==(const Object &rhs) { return compare(*this, rhs); }
+bool Object::operator!=(const Object &rhs) const { return !compare(*this, rhs); }
+
+bool Object::operator==(const Object &rhs) const { return compare(*this, rhs); }

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../../Debug/bin/testBuilder_executables_AnyOpt_Tests"
+  "../../../Debug/bin/testBuilder_executables_AnyOpt_Tests.pdb"
   "CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/AnyOpt_Tests.cpp.o"
-  "testBuilder_executables_AnyOpt_Tests"
-  "testBuilder_executables_AnyOpt_Tests.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libcommon.a"
+  "../../Debug/lib/libcommon.a"
 )

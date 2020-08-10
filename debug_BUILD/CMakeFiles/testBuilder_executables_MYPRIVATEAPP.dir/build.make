@@ -99,8 +99,8 @@ Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libMagnumGL-d.so.2.4
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: /usr/lib/x86_64-linux-gnu/libGLESv2.so
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libMagnum-d.so.2.4
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libCorradeUtility-d.so.2.4
-Debug/bin/testBuilder_executables_MYPRIVATEAPP: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
-Debug/bin/testBuilder_executables_MYPRIVATEAPP: dependancies/WINAPI/SDK/src/Windows/Kernel/libWinKernel.so
+Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libfreetyped.so.6.17.2
+Debug/bin/testBuilder_executables_MYPRIVATEAPP: Debug/lib/libWinKernel.so
 Debug/bin/testBuilder_executables_MYPRIVATEAPP: CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Debug/bin/testBuilder_executables_MYPRIVATEAPP"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/testBuilder_executables_MYPRIVATEAPP.dir/link.txt --verbose=$(VERBOSE)

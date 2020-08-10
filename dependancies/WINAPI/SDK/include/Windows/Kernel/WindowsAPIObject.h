@@ -46,11 +46,11 @@ typedef class Object {
 
         void inherit(const Object &object);
 
-        bool operator==(const Object &rhs);
+        bool operator==(const Object &rhs) const;
 
-        bool operator!=(const Object &rhs);
+        bool operator!=(const Object &rhs) const;
 
-        static bool compare(const Object &lhs, const Object &rhs);
+        bool compare(const Object &lhs, const Object &rhs) const;
 
 } Object;
 

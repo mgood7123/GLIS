@@ -71,7 +71,7 @@ CompareObjectHandles(
 
         if (h1->invalidated != h2->invalidated) return 0;
         if (h1->object != nullptr && h2->object != nullptr) {
-            if (!Object::compare(*h1->object, *h2->object)) return 0;
+            if (!(*h1->object ==  *h2->object)) return 0;
         }
         return 1;
     } else if (hFirstObjectHandle == nullptr && hSecondObjectHandle == nullptr) return 1;

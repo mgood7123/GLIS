@@ -310,8 +310,8 @@ Debug/lib/libGLIS.so: Debug/lib/libMagnumPrimitives-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libMagnumSceneGraph-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libMagnumUi-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libMagnumImGuiIntegration-d.so.2.4
-Debug/lib/libGLIS.so: dependancies/freetype-2.10.2/libfreetyped.so.6.17.2
-Debug/lib/libGLIS.so: dependancies/WINAPI/SDK/src/Windows/Kernel/libWinKernel.so
+Debug/lib/libGLIS.so: Debug/lib/libfreetyped.so.6.17.2
+Debug/lib/libGLIS.so: Debug/lib/libWinKernel.so
 Debug/lib/libGLIS.so: Debug/lib/libMagnumMeshTools-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libMagnumTrade-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libCorradeTestSuite-d.so.2.4

@@ -1,1 +1,1 @@
-/usr/bin/c++  -g3 -O0   CMakeFiles/testBuilder_executables_f.dir/main.cpp.o  -o testBuilder_executables_f  -Wl,-rpath,/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/WINAPI/SDK/src/Windows/Kernel ../WINAPI/SDK/src/Windows/Kernel/libWinKernel.so 
+/usr/bin/c++  -g3 -O0   CMakeFiles/testBuilder_executables_f.dir/main.cpp.o  -o ../../Debug/bin/testBuilder_executables_f  -Wl,-rpath,/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/Debug/lib ../../Debug/lib/libWinKernel.so 
