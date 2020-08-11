@@ -294,7 +294,8 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION, glis, CompositorMain, font, fps) {
-    glViewport(0, 0, CompositorMain.width, CompositorMain.height);
+    glis.GLIS_Viewport(CompositorMain);
+    font.set_max_width_height(CompositorMain);
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_CLOSE_FUNCTION, glis, CompositorMain, font, fps) {
@@ -339,8 +340,8 @@ void GLIS_COMPOSITOR_HANDLE_SHUTDOWN_REQUEST(
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
-    glis.GLIS_destroy_GLIS(CompositorMain);
     glis.destroyX11Window(CompositorMain);
+    glis.GLIS_destroy_GLIS(CompositorMain);
     LOG_INFO("Destroyed main Compositor GLIS");
     LOG_INFO("shut down");
     glis.SYNC_STATE = glis.STATE.response_shutdown;
@@ -366,7 +367,7 @@ void GLIS_COMPOSITOR_DO_MAIN(
     glis.GLIS_error_to_string_GL("before onscreen setup");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
         glis.GLIS_error_to_string_GL("after onscreen setup");
-        glViewport(0, 0, CompositorMain.width, CompositorMain.height);
+        glis.GLIS_Viewport(CompositorMain);
         glis.GLIS_error_to_string_GL("glViewPort");
         font.set_max_width_height(CompositorMain);
         font.add_font("default", font_path);
