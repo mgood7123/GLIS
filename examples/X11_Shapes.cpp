@@ -112,7 +112,6 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
     rectAlpha();
-//     glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, renderer.width, renderer.height, renderer.width, renderer.height);
     glis.GLIS_SwapBuffers(screen);
 }
 
