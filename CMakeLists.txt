@@ -139,6 +139,7 @@ build_program(examples X11_2)
 build_program(examples X11_3)
 build_program(examples X11_font_0)
 build_program(examples X11_font_1)
+build_program(examples X11_font_2)
 
 # magnum
 build_program(examples X11_magnum)

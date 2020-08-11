@@ -73,8 +73,6 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     if (a48_cache == nullptr) a48_cache = font.find_size("id", fontData_cache, 48);
     // cache initialized
 
-    glUseProgram(fontInit_cache->program);
-
     /* White background */
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);

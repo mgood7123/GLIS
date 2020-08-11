@@ -1,4 +1,5 @@
 #include <glis/internal/internal.hpp>
+#include <glis/backup/backup.hpp>
 
 void GLIS_FONT::set_max_width_height(GLint width, GLint height) {
     this->width = width;
@@ -103,6 +104,12 @@ GLIS_FONT::atlas *GLIS_FONT::find_size(const char *id, int size) {
 void
 GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sx, float sy,
         const GLfloat * color) {
+    GLIS_BACKUP backup;
+
+    backup.program.backup();
+
+    glUseProgram(a->font_source->program);
+
     /* Enable blending, necessary for our alpha texture */
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -176,6 +183,7 @@ GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, 
     glDrawArrays(GL_TRIANGLES, 0, c);
     glDisableVertexAttribArray(a->font_source->attribute_coord);
     glDisable(GL_BLEND);
+    backup.program.restore();
 }
 
 void

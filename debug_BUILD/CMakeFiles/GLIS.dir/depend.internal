@@ -676,6 +676,11 @@ CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o
  ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLEmscripten.h
  ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLWindowsDesktop.h
  ../dependancies/magnum/src/MagnumExternal/OpenGL/KHR/khrplatform.h
+ ../include/glis/backup/backup.hpp
+ ../include/glis/backup/types/framebuffer.hpp
+ ../include/glis/backup/types/program.hpp
+ ../include/glis/backup/types/renderbuffer.hpp
+ ../include/glis/backup/types/texture.hpp
  ../include/glis/font/font.hpp
  ../include/glis/internal/common.hpp
  ../include/glis/internal/fps.hpp

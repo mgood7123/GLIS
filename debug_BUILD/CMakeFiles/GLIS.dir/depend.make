@@ -675,6 +675,11 @@ CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/magnum/src/MagnumE
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLEmscripten.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLWindowsDesktop.h
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../dependancies/magnum/src/MagnumExternal/OpenGL/KHR/khrplatform.h
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/backup/backup.hpp
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/backup/types/framebuffer.hpp
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/backup/types/program.hpp
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/backup/types/renderbuffer.hpp
+CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/backup/types/texture.hpp
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/internal/common.hpp
 CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o: ../include/glis/internal/fps.hpp
