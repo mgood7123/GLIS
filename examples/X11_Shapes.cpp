@@ -112,10 +112,11 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
     
-    // hmmm im not sure how to implement shader coloring,
-    // as textures can have their own color,
-    // however magnum allows for shader coloring via
-    // shader->setColor(color);
+    // in all cases where there is both a texture and a color,
+    // those two get multiplied together
+    
+    // if the shader's colors are white then the textures colors take priority.
+    // if the texture's colors are white then the shaders colors take priority
     rectAlpha();
     glis.GLIS_SwapBuffers(screen);
 }
