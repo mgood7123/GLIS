@@ -111,6 +111,11 @@ void rectAlpha() {
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
+    
+    // hmmm im not sure how to implement shader coloring,
+    // as textures can have their own color,
+    // however magnum allows for shader coloring via
+    // shader->setColor(color);
     rectAlpha();
     glis.GLIS_SwapBuffers(screen);
 }
