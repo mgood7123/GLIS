@@ -17,6 +17,7 @@ int main() {
     screen.width = GLIS_COMMON_WIDTH;
     screen.height = GLIS_COMMON_HEIGHT;
 
+
     // thread 1
     GLIS_COMPOSITOR_BEFORE_REQUEST_STARTUP(glis);
 

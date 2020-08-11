@@ -133,9 +133,19 @@ GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, 
     /* Use the texture containing the atlas */
     glBindTexture(GL_TEXTURE_2D, a->tex);
     glUniform1i(a->font_source->uniform_tex, 0);
-    glUniformMatrix4fv(glGetUniformLocation(a->font_source->program, "projection"), 1, GL_FALSE,
-                       glm::value_ptr(glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f,
-                                                 static_cast<GLfloat>(height))));
+    glUniformMatrix4fv(
+            glGetUniformLocation(a->font_source->program, "projection"),
+            1,
+            GL_FALSE,
+           glm::value_ptr(
+                   glm::ortho(
+                           0.0f,
+                           static_cast<GLfloat>(width),
+                           0.0f,
+                                static_cast<GLfloat>(height)
+                   )
+           )
+    );
 
     /* Set up the VBO for our vertex data */
     glEnableVertexAttribArray(a->font_source->attribute_coord);

@@ -22,8 +22,10 @@ extern bool GLIS_LOG_PRINT_SHAPE_INFO;
 extern bool GLIS_ABORT_ON_ERROR;
 extern bool GLIS_ABORT_ON_DEBUG_LEVEL_API;
 
-extern const char *GLIS_default_vertex_shader_source;
-extern const char *GLIS_default_fragment_shader_source;
+extern const char *GLIS_default_vertex_shader_source_RGB;
+extern const char *GLIS_default_vertex_shader_source_RGBA;
+extern const char *GLIS_default_fragment_shader_source_RGB;
+extern const char *GLIS_default_fragment_shader_source_RGBA;
 
 #define GLIS_val_to_string(ch) std::to_string(ch).c_str()
 
@@ -144,9 +146,23 @@ public:
      * the screen to be refreshed once between eglSwapBuffers calls
      *
      * vsync can be set using
-     * @code EGLBoolean eglSwapInterval(EGLDisplay dpy, EGLint interval)
+     * @code EGLBoolean vsync(class GLIS_CLASS & GLIS, EGLint interval)
      */
     EGLBoolean GLIS_SwapBuffers(class GLIS_CLASS &GLIS);
+
+    /**
+     *
+     * sets vsync
+     *
+     * buffer swapping is expensive if **vsync** is enabled
+     *
+     * if vsync is enabled, eglSwapBuffers always waits for
+     * the screen to be refreshed once between eglSwapBuffers calls
+     *
+     * usually vsync can be disabled by setting interval to zero
+     * or if using MESA based GL, setting vblank_mode=0 environmental variable
+     */
+    EGLBoolean vsync(class GLIS_CLASS &GLIS, EGLint interval);
 
     void
     GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from,
@@ -354,7 +370,7 @@ public:
     bool runUntilAndroidWindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose));
 
     bool destroyAndroidWindow(GLIS_CLASS & GLIS);
-    
+
     bool getX11Window(GLIS_CLASS & GLIS, int width, int height);
 
     bool runUntilX11WindowClose(GLIS & glis, GLIS_CLASS & glis_class, GLIS_FONT & glis_font, GLIS_FPS & fps, GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowDraw), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowResize), GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(onWindowClose));
@@ -373,12 +389,27 @@ public:
             GLuint & shaderProgram
     );
 
+    /**
+     * defaults to GLIS_build_simple_shader_program_RGB
+     */
     void GLIS_build_simple_shader_program(
             GLuint & vertexShader,
             GLuint & fragmentShader,
             GLuint & shaderProgram
     );
 
+    void GLIS_build_simple_shader_program_RGB(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
+    );
+
+    void GLIS_build_simple_shader_program_RGBA(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
+    );
+    
     void GLIS_draw_high_resolution_square();
 
     void GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer, GLint &texture_width,
@@ -393,5 +424,9 @@ public:
     void GLIS_set_default_texture(GLenum textureUnit);
 
     void disable_debug_callbacks(void);
+    
+    void clearBlack();
+    
+    void clearWhite();
 };
 #pragma clang diagnostic pop

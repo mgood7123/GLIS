@@ -49,7 +49,7 @@ bool GLIS_LOG_PRINT_SHAPE_INFO = false;
 bool GLIS_ABORT_ON_ERROR = false;
 bool GLIS_ABORT_ON_DEBUG_LEVEL_API = false;
 
-const char *GLIS_default_vertex_shader_source = R"glsl( #version 300 es
+const char *GLIS_default_vertex_shader_source_RGB = R"glsl( #version 300 es
     layout (location = 0) in vec3 aPos;
     layout (location = 1) in vec3 aColor;
     layout (location = 2) in vec2 aTexCoord;
@@ -65,13 +65,39 @@ const char *GLIS_default_vertex_shader_source = R"glsl( #version 300 es
     }
 )glsl";
 
-const char *GLIS_default_fragment_shader_source = R"glsl( #version 300 es
+const char *GLIS_default_vertex_shader_source_RGBA = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec4 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+
+    out vec4 ourColor;
+    out vec2 TexCoord;
+
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = aColor;
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *GLIS_default_fragment_shader_source_RGB = R"glsl( #version 300 es
     out highp vec4 FragColor;
     in highp vec3 ourColor;
 
     void main()
     {
         FragColor = vec4(ourColor, 1.0);
+    }
+)glsl";
+
+const char *GLIS_default_fragment_shader_source_RGBA = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec4 ourColor;
+
+    void main()
+    {
+        FragColor = ourColor;
     }
 )glsl";
 
@@ -827,9 +853,33 @@ void GLIS::GLIS_build_simple_shader_program(
         GLuint & fragmentShader,
         GLuint & shaderProgram
 ) {
+    GLIS_build_simple_shader_program_RGB(
+            vertexShader,
+            fragmentShader,
+            shaderProgram
+    );
+};
+
+void GLIS::GLIS_build_simple_shader_program_RGB(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
     GLIS_build_simple_shader_program(
-            vertexShader, GLIS_default_vertex_shader_source,
-            fragmentShader, GLIS_default_fragment_shader_source,
+            vertexShader, GLIS_default_vertex_shader_source_RGB,
+            fragmentShader, GLIS_default_fragment_shader_source_RGB,
+            shaderProgram
+    );
+};
+
+void GLIS::GLIS_build_simple_shader_program_RGBA(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
+    GLIS_build_simple_shader_program(
+            vertexShader, GLIS_default_vertex_shader_source_RGBA,
+            fragmentShader, GLIS_default_fragment_shader_source_RGBA,
             shaderProgram
     );
 };
@@ -950,37 +1000,19 @@ EGLBoolean GLIS::GLIS_SwapBuffers(class GLIS_CLASS &GLIS) {
     return x;
 }
 
+EGLBoolean GLIS::vsync(class GLIS_CLASS &GLIS, EGLint interval) {
+    EGLBoolean x = eglSwapInterval(GLIS.display, interval);
+    GLIS_error_to_string_EGL("eglSwapInterval");
+    return x;
+};
+
 void GLIS::GLIS_resize(GLuint **TEXDATA, size_t &TEXDATA_LEN, int width_from, int height_from,
                        int width_to, int height_to) {
     GLIS_BACKUP backup;
     // save
     backup.backup();
-    const char *CHILDvertexSource = R"glsl( #version 300 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-    const char *CHILDfragmentSource = R"glsl( #version 300 es
-out highp vec4 FragColor;
-in highp vec3 ourColor;
-
-void main()
-{
-    FragColor = vec4(ourColor, 1.0);
-}
-)glsl";
     // RESIZE TEXTURE
+    
     GLuint FB;
     GLuint RB;
     GLuint texture;
@@ -988,19 +1020,7 @@ void main()
     GLuint CHILDshaderProgram;
     GLuint CHILDvertexShader;
     GLuint CHILDfragmentShader;
-    CHILDvertexShader = GLIS_createShader(GL_VERTEX_SHADER, CHILDvertexSource);
-    CHILDfragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, CHILDfragmentSource);
-    LOG_INFO("Creating Shader program");
-    CHILDshaderProgram = glCreateProgram();
-    LOG_INFO("Attaching vertex Shader to program");
-    glAttachShader(CHILDshaderProgram, CHILDvertexShader);
-    LOG_INFO("Attaching fragment Shader to program");
-    glAttachShader(CHILDshaderProgram, CHILDfragmentShader);
-    LOG_INFO("Linking Shader program");
-    glLinkProgram(CHILDshaderProgram);
-    LOG_INFO("Validating Shader program");
-    GLboolean ProgramIsValid = GLIS_validate_program(CHILDshaderProgram);
-    assert(ProgramIsValid == GL_TRUE);
+    GLIS_build_simple_shader_program(CHILDvertexShader, CHILDfragmentShader, CHILDshaderProgram);
     LOG_INFO("Using Shader program");
     glUseProgram(CHILDshaderProgram);
     LOG_INFO("drawing rectangle");
@@ -1691,4 +1711,14 @@ GLIS::GLIS_shared_memory::slot_::multi_size::multi_size(GLIS::GLIS_shared_memory
     type_int32_t = slot__(pMemory);
     type_int64_t = slot__(pMemory);
     type_size_t = slot__(pMemory);
+}
+
+void GLIS::clearBlack() {
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void GLIS::clearWhite() {
+    glClearColor(1, 1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
 }

@@ -80,6 +80,18 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target package
 package: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
@@ -133,18 +145,6 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -203,6 +203,19 @@ testBuilder_executables_X11_font_1: cmake_check_build_system
 testBuilder_executables_X11_font_1/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_1.dir/build.make CMakeFiles/testBuilder_executables_X11_font_1.dir/build
 .PHONY : testBuilder_executables_X11_font_1/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_X11_Shapes
+
+# Build rule for target.
+testBuilder_executables_X11_Shapes: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_Shapes
+.PHONY : testBuilder_executables_X11_Shapes
+
+# fast build rule for target.
+testBuilder_executables_X11_Shapes/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/build
+.PHONY : testBuilder_executables_X11_Shapes/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_Texture
@@ -1701,6 +1714,33 @@ examples/X11_DNC_GRID.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.s
 .PHONY : examples/X11_DNC_GRID.cpp.s
 
+examples/X11_Shapes.o: examples/X11_Shapes.cpp.o
+
+.PHONY : examples/X11_Shapes.o
+
+# target to build an object file
+examples/X11_Shapes.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/examples/X11_Shapes.cpp.o
+.PHONY : examples/X11_Shapes.cpp.o
+
+examples/X11_Shapes.i: examples/X11_Shapes.cpp.i
+
+.PHONY : examples/X11_Shapes.i
+
+# target to preprocess a source file
+examples/X11_Shapes.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/examples/X11_Shapes.cpp.i
+.PHONY : examples/X11_Shapes.cpp.i
+
+examples/X11_Shapes.s: examples/X11_Shapes.cpp.s
+
+.PHONY : examples/X11_Shapes.s
+
+# target to generate assembly for a file
+examples/X11_Shapes.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/examples/X11_Shapes.cpp.s
+.PHONY : examples/X11_Shapes.cpp.s
+
 examples/X11_font_0.o: examples/X11_font_0.cpp.o
 
 .PHONY : examples/X11_font_0.o
@@ -2330,8 +2370,10 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... install"
 	@echo "... testBuilder_executables_X11_font_2"
 	@echo "... testBuilder_executables_X11_font_1"
+	@echo "... testBuilder_executables_X11_Shapes"
 	@echo "... testBuilder_executables_Texture"
 	@echo "... testBuilder_executables_X11_font_0"
 	@echo "... testBuilder_executables_X11_2"
@@ -2358,7 +2400,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... list_install_components"
-	@echo "... install"
 	@echo "... gmock_main"
 	@echo "... gmock"
 	@echo "... gtest_main"
@@ -2467,6 +2508,9 @@ help:
 	@echo "... examples/X11_DNC_GRID.o"
 	@echo "... examples/X11_DNC_GRID.i"
 	@echo "... examples/X11_DNC_GRID.s"
+	@echo "... examples/X11_Shapes.o"
+	@echo "... examples/X11_Shapes.i"
+	@echo "... examples/X11_Shapes.s"
 	@echo "... examples/X11_font_0.o"
 	@echo "... examples/X11_font_0.i"
 	@echo "... examples/X11_font_0.s"

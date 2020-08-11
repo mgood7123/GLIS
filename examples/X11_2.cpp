@@ -14,7 +14,7 @@ GLuint fragmentShader;
 GLuint shaderProgram;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
-    glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
+    glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, renderer.width, renderer.height, renderer.width, renderer.height);
     glis.GLIS_SwapBuffers(screen);
 }
 
