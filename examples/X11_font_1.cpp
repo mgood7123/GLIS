@@ -1068,7 +1068,7 @@ struct microatlas {
 
         /* Use the texture containing the atlas */
         glBindTexture(GL_TEXTURE_2D, a->tex);
-        glUniform1i(uniform_tex, 0);
+        glUniform1i(fontInit->uniform_tex, 0);
         glUniformMatrix4fv(glGetUniformLocation(fontInit->program, "projection"), 1, GL_FALSE, glm::value_ptr(glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height))));
 
         /* Set up the VBO for our vertex data */
@@ -1146,7 +1146,7 @@ struct microatlas {
         GLfloat transparent_green[4] = { 0, 1, 0, 0.5 };
 
         /* Set color to black */
-        glUniform4fv(uniform_color, 1, black);
+        glUniform4fv(fontInit->uniform_color, 1, black);
 
         /* Effects of alignment */
         render_text("The Quick Brown Fox Jumps Over The Lazy Dog", fontInit, a48, 8, 50, 1.0f, 1.0f);
@@ -1161,11 +1161,11 @@ struct microatlas {
         /* Colors and transparency */
         render_text("The Solid Black Fox Jumps Over The Lazy Dog", fontInit, a48, 8, 430, 1.0f, 1.0f);
 
-        glUniform4fv(uniform_color, 1, red);
+        glUniform4fv(fontInit->uniform_color, 1, red);
         render_text("The Solid Red Fox Jumps Over The Lazy Dog", fontInit, a48, 8, 330, 1.0f, 1.0f);
         render_text("The Solid Red Fox Jumps Over The Lazy Dog", fontInit, a48, 28, 450, 1.0f, 1.0f);
 
-        glUniform4fv(uniform_color, 1, transparent_green);
+        glUniform4fv(fontInit->uniform_color, 1, transparent_green);
         render_text("The Transparent Green Fox Jumps Over The Lazy Dog", fontInit, a48, 0, 380, 1.0f, 1.0f);
         render_text("The Transparent Green Fox Jumps Over The Lazy Dog", fontInit, a48, 18, 440, 1.0f, 1.0f);
     }
