@@ -4,32 +4,6 @@
 
 #include <glis/glis.hpp>
 
-const char *vertexSource = R"glsl( #version 300 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-const char *fragmentSource = R"glsl( #version 300 es
-out highp vec4 FragColor;
-in highp vec3 ourColor;
-
-void main()
-{
-    FragColor = vec4(ourColor, 1.0);
-}
-)glsl";
-
 GLIS_CLASS screen;
 GLIS glis;
 GLIS_FONT font;
@@ -61,9 +35,7 @@ int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
     glis.GLIS_texture(texture);
-    glis.GLIS_build_simple_shader_program(
-            vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
-    );
+    glis.GLIS_build_simple_shader_program(vertexShader, fragmentShader, shaderProgram);
     glUseProgram(shaderProgram);
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }

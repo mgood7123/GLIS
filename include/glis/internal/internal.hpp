@@ -22,10 +22,14 @@ extern bool GLIS_LOG_PRINT_SHAPE_INFO;
 extern bool GLIS_ABORT_ON_ERROR;
 extern bool GLIS_ABORT_ON_DEBUG_LEVEL_API;
 
+extern const char *GLIS_default_vertex_shader_source;
+extern const char *GLIS_default_fragment_shader_source;
+
 #define GLIS_val_to_string(ch) std::to_string(ch).c_str()
 
 class GLIS {
 public:
+
     void GLIS_FORK(const char *__file, char *const *__argv);
 
     static void GLIS_error_to_string_GL(const char *name, GLint err);
@@ -366,7 +370,13 @@ public:
     void GLIS_build_simple_shader_program(
             GLuint & vertexShader, const char *vertexSource,
             GLuint & fragmentShader, const char *fragmentSource,
-            GLuint &shaderProgram
+            GLuint & shaderProgram
+    );
+
+    void GLIS_build_simple_shader_program(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
     );
 
     void GLIS_draw_high_resolution_square();

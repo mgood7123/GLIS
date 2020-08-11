@@ -30,17 +30,6 @@ uniform sampler2D texture1;
 void main()
 {
     FragColor = texture(texture1, TexCoord);
-/*
-    FragColor = mix(
-        texture(texture1, TexCoord), // texture 1
-        texture(texture2, TexCoord), // texture 2
-        0.2 // interpolation,
-        // If the third value is 0.0 it returns the first input
-        // If it's 1.0 it returns the second input value.
-        // A value of 0.2 will return 80% of the first input color and 20% of the second input color
-        // resulting in a mixture of both our textures.
-    );
-*/
 }
 )glsl";
 

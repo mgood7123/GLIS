@@ -11,48 +11,6 @@ GLIS glis;
 GLIS_FONT font;
 GLIS_FPS fps;
 
-const char *vertexSource = R"glsl( #version 300 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec4 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = vec4(aColor, 1.0);
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-const char *fragmentSource = R"glsl( #version 300 es
-out highp vec4 FragColor;
-
-in highp vec4 ourColor;
-in highp vec2 TexCoord;
-
-uniform sampler2D texture1;
-//uniform sampler2D texture2;
-
-void main()
-{
-    FragColor = texture(texture1, TexCoord);
-/*
-    FragColor = mix(
-        texture(texture1, TexCoord), // texture 1
-        texture(texture2, TexCoord), // texture 2
-        0.2 // interpolation,
-        // If the third value is 0.0 it returns the first input
-        // If it's 1.0 it returns the second input value.
-        // A value of 0.2 will return 80% of the first input color and 20% of the second input color
-        // resulting in a mixture of both our textures.
-    );
-*/
-}
-)glsl";
-
 struct miniatlas {
     GLint width;
     GLint height;
@@ -217,40 +175,28 @@ struct miniatlas {
         }
 
         const char *vs = R"glsl( #version 300 es
-    layout (location = 0) in vec4 coord;
-    out vec2 texpos;
-    uniform mat4 projection;
+            layout (location = 0) in vec4 coord;
+            out vec2 texpos;
+            uniform mat4 projection;
 
-    void main(void) {
-        gl_Position = projection * vec4(coord.xy, 0, 1);
-        texpos = coord.zw;
-    }
-    )glsl";
+            void main(void) {
+                gl_Position = projection * vec4(coord.xy, 0, 1);
+                texpos = coord.zw;
+            }
+        )glsl";
 
         const char *fs = R"glsl( #version 300 es
-    precision mediump float;
+            precision mediump float;
 
-    in vec2 texpos;
-    uniform sampler2D tex;
-    uniform vec4 color;
-    out vec4 c;
+            in vec2 texpos;
+            uniform sampler2D tex;
+            uniform vec4 color;
+            out vec4 c;
 
-    void main(void) {
-        c = vec4(1, 1, 1, texture2D(tex, texpos).a) * color;
-    }
-
-//     in vec2 TexCoords;
-//     out vec4 color;
-//
-//     uniform sampler2D text;
-//     uniform vec3 textColor;
-//
-//     void main()
-//     {
-//         vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-//         color = vec4(textColor, 1.0) * sampled;
-//     }
-    )glsl";
+            void main(void) {
+                c = vec4(1, 1, 1, texture2D(tex, texpos).a) * color;
+            }
+        )glsl";
 
         glis.GLIS_build_simple_shader_program(
                 v, vs,
@@ -388,11 +334,6 @@ struct miniatlas {
         glDeleteShader(v);
     }
 };
-
-GLuint texture;
-GLuint vertexShader;
-GLuint fragmentShader;
-GLuint shaderProgram;
 
 miniatlas a;
 

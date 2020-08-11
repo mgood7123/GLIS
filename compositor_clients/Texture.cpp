@@ -8,31 +8,7 @@ GLIS_CLASS G;
 
 GLIS glis;
 
-const char *vertexSource = R"glsl( #version 300 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
 
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-const char *fragmentSource = R"glsl( #version 300 es
-out highp vec4 FragColor;
-in highp vec3 ourColor;
-
-void main()
-{
-    FragColor = vec4(ourColor, 1.0);
-}
-)glsl";
 
 int main() {
     int W = GLIS_COMMON_WIDTH;
@@ -44,9 +20,7 @@ int main() {
         GLuint vertexShader;
         GLuint fragmentShader;
         GLuint shaderProgram;
-        glis.GLIS_build_simple_shader_program(
-            vertexShader, vertexSource, fragmentShader, fragmentSource, shaderProgram
-        );
+        glis.GLIS_build_simple_shader_program(vertexShader, fragmentShader, shaderProgram);
         glUseProgram(shaderProgram);
         glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, texture, 0, 0, 0, 400,400, 400, 400);
         LOG_INFO("creating window %d", 0);

@@ -356,6 +356,7 @@ bool GLIS_FONT::font_init::load() {
         fprintf(stderr, "Could not open font %s\n", font_path);
         return false;
     }
+
     const char *vs = R"glsl( #version 300 es
                 layout (location = 0) in vec4 coord;
                 out vec2 texpos;

@@ -49,6 +49,32 @@ bool GLIS_LOG_PRINT_SHAPE_INFO = false;
 bool GLIS_ABORT_ON_ERROR = false;
 bool GLIS_ABORT_ON_DEBUG_LEVEL_API = false;
 
+const char *GLIS_default_vertex_shader_source = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec3 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+
+    out vec3 ourColor;
+    out vec2 TexCoord;
+
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = aColor;
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *GLIS_default_fragment_shader_source = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec3 ourColor;
+
+    void main()
+    {
+        FragColor = vec4(ourColor, 1.0);
+    }
+)glsl";
+
 #define GLIS_SWITCH_CASE_CUSTOM_CASE_CUSTOM_LOGGER_CUSTOM_STRING_CAN_I_PRINT_ERROR(LOGGING_FUNCTION, CASE_NAME, name, const, constSTRING, UNNAMED_STRING_CAN_PRINT_ERROR, UNNAMED_STRING_CANNOT_PRINT_ERROR, NAMED_STRING_CAN_PRINT_ERROR, NAMED_STRING_CANNOT_PRINT_ERROR, PRINT, IS_AN_ERROR) CASE_NAME: { \
     if(name == nullptr || name == nullptr || name == 0) { \
         if (PRINT) { \
@@ -770,7 +796,7 @@ GLboolean GLIS::GLIS_validate_program(GLuint &Program) {
 void GLIS::GLIS_build_simple_shader_program(
         GLuint & vertexShader, const char *vertexSource,
         GLuint & fragmentShader, const char *fragmentSource,
-        GLuint &shaderProgram
+        GLuint & shaderProgram
 ) {
     vertexShader = GLIS_createShader(GL_VERTEX_SHADER, vertexSource);
     fragmentShader = GLIS_createShader(GL_FRAGMENT_SHADER, fragmentSource);
@@ -795,6 +821,18 @@ void GLIS::GLIS_build_simple_shader_program(
     assert(ProgramIsValid == GL_TRUE);
     LOG_INFO("Validated Shader program");
 }
+
+void GLIS::GLIS_build_simple_shader_program(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
+    GLIS_build_simple_shader_program(
+            vertexShader, GLIS_default_vertex_shader_source,
+            fragmentShader, GLIS_default_fragment_shader_source,
+            shaderProgram
+    );
+};
 
 void GLIS::GLIS_set_conversion_origin(int origin) {
     GLIS_CONVERSION_ORIGIN = origin;
