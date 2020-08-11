@@ -117,6 +117,15 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     
     // if the shader's colors are white then the textures colors take priority.
     // if the texture's colors are white then the shaders colors take priority
+    
+    // if shader is 0.75 red, and texture is 1.0 red, then the result would be 0.75 red (shader)
+    // if texture is 0.75 red, and shader is 1.0 red, then the result would be 0.75 red (texture)
+    
+    // the shader and texture color components can be mixed,
+    // eg red and blue from texture, green from shader
+    
+    // if you don't set the color, the default is 1 for all channels
+    
     rectAlpha();
     glis.GLIS_SwapBuffers(screen);
 }
