@@ -321,8 +321,8 @@ CMakeFiles/testBuilder_executables_X11_font_1.dir/examples/X11_font_1.cpp.o
  ../include/glis/font/font.hpp
  ../include/glis/glis.hpp
  ../include/glis/internal/common.hpp
- ../include/glis/internal/context.hpp
  ../include/glis/internal/fps.hpp
+ ../include/glis/internal/glis_class.hpp
  ../include/glis/internal/internal.hpp
  ../include/glis/internal/log.hpp
  ../include/glis/ipc/ashmem.hpp

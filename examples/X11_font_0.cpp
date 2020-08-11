@@ -402,8 +402,8 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
-    glViewport(0, 0, renderer.width, renderer.height);
-    font.GLIS_font_set_RenderText_w_h(renderer.width, renderer.height);
+    glis.GLIS_Viewport(renderer);
+    font.set_max_width_height(renderer);
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
@@ -415,7 +415,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
 int main() {
     glis.getX11Window(screen, 640, 480);
     glis.GLIS_setupOnScreenRendering(screen);
-    glViewport(0, 0, screen.width, screen.height);
+    glis.GLIS_Viewport(screen);
     a.fontfilename = "/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/Vera.ttf";
     a.width = screen.width;
     a.height = screen.height;

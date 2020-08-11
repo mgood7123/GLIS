@@ -35,6 +35,8 @@
 #include <queue>
 #include <sys/time.h>
 #include <glis/ipc/ipc.hpp>
+#include <glis/internal/internal.hpp>
+
 
 #define LOG_TAG "GLIS"
 
@@ -1584,6 +1586,10 @@ void GLIS::GLIS_draw_high_resolution_square() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+}
+
+void GLIS::GLIS_Viewport(class GLIS_CLASS &GLIS) {
+    glViewport(0, 0, GLIS.width, GLIS.height);
 }
 
 GLIS::GLIS_shared_memory::slot_::slot_() {}

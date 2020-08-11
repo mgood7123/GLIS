@@ -65,6 +65,8 @@ public:
     bool connected = false;
 };
 
+GLIS_FONT::atlas *text_size = nullptr;
+
 void handleCommands(
         GLIS & glis, GLIS_CLASS & CompositorMain,
         int & command, Client * client, bool & stop_drawing, serializer & in, serializer & out
@@ -284,7 +286,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
     }
     fps.onFrameEnd();
     std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
-    font.GLIS_font_RenderText(text, 0, 20, font.GLIS_font_color_white);
+    font.render_text(text.c_str(), text_size, 0, 20, font.colors.white);
     glis.GLIS_error_to_string_GL("before GLIS_Sync_GPU");
     glis.GLIS_Sync_GPU();
     glis.GLIS_SwapBuffers(CompositorMain);
@@ -366,8 +368,9 @@ void GLIS_COMPOSITOR_DO_MAIN(
         glis.GLIS_error_to_string_GL("after onscreen setup");
         glViewport(0, 0, CompositorMain.width, CompositorMain.height);
         glis.GLIS_error_to_string_GL("glViewPort");
-        assert(font.GLIS_load_font(font_path, 0, font_size));
-        font.GLIS_font_set_RenderText_w_h(CompositorMain.width, CompositorMain.height);
+        font.set_max_width_height(CompositorMain);
+        font.add_font("default", font_path);
+        text_size = font.add_font_size("default", font_size);
         CompositorMain.server.startServer(SERVER_START_REPLY_MANUALLY);
         LOG_INFO("initialized main Compositor");
         GLuint shaderProgram;

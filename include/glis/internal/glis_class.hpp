@@ -5,7 +5,6 @@
 #include <Magnum/Platform/GLContext.h>
 #include <glis/font/font.hpp>
 #include <glis/ipc/server_core.hpp>
-#include "internal.hpp"
 #include "fps.hpp"
 
 

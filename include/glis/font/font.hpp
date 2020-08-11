@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glis/internal/glis_class.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <map>
@@ -9,110 +10,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Magnum/GL/OpenGL.h>
 
-extern GLint uniform_projection;
-extern GLint uniform_tex;
-extern GLint uniform_color;
-
 class GLIS_FONT {
 public:
+    GLint width;
+    GLint height;
+    void set_max_width_height(GLint width, GLint height);
 
-    // TODO: remove
+    void set_max_width_height(GLIS_CLASS & screen);
 
-    FT_Library GLIS_font;
+    // Maximum texture width
+    static const int MAXWIDTH  = 1024;
 
-    int width = 0;
-    int height = 0;
-
-    int max_width = 0;
-    int max_height = 0;
-
-    bool GLIS_font_init();
-
-    FT_Face GLIS_font_face;
-
-    bool GLIS_font_load(const char *font);
-
-    void GLIS_font_set_size(int width, int height);
-
-    struct Character {
-        GLuint textureID;   // ID handle of the glyph texture
-        glm::ivec2 size;    // Size of glyph
-        glm::ivec2 bearing;  // Offset from baseline to left/top of glyph
-        GLuint advance;    // Horizontal offset to advance to next glyph
-    };
-
-    struct point {
-        GLfloat x;
-        GLfloat y;
-        GLfloat s;
-        GLfloat t;
-    };
-
-    struct atlas {
-        GLuint tex;		// texture object
-
-        unsigned int w;			// width of texture in pixels
-        unsigned int h;			// height of texture in pixels
-
-        struct {
-            float ax;	// advance.x
-            float ay;	// advance.y
-
-            float bw;	// bitmap.width;
-            float bh;	// bitmap.height;
-
-            float bl;	// bitmap_left;
-            float bt;	// bitmap_top;
-
-            float tx;	// x offset of glyph in texture coordinates
-            float ty;	// y offset of glyph in texture coordinates
-        } c[128];		// character information
-    } texture_atlas;
-
-    std::map<GLchar, Character> sCharacters;
-
-    bool GLIS_font_2D_store_ascii();
-    bool GLIS_font_2D_store_ascii_atlas();
-
-    void GLIS_font_free();
-
-    GLuint GLIS_FONT_SHADER_PROGRAM;
-    GLuint GLIS_FONT_VERTEX_SHADER;
-    GLuint GLIS_FONT_FRAGMENT_SHADER;
-    GLuint GLIS_FONT_VAO;
-    GLuint GLIS_FONT_VBO;
-
-    bool GLIS_font_init_shaders();
-
-    bool GLIS_load_font(const char *font, int width, int height);
-
-    void GLIS_font_RenderText(int w, int h, std::string text, int x, int y,
-                              unsigned int scale, glm::vec3 color);
-
-    void GLIS_font_set_RenderText_w_h(int w, int h);
-
-    void GLIS_font_RenderText(std::string text, int x, int y, glm::vec3 color);
-
-    glm::vec3 GLIS_font_color_black = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 GLIS_font_color_white = glm::vec3(1.0f, 1.0f, 1.0f);
-
-    void GLIS_font_RenderTextDNC(std::string text, float DNC_x, float DNC_y, glm::vec3 color);
-    void GLIS_font_RenderTextDNC(int w, int h, std::string text, float DNC_x, float DNC_y, float scale,
-                              glm::vec3 color);
-
-
-
-
-
-
-
-    struct ATLAS {
-        GLuint program;
-        GLuint v;
-        GLuint f;
-        GLint attribute_coord;
-        GLint uniform_color;
-
+    struct font_init {
         struct point {
             GLfloat x;
             GLfloat y;
@@ -120,87 +29,439 @@ public:
             GLfloat t;
         };
 
+        GLuint program;
+        GLuint v;
+        GLuint f;
+        GLint attribute_coord;
+        GLint uniform_tex;
+        GLint uniform_color;
         GLuint vbo;
-
         FT_Library ft;
         FT_Face face;
+        bool ft_initialized = false;
+        char *font_path = nullptr;
+        bool hasProgram = false;
 
-        // Maximum texture width
-        static const int MAXWIDTH = 1024;
+        font_init();
 
-        const char *fontfilename;
+        font_init(const char *path);
 
-        /**
-         * The atlas struct holds a texture that contains the visible US-ASCII characters
-         * of a certain font rendered with a certain character height.
-         * It also contains an array that contains all the information necessary to
-         * generate the appropriate vertex and texture coordinates for each character.
-         *
-         * After the constructor is run, you don't need to use any FreeType functions anymore.
-         */
-        struct atlas {
-            GLuint tex;		// texture object
+        font_init(const font_init &p2);
 
-            unsigned int w;			// width of texture in pixels
-            unsigned int h;			// height of texture in pixels
+        font_init(font_init &&p2);
 
-            struct {
-                float ax;	// advance.x
-                float ay;	// advance.y
+        font_init &operator=(const font_init &p2);
 
-                float bw;	// bitmap.width;
-                float bh;	// bitmap.height;
+        font_init &operator=(font_init &&p2);
 
-                float bl;	// bitmap_left;
-                float bt;	// bitmap_top;
+        ~font_init();
 
-                float tx;	// x offset of glyph in texture coordinates
-                float ty;	// y offset of glyph in texture coordinates
-            } c[128];		// character information
+        bool load();
+    };
 
-            atlas(FT_Face face, int height);
+    /**
+     * The atlas struct holds a texture that contains the visible US-ASCII characters
+     * of a certain font rendered with a certain character height.
+     * It also contains an array that contains all the information necessary to
+     * generate the appropriate vertex and texture coordinates for each character.
+     *
+     * After the constructor is run, you don't need to use any FreeType functions anymore.
+     */
+    struct atlas {
+        GLuint tex = 0;        // texture object
 
-            ~atlas();
-        };
+        unsigned int w = 0;            // width of texture in pixels
+        unsigned int h = 0;            // height of texture in pixels
+        unsigned int size = 0;      // height of character in pixels
 
-        // a map of atlas's corresponding to loaded fonts and sizes
+        // pointer to the loaded font in which this atlas is constructed
+        font_init *font_source = nullptr;
 
-        // an atlas map tailored specifically for font access
+        struct {
+            float ax = 0.0f;    // advance.x
+            float ay = 0.0f;    // advance.y
 
-//        atlas_map<const char *, atlas_map<const char *, atlas*>> atlas_index;
+            float bw = 0.0f;    // bitmap.width;
+            float bh = 0.0f;    // bitmap.height;
 
-//        typedef std::map<int, atlas*> atlas_map;
-//        std::map<const char *,  atlas_map *> atlas_index;
+            float bl = 0.0f;    // bitmap_left;
+            float bt = 0.0f;    // bitmap_top;
 
-        atlas *a48;
-        atlas *a24;
-        atlas *a12;
+            float tx = 0.0f;    // x offset of glyph in texture coordinates
+            float ty = 0.0f;    // y offset of glyph in texture coordinates
+        } c[128];        // character information
 
-        ATLAS();
+        void init(FT_Face face, int height);
 
-        static GLint attribute_coord_;
-        static GLint uniform_projection_;
-        static GLint uniform_tex_;
-        static GLint uniform_color_;
+        void denit();
 
-        int width;
-        int height;
+        atlas(FT_Face face, int height);
 
-        void set_width_height(int w, int h);
+        atlas();
 
-        int load_font(const char * font_name, const char * font_path);
+        constexpr atlas(const atlas &p2);
 
-        void generate_font_size(int size);
+        constexpr atlas(atlas &&p2);
 
-        /**
-         * Render text using the currently loaded font and currently set font size.
-         * Rendering starts at coordinates (x, y), z is always 0.
-         * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
-         */
-        void render_text(const char *text, GLIS_FONT & font, atlas * a, float x, float y, float sx, float sy);
+        atlas &operator=(const atlas &p2);
 
-        void display(GLIS_FONT & font);
+        atlas &operator=(atlas &&p2);
 
-        void free_resources();
-    } A;
+        ~atlas();
+    };
+
+    Kernel font;
+
+    template<typename A, typename B, typename C, typename D>
+    class quad {
+    public:
+        A first;
+        B second;
+        C third;
+        D fourth;
+
+        quad(A first, B second, C third, D fourth) {
+            this->first = first;
+            this->second = second;
+            this->third = third;
+            this->fourth = fourth;
+        }
+    };
+
+    struct font_data {
+        Kernel sizes;
+
+        font_data();
+
+        font_data(const Kernel &kernel);
+
+        /* Copy constructor */
+        font_data(const font_data &p2);
+
+        font_data(font_data &&p2);
+
+        font_data &operator=(const font_data &p2);
+
+        font_data &operator=(font_data &&p2);
+
+        ~font_data();
+    };
+
+    typedef quad<const char *, const char *, AnyOpt, AnyOpt> ATLAS_TYPE;
+
+    ATLAS_TYPE * add_font(const char *id, const char *path);
+
+    Object *find_font(const char *id);
+
+    ATLAS_TYPE *get_atlas(const char *id);
+
+    atlas * add_font_size(const char *id, int size);
+
+    atlas *find_size(const char *id, font_data *fontData, int size);
+
+    atlas *find_size(const char *id, int size);
+
+    struct colors {
+        const GLfloat black[4] = { 0, 0, 0, 1 };
+        const GLfloat white[4] = { 1, 1, 1, 1 };
+        const GLfloat red[4] = { 1, 0, 0, 1 };
+        const GLfloat transparent_green[4] = { 0, 1, 0, 0.5 };
+    };
+
+    colors colors;
+
+    GLfloat * current_color = const_cast<GLfloat *>(colors.black);
+
+    void set_color(const GLfloat color[4]) {
+        current_color = const_cast<GLfloat *>(color);
+    }
+
+    /**
+     * Render text using the specified font atlas, with the specified color,
+     * with the specified x and y scaling.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y, float sx, float sy,
+                     const GLfloat * color);
+
+    /**
+     * Render text using the specified font atlas, with the currently set color,
+     * with the specified x and y scaling.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y, float sx, float sy);
+
+    /**
+     * Render text using the specified font and size, with the specified color,
+     * with the specified x and y scaling.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                     float sx, float sy, const GLfloat * color);
+
+    /**
+     * Render text using the specified font and size, with the currently set color,
+     * with the specified x and y scaling.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                     float sx, float sy);
+
+    /**
+     * Render text using the specified font atlas, with the specified color,
+     * with the x and y scaling set to 1.0f.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y, const GLfloat * color);
+
+    /**
+     * Render text using the specified font atlas, with the currently set color,
+     * with the x and y scaling set to 1.0f.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y);
+
+    /**
+     * Render text using the specified font and size, with the specified color,
+     * with the x and y scaling set to 1.0f.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                     const GLfloat * color);
+
+    /**
+     * Render text using the specified font and size, with the currently set color,
+     * with the x and y scaling set to 1.0f.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y);
+
+    /**
+     * Render text using the specified font atlas, with the specified color,
+     * with the specified scaling for both x and y.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y, float sxy,
+            const GLfloat * color);
+
+    /**
+     * Render text using the specified font atlas, with the currently set color,
+     * with the specified scaling for both x and y.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, atlas *a, float x, float y, float sxy);
+
+    /**
+     * Render text using the specified font and size, with the specified color,
+     * with the specified scaling for both x and y.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the specified color is nullptr, 0x0, NULL, or equivalent values
+     * then the currently set color is used.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                     float sxy, const GLfloat * color);
+
+    /**
+     * Render text using the specified font and size, with the currently set color,
+     * with the specified scaling for both x and y.
+     *
+     * if the scaling is 1.0f, no scaling is applied.
+     *
+     * if the scaling is larger than 1.0f, for example 1.1f, 2.5f, and so on
+     * then the text will appear larger.
+     *
+     * if the scaling is smaller than 1.0f, for example 0.9f, 0.5f, and so on
+     * then the text will appear smaller.
+     *
+     * If the currently set color is nullptr, 0x0, NULL, or equivalent values
+     * then the color black is used
+     *
+     * Rendering starts at coordinates (x, y), z is always 0.
+     * With (x = 0, y = 0) being top left.
+     *
+     * The pixel coordinates that the FreeType2 library uses are scaled by (1.0f, 1.0f).
+     */
+    void render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+            float sxy);
 };

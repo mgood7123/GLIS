@@ -320,8 +320,8 @@ CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../includ
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/glis.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/common.hpp
-CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/context.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/fps.hpp
+CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/glis_class.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/internal.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/internal/log.hpp
 CMakeFiles/testBuilder_executables_wayland.dir/examples/wayland.cpp.o: ../include/glis/ipc/ashmem.hpp

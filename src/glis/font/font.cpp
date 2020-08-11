@@ -1,85 +1,441 @@
-#include <glis/font/font.hpp>
-#include <glis/internal/log.hpp>
-#include <glis/glis.hpp>
-#include <utility>
+#include <glis/internal/internal.hpp>
 
-bool useAtlas = true;
-
-GLint uniform_projection;
-GLint uniform_tex;
-GLint uniform_color;
-
-bool GLIS_FONT::GLIS_font_init() {
-    if (FT_Init_FreeType(&GLIS_font)) {
-        LOG_ERROR("ERROR::FREETYPE: Could not init FreeType Library");
-        return false;
-    }
-    return true;
-}
-
-bool GLIS_FONT::GLIS_font_load(const char *font) {
-    if (FT_New_Face(GLIS_font, font, 0, &GLIS_font_face)) {
-        LOG_ERROR("ERROR::FREETYPE: Failed to load font");
-        return false;
-    }
-    return true;
-}
-
-void GLIS_FONT::GLIS_font_set_size(int width, int height) {
+void GLIS_FONT::set_max_width_height(GLint width, GLint height) {
     this->width = width;
     this->height = height;
-    FT_Set_Pixel_Sizes(GLIS_font_face, width, height);
 }
 
-bool GLIS_FONT::GLIS_font_2D_store_ascii_atlas() {
-    int MAXWIDTH = 1024;
+void GLIS_FONT::set_max_width_height(GLIS_CLASS &screen) {
+    this->width = screen.width;
+    this->height = screen.height;
+}
+
+GLIS_FONT::ATLAS_TYPE * GLIS_FONT::add_font(const char *id, const char *path) {
+    font_init *i = new font_init(path);
+    i->load();
+    Object * o = font.newObject(
+            0,
+            0,
+            ATLAS_TYPE{
+                    id,
+                    path,
+                    AnyOpt(i, true),
+                    AnyOpt(new font_data(Kernel()), true)
+            }
+    );
+    return o == nullptr ? nullptr : o->resource.get<ATLAS_TYPE*>();
+}
+
+Object *GLIS_FONT::find_font(const char *id) {
+    size_t resource_len = strlen(id);
+    int page = 1;
+    size_t index = 0;
+    size_t page_size = font.table->page_size;
+    printf("font.table->Page.count() is %d\n", font.table->Page.count());
+    for (; page <= font.table->Page.count(); page++) {
+        index = ((page_size * page) - page_size);
+        for (; index < page_size * page; index++)
+            if (font.table->table[index] != nullptr) {
+                const char *data = font.table->table[index]->resource.get<ATLAS_TYPE *>()->first;
+                if (!memcmp(data, id, resource_len))
+                    return font.table->table[index];
+            } else {
+                printf("font.table->table[%zu] is nullptr\n", index);
+            }
+    }
+    return nullptr;
+}
+
+GLIS_FONT::ATLAS_TYPE *GLIS_FONT::get_atlas(const char *id) {
+    auto o = find_font(id);
+    if (o == nullptr) return nullptr;
+    return o->resource.get<ATLAS_TYPE *>();
+}
+
+GLIS_FONT::atlas * GLIS_FONT::add_font_size(const char *id, int size) {
+    ATLAS_TYPE *data = get_atlas(id);
+    if (data == nullptr) return nullptr;
+    auto fontInit = data->third.get<font_init *>();
+    auto fontData = data->fourth.get<font_data *>();
+    atlas x = atlas();
+    x.init(fontInit->face, size);
+    x.font_source = fontInit;
+    Object * o = fontData->sizes.newObject(0, 0, x);
+    return o == nullptr ? nullptr : o->resource.get<atlas*>();
+}
+
+GLIS_FONT::atlas *GLIS_FONT::find_size(const char *id, GLIS_FONT::font_data *fontData, int size) {
+    Kernel *x = &fontData->sizes;
+    if (x->table->Page.count() == 0) {
+        printf("font %s has no sizes created\n", id);
+    } else {
+        int page = 1;
+        size_t index = 0;
+        size_t page_size = x->table->page_size;
+        for (; page <= x->table->Page.count(); page++) {
+            index = ((page_size * page) - page_size);
+            for (; index < page_size * page; index++)
+                if (x->table->table[index] != nullptr) {
+                    if (x->table->table[index]->resource.has_value()) {
+                        printf("checking index %zu\n", index);
+                        atlas *atlas_ = x->table->table[index]->resource.get<atlas *>();
+                        if (atlas_->size == size) {
+                            printf("found requested size at index %zu\n", index);
+                            return atlas_;
+                        }
+                    } else
+                        printf("index %zu has no resource\n", index);
+                }
+        }
+    }
+    printf("failed to find size %d\n", size);
+    return nullptr;
+}
+
+GLIS_FONT::atlas *GLIS_FONT::find_size(const char *id, int size) {
+    ATLAS_TYPE *data = get_atlas(id);
+    if (data == nullptr) return nullptr;
+    font_data *fontData = data->fourth.get<font_data *>();
+    assert(fontData != nullptr);
+    return find_size(id, fontData, size);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sx, float sy,
+        const GLfloat * color) {
+    /* Enable blending, necessary for our alpha texture */
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    if (color != nullptr) {
+        glUniform4fv(a->font_source->uniform_color, 1, color);
+    } else if (current_color != nullptr) {
+        glUniform4fv(a->font_source->uniform_color, 1, current_color);
+    } else {
+        glUniform4fv(a->font_source->uniform_color, 1, colors.black);
+    }
+
+    // flip y axis
+    float y_ = static_cast<float>(height) - y;
+
+    printf("text: %s\n", text);
+    printf("x: %G, y: %G\n", x, y);
+    printf("sx: %G, sy: %G\n", 1.0f, 1.0f);
+    const uint8_t *p;
+
+    /* Use the texture containing the atlas */
+    glBindTexture(GL_TEXTURE_2D, a->tex);
+    glUniform1i(a->font_source->uniform_tex, 0);
+    glUniformMatrix4fv(glGetUniformLocation(a->font_source->program, "projection"), 1, GL_FALSE,
+                       glm::value_ptr(glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f,
+                                                 static_cast<GLfloat>(height))));
+
+    /* Set up the VBO for our vertex data */
+    glEnableVertexAttribArray(a->font_source->attribute_coord);
+    glBindBuffer(GL_ARRAY_BUFFER, a->font_source->vbo);
+    glVertexAttribPointer(a->font_source->attribute_coord, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    typedef font_init::point point;
+
+    point coords[6 * strlen(text)];
+    int c = 0;
+
+    /* Loop through all characters */
+    for (p = (const uint8_t *) text; *p; p++) {
+        /* Calculate the vertex and texture coordinates */
+        float x2 = x + a->c[*p].bl * sx;
+        float y2 = -y_ - a->c[*p].bt * sy;
+        float w = a->c[*p].bw * sx;
+        float h = a->c[*p].bh * sy;
+
+        /* Advance the cursor to the start of the next character */
+        x += a->c[*p].ax * sx;
+        y += a->c[*p].ay * sy;
+
+        /* Skip glyphs that have no pixels */
+        if ((w == 0.0f) || (h == 0.0f))
+            continue;
+
+        coords[c++] = (point) {
+                x2, -y2, a->c[*p].tx, a->c[*p].ty};
+        coords[c++] = (point) {
+                x2 + w, -y2, a->c[*p].tx + a->c[*p].bw / a->w, a->c[*p].ty};
+        coords[c++] = (point) {
+                x2, -y2 - h, a->c[*p].tx, a->c[*p].ty + a->c[*p].bh / a->h};
+        coords[c++] = (point) {
+                x2 + w, -y2, a->c[*p].tx + a->c[*p].bw / a->w, a->c[*p].ty};
+        coords[c++] = (point) {
+                x2, -y2 - h, a->c[*p].tx, a->c[*p].ty + a->c[*p].bh / a->h};
+        coords[c++] = (point) {
+                x2 + w, -y2 - h, a->c[*p].tx + a->c[*p].bw / a->w,
+                a->c[*p].ty + a->c[*p].bh / a->h};
+    }
+
+    /* Draw all the character on the screen in one go */
+    glBufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
+    glDrawArrays(GL_TRIANGLES, 0, c);
+    glDisableVertexAttribArray(a->font_source->attribute_coord);
+    glDisable(GL_BLEND);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sx, float sy)
+{
+    render_text(text, a, x, y, sx, sy, nullptr);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                       float sx, float sy, const GLfloat * color) {
+    ATLAS_TYPE *data = get_atlas(font_id);
+    if (data == nullptr) return;
+    atlas *a = find_size(font_id, data->fourth.get<font_data *>(), font_size);
+    render_text(text, a, x, y, sx, sy, color);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                       float sx, float sy) {
+    render_text(text, font_id, font_size, x, y, sx, sy, nullptr);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y,
+        const GLfloat * color) {
+    render_text(text, a, x, y, 1.0f, 1.0f, color);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y) {
+    render_text(text, a, x, y, 1.0f, 1.0f, nullptr);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+        const GLfloat * color) {
+    render_text(text, font_id, font_size, x, y, 1.0f, 1.0f, color);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y)
+{
+    render_text(text, font_id, font_size, x, y, 1.0f, 1.0f, nullptr);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sxy,
+                       const GLfloat * color) {
+    render_text(text, a, x, y, sxy, sxy, color);
+}
+
+void
+GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sxy) {
+    render_text(text, a, x, y, sxy, sxy, nullptr);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+                       float sxy, const GLfloat * color) {
+    render_text(text, font_id, font_size, x, y, sxy, sxy, color);
+}
+
+void
+GLIS_FONT::render_text(const char *text, const char *font_id, const int font_size, float x, float y,
+        float sxy)
+{
+    render_text(text, font_id, font_size, x, y, sxy, sxy, nullptr);
+}
+
+GLIS_FONT::font_init::font_init() {
+    std::cout << "font_init default constructor" << std::endl << std::flush;
+}
+
+GLIS_FONT::font_init::font_init(const char *path) {
+    std::cout << "font_init path constructor" << std::endl << std::flush;
+    font_path = const_cast<char *>(path);
+    if (!ft_initialized) {
+        /* Initialize the FreeType2 library */
+        if (FT_Init_FreeType(&ft)) {
+            fprintf(stderr, "Could not init freetype library\n");
+            ft_initialized = false;
+            return;
+        }
+        ft_initialized = true;
+    }
+}
+
+GLIS_FONT::font_init::font_init(const GLIS_FONT::font_init &p2) {
+    std::cout << "font_init copy constructor" << std::endl << std::flush;
+    this->font_path = p2.font_path;
+    this->ft_initialized = p2.ft_initialized;
+    this->ft = p2.ft;
+    this->face = p2.face;
+    this->hasProgram = p2.hasProgram;
+    std::swap(this->v, const_cast<font_init &>(p2).v);
+    std::swap(this->f, const_cast<font_init &>(p2).f);
+    std::swap(this->program, const_cast<font_init &>(p2).program);
+    std::swap(this->uniform_color, const_cast<font_init &>(p2).uniform_color);
+    std::swap(this->uniform_tex, const_cast<font_init &>(p2).uniform_tex);
+    std::swap(this->attribute_coord, const_cast<font_init &>(p2).attribute_coord);
+    std::swap(this->vbo, const_cast<font_init &>(p2).vbo);
+}
+
+GLIS_FONT::font_init::font_init(GLIS_FONT::font_init &&p2) {
+    std::cout << "font_init move constructor" << std::endl << std::flush;
+    std::swap(this->font_path, p2.font_path);
+    std::swap(this->ft_initialized, p2.ft_initialized);
+    std::swap(this->ft, p2.ft);
+    std::swap(this->face, p2.face);
+    std::swap(this->hasProgram, p2.hasProgram);
+    std::swap(this->v, p2.v);
+    std::swap(this->f, p2.f);
+    std::swap(this->program, p2.program);
+    std::swap(this->uniform_color, p2.uniform_color);
+    std::swap(this->uniform_tex, p2.uniform_tex);
+    std::swap(this->attribute_coord, p2.attribute_coord);
+    std::swap(this->vbo, p2.vbo);
+}
+
+GLIS_FONT::font_init &GLIS_FONT::font_init::operator=(const GLIS_FONT::font_init &p2) {
+    std::cout << "font_init copy assignment" << std::endl << std::flush;
+    fflush(stdout);
+    this->font_path = p2.font_path;
+    this->ft_initialized = p2.ft_initialized;
+    this->ft = p2.ft;
+    this->face = p2.face;
+    this->hasProgram = p2.hasProgram;
+    std::swap(this->v, const_cast<font_init &>(p2).v);
+    std::swap(this->f, const_cast<font_init &>(p2).f);
+    std::swap(this->program, const_cast<font_init &>(p2).program);
+    std::swap(this->uniform_color, const_cast<font_init &>(p2).uniform_color);
+    std::swap(this->uniform_tex, const_cast<font_init &>(p2).uniform_tex);
+    std::swap(this->attribute_coord, const_cast<font_init &>(p2).attribute_coord);
+    std::swap(this->vbo, const_cast<font_init &>(p2).vbo);
+    return *const_cast<font_init *>(this);
+}
+
+GLIS_FONT::font_init &GLIS_FONT::font_init::operator=(GLIS_FONT::font_init &&p2) {
+    std::cout << "font_init move assignment" << std::endl << std::flush;
+    fflush(stdout);
+    std::swap(this->font_path, p2.font_path);
+    std::swap(this->ft_initialized, p2.ft_initialized);
+    std::swap(this->ft, p2.ft);
+    std::swap(this->face, p2.face);
+    std::swap(this->hasProgram, p2.hasProgram);
+    std::swap(this->v, p2.v);
+    std::swap(this->f, p2.f);
+    std::swap(this->program, p2.program);
+    std::swap(this->uniform_color, p2.uniform_color);
+    std::swap(this->uniform_tex, p2.uniform_tex);
+    std::swap(this->attribute_coord, p2.attribute_coord);
+    std::swap(this->vbo, p2.vbo);
+    return *const_cast<font_init *>(this);
+}
+
+GLIS_FONT::font_init::~font_init() {
+    std::cout << "font_init destructor" << std::endl << std::flush;
+    if (hasProgram) {
+        glDeleteProgram(program);
+        glDeleteShader(f);
+        glDeleteShader(v);
+        hasProgram = false;
+    }
+}
+
+bool GLIS_FONT::font_init::load() {
+    /* Load a font */
+    if (FT_New_Face(ft, font_path, 0, &face)) {
+        fprintf(stderr, "Could not open font %s\n", font_path);
+        return false;
+    }
+    const char *vs = R"glsl( #version 300 es
+                layout (location = 0) in vec4 coord;
+                out vec2 texpos;
+                uniform mat4 projection;
+
+                void main(void) {
+                    gl_Position = projection * vec4(coord.xy, 0, 1);
+                    texpos = coord.zw;
+                }
+            )glsl";
+
+    const char *fs = R"glsl( #version 300 es
+                precision mediump float;
+
+                in vec2 texpos;
+                uniform sampler2D tex;
+                uniform vec4 color;
+                out vec4 c;
+
+                void main(void) {
+                    c = vec4(1, 1, 1, texture2D(tex, texpos).a) * color;
+                }
+            )glsl";
+
+    GLIS glis;
+    glis.GLIS_build_simple_shader_program(
+            v, vs,
+            f, fs,
+            program
+    );
+    if (program == 0) return false;
+
+    hasProgram = true;
+
+    attribute_coord = glGetAttribLocation(program, "coord");
+    uniform_tex = glGetUniformLocation(program, "tex");
+    uniform_color = glGetUniformLocation(program, "color");
+
+    if (attribute_coord == -1 || uniform_tex == -1 || uniform_color == -1)
+        return false;
+
+    // Create the vertex buffer object
+    glGenBuffers(1, &vbo);
+    return true;
+}
+
+void GLIS_FONT::atlas::init(FT_Face face, int height) {
+    size = height;
+    FT_Set_Pixel_Sizes(face, 0, height);
+    FT_GlyphSlot g = face->glyph;
+
     unsigned int roww = 0;
     unsigned int rowh = 0;
-    texture_atlas.w = 0;
-    texture_atlas.h = 0;
+    w = 0;
+    h = 0;
 
-    memset(texture_atlas.c, 0, sizeof texture_atlas.c);
+    memset(c, 0, sizeof c);
 
     /* Find minimum size for a texture holding all visible ASCII characters */
     for (int i = 32; i < 128; i++) {
-        if (FT_Load_Char(GLIS_font_face, i, FT_LOAD_RENDER)) {
+        if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
             fprintf(stderr, "Loading character %c failed!\n", i);
             continue;
         }
-        if (roww + GLIS_font_face->glyph->bitmap.width + 1 >= MAXWIDTH) {
-            texture_atlas.w = std::max(texture_atlas.w, roww);
-            texture_atlas.h += rowh;
+        if (roww + g->bitmap.width + 1 >= MAXWIDTH) {
+            w = std::max(w, roww);
+            h += rowh;
             roww = 0;
             rowh = 0;
         }
-        roww += GLIS_font_face->glyph->bitmap.width + 1;
-        rowh = std::max(rowh, GLIS_font_face->glyph->bitmap.rows);
+        roww += g->bitmap.width + 1;
+        rowh = std::max(rowh, g->bitmap.rows);
     }
 
-    texture_atlas.w = std::max(texture_atlas.w, roww);
-    texture_atlas.h += rowh;
+    w = std::max(w, roww);
+    printf("adding rowh (%d) to h (%d)\n", rowh, h);
+    h += rowh;
+    printf("added rowh (%d) to h (%d)\n", rowh, h);
 
     /* Create a texture that will be used to hold all ASCII glyphs */
     glActiveTexture(GL_TEXTURE0);
-    glGenTextures(1, &texture_atlas.tex);
-    glBindTexture(GL_TEXTURE_2D, texture_atlas.tex);
-    glUniform1i(uniform_tex, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, texture_atlas.w, texture_atlas.h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, nullptr);
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
 
-//    glTexImage2D(
-//            GL_TEXTURE_2D,
-//            0,
-//            GL_R8,
-//            texture_atlas.w,
-//            texture_atlas.h,
-//            0,
-//            GL_RED,
-//            GL_UNSIGNED_BYTE,
-//            0
-//    );
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
 
     /* We require 1 byte alignment when uploading texture data */
-//    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     /* Clamping to edges is important to prevent artifacts when scaling */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -89,9 +445,6 @@ bool GLIS_FONT::GLIS_font_2D_store_ascii_atlas() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    /* We require 1 byte alignment when uploading texture data */
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
     /* Paste all glyph bitmaps into the texture, remembering the offset */
     int ox = 0;
     int oy = 0;
@@ -99,384 +452,43 @@ bool GLIS_FONT::GLIS_font_2D_store_ascii_atlas() {
     rowh = 0;
 
     for (int i = 32; i < 128; i++) {
-        if (FT_Load_Char(GLIS_font_face, i, FT_LOAD_RENDER)) {
+        if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
             fprintf(stderr, "Loading character %c failed!\n", i);
             continue;
         }
 
-        if (ox + GLIS_font_face->glyph->bitmap.width + 1 >= MAXWIDTH) {
+        if (ox + g->bitmap.width + 1 >= MAXWIDTH) {
             oy += rowh;
             rowh = 0;
             ox = 0;
         }
 
-        glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, GLIS_font_face->glyph->bitmap.width, GLIS_font_face->glyph->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, GLIS_font_face->glyph->bitmap.buffer);
-        texture_atlas.c[i].ax = GLIS_font_face->glyph->advance.x >> 6;
-        texture_atlas.c[i].ay = GLIS_font_face->glyph->advance.y >> 6;
+        glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, g->bitmap.width, g->bitmap.rows, GL_ALPHA,
+                        GL_UNSIGNED_BYTE, g->bitmap.buffer);
+        c[i].ax = g->advance.x >> 6;
+        c[i].ay = g->advance.y >> 6;
 
-        texture_atlas.c[i].bw = GLIS_font_face->glyph->bitmap.width;
-        texture_atlas.c[i].bh = GLIS_font_face->glyph->bitmap.rows;
+        c[i].bw = g->bitmap.width;
+        c[i].bh = g->bitmap.rows;
 
-        texture_atlas.c[i].bl = GLIS_font_face->glyph->bitmap_left;
-        texture_atlas.c[i].bt = GLIS_font_face->glyph->bitmap_top;
+        c[i].bl = g->bitmap_left;
+        c[i].bt = g->bitmap_top;
 
-        texture_atlas.c[i].tx = ox / (float)texture_atlas.w;
-        texture_atlas.c[i].ty = oy / (float)texture_atlas.h;
+        c[i].tx = ox / (float) w;
+        c[i].ty = oy / (float) h;
 
-        rowh = std::max(rowh, GLIS_font_face->glyph->bitmap.rows);
-        ox += GLIS_font_face->glyph->bitmap.width + 1;
+        rowh = std::max(rowh, g->bitmap.rows);
+        ox += g->bitmap.width + 1;
     }
 
-    LOG_INFO("Generated a %d x %d (%d kb) texture atlas", texture_atlas.w, texture_atlas.h, texture_atlas.w * texture_atlas.h / 1024);
-
-    // reset unpack alignment
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
+    fprintf(stderr, "Generated a %d x %d (%d kb) texture atlas\n", w, h, w * h / 1024);
 }
 
-bool GLIS_FONT::GLIS_font_2D_store_ascii() {
-
-    // Load first 128 characters of ASCII set
-    int loaded = 0;
-    for (GLubyte c = 0; c < 128; c++) {
-        // Load character glyph
-        if (FT_Load_Char(GLIS_font_face, c, FT_LOAD_RENDER)) {
-            LOG_ERROR("ERROR::FREETYTPE: Failed to load Glyph");
-            continue;
-        }
-        loaded++;
-        // Generate texture
-        GLuint texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL_R8,
-                GLIS_font_face->glyph->bitmap.width,
-                GLIS_font_face->glyph->bitmap.rows,
-                0,
-                GL_RED,
-                GL_UNSIGNED_BYTE,
-                GLIS_font_face->glyph->bitmap.buffer
-        );
-        // Set texture options
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // Now store character for later use
-        Character character = {
-                texture,
-                glm::ivec2(GLIS_font_face->glyph->bitmap.width, GLIS_font_face->glyph->bitmap.rows),
-                glm::ivec2(GLIS_font_face->glyph->bitmap_left, GLIS_font_face->glyph->bitmap_top),
-                (GLuint) GLIS_font_face->glyph->advance.x
-        };
-        sCharacters.insert(std::pair<GLchar, Character>(c, character));
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return loaded != 0;
+void GLIS_FONT::atlas::denit() {
+    glDeleteTextures(1, &tex);
 }
 
-void GLIS_FONT::GLIS_font_free() {
-    FT_Done_Face(GLIS_font_face);
-    FT_Done_FreeType(GLIS_font);
-}
-
-bool GLIS_FONT::GLIS_font_init_shaders() {
-    const char *vs = R"glsl( #version 300 es
-    layout (location = 0) in vec4 vertex;
-    out vec2 TexCoords;
-
-    uniform mat4 projection;
-
-    void main()
-    {
-        gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-        TexCoords = vertex.zw;
-    }
-    )glsl";
-
-    const char *fs = R"glsl( #version 300 es
-    precision mediump float;
-
-    in vec2 TexCoords;
-    out vec4 color;
-
-    uniform sampler2D text;
-    uniform vec3 textColor;
-
-    void main()
-    {
-        vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-        color = vec4(textColor, 1.0) * sampled;
-    }
-    )glsl";
-    GLIS glis;
-    glis.GLIS_build_simple_shader_program(
-            GLIS_FONT_VERTEX_SHADER, vs, GLIS_FONT_FRAGMENT_SHADER, fs, GLIS_FONT_SHADER_PROGRAM
-    );
-    glUseProgram(GLIS_FONT_SHADER_PROGRAM);
-    uniform_projection = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "projection");
-    uniform_color = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "textColor");
-    uniform_tex = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "text");
-    // Configure VAO/VBO for texture quads
-    glGenVertexArrays(1, &GLIS_FONT_VAO);
-    glGenBuffers(1, &GLIS_FONT_VBO);
-    glBindVertexArray(GLIS_FONT_VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, GLIS_FONT_VAO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    return true;
-}
-
-bool GLIS_FONT::GLIS_load_font(const char *font, int width, int height) {
-    // TODO: smart load
-    if (!GLIS_font_init_shaders()) return false;
-    if (!GLIS_font_init()) return false;
-    if (!GLIS_font_load(font)) {
-        FT_Done_FreeType(GLIS_font);
-        return false;
-    }
-    GLIS_font_set_size(width, height);
-
-    // disable byte-alignment restriction
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    bool r = GLIS_font_2D_store_ascii();
-    bool r2 = GLIS_font_2D_store_ascii_atlas();
-
-    // TODO: restore alignment from paramater
-
-    // enable byte-alignment restriction
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-    if (!r && !r2) {
-        GLIS_font_free();
-        return false;
-    }
-    return true;
-}
-
-void
-GLIS_FONT::GLIS_font_RenderText(int w, int h, std::string text, int x, int y,
-                                unsigned int scale, glm::vec3 color) {
-    if (useAtlas) {
-        const uint8_t *p;
-        point coords[6 * text.length()];
-        int c = 0;
-
-        /* Loop through all characters */
-        for (p = (const uint8_t *)text.c_str(); *p; p++) {
-            /* Calculate the vertex and texture coordinates */
-            float x2 = x + texture_atlas.c[*p].bl * static_cast<float>(scale);
-            float y2 = -y - texture_atlas.c[*p].bt * static_cast<float>(scale);
-            float w = texture_atlas.c[*p].bw * static_cast<float>(scale);
-            float h = texture_atlas.c[*p].bh * static_cast<float>(scale);
-
-            /* Advance the cursor to the start of the next character */
-            x += texture_atlas.c[*p].ax * static_cast<float>(scale);
-            y += texture_atlas.c[*p].ay * static_cast<float>(scale);
-
-            /* Skip glyphs that have no pixels */
-            if (!w || !h)
-                continue;
-
-            coords[c++] = (point) {
-                    x2, -y2, texture_atlas.c[*p].tx, texture_atlas.c[*p].ty};
-            coords[c++] = (point) {
-                    x2 + w, -y2, texture_atlas.c[*p].tx + texture_atlas.c[*p].bw / texture_atlas.w, texture_atlas.c[*p].ty};
-            coords[c++] = (point) {
-                    x2, -y2 - h, texture_atlas.c[*p].tx, texture_atlas.c[*p].ty + texture_atlas.c[*p].bh / texture_atlas.h};
-            coords[c++] = (point) {
-                    x2 + w, -y2, texture_atlas.c[*p].tx + texture_atlas.c[*p].bw / texture_atlas.w, texture_atlas.c[*p].ty};
-            coords[c++] = (point) {
-                    x2, -y2 - h, texture_atlas.c[*p].tx, texture_atlas.c[*p].ty + texture_atlas.c[*p].bh / texture_atlas.h};
-            coords[c++] = (point) {
-                    x2 + w, -y2 - h, texture_atlas.c[*p].tx + texture_atlas.c[*p].bw / texture_atlas.w, texture_atlas.c[*p].ty + texture_atlas.c[*p].bh / texture_atlas.h};
-        }
-
-        /* Draw all the character on the screen in one go */
-        glBufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
-        glDrawArrays(GL_TRIANGLES, 0, c);
-    } else {
-        // flip y axis
-        GLfloat y_ = static_cast<float>(h-y);
-        // Iterate through all characters
-        std::string::const_iterator c;
-
-        // first we calculate the maxY of each character we are going to be rendering
-
-        int topOffset = 0;
-        int bottomOffset = 0;
-
-        for (c = text.begin(); c != text.end(); c++)
-            if (sCharacters.count(*c) > 0) {
-                Character ch = sCharacters[*c];
-                if (ch.bearing.y > topOffset) topOffset = ch.bearing.y;
-                if ((ch.size.y - ch.bearing.y) > bottomOffset)
-                    bottomOffset = (ch.size.y - ch.bearing.y);
-            }
-
-        // clamp y to top and bottom offsets
-
-        int yOffset = 0;
-        if (y < topOffset) {
-            yOffset = topOffset;
-        } else {
-            int bottom = h - bottomOffset;
-            if (y > bottom) {
-                yOffset = -(bottomOffset);
-            }
-        }
-
-        // then we apply this to the entire string
-
-        for (c = text.begin(); c != text.end(); c++) {
-
-            if (sCharacters.count(*c) > 0) {
-
-                Character ch = sCharacters[*c];
-
-                // set to origin
-                GLfloat xpos = x + ch.bearing.x;
-                float y__1 = static_cast<float>(ch.size.y - ch.bearing.y);
-                float y__2 = static_cast<float>(yOffset);
-                GLfloat ypos = y_ - y__1 - y__2;
-
-                // apply scaling
-                xpos *= static_cast<float>(scale);
-                ypos *= static_cast<float>(scale);
-
-                GLfloat w_ = ch.size.x * static_cast<float>(scale);
-                GLfloat h_ = ch.size.y * static_cast<float>(scale);
-
-                // Update VBO for each character
-                // positions are not device normalized coordinates
-
-                GLfloat vertices[6][4] = {
-                        {xpos,      ypos + h_, 0.0f, 0.0f},
-                        {xpos,      ypos,      0.0f, 1.0f},
-                        {xpos + w_, ypos,      1.0f, 1.0f},
-
-                        {xpos,      ypos + h_, 0.0f, 0.0f},
-                        {xpos + w_, ypos,      1.0f, 1.0f},
-                        {xpos + w_, ypos + h_, 1.0f, 0.0f}
-                };
-
-                // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-                // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-                int advanced = static_cast<int>((ch.advance >> static_cast<unsigned int>(6)) *
-                                                scale);
-                // Render glyph texture over quad
-                glBindTexture(GL_TEXTURE_2D, ch.textureID);
-                // Be sure to use glBufferSubData and not glBufferData
-                glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-                // Render quad
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                x += advanced;
-            }
-        }
-    }
-}
-
-void GLIS_FONT::GLIS_font_set_RenderText_w_h(int w, int h) {
-    max_width = w;
-    max_height = h;
-}
-
-void GLIS_FONT::GLIS_font_RenderText(std::string text, int x, int y, glm::vec3 color) {
-    GLIS_font_RenderText(max_width, max_height, std::move(text), x, y, 1.0f, color);
-}
-
-void GLIS_FONT::GLIS_font_RenderTextDNC(std::string text, float DNC_x, float DNC_y, glm::vec3 color) {
-    GLIS_font_RenderTextDNC(max_width, max_width, std::move(text), DNC_x, DNC_y, 1.0f, color);
-}
-
-void
-GLIS_FONT::GLIS_font_RenderTextDNC(int w, int h, std::string text, float DNC_x, float DNC_y,
-                                float scale, glm::vec3 color) {
-//    GLIS_BACKUP backup;
-//    backup.backup();
-//
-//    // Using Shader program
-//    glUseProgram(GLIS_FONT_SHADER_PROGRAM);
-//
-//    // do something
-//
-//    glm::mat4 projection = glm::ortho(0.0f, w, 0.0f, h);
-//
-//    GLuint loc = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "projection");
-//    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection));
-//
-//    loc = glGetUniformLocation(GLIS_FONT_SHADER_PROGRAM, "textColor");
-//    glUniform3f(loc, color.x, color.y, color.z);
-//
-//    // culling improves performance
-//    glEnable(GL_CULL_FACE);
-//
-//    // blend into background
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindVertexArray(GLIS_FONT_VAO);
-//
-//    // Iterate through all characters
-//    std::string::const_iterator c;
-//
-//    for (c = text.begin(); c != text.end(); c++) {
-//
-//        if (sCharacters.count(*c) > 0) {
-//
-//            Character ch = sCharacters[*c];
-//
-//            // set to origin
-//            GLfloat xpos = ch.bearing.x;
-//            GLfloat ypos = ch.size.y - ch.bearing.y;
-//
-//            // apply scaling
-//            xpos *= scale;
-//            ypos *= scale;
-//
-//            GLfloat w_ = ch.size.x * scale;
-//            GLfloat h_ = ch.size.y * scale;
-//
-//            // Update VBO for each character
-//            GLfloat vertices[6][4] = {
-//                    {xpos,      ypos + h_, 0.0f, 0.0f},
-//                    {xpos,      ypos,      0.0f, 1.0f},
-//                    {xpos + w_, ypos,      1.0f, 1.0f},
-//
-//                    {xpos,      ypos + h_, 0.0f, 0.0f},
-//                    {xpos + w_, ypos,      1.0f, 1.0f},
-//                    {xpos + w_, ypos + h_, 1.0f, 0.0f}
-//            };
-//            // Render glyph texture over quad
-//            glBindTexture(GL_TEXTURE_2D, ch.textureID);
-//            // Update content of VBO memory
-//            glBindBuffer(GL_ARRAY_BUFFER, GLIS_FONT_VBO);
-//            // Be sure to use glBufferSubData and not glBufferData
-//            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-//
-//            glBindBuffer(GL_ARRAY_BUFFER, 0);
-//            // Render quad
-//            glDrawArrays(GL_TRIANGLES, 0, 6);
-//            // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-//            // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-//            x += (ch.advance >> 6) * scale;
-//        }
-//    }
-//    glDisable(GL_BLEND);
-//    glDisable(GL_CULL_FACE);
-//    backup.restore();
-}
-
-GLIS_FONT::ATLAS::atlas::atlas(FT_Face face, int height) {
+GLIS_FONT::atlas::atlas(FT_Face face, int height) {
     FT_Set_Pixel_Sizes(face, 0, height);
     FT_GlyphSlot g = face->glyph;
 
@@ -542,7 +554,8 @@ GLIS_FONT::ATLAS::atlas::atlas(FT_Face face, int height) {
             ox = 0;
         }
 
-        glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, g->bitmap.width, g->bitmap.rows, GL_ALPHA,
+                        GL_UNSIGNED_BYTE, g->bitmap.buffer);
         c[i].ax = g->advance.x >> 6;
         c[i].ay = g->advance.y >> 6;
 
@@ -552,8 +565,8 @@ GLIS_FONT::ATLAS::atlas::atlas(FT_Face face, int height) {
         c[i].bl = g->bitmap_left;
         c[i].bt = g->bitmap_top;
 
-        c[i].tx = ox / (float)w;
-        c[i].ty = oy / (float)h;
+        c[i].tx = ox / (float) w;
+        c[i].ty = oy / (float) h;
 
         rowh = std::max(rowh, g->bitmap.rows);
         ox += g->bitmap.width + 1;
@@ -562,185 +575,88 @@ GLIS_FONT::ATLAS::atlas::atlas(FT_Face face, int height) {
     fprintf(stderr, "Generated a %d x %d (%d kb) texture atlas\n", w, h, w * h / 1024);
 }
 
-GLIS_FONT::ATLAS::atlas::~atlas() {
-    glDeleteTextures(1, &tex);
+GLIS_FONT::atlas::atlas() {
+    std::cout << "atlas constructor" << std::endl << std::flush;
 }
 
-void GLIS_FONT::ATLAS::render_text(const char *text, GLIS_FONT & font, GLIS_FONT::ATLAS::atlas *a, float x, float y,
-                                   float sx, float sy) {
-    printf("text: %s\n", text);
-    printf("x: %G, y: %G\n", x, y);
-    printf("sx: %G, sy: %G\n", 1.0f, 1.0f);
-    const uint8_t *p;
-
-    /* Use the texture containing the atlas */
-    glBindTexture(GL_TEXTURE_2D, a->tex);
-    glUniform1i(uniform_tex, 0);
-    glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_FALSE, glm::value_ptr(glm::ortho(0.0f, static_cast<GLfloat>(font.width), 0.0f, static_cast<GLfloat>(font.height))));
-
-    /* Set up the VBO for our vertex data */
-    glEnableVertexAttribArray(attribute_coord);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(attribute_coord, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
-    point coords[6 * strlen(text)];
-    int c = 0;
-
-    /* Loop through all characters */
-    for (p = (const uint8_t *)text; *p; p++) {
-        /* Calculate the vertex and texture coordinates */
-        float x2 = x + a->c[*p].bl * sx;
-        float y2 = -y - a->c[*p].bt * sy;
-        float w = a->c[*p].bw * sx;
-        float h = a->c[*p].bh * sy;
-
-        /* Advance the cursor to the start of the next character */
-        x += a->c[*p].ax * sx;
-        y += a->c[*p].ay * sy;
-
-        /* Skip glyphs that have no pixels */
-        if (!w || !h)
-            continue;
-
-        coords[c++] = (point) {
-                x2, -y2, a->c[*p].tx, a->c[*p].ty};
-        coords[c++] = (point) {
-                x2 + w, -y2, a->c[*p].tx + a->c[*p].bw / a->w, a->c[*p].ty};
-        coords[c++] = (point) {
-                x2, -y2 - h, a->c[*p].tx, a->c[*p].ty + a->c[*p].bh / a->h};
-        coords[c++] = (point) {
-                x2 + w, -y2, a->c[*p].tx + a->c[*p].bw / a->w, a->c[*p].ty};
-        coords[c++] = (point) {
-                x2, -y2 - h, a->c[*p].tx, a->c[*p].ty + a->c[*p].bh / a->h};
-        coords[c++] = (point) {
-                x2 + w, -y2 - h, a->c[*p].tx + a->c[*p].bw / a->w, a->c[*p].ty + a->c[*p].bh / a->h};
-    }
-
-    /* Draw all the character on the screen in one go */
-    glBufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
-    glDrawArrays(GL_TRIANGLES, 0, c);
-
-    glDisableVertexAttribArray(attribute_coord);
+constexpr GLIS_FONT::atlas::atlas(const GLIS_FONT::atlas &p2) {
+    std::cout << "atlas copy constructor" << std::endl << std::flush;
+    this->size = p2.size;
+    this->tex = p2.tex;
+    this->w = p2.w;
+    this->h = p2.h;
+    this->font_source = p2.font_source;
+    for (int i = 0; i != 128; i++) this->c[i] = p2.c[i];
 }
 
-void GLIS_FONT::ATLAS::display(GLIS_FONT & font) {
-    glUseProgram(program);
-
-    /* White background */
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    /* Enable blending, necessary for our alpha texture */
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    GLfloat black[4] = { 0, 0, 0, 1 };
-    GLfloat red[4] = { 1, 0, 0, 1 };
-    GLfloat transparent_green[4] = { 0, 1, 0, 0.5 };
-
-    /* Set color to black */
-    glUniform4fv(uniform_color, 1, black);
-
-    /* Effects of alignment */
-    render_text("The Quick Brown Fox Jumps Over The Lazy Dog", font, a48, 8, 50, 1.0f, 1.0f);
-    render_text("The Misaligned Fox Jumps Over The Lazy Dog", font, a48, 8.5, 100.5, 1.0f, 1.0f);
-
-    /* Scaling the texture versus changing the font size */
-    render_text("The Small Texture Scaled Fox Jumps Over The Lazy Dog", font, a48, 8, 175, 0.5f, 0.5f);
-    render_text("The Small Font Sized Fox Jumps Over The Lazy Dog", font, a24, 8, 200, 1.0f, 1.0f);
-    render_text("The Tiny Texture Scaled Fox Jumps Over The Lazy Dog", font, a48, 8, 235, 0.25, 0.25);
-    render_text("The Tiny Font Sized Fox Jumps Over The Lazy Dog", font, a12, 8, 250, 1.0f, 1.0f);
-
-    /* Colors and transparency */
-    render_text("The Solid Black Fox Jumps Over The Lazy Dog", font, a48, 8, 430, 1.0f, 1.0f);
-
-    glUniform4fv(uniform_color, 1, red);
-    render_text("The Solid Red Fox Jumps Over The Lazy Dog", font, a48, 8, 330, 1.0f, 1.0f);
-    render_text("The Solid Red Fox Jumps Over The Lazy Dog", font, a48, 28, 450, 1.0f, 1.0f);
-
-    glUniform4fv(uniform_color, 1, transparent_green);
-    render_text("The Transparent Green Fox Jumps Over The Lazy Dog", font, a48, 0, 380, 1.0f, 1.0f);
-    render_text("The Transparent Green Fox Jumps Over The Lazy Dog", font, a48, 18, 440, 1.0f, 1.0f);
+constexpr GLIS_FONT::atlas::atlas(GLIS_FONT::atlas &&p2) {
+    std::cout << "atlas move constructor" << std::endl << std::flush;
+    std::swap(this->size, p2.size);
+    std::swap(this->tex, p2.tex);
+    std::swap(this->w, p2.w);
+    std::swap(this->h, p2.h);
+    std::swap(this->font_source, p2.font_source);
+    for (int i = 0; i != 128; i++) std::swap(this->c[i], p2.c[i]);
 }
 
-void GLIS_FONT::ATLAS::free_resources() {
-    glDeleteProgram(program);
-    glDeleteShader(f);
-    glDeleteShader(v);
+GLIS_FONT::atlas &GLIS_FONT::atlas::operator=(const GLIS_FONT::atlas &p2) {
+    std::cout << "atlas copy assignment" << std::endl << std::flush;
+    this->size = p2.size;
+    this->tex = p2.tex;
+    this->w = p2.w;
+    this->h = p2.h;
+    this->font_source = p2.font_source;
+    for (int i = 0; i != 128; i++) this->c[i] = p2.c[i];
+    return *const_cast<atlas *>(this);
 }
 
-GLIS_FONT::ATLAS::ATLAS() {
-    /* Initialize the FreeType2 library */
-    if (FT_Init_FreeType(&ft)) {
-        LOG_ERROR("Could not init freetype library");
-    }
+GLIS_FONT::atlas &GLIS_FONT::atlas::operator=(GLIS_FONT::atlas &&p2) {
+    std::cout << "atlas move assignment" << std::endl << std::flush;
+    std::swap(this->size, p2.size);
+    std::swap(this->tex, p2.tex);
+    std::swap(this->w, p2.w);
+    std::swap(this->h, p2.h);
+    std::swap(this->font_source, p2.font_source);
+    for (int i = 0; i != 128; i++) std::swap(this->c[i], p2.c[i]);
+    return *const_cast<atlas *>(this);
 }
 
-void GLIS_FONT::ATLAS::set_width_height(int w, int h) {
-    width = w;
-    height = h;
+GLIS_FONT::atlas::~atlas() {
+    std::cout << "atlas destructor" << std::endl << std::flush;
+    denit();
 }
 
-int GLIS_FONT::ATLAS::load_font(const char * font_name, const char * font_path) {
-//    if (atlas_index.at(font_name))
-    /* Load a font */
-    if (FT_New_Face(ft, font_path, 0, &face)) {
-        LOG_ERROR("Could not open font %s", font_path);
-        return 0;
-    }
-
-    // a font has been successfully loaded, store it in the atlas map
-//    atlas_index.insert({font_name, nullptr});
-
-    GLIS g;
-    g.GLIS_build_simple_shader_program(
-            v,
-            R"glsl( #version 300 es
-        layout (location = 0) in vec4 coord;
-        out vec2 texpos;
-        uniform mat4 projection;
-
-        void main(void) {
-            gl_Position = projection * vec4(coord.xy, 0, 1);
-            texpos = coord.zw;
-        }
-    )glsl",
-            f,
-            R"glsl( #version 300 es
-        precision mediump float;
-
-        in vec2 texpos;
-        uniform sampler2D tex;
-        uniform vec4 color;
-        out vec4 c;
-
-        void main(void) {
-            c = vec4(1, 1, 1, texture2D(tex, texpos).a) * color;
-        }
-    )glsl",
-            program
-    );
-    if(program == 0)
-        return 0;
-
-    GLIS::GLIS_error_to_string_GL("glGet");
-    attribute_coord = glGetAttribLocation(program, "coord");
-    uniform_tex = glGetUniformLocation(program, "tex");
-    uniform_color = glGetUniformLocation(program, "color");
-
-    if(attribute_coord == -1 || uniform_tex == -1 || uniform_color == -1)
-        return 0;
-
-    // Create the vertex buffer object
-    glGenBuffers(1, &vbo);
-
-    /* Create texture atlasses for several font sizes */
-    a48 = new atlas(face, 48);
-    a24 = new atlas(face, 24);
-    a12 = new atlas(face, 12);
-
-    return 1;
+GLIS_FONT::font_data::font_data() {
+    std::cout << "font_data default constructor" << std::endl << std::flush;
 }
 
-void GLIS_FONT::ATLAS::generate_font_size(int size) {
+GLIS_FONT::font_data::font_data(const Kernel &kernel) {
+    std::cout << "font_data kernel constructor" << std::endl << std::flush;
+    sizes = kernel;
+}
+
+GLIS_FONT::font_data::font_data(const GLIS_FONT::font_data &p2) {
+    std::cout << "font_data copy constructor" << std::endl << std::flush;
+    this->sizes = p2.sizes;
+}
+
+GLIS_FONT::font_data::font_data(GLIS_FONT::font_data &&p2) {
+    std::cout << "font_data move constructor" << std::endl << std::flush;
+    std::swap(this->sizes, p2.sizes);
+}
+
+GLIS_FONT::font_data &GLIS_FONT::font_data::operator=(const GLIS_FONT::font_data &p2) {
+    std::cout << "font_data copy assignment" << std::endl << std::flush;
+    this->sizes = p2.sizes;
+    return *const_cast<font_data *>(this);
+}
+
+GLIS_FONT::font_data &GLIS_FONT::font_data::operator=(GLIS_FONT::font_data &&p2) {
+    std::cout << "font_data move assignment" << std::endl << std::flush;
+    std::swap(this->sizes, p2.sizes);
+    return *const_cast<font_data *>(this);
+}
+
+GLIS_FONT::font_data::~font_data() {
+    std::cout << "font_data destructor" << std::endl << std::flush;
 }

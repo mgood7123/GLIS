@@ -45,7 +45,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
-    glViewport(0, 0, renderer.width, renderer.height);
+    glis.GLIS_Viewport(renderer);
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {

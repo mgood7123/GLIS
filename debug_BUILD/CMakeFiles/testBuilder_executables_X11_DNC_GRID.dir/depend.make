@@ -346,8 +346,8 @@ CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o:
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/font/font.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/glis.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/common.hpp
-CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/context.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/fps.hpp
+CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/glis_class.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/internal.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/internal/log.hpp
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/examples/X11_DNC_GRID.cpp.o: ../include/glis/ipc/ashmem.hpp

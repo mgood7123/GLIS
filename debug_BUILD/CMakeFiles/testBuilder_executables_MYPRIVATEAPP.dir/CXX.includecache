@@ -2467,6 +2467,8 @@ glis/glis.hpp
 -
 
 ../include/glis/font/font.hpp
+glis/internal/glis_class.hpp
+-
 ft2build.h
 -
 map
@@ -2564,7 +2566,11 @@ android/native_window.h
 android/native_window_jni.h
 -
 
-../include/glis/internal/context.hpp
+../include/glis/internal/fps.hpp
+queue
+-
+
+../include/glis/internal/glis_class.hpp
 Magnum/GL/OpenGL.h
 -
 Magnum/Platform/WindowlessEglApplication.h
@@ -2575,21 +2581,15 @@ glis/font/font.hpp
 -
 glis/ipc/server_core.hpp
 -
-internal.hpp
-../include/glis/internal/internal.hpp
 fps.hpp
 ../include/glis/internal/fps.hpp
 
-../include/glis/internal/fps.hpp
-queue
--
-
 ../include/glis/internal/internal.hpp
+glis/font/font.hpp
+-
 glis/internal/common.hpp
 -
 glis/internal/log.hpp
--
-glis/internal/context.hpp
 -
 glis/internal/fps.hpp
 -

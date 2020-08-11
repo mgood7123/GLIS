@@ -6,11 +6,14 @@
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #pragma once
 
+#include <glis/font/font.hpp>
 #include <glis/internal/common.hpp>
 #include <glis/internal/log.hpp>
-#include <glis/internal/context.hpp>
 #include <glis/internal/fps.hpp>
 #include <glis/ipc/shm.hpp>
+
+#define GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(name) void (*name)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
+#define GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(functionName, GLIS_name, GLIS_CLASS_name, GLIS_FONT_name, GLIS_FPS_name) void functionName (GLIS & GLIS_name, GLIS_CLASS & GLIS_CLASS_name, GLIS_FONT & GLIS_FONT_name, GLIS_FPS & GLIS_FPS_name)
 
 extern bool GLIS_LOG_PRINT_NON_ERRORS;
 extern bool GLIS_LOG_PRINT_VERTEX;
@@ -80,6 +83,8 @@ public:
     bool GLIS_setupOnScreenRendering(class GLIS_CLASS &GLIS, EGLContext shared_context);
 
     bool GLIS_setupOnScreenRendering(class GLIS_CLASS &GLIS);
+
+    void GLIS_Viewport(class GLIS_CLASS & GLIS);
 
     bool
     GLIS_setupOffScreenRendering(class GLIS_CLASS &GLIS, int w, int h, EGLContext shared_context);
