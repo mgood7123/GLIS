@@ -2262,6 +2262,16 @@ Magnum/Primitives/visibility.h
 Magnum/Trade/Trade.h
 ../dependancies/magnum/src/Magnum/Primitives/Magnum/Trade/Trade.h
 
+../dependancies/magnum/src/Magnum/Primitives/Plane.h
+Corrade/Containers/EnumSet.h
+-
+Corrade/Utility/Macros.h
+-
+Magnum/Trade/Trade.h
+../dependancies/magnum/src/Magnum/Primitives/Magnum/Trade/Trade.h
+Magnum/Primitives/visibility.h
+../dependancies/magnum/src/Magnum/Primitives/Magnum/Primitives/visibility.h
+
 ../dependancies/magnum/src/Magnum/Primitives/visibility.h
 Corrade/Utility/VisibilityMacros.h
 -
@@ -2273,6 +2283,16 @@ Magnum/Magnum.h
 ../dependancies/magnum/src/Magnum/Magnum/Magnum.h
 Magnum/visibility.h
 ../dependancies/magnum/src/Magnum/Magnum/visibility.h
+
+../dependancies/magnum/src/Magnum/Shaders/Flat.h
+Magnum/DimensionTraits.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/DimensionTraits.h
+Magnum/GL/AbstractShaderProgram.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/AbstractShaderProgram.h
+Magnum/Shaders/Generic.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/Generic.h
+Magnum/Shaders/visibility.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/visibility.h
 
 ../dependancies/magnum/src/Magnum/Shaders/Generic.h
 Magnum/GL/Attribute.h
@@ -2654,6 +2674,10 @@ ashmem.hpp
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/X11_magnum.cpp
 glis/glis.hpp
+-
+Magnum/Shaders/Flat.h
+-
+Magnum/Primitives/Plane.h
 -
 
 dependancies/corrade/src/Corrade/configure.h
