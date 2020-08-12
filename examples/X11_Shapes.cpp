@@ -12,10 +12,19 @@ GLIS_CLASS screen;
 GLIS glis;
 GLIS_FONT font;
 GLIS_FPS fps;
-GLuint texture;
+
 GLuint vertexShader;
 GLuint fragmentShader;
 GLuint shaderProgram;
+
+GLuint vertexShader2;
+GLuint fragmentShader2;
+GLuint shaderProgram2;
+
+GLuint framebuffer;
+GLuint texture;
+GLuint texture2;
+GLuint rbo;
 
 void rectAlpha(
     std::initializer_list<float> cornerTopLeft,
@@ -66,11 +75,11 @@ void rectAlpha(
             textureColorTopRight_[0],
             textureColorTopRight_[1],
             textureColorTopRight_[2],
-            textureColorTopRight_[3],
-            shaderColorTopRight_[0],
-            shaderColorTopRight_[1],
-            shaderColorTopRight_[2],
-            shaderColorTopRight_[3],
+//             textureColorTopRight_[3],
+//             shaderColorTopRight_[0],
+//             shaderColorTopRight_[1],
+//             shaderColorTopRight_[2],
+//             shaderColorTopRight_[3],
             textureCoordinatesTopRight_[0],
             textureCoordinatesTopRight_[1],
             
@@ -80,11 +89,11 @@ void rectAlpha(
             textureColorBottomRight_[0],
             textureColorBottomRight_[1],
             textureColorBottomRight_[2],
-            textureColorBottomRight_[3],
-            shaderColorBottomRight_[0],
-            shaderColorBottomRight_[1],
-            shaderColorBottomRight_[2],
-            shaderColorBottomRight_[3],
+//             textureColorBottomRight_[3],
+//             shaderColorBottomRight_[0],
+//             shaderColorBottomRight_[1],
+//             shaderColorBottomRight_[2],
+//             shaderColorBottomRight_[3],
             textureCoordinatesBottomLeft_[0],
             textureCoordinatesBottomLeft_[1],
             
@@ -94,11 +103,11 @@ void rectAlpha(
             textureColorBottomLeft_[0],
             textureColorBottomLeft_[1],
             textureColorBottomLeft_[2],
-            textureColorBottomLeft_[3],
-            shaderColorBottomLeft_[0],
-            shaderColorBottomLeft_[1],
-            shaderColorBottomLeft_[2],
-            shaderColorBottomLeft_[3],
+//             textureColorBottomLeft_[3],
+//             shaderColorBottomLeft_[0],
+//             shaderColorBottomLeft_[1],
+//             shaderColorBottomLeft_[2],
+//             shaderColorBottomLeft_[3],
             textureCoordinatesBottomLeft_[0],
             textureCoordinatesBottomLeft_[1],
             
@@ -108,11 +117,11 @@ void rectAlpha(
             textureColorTopLeft_[0],
             textureColorTopLeft_[1],
             textureColorTopLeft_[2],
-            textureColorTopLeft_[3],
-            shaderColorTopLeft_[0],
-            shaderColorTopLeft_[1],
-            shaderColorTopLeft_[2],
-            shaderColorTopLeft_[3],
+//             textureColorTopLeft_[3],
+//             shaderColorTopLeft_[0],
+//             shaderColorTopLeft_[1],
+//             shaderColorTopLeft_[2],
+//             shaderColorTopLeft_[3],
             textureCoordinatesTopLeft_[1],
             textureCoordinatesTopLeft_[1]
     };
@@ -135,8 +144,8 @@ void rectAlpha(
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
     const int position_size = 2;
-    const int texture_size = 4;
-    const int shader_size = 4;
+    const int texture_size = 3;
+    const int shader_size = 0;
     const int coordinate_size = 2;
     const int vertex_size = (position_size+texture_size+shader_size+coordinate_size)*sizeof(float);
     
@@ -147,13 +156,13 @@ void rectAlpha(
 
     glVertexAttribPointer(0, position_size, GL_FLOAT, GL_FALSE, vertex_size, position_index);
     glVertexAttribPointer(1, texture_size, GL_FLOAT, GL_FALSE, vertex_size, texture_index);
-    glVertexAttribPointer(2, shader_size, GL_FLOAT, GL_FALSE, vertex_size, shader_index);
-    glVertexAttribPointer(3, coordinate_size, GL_FLOAT, GL_FALSE, vertex_size, coordinate_index);
+//     glVertexAttribPointer(2, shader_size, GL_FLOAT, GL_FALSE, vertex_size, shader_index);
+    glVertexAttribPointer(2, coordinate_size, GL_FLOAT, GL_FALSE, vertex_size, coordinate_index);
     
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
+//     glEnableVertexAttribArray(3);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -166,80 +175,78 @@ void rectAlpha(
     glDisable(GL_BLEND);
 }
 
-void rectAlpha(
-    GLIS_CLASS & renderer,
-    std::initializer_list<int> cornerTopLeft,
-    std::initializer_list<int> cornerBottomRight,
-    std::initializer_list<float> textureColorTopRight,
-    std::initializer_list<float> shaderColorTopRight,
-    std::initializer_list<float> textureCoordinatesTopRight,
-    std::initializer_list<float> textureColorBottomRight,
-    std::initializer_list<float> shaderColorBottomRight,
-    std::initializer_list<float> textureCoordinatesBottomRight,
-    std::initializer_list<float> textureColorBottomLeft,
-    std::initializer_list<float> shaderColorBottomLeft,
-    std::initializer_list<float> textureCoordinatesBottomLeft,
-    std::initializer_list<float> textureColorTopLeft,
-    std::initializer_list<float> shaderColorTopLeft,
-    std::initializer_list<float> textureCoordinatesTopLeft
-) {
-    const int * cornerTopLeft_ = cornerTopLeft.begin();
-    const int * cornerBottomRight_ = cornerBottomRight.begin();
-    
-    GLIS_CLASS::normalized_device_coordinate cornerTopLeft__ = renderer.pixel_location_to_normalized_device_coordinate(cornerTopLeft_[0], cornerTopLeft_[1]);
-    GLIS_CLASS::normalized_device_coordinate cornerBottomRight__ = renderer.pixel_location_to_normalized_device_coordinate(cornerBottomRight_[0], cornerBottomRight_[1]);
-    
-    rectAlpha(
-        {cornerTopLeft__.x, cornerTopLeft__.y},
-        {cornerBottomRight__.x, cornerBottomRight__.y},
-        
-        textureColorTopRight,
-        shaderColorTopRight,
-        textureCoordinatesTopRight,
-        
-        textureColorBottomRight,
-        shaderColorBottomRight,
-        textureCoordinatesBottomRight,
-        
-        textureColorBottomLeft,
-        shaderColorBottomLeft,
-        textureCoordinatesBottomLeft,
-        
-        textureColorTopLeft,
-        shaderColorTopLeft,
-        textureCoordinatesTopLeft
-    );
-}
+GLuint * textureData = nullptr;
+
+int W = 400;
+int H = 400;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
+
+    // render at full screen and rescale
+    
+    // draw a texture
+
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer); glis.GLIS_error_to_string_GL("glBindFramebuffer");
+    glUseProgram(shaderProgram);
+    glBindTexture(GL_TEXTURE_2D, texture); glis.GLIS_error_to_string_GL("glBindTexture");
     
     rectAlpha(
-        renderer,
-        {  0,   0}, // cornerTopLeft
-        {GLIS_COMMON_WIDTH/2, GLIS_COMMON_HEIGHT-(GLIS_COMMON_HEIGHT/4)}, // cornerBottomRight
-        
-        // top right
+        { -1.0f,  1.0f}, // cornerTopLeft
+        {  1.0f, -1.0f}, // cornerBottomRight
         {1.0f, 0.0f, 0.0f, 1.0f}, // texture color
         {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
         {1.0f, 1.0f}, // texture coordinates
-
-        // bottom right
         {0.0f, 1.0f, 0.0f, 1.0f}, // texture color
         {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
         {1.0f, 0.0f}, // texture coordinates
-
-        // bottom left
         {0.0f, 0.0f, 1.0f, 1.0f}, // texture color
         {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
         {0.0f, 0.0f}, // texture coordinates
-
-        // top left
         {1.0f, 1.0f, 0.0f, 1.0f}, // texture color
         {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
         {0.0f, 1.0f} // texture coordinates
     );
+
+    glReadPixels(0, 0, W,H, GL_RGBA, GL_UNSIGNED_BYTE, textureData); glis.GLIS_error_to_string_GL("glReadPixels");
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); glis.GLIS_error_to_string_GL("glBindFramebuffer");
+    
+    glUseProgram(shaderProgram2);
+
+    if (texture2 == 0) {
+        glGenTextures(1, &texture2); glis.GLIS_error_to_string_GL("glGenTextures");
+        glBindTexture(GL_TEXTURE_2D, texture2); glis.GLIS_error_to_string_GL("glBindTexture");
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, W,H); glis.GLIS_error_to_string_GL("glTexStorage2D");
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, W,H, GL_RGBA, GL_UNSIGNED_BYTE, textureData); glis.GLIS_error_to_string_GL("glTexSubImage2D");
+        glGenerateMipmap(GL_TEXTURE_2D); glis.GLIS_error_to_string_GL("glGenerateMipmap");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
+    } else {
+        glBindTexture(GL_TEXTURE_2D, texture2); glis.GLIS_error_to_string_GL("glBindTexture");
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, W,H, GL_RGBA, GL_UNSIGNED_BYTE, textureData); glis.GLIS_error_to_string_GL("glTexSubImage2D");
+    }
+    
+    rectAlpha(
+        { -1.0f,  1.0f}, // cornerTopLeft
+        {  1.0f, -1.0f}, // cornerBottomRight
+        {1.0f, 0.0f, 0.0f, 1.0f}, // texture color
+        {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
+        {1.0f, 1.0f}, // texture coordinates
+        {0.0f, 1.0f, 0.0f, 1.0f}, // texture color
+        {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
+        {1.0f, 0.0f}, // texture coordinates
+        {0.0f, 0.0f, 1.0f, 1.0f}, // texture color
+        {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
+        {0.0f, 0.0f}, // texture coordinates
+        {1.0f, 1.0f, 0.0f, 1.0f}, // texture color
+        {1.0f, 0.0f, 1.0f, 1.0f}, // shader color
+        {0.0f, 1.0f} // texture coordinates
+    );
+    
     glis.GLIS_SwapBuffers(screen);
 }
 
@@ -248,6 +255,9 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
+    glDeleteProgram(shaderProgram2);
+    glDeleteShader(fragmentShader2);
+    glDeleteShader(vertexShader2);
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
@@ -259,12 +269,9 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
 int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
-    glis.GLIS_texture(texture);
-    glis.GLIS_build_simple_shader_program_RGBA(
-        vertexShader,
-        fragmentShader,
-        shaderProgram
-    );
-    glUseProgram(shaderProgram);
+    glis.GLIS_texture_buffer(framebuffer, rbo, texture, W,H);
+    glis.GLIS_build_simple_shader_program_RGB(vertexShader, fragmentShader, shaderProgram);
+    glis.GLIS_build_simple_texture_shader_program_RGB(vertexShader2, fragmentShader2, shaderProgram2);
+    textureData = new GLuint[W,H];
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
