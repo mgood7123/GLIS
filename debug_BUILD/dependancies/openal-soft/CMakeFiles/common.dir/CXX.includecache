@@ -174,22 +174,6 @@ math.h
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/opthelpers.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/polyphase_resampler.cpp
-polyphase_resampler.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/polyphase_resampler.h
-algorithm
--
-cmath
--
-math_defs.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/math_defs.h
-opthelpers.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/opthelpers.h
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/polyphase_resampler.h
-vector
--
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/pragmadefs.h
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/common/strutils.cpp

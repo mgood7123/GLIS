@@ -117,7 +117,7 @@ public:
     void GLIS_set_texture(GLenum textureUnit, GLuint & texture);
 
     void GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
-                             GLint &texture_width, GLint &texture_height);
+                             const GLint &texture_width, const GLint &texture_height);
 
     GLuint GLIS_current_texture = 0;
 
@@ -363,14 +363,14 @@ public:
     bool GLIS_close_window(size_t window_id);
 
     void
-    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, GLint texture_width,
-                        GLint texture_height);
+    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, const GLint &texture_width,
+                        const GLint &texture_height);
 
     // uses the default texture
 
     void
-    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLint texture_width,
-                        GLint texture_height);
+    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, const GLint &texture_width,
+                        const GLint &texture_height);
 
     bool getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int width, int height);
 
@@ -440,8 +440,8 @@ public:
 
     void GLIS_draw_high_resolution_square();
 
-    void GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer, GLint &texture_width,
-                          GLint &texture_height);
+    void GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer, const GLint &texture_width,
+                          const GLint &texture_height);
 
     void GLIS_texture(GLuint &texture);
 

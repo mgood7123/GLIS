@@ -13,6 +13,54 @@ GLIS glis;
 GLIS_FONT font;
 GLIS_FPS fps;
 
+const char *vertex_shader_source_RGB = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec3 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+    out vec3 ourColor;
+    out vec2 TexCoord;
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = aColor;
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *fragment_shader_source_RGB = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec3 ourColor;
+    void main()
+    {
+        FragColor = vec4(ourColor, 1.0);
+    }
+)glsl";
+
+const char *texture_vertex_shader_source_RGB = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec3 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+    out vec4 ourColor;
+    out vec2 TexCoord;
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = vec4(aColor, 1.0);
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *texture_fragment_shader_source_RGB = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec4 ourColor;
+    in highp vec2 TexCoord;
+    uniform sampler2D texture1;
+    void main()
+    {
+        FragColor = texture(texture1, TexCoord);
+    }
+)glsl";
+
 GLuint vertexShader;
 GLuint fragmentShader;
 GLuint shaderProgram;
@@ -175,10 +223,10 @@ void rectAlpha(
     glDisable(GL_BLEND);
 }
 
-GLuint * textureData = nullptr;
+const GLint W = 400;
+const GLint H = 400;
 
-int W = 400;
-int H = 400;
+GLuint textureData[W*H];
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
@@ -270,8 +318,15 @@ int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
     glis.GLIS_texture_buffer(framebuffer, rbo, texture, W,H);
-    glis.GLIS_build_simple_shader_program_RGB(vertexShader, fragmentShader, shaderProgram);
-    glis.GLIS_build_simple_texture_shader_program_RGB(vertexShader2, fragmentShader2, shaderProgram2);
-    textureData = new GLuint[W,H];
+    glis.GLIS_build_simple_shader_program(
+        vertexShader, vertex_shader_source_RGB,
+        fragmentShader, fragment_shader_source_RGB,
+        shaderProgram
+    );
+    glis.GLIS_build_simple_shader_program(
+        vertexShader2, texture_vertex_shader_source_RGB,
+        fragmentShader2, texture_fragment_shader_source_RGB,
+        shaderProgram2
+    );
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }

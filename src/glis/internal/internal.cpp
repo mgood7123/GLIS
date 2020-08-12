@@ -1019,7 +1019,7 @@ void GLIS::GLIS_set_default_texture(GLenum textureUnit) {
 }
 
 void GLIS::GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer,
-                            GLint &texture_width, GLint &texture_height) {
+                            const GLint &texture_width, const GLint &texture_height) {
     glGenRenderbuffers(1, &renderbuffer);
     GLIS_error_to_string_GL("glGenRenderbuffers");
     GLIS_set_framebuffer(framebuffer, renderbuffer);
@@ -1036,7 +1036,7 @@ void GLIS::GLIS_texture(GLuint &texture) {
 }
 
 void GLIS::GLIS_texture_buffer(GLuint &framebuffer, GLuint &renderbuffer, GLuint &texture,
-                               GLint &texture_width, GLint &texture_height) {
+                               const GLint &texture_width, const GLint &texture_height) {
     // gen renderbuffer to remain temporarily compatible with code that expects current behavour:
     // at cleanup they call glDeleteRenderbuffers(1, &renderbuffer);
     glGenRenderbuffers(1, &renderbuffer);
@@ -1364,7 +1364,7 @@ bool GLIS::GLIS_close_window(size_t window_id) {
 }
 
 void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
-                               GLint texture_width, GLint texture_height) {
+                               const GLint &texture_width, const GLint &texture_height) {
     LOG_INFO("uploading texture");
     GLIS_SwapBuffers(GLIS);
     GLIS_Sync_GPU();
@@ -1382,7 +1382,7 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &text
 }
 
 void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id,
-                               GLint texture_width, GLint texture_height) {
+                               const GLint &texture_width, const GLint &texture_height) {
     GLIS_upload_texture(GLIS, window_id, GLIS_current_texture, texture_width, texture_height);
 }
 

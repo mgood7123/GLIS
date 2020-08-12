@@ -2068,28 +2068,6 @@ almalloc.h
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/bsinc_defs.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/bsinc_tables.cpp
-bsinc_tables.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/bsinc_tables.h
-algorithm
--
-array
--
-cassert
--
-cmath
--
-limits
--
-memory
--
-stdexcept
--
-math_defs.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/math_defs.h
-vector.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/vector.h
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/bsinc_tables.h
 bsinc_defs.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/bsinc_defs.h
@@ -2883,8 +2861,6 @@ alu.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/mixer/alu.h
 defs.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/mixer/defs.h
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/mixer/mixer_sse3.cpp
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/openal-soft/alc/mixer/mixer_sse41.cpp
 config.h
