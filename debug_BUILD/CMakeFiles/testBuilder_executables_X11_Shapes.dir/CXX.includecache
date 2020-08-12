@@ -2577,7 +2577,7 @@ Magnum/Platform/WindowlessEglApplication.h
 -
 Magnum/Platform/GLContext.h
 -
-glis/font/font.hpp
+glis/internal/log.hpp
 -
 glis/ipc/server_core.hpp
 -

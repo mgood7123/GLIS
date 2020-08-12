@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/compositor/compositor.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o"
+  "CMakeFiles/GLIS.dir/src/glis/internal/glis_class.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/log.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"

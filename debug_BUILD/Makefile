@@ -2146,6 +2146,33 @@ src/glis/internal/fps.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.s
 .PHONY : src/glis/internal/fps.cpp.s
 
+src/glis/internal/glis_class.o: src/glis/internal/glis_class.cpp.o
+
+.PHONY : src/glis/internal/glis_class.o
+
+# target to build an object file
+src/glis/internal/glis_class.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/glis_class.cpp.o
+.PHONY : src/glis/internal/glis_class.cpp.o
+
+src/glis/internal/glis_class.i: src/glis/internal/glis_class.cpp.i
+
+.PHONY : src/glis/internal/glis_class.i
+
+# target to preprocess a source file
+src/glis/internal/glis_class.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/glis_class.cpp.i
+.PHONY : src/glis/internal/glis_class.cpp.i
+
+src/glis/internal/glis_class.s: src/glis/internal/glis_class.cpp.s
+
+.PHONY : src/glis/internal/glis_class.s
+
+# target to generate assembly for a file
+src/glis/internal/glis_class.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/internal/glis_class.cpp.s
+.PHONY : src/glis/internal/glis_class.cpp.s
+
 src/glis/internal/internal.o: src/glis/internal/internal.cpp.o
 
 .PHONY : src/glis/internal/internal.o
@@ -2556,6 +2583,9 @@ help:
 	@echo "... src/glis/internal/fps.o"
 	@echo "... src/glis/internal/fps.i"
 	@echo "... src/glis/internal/fps.s"
+	@echo "... src/glis/internal/glis_class.o"
+	@echo "... src/glis/internal/glis_class.i"
+	@echo "... src/glis/internal/glis_class.s"
 	@echo "... src/glis/internal/internal.o"
 	@echo "... src/glis/internal/internal.i"
 	@echo "... src/glis/internal/internal.s"

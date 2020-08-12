@@ -169,10 +169,12 @@ void rectAlpha(
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
+
+//     GLIS_CLASS::normalized_device_coordinate p = renderer.pixel_location_to_normalized_device_coordinate(0, 0);
     
     rectAlpha(
-        {-1.0f, 1.0f}, // cornerTopLeft
-        {0.0f, -0.5f}, // cornerBottomRight
+        {-1.0f,  1.0f}, // cornerTopLeft
+        { 0.0f, -0.5f}, // cornerBottomRight
         
         // top right
         {1.0f, 0.0f, 0.0f, 1.0f}, // texture color

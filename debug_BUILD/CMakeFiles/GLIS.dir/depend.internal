@@ -698,6 +698,60 @@ CMakeFiles/GLIS.dir/src/glis/font/font.cpp.o
 CMakeFiles/GLIS.dir/src/glis/internal/fps.cpp.o
  ../include/glis/internal/fps.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/fps.cpp
+CMakeFiles/GLIS.dir/src/glis/internal/glis_class.cpp.o
+ ../dependancies/AnyOpt/include/AnyOpt.h
+ ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h
+ ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIKernel.h
+ ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIObject.h
+ ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPITable.h
+ ../dependancies/WINAPI/SDK/include/Windows/WinUser.h
+ ../dependancies/WINAPI/SDK/include/Windows/WindowsAPIDefinitions.h
+ ../dependancies/WINAPI/SDK/include/Windows/no_sal2.h
+ ../dependancies/corrade/src/Corrade/Containers/ArrayView.h
+ ../dependancies/corrade/src/Corrade/Containers/Containers.h
+ ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
+ ../dependancies/corrade/src/Corrade/Containers/Optional.h
+ ../dependancies/corrade/src/Corrade/Containers/Pointer.h
+ ../dependancies/corrade/src/Corrade/Containers/StaticArray.h
+ ../dependancies/corrade/src/Corrade/Containers/Tags.h
+ ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h
+ ../dependancies/corrade/src/Corrade/Utility/Assert.h
+ ../dependancies/corrade/src/Corrade/Utility/Debug.h
+ ../dependancies/corrade/src/Corrade/Utility/Macros.h
+ ../dependancies/corrade/src/Corrade/Utility/StlForwardString.h
+ ../dependancies/corrade/src/Corrade/Utility/TypeTraits.h
+ ../dependancies/corrade/src/Corrade/Utility/Utility.h
+ ../dependancies/corrade/src/Corrade/Utility/VisibilityMacros.h
+ ../dependancies/corrade/src/Corrade/Utility/visibility.h
+ ../dependancies/magnum/src/Magnum/GL/Context.h
+ ../dependancies/magnum/src/Magnum/GL/GL.h
+ ../dependancies/magnum/src/Magnum/GL/OpenGL.h
+ ../dependancies/magnum/src/Magnum/GL/visibility.h
+ ../dependancies/magnum/src/Magnum/Magnum.h
+ ../dependancies/magnum/src/Magnum/Math/BoolVector.h
+ ../dependancies/magnum/src/Magnum/Math/Math.h
+ ../dependancies/magnum/src/Magnum/Math/Tags.h
+ ../dependancies/magnum/src/Magnum/Platform/GLContext.h
+ ../dependancies/magnum/src/Magnum/Platform/Platform.h
+ ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
+ ../dependancies/magnum/src/Magnum/Tags.h
+ ../dependancies/magnum/src/Magnum/Types.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GL/flextGL.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGL.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGLEmscripten.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES2/flextGLWindowsDesktop.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGL.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLEmscripten.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/GLES3/flextGLWindowsDesktop.h
+ ../dependancies/magnum/src/MagnumExternal/OpenGL/KHR/khrplatform.h
+ ../include/glis/internal/fps.hpp
+ ../include/glis/internal/glis_class.hpp
+ ../include/glis/internal/log.hpp
+ ../include/glis/ipc/serializer.hpp
+ ../include/glis/ipc/server_core.hpp
+ /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/glis_class.cpp
+ dependancies/corrade/src/Corrade/configure.h
+ dependancies/magnum/src/Magnum/configure.h
 CMakeFiles/GLIS.dir/src/glis/internal/internal.cpp.o
  ../dependancies/AnyOpt/include/AnyOpt.h
  ../dependancies/WINAPI/SDK/include/Windows/Kernel/WindowsAPIHandle.h

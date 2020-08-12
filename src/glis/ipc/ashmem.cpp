@@ -55,6 +55,7 @@ static int __ashmem_open_locked()
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     int ret;
     struct stat st;
@@ -86,6 +87,7 @@ static int __ashmem_open()
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     int fd;
 
@@ -120,6 +122,7 @@ static int __ashmem_is_ashmem(int fd, int fatal)
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     dev_t rdev;
     struct stat st;
@@ -228,6 +231,7 @@ int ashmem_create_region(const char *name, size_t size)
     ALOGE("memfd_create unsupported, using ashmem");
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
 
     int ret, save_errno;
@@ -266,6 +270,7 @@ int ashmem_set_prot_region(int fd, int prot)
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     int ret = __ashmem_is_ashmem(fd, 1);
     if (ret < 0) {
@@ -280,6 +285,7 @@ int ashmem_pin_region(int fd, size_t offset, size_t len)
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     // TODO: should LP64 reject too-large offset/len?
     ashmem_pin pin = { static_cast<uint32_t>(offset), static_cast<uint32_t>(len) };
@@ -297,6 +303,7 @@ int ashmem_unpin_region(int fd, size_t offset, size_t len)
 {
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
     // TODO: should LP64 reject too-large offset/len?
     ashmem_pin pin = { static_cast<uint32_t>(offset), static_cast<uint32_t>(len) };
@@ -324,6 +331,7 @@ int ashmem_get_size_region(int fd)
     }
 #ifndef __ANDROID__
     LOG_ALWAYS_FATAL(LOG_TAG, "ashmem is not supported in linux");
+    return -1;
 #else
 
     int ret = __ashmem_is_ashmem(fd, 1);
