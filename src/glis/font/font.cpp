@@ -101,6 +101,10 @@ GLIS_FONT::atlas *GLIS_FONT::find_size(const char *id, int size) {
     return find_size(id, fontData, size);
 }
 
+void GLIS_FONT::set_color(const GLfloat color[4]) {
+    current_color = const_cast<GLfloat *>(color);
+}
+
 void
 GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, float sx, float sy,
         const GLfloat * color) {

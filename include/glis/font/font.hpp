@@ -172,9 +172,7 @@ public:
 
     GLfloat * current_color = const_cast<GLfloat *>(colors.black);
 
-    void set_color(const GLfloat color[4]) {
-        current_color = const_cast<GLfloat *>(color);
-    }
+    void set_color(const GLfloat color[4]);
 
     /**
      * Render text using the specified font atlas, with the specified color,

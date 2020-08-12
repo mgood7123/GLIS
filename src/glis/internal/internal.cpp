@@ -66,18 +66,21 @@ const char *GLIS_default_vertex_shader_source_RGB = R"glsl( #version 300 es
 )glsl";
 
 const char *GLIS_default_vertex_shader_source_RGBA = R"glsl( #version 300 es
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec4 aColor;
-    layout (location = 2) in vec2 aTexCoord;
+    layout (location = 0) in vec2 texturePosition;
+    layout (location = 1) in vec4 textureColor;
+    layout (location = 2) in vec4 shaderColor;
+    layout (location = 3) in vec2 textureCoordinates;
 
-    out vec4 ourColor;
-    out vec2 TexCoord;
+    out vec4 textureColorOut;
+    out vec4 shaderColorOut;
+    out vec4 textureCoordinatesOut;
 
     void main()
     {
-        gl_Position = vec4(aPos, 1.0);
-        ourColor = aColor;
-        TexCoord = aTexCoord;
+        gl_Position = vec4(texturePosition, 1.0, 1.0);
+        textureColorOut = textureColor;
+        shaderColorOut = shaderColor;
+        textureCoordinatesOut = vec4(textureCoordinates, 0.0, 1.0);
     }
 )glsl";
 
@@ -93,11 +96,14 @@ const char *GLIS_default_fragment_shader_source_RGB = R"glsl( #version 300 es
 
 const char *GLIS_default_fragment_shader_source_RGBA = R"glsl( #version 300 es
     out highp vec4 FragColor;
-    in highp vec4 ourColor;
+    
+    in highp vec4 textureColorOut;
+    in highp vec4 shaderColorOut;
+    in highp vec4 textureCoordinatesOut;
 
     void main()
     {
-        FragColor = ourColor;
+        FragColor = textureColorOut * shaderColorOut;
     }
 )glsl";
 
