@@ -7,6 +7,8 @@
 #include <glis/ipc/server_core.hpp>
 #include "fps.hpp"
 
+constexpr static int GLIS_COMMON_WIDTH = 1080;
+constexpr static int GLIS_COMMON_HEIGHT = 2032;
 
 class GLIS_CLASS {
 public:

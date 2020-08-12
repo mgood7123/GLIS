@@ -166,15 +166,59 @@ void rectAlpha(
     glDisable(GL_BLEND);
 }
 
+void rectAlpha(
+    GLIS_CLASS & renderer,
+    std::initializer_list<int> cornerTopLeft,
+    std::initializer_list<int> cornerBottomRight,
+    std::initializer_list<float> textureColorTopRight,
+    std::initializer_list<float> shaderColorTopRight,
+    std::initializer_list<float> textureCoordinatesTopRight,
+    std::initializer_list<float> textureColorBottomRight,
+    std::initializer_list<float> shaderColorBottomRight,
+    std::initializer_list<float> textureCoordinatesBottomRight,
+    std::initializer_list<float> textureColorBottomLeft,
+    std::initializer_list<float> shaderColorBottomLeft,
+    std::initializer_list<float> textureCoordinatesBottomLeft,
+    std::initializer_list<float> textureColorTopLeft,
+    std::initializer_list<float> shaderColorTopLeft,
+    std::initializer_list<float> textureCoordinatesTopLeft
+) {
+    const int * cornerTopLeft_ = cornerTopLeft.begin();
+    const int * cornerBottomRight_ = cornerBottomRight.begin();
+    
+    GLIS_CLASS::normalized_device_coordinate cornerTopLeft__ = renderer.pixel_location_to_normalized_device_coordinate(cornerTopLeft_[0], cornerTopLeft_[1]);
+    GLIS_CLASS::normalized_device_coordinate cornerBottomRight__ = renderer.pixel_location_to_normalized_device_coordinate(cornerBottomRight_[0], cornerBottomRight_[1]);
+    
+    rectAlpha(
+        {cornerTopLeft__.x, cornerTopLeft__.y},
+        {cornerBottomRight__.x, cornerBottomRight__.y},
+        
+        textureColorTopRight,
+        shaderColorTopRight,
+        textureCoordinatesTopRight,
+        
+        textureColorBottomRight,
+        shaderColorBottomRight,
+        textureCoordinatesBottomRight,
+        
+        textureColorBottomLeft,
+        shaderColorBottomLeft,
+        textureCoordinatesBottomLeft,
+        
+        textureColorTopLeft,
+        shaderColorTopLeft,
+        textureCoordinatesTopLeft
+    );
+}
+
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     // clear to black
     glis.clearBlack();
-
-//     GLIS_CLASS::normalized_device_coordinate p = renderer.pixel_location_to_normalized_device_coordinate(0, 0);
     
     rectAlpha(
-        {-1.0f,  1.0f}, // cornerTopLeft
-        { 0.0f, -0.5f}, // cornerBottomRight
+        renderer,
+        {  0,   0}, // cornerTopLeft
+        {GLIS_COMMON_WIDTH/2, GLIS_COMMON_HEIGHT-(GLIS_COMMON_HEIGHT/4)}, // cornerBottomRight
         
         // top right
         {1.0f, 0.0f, 0.0f, 1.0f}, // texture color
