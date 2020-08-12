@@ -23,9 +23,16 @@ extern bool GLIS_ABORT_ON_ERROR;
 extern bool GLIS_ABORT_ON_DEBUG_LEVEL_API;
 
 extern const char *GLIS_default_vertex_shader_source_RGB;
-extern const char *GLIS_default_vertex_shader_source_RGBA;
 extern const char *GLIS_default_fragment_shader_source_RGB;
+
+extern const char *GLIS_default_vertex_shader_source_RGBA;
 extern const char *GLIS_default_fragment_shader_source_RGBA;
+
+extern const char *GLIS_default_texture_vertex_shader_source_RGB;
+extern const char *GLIS_default_texture_fragment_shader_source_RGB;
+
+extern const char *GLIS_default_texture_vertex_shader_source_RGBA;
+extern const char *GLIS_default_texture_fragment_shader_source_RGBA;
 
 #define GLIS_val_to_string(ch) std::to_string(ch).c_str()
 
@@ -410,6 +417,27 @@ public:
             GLuint & shaderProgram
     );
     
+    /**
+     * defaults to GLIS_build_simple_texture_shader_program_RGB
+     */
+    void GLIS_build_simple_texture_shader_program(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
+    );
+
+    void GLIS_build_simple_texture_shader_program_RGB(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
+    );
+
+    void GLIS_build_simple_texture_shader_program_RGBA(
+            GLuint & vertexShader,
+            GLuint & fragmentShader,
+            GLuint & shaderProgram
+    );
+
     void GLIS_draw_high_resolution_square();
 
     void GLIS_framebuffer(GLuint &framebuffer, GLuint &renderbuffer, GLint &texture_width,

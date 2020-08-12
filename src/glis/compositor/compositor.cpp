@@ -2,36 +2,6 @@
 
 #include <glis/glis.hpp>
 
-const char *GLIS_COMPOSITOR_VERTEX_SOURCE = R"glsl( #version 300 es
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-out vec4 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    ourColor = vec4(aColor, 1.0);
-    TexCoord = aTexCoord;
-}
-)glsl";
-
-const char *GLIS_COMPOSITOR_FRAGMENT_SOURCE = R"glsl( #version 300 es
-out highp vec4 FragColor;
-
-in highp vec4 ourColor;
-in highp vec2 TexCoord;
-
-uniform sampler2D texture1;
-
-void main()
-{
-    FragColor = texture(texture1, TexCoord);
-}
-)glsl";
-
 bool stop_drawing = false;
 
 class Client_Window {
@@ -365,9 +335,9 @@ void GLIS_COMPOSITOR_DO_MAIN(
         GLuint shaderProgram;
         GLuint vertexShader;
         GLuint fragmentShader;
-        glis.GLIS_build_simple_shader_program(
-                vertexShader, GLIS_COMPOSITOR_VERTEX_SOURCE,
-                fragmentShader, GLIS_COMPOSITOR_FRAGMENT_SOURCE,
+        glis.GLIS_build_simple_texture_shader_program(
+                vertexShader,
+                fragmentShader,
                 shaderProgram
         );
         LOG_INFO("Using Shader program");

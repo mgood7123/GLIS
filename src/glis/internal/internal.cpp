@@ -53,10 +53,8 @@ const char *GLIS_default_vertex_shader_source_RGB = R"glsl( #version 300 es
     layout (location = 0) in vec3 aPos;
     layout (location = 1) in vec3 aColor;
     layout (location = 2) in vec2 aTexCoord;
-
     out vec3 ourColor;
     out vec2 TexCoord;
-
     void main()
     {
         gl_Position = vec4(aPos, 1.0);
@@ -70,11 +68,9 @@ const char *GLIS_default_vertex_shader_source_RGBA = R"glsl( #version 300 es
     layout (location = 1) in vec4 textureColor;
     layout (location = 2) in vec4 shaderColor;
     layout (location = 3) in vec2 textureCoordinates;
-
     out vec4 textureColorOut;
     out vec4 shaderColorOut;
     out vec4 textureCoordinatesOut;
-
     void main()
     {
         gl_Position = vec4(texturePosition, 1.0, 1.0);
@@ -87,7 +83,6 @@ const char *GLIS_default_vertex_shader_source_RGBA = R"glsl( #version 300 es
 const char *GLIS_default_fragment_shader_source_RGB = R"glsl( #version 300 es
     out highp vec4 FragColor;
     in highp vec3 ourColor;
-
     void main()
     {
         FragColor = vec4(ourColor, 1.0);
@@ -100,10 +95,59 @@ const char *GLIS_default_fragment_shader_source_RGBA = R"glsl( #version 300 es
     in highp vec4 textureColorOut;
     in highp vec4 shaderColorOut;
     in highp vec4 textureCoordinatesOut;
-
     void main()
     {
         FragColor = textureColorOut * shaderColorOut;
+    }
+)glsl";
+
+const char *GLIS_default_texture_vertex_shader_source_RGB = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec3 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+    out vec4 ourColor;
+    out vec2 TexCoord;
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = vec4(aColor, 1.0);
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *GLIS_default_texture_fragment_shader_source_RGB = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec4 ourColor;
+    in highp vec2 TexCoord;
+    uniform sampler2D texture1;
+    void main()
+    {
+        FragColor = texture(texture1, TexCoord);
+    }
+)glsl";
+
+const char *GLIS_default_texture_vertex_shader_source_RGBA = R"glsl( #version 300 es
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec4 aColor;
+    layout (location = 2) in vec2 aTexCoord;
+    out vec4 ourColor;
+    out vec2 TexCoord;
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+        ourColor = aColor;
+        TexCoord = aTexCoord;
+    }
+)glsl";
+
+const char *GLIS_default_texture_fragment_shader_source_RGBA = R"glsl( #version 300 es
+    out highp vec4 FragColor;
+    in highp vec4 ourColor;
+    in highp vec2 TexCoord;
+    uniform sampler2D texture1;
+    void main()
+    {
+        FragColor = texture(texture1, TexCoord);
     }
 )glsl";
 
@@ -886,6 +930,42 @@ void GLIS::GLIS_build_simple_shader_program_RGBA(
     GLIS_build_simple_shader_program(
             vertexShader, GLIS_default_vertex_shader_source_RGBA,
             fragmentShader, GLIS_default_fragment_shader_source_RGBA,
+            shaderProgram
+    );
+};
+
+void GLIS::GLIS_build_simple_texture_shader_program(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
+    GLIS_build_simple_texture_shader_program_RGB(
+            vertexShader,
+            fragmentShader,
+            shaderProgram
+    );
+};
+
+void GLIS::GLIS_build_simple_texture_shader_program_RGB(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
+    GLIS_build_simple_shader_program(
+            vertexShader, GLIS_default_texture_vertex_shader_source_RGB,
+            fragmentShader, GLIS_default_texture_fragment_shader_source_RGB,
+            shaderProgram
+    );
+};
+
+void GLIS::GLIS_build_simple_texture_shader_program_RGBA(
+        GLuint & vertexShader,
+        GLuint & fragmentShader,
+        GLuint & shaderProgram
+) {
+    GLIS_build_simple_shader_program(
+            vertexShader, GLIS_default_texture_vertex_shader_source_RGBA,
+            fragmentShader, GLIS_default_texture_fragment_shader_source_RGBA,
             shaderProgram
     );
 };
