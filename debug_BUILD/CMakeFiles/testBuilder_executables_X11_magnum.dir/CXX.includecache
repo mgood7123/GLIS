@@ -1994,6 +1994,16 @@ Corrade/Utility/VisibilityMacros.h
 Magnum/configure.h
 ../dependancies/magnum/src/Magnum/GL/Magnum/configure.h
 
+../dependancies/magnum/src/Magnum/ImageView.h
+Corrade/Containers/ArrayView.h
+-
+Magnum/DimensionTraits.h
+../dependancies/magnum/src/Magnum/Magnum/DimensionTraits.h
+Magnum/PixelStorage.h
+../dependancies/magnum/src/Magnum/Magnum/PixelStorage.h
+Magnum/Math/Vector3.h
+../dependancies/magnum/src/Magnum/Magnum/Math/Vector3.h
+
 ../dependancies/magnum/src/Magnum/Magnum.h
 Corrade/Utility/Utility.h
 -
@@ -2221,6 +2231,26 @@ Corrade/Utility/VisibilityMacros.h
 -
 Magnum/configure.h
 ../dependancies/magnum/src/Magnum/MeshTools/Magnum/configure.h
+
+../dependancies/magnum/src/Magnum/PixelFormat.h
+Corrade/Utility/Assert.h
+-
+Corrade/Utility/StlForwardString.h
+-
+Magnum/Magnum.h
+../dependancies/magnum/src/Magnum/Magnum/Magnum.h
+Magnum/visibility.h
+../dependancies/magnum/src/Magnum/Magnum/visibility.h
+
+../dependancies/magnum/src/Magnum/PixelStorage.h
+cstddef
+-
+utility
+-
+Magnum/Magnum.h
+../dependancies/magnum/src/Magnum/Magnum/Magnum.h
+Magnum/Math/Vector3.h
+../dependancies/magnum/src/Magnum/Magnum/Math/Vector3.h
 
 ../dependancies/magnum/src/Magnum/Platform/GLContext.h
 Corrade/Utility/Debug.h
@@ -2678,6 +2708,12 @@ glis/glis.hpp
 Magnum/Shaders/Flat.h
 -
 Magnum/Primitives/Plane.h
+-
+Magnum/GL/Texture.h
+-
+Magnum/ImageView.h
+-
+Magnum/PixelFormat.h
 -
 
 dependancies/corrade/src/Corrade/configure.h

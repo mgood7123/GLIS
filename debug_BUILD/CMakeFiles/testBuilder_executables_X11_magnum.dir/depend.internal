@@ -262,6 +262,7 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
  ../dependancies/magnum/src/Magnum/GL/Texture.h
  ../dependancies/magnum/src/Magnum/GL/TextureFormat.h
  ../dependancies/magnum/src/Magnum/GL/visibility.h
+ ../dependancies/magnum/src/Magnum/ImageView.h
  ../dependancies/magnum/src/Magnum/Magnum.h
  ../dependancies/magnum/src/Magnum/Math/Angle.h
  ../dependancies/magnum/src/Magnum/Math/BoolVector.h
@@ -287,6 +288,8 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
  ../dependancies/magnum/src/Magnum/MeshTools/CompressIndices.h
  ../dependancies/magnum/src/Magnum/MeshTools/Interleave.h
  ../dependancies/magnum/src/Magnum/MeshTools/visibility.h
+ ../dependancies/magnum/src/Magnum/PixelFormat.h
+ ../dependancies/magnum/src/Magnum/PixelStorage.h
  ../dependancies/magnum/src/Magnum/Platform/GLContext.h
  ../dependancies/magnum/src/Magnum/Platform/Platform.h
  ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
