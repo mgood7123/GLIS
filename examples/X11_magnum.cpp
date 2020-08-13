@@ -8,6 +8,7 @@
 #include <Magnum/GL/Texture.h>
 #include <Magnum/ImageView.h>
 #include <Magnum/PixelFormat.h>
+#include <Magnum/GL/DefaultFramebuffer.h>
 
 GLIS_CLASS screen;
 GLIS glis;
@@ -20,36 +21,52 @@ typedef GL::Framebuffer SurfaceFramebuffer;
 typedef ImageView2D SurfaceImageView2D;
 typedef Containers::ArrayView<const void> SurfaceImageData;
 typedef GL::Texture2D SurfaceTexture2D;
+typedef Shaders::Flat2D SurfaceShader;
 
 class Surface {
 public:
     SurfaceFramebuffer * framebuffer_ = nullptr;
     SurfaceImageView2D * image_ = nullptr;
     SurfaceImageData * data_ = nullptr;
-    SurfaceTexture2D * texture2DDraw = nullptr;
     SurfaceTexture2D * texture2DRead = nullptr;
+    SurfaceTexture2D * texture2DDraw = nullptr;
+    SurfaceShader * shaderRead = nullptr;
+    SurfaceShader * shaderDraw = nullptr;
+    
+    void release() {
+        delete framebuffer_;
+        framebuffer_ = nullptr;
+        delete image_;
+        image_ = nullptr;
+        delete data_;
+        data_ = nullptr;
+        delete texture2DRead;
+        texture2DRead = nullptr;
+        delete texture2DDraw;
+        texture2DDraw = nullptr;
+        delete shaderRead;
+        shaderRead = nullptr;
+        delete shaderDraw;
+        shaderDraw = nullptr;
+    }
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
-        if (texture2DDraw != nullptr) delete texture2DDraw;
-        texture2DDraw = new SurfaceTexture2D;
+        if (texture2DDraw == nullptr) texture2DDraw = new SurfaceTexture2D;
         texture2DDraw->setStorage(1, GL::TextureFormat::RGBA8, size);
     }
 
     void newFramebuffer(const Magnum::VectorTypeFor<2, int> & size) {
-        if (framebuffer_ != nullptr) delete framebuffer_;
-        framebuffer_ = new SurfaceFramebuffer {{{}, size}};
-        if (texture2DDraw == nullptr) newTexture2D(size);
+        if (framebuffer_ == nullptr) framebuffer_ = new SurfaceFramebuffer {{{}, size}};
+        newTexture2D(size);
         framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0}, *texture2DDraw, 0);
         framebuffer_->mapForDraw({{0, {GL::Framebuffer::ColorAttachment{0}}}});
     }
     
     void setTextureData(int texture_width, int texture_height, const void * data) {
-        if (image_ != nullptr) delete image_;
-        if (data_ != nullptr) delete data_;
-        data_ = new SurfaceImageData(data, texture_width*texture_height);
-        image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
+        if (data_ == nullptr) data_ = new SurfaceImageData(data, texture_width*texture_height);
+        if (image_ == nullptr) image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
         // do mipmaps need to be regenerated if the data changes?
-        if (texture2DDraw == nullptr) newTexture2D({texture_width, texture_height});
+        newTexture2D({texture_width, texture_height});
         texture2DDraw->setSubImage(0, {}, *image_).generateMipmap();
     }
     
@@ -71,15 +88,16 @@ public:
     
     void drawSquare() {
         if (texture2DRead != nullptr) {
-            Shaders::Flat2D shader (Shaders::Flat2D::Flag::Textured);
-            shader
-                .setColor({1.0f, 1.0f, 1.0f, 1.0f})
+            if (shaderRead == nullptr) shaderRead = new SurfaceShader(Shaders::Flat2D::Flag::Textured);
+            
+            shaderRead
+                ->setColor({1.0f, 1.0f, 1.0f, 1.0f})
                 .bindTexture(*texture2DRead)
                 .draw(MeshTools::compile(Primitives::planeSolid(Primitives::PlaneFlag::TextureCoordinates)));
         } else {
-            Shaders::Flat2D shader;
-            shader
-                .setColor({0.0f, 1.0f, 1.0f, 1.0f})
+            if (shaderDraw == nullptr) shaderDraw = new SurfaceShader;
+            shaderDraw
+                ->setColor({0.0f, 1.0f, 1.0f, 1.0f})
                 .draw(MeshTools::compile(Primitives::planeSolid()));
         }
     }
@@ -104,12 +122,14 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
-    glis.GLIS_Viewport(screen);
+    GL::defaultFramebuffer.setViewport({{}, {screen.width, screen.height}});
     surfaceTemporary.newFramebuffer({screen.width, screen.height});
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, screen, font, fps) {
     glis.destroyX11Window(screen);
+    surfaceTemporary.release();
+    surfaceMain.release();
     glis.GLIS_destroy_GLIS(screen);
 }
 
