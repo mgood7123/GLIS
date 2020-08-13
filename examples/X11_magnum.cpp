@@ -105,6 +105,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
     glis.GLIS_Viewport(renderer);
+    surfaceTemporary.newFramebuffer({renderer.width, renderer.height});
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
@@ -116,6 +117,6 @@ int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
     screen.contextMagnum.create();
-    surfaceTemporary.newFramebuffer({400, 400});
+    surfaceTemporary.newFramebuffer({renderer.width, renderer.height});
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
