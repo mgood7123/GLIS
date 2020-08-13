@@ -51,23 +51,36 @@ public:
     }
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
-        if (texture2DDraw == nullptr) texture2DDraw = new SurfaceTexture2D;
+        delete texture2DDraw;
+        texture2DDraw = new SurfaceTexture2D;
         texture2DDraw->setStorage(1, GL::TextureFormat::RGBA8, size);
     }
 
     void newFramebuffer(const Magnum::VectorTypeFor<2, int> & size) {
+        // setting the viewport size on a GL::Framebuffer seems to cause it to display incorrectly
+        // even if the framebuffer is re-created
         if (framebuffer_ == nullptr) framebuffer_ = new SurfaceFramebuffer {{{}, size}};
+        framebuffer_->setViewport({{}, size});
         newTexture2D(size);
         framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0}, *texture2DDraw, 0);
         framebuffer_->mapForDraw({{0, {GL::Framebuffer::ColorAttachment{0}}}});
     }
     
+    void resize(const Magnum::VectorTypeFor<2, int> & size) {
+        if (framebuffer_ != nullptr) {
+            newFramebuffer(size);
+        } else {
+            GL::defaultFramebuffer.setViewport({{}, size});
+        }
+    }
+    
     void setTextureData(int texture_width, int texture_height, const void * data) {
         if (data_ == nullptr) data_ = new SurfaceImageData(data, texture_width*texture_height);
         if (image_ == nullptr) image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
-        // do mipmaps need to be regenerated if the data changes?
         newTexture2D({texture_width, texture_height});
-        texture2DDraw->setSubImage(0, {}, *image_).generateMipmap();
+        texture2DDraw
+            ->setSubImage(0, {}, *image_)
+            .generateMipmap();
     }
     
     void genTextureFromGLTexture(const GLuint & id) {
@@ -122,8 +135,8 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
-    GL::defaultFramebuffer.setViewport({{}, {screen.width, screen.height}});
-    surfaceTemporary.newFramebuffer({screen.width, screen.height});
+    surfaceTemporary.resize({screen.width, screen.height});
+    surfaceMain.resize({screen.width, screen.height});
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, screen, font, fps) {
