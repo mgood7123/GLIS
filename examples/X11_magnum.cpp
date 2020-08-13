@@ -96,7 +96,6 @@ Surface surfaceMain;
 Surface surfaceTemporary;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
-    surfaceTemporary.newFramebuffer({400, 400});
     surfaceTemporary.clear();
     surfaceTemporary.drawSquare();
     surfaceMain.clear();
@@ -117,5 +116,6 @@ int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
     screen.contextMagnum.create();
+    surfaceTemporary.newFramebuffer({400, 400});
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
