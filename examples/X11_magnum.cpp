@@ -26,65 +26,69 @@ public:
     SurfaceFramebuffer * framebuffer_ = nullptr;
     SurfaceImageView2D * image_ = nullptr;
     SurfaceImageData * data_ = nullptr;
-    SurfaceTexture2D * texture2D_ = nullptr;
+    SurfaceTexture2D * texture2DDraw = nullptr;
+    SurfaceTexture2D * texture2DRead = nullptr;
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
-        if (texture2D_ != nullptr) delete texture2D_;
-        texture2D_ = new SurfaceTexture2D;
-        texture2D_->setStorage(1, GL::TextureFormat::RGBA8, size);
+        if (texture2DDraw != nullptr) delete texture2DDraw;
+        texture2DDraw = new SurfaceTexture2D;
+        texture2DDraw->setStorage(1, GL::TextureFormat::RGBA8, size);
     }
 
     void newFramebuffer(const Magnum::VectorTypeFor<2, int> & size) {
         if (framebuffer_ != nullptr) delete framebuffer_;
         framebuffer_ = new SurfaceFramebuffer {{{}, size}};
-        if (texture2D_ == nullptr) newTexture2D(size);
-        framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0}, *texture2D_, 0);
+        if (texture2DDraw == nullptr) newTexture2D(size);
+        framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0}, *texture2DDraw, 0);
+        framebuffer_->mapForDraw({{0, {GL::Framebuffer::ColorAttachment{0}}}});
     }
     
-    void setTextureData(int texture2D_width, int texture2D_height, const void * data) {
+    void setTextureData(int texture_width, int texture_height, const void * data) {
         if (image_ != nullptr) delete image_;
         if (data_ != nullptr) delete data_;
-        data_ = new SurfaceImageData(data, texture2D_width*texture2D_height);
-        image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture2D_width, texture2D_height}, *data_);
+        data_ = new SurfaceImageData(data, texture_width*texture_height);
+        image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
         // do mipmaps need to be regenerated if the data changes?
-        if (texture2D_ == nullptr) newTexture2D({texture2D_width, texture2D_height});
-        texture2D_->setSubImage(0, {}, *image_).generateMipmap();
+        if (texture2DDraw == nullptr) newTexture2D({texture_width, texture_height});
+        texture2DDraw->setSubImage(0, {}, *image_).generateMipmap();
     }
     
     void genTextureFromGLTexture(const GLuint & id) {
-        if (texture2D_ != nullptr) delete texture2D_;
-        texture2D_ = new GL::Texture2D;
-        *texture2D_ = GL::Texture2D::wrap(id);
+        if (texture2DDraw != nullptr) delete texture2DDraw;
+        texture2DDraw = new GL::Texture2D;
+        *texture2DDraw = GL::Texture2D::wrap(id);
     }
     
     void clear() {
         if (framebuffer_ != nullptr) {
+            framebuffer_->bind();
             framebuffer_->clear(GL::FramebufferClear::Color);
         } else {
+            GL::defaultFramebuffer.bind();
             GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
         }
     }
     
     void drawSquare() {
-        if (texture2D_ != nullptr) {
+        if (texture2DRead != nullptr) {
             Shaders::Flat2D shader (Shaders::Flat2D::Flag::Textured);
             shader
-                .bindTexture(*texture2D_)
-                .setColor({1.0f, 0.0f, 0.0f, 1.0f})
-                .draw(MeshTools::compile(Primitives::planeSolid()));
+                .setColor({1.0f, 1.0f, 1.0f, 1.0f})
+                .bindTexture(*texture2DRead)
+                .draw(MeshTools::compile(Primitives::planeSolid(Primitives::PlaneFlag::TextureCoordinates)));
         } else {
             Shaders::Flat2D shader;
             shader
-                .setColor({1.0f, 0.0f, 0.0f, 1.0f})
+                .setColor({0.0f, 1.0f, 1.0f, 1.0f})
                 .draw(MeshTools::compile(Primitives::planeSolid()));
         }
     }
     
     void drawSquare(const Surface & surface) {
-        Shaders::Flat2D shader (Shaders::Flat2D::Flag::Textured);
-        if (surface.texture2D_ != nullptr) shader.bindTexture(*surface.texture2D_);
-        shader.setColor({1.0f, 1.0f, 1.0f, 1.0f});
-        shader.draw(MeshTools::compile(Primitives::planeSolid()));
+        SurfaceTexture2D * tmp = texture2DRead;
+        texture2DRead = surface.texture2DDraw;
+        drawSquare();
+        texture2DRead = tmp;
     }
 };
 
@@ -92,11 +96,11 @@ Surface surfaceMain;
 Surface surfaceTemporary;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
-//     surfaceTemporary.newFramebuffer({400, 400});
-//     surfaceTemporary.clear();
-//     surfaceTemporary.drawSquare();
+    surfaceTemporary.newFramebuffer({400, 400});
+    surfaceTemporary.clear();
+    surfaceTemporary.drawSquare();
     surfaceMain.clear();
-    surfaceMain.drawSquare(/*surfaceTemporary*/);
+    surfaceMain.drawSquare(surfaceTemporary);
     glis.GLIS_SwapBuffers(screen);
 }
 
