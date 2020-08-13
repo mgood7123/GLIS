@@ -95,7 +95,7 @@ public:
 Surface surfaceMain;
 Surface surfaceTemporary;
 
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
     surfaceTemporary.clear();
     surfaceTemporary.drawSquare();
     surfaceMain.clear();
@@ -103,12 +103,12 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, renderer, font, fps) {
     glis.GLIS_SwapBuffers(screen);
 }
 
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, renderer, font, fps) {
-    glis.GLIS_Viewport(renderer);
-    surfaceTemporary.newFramebuffer({renderer.width, renderer.height});
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
+    glis.GLIS_Viewport(screen);
+    surfaceTemporary.newFramebuffer({screen.width, screen.height});
 }
 
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, renderer, font, fps) {
+GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, screen, font, fps) {
     glis.destroyX11Window(screen);
     glis.GLIS_destroy_GLIS(screen);
 }
@@ -117,6 +117,6 @@ int main() {
     glis.getX11Window(screen, 400, 400);
     glis.GLIS_setupOnScreenRendering(screen);
     screen.contextMagnum.create();
-    surfaceTemporary.newFramebuffer({renderer.width, renderer.height});
+    surfaceTemporary.newFramebuffer({screen.width, screen.height});
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }
