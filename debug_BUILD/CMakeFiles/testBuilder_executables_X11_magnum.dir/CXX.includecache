@@ -1758,6 +1758,18 @@ Magnum/Magnum.h
 Magnum/Math/BoolVector.h
 ../dependancies/magnum/src/Magnum/Magnum/Math/BoolVector.h
 
+../dependancies/magnum/src/Magnum/DebugTools/ColorMap.h
+Magnum/Magnum.h
+../dependancies/magnum/src/Magnum/DebugTools/Magnum/Magnum.h
+Magnum/DebugTools/visibility.h
+../dependancies/magnum/src/Magnum/DebugTools/Magnum/DebugTools/visibility.h
+
+../dependancies/magnum/src/Magnum/DebugTools/visibility.h
+Corrade/Utility/VisibilityMacros.h
+-
+Magnum/configure.h
+../dependancies/magnum/src/Magnum/DebugTools/Magnum/configure.h
+
 ../dependancies/magnum/src/Magnum/DimensionTraits.h
 Magnum/Math/Math.h
 ../dependancies/magnum/src/Magnum/Magnum/Math/Math.h
@@ -2724,6 +2736,8 @@ Magnum/Primitives/Plane.h
 Magnum/GL/Texture.h
 -
 Magnum/ImageView.h
+-
+Magnum/DebugTools/ColorMap.h
 -
 Magnum/PixelFormat.h
 -

@@ -7,6 +7,7 @@
 #include <Magnum/Primitives/Plane.h>
 #include <Magnum/GL/Texture.h>
 #include <Magnum/ImageView.h>
+#include <Magnum/DebugTools/ColorMap.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/Shaders/MeshVisualizer.h>
@@ -24,9 +25,8 @@ typedef Containers::ArrayView<const void> SurfaceImageData;
 typedef GL::Texture2D SurfaceTexture2D;
 typedef Shaders::Flat2D SurfaceShader;
 typedef Shaders::MeshVisualizer2D SurfaceShaderVisualizer;
-typedef std::pair<GL::Mesh, GL::Buffer> SurfaceMeshBuffer;
 
-constexpr Color4 surfaceTextureColor = {1.0f, 1.0f, 1.0f, 1.0f};
+constexpr Color4 surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 
 class Surface {
 private:
@@ -145,7 +145,7 @@ public:
         const TriangleVertex data[]{
             {Left , {0.0f, 0.0f}}, /* Left position and texture coordinate */
             {Right, {1.0f, 0.0f}}, /* Right position and texture coordinate */
-            {Top  , {0.5f, 1.0f}}  /* Top position and texture coordinate */
+            {Top  , {0.5f,  1.0f}}  /* Top position and texture coordinate */
         };
         
         GL::Buffer buffer;
@@ -160,7 +160,7 @@ public:
     }
     
     void drawTriangle(
-        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & Left  = {-0.5f, -0.5f},
         const Vector2 & Right = { 0.5f, -0.5f},
         const Vector2 & Top   = { 0.0f,  0.5f}
@@ -174,7 +174,7 @@ public:
     
     void drawTriangle(
         const Surface & surface,
-        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & Left  = {-0.5f, -0.5f},
         const Vector2 & Right = { 0.5f, -0.5f},
         const Vector2 & Top   = { 0.0f,  0.5f}
@@ -185,55 +185,27 @@ public:
         texture2DRead = tmp;
     }
     
-    GL::Mesh buildPlaneMesh(
-        const Vector2 & Left,
-        const Vector2 & Right,
-        const Vector2 & Top
-    ) {
-        const Vector2 & Left1  = {-1.0f, 1.0f};
-        const Vector2 & Right1 = {-1.0f, -1.0f};
-        const Vector2 & Top1   = { 1.0f, -1.0f};
-        const Vector2 & Left2  = { 1.0f,  1.0f};
-        const Vector2 & Right2 = { 1.0f, -1.0f};
-        const Vector2 & Top2   = {-1.0f,  1.0f};
-        
-        struct TriangleVertex {
-            Vector2 position;
-            Vector2 textureCoordinates;
-        };
-        
-        const TriangleVertex data[]{
-            {Left1 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
-            {Right1, {1.0f, 0.0f}}, /* Right position and texture coordinate */
-            {Top1  , {0.5f, 1.0f}}, /* Top position and texture coordinate */
-            {Left2 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
-            {Right2, {1.0f, 0.0f}}, /* Right position and texture coordinate */
-            {Top2  , {0.5f, 1.0f}}  /* Top position and texture coordinate */
-        };
-        
-        GL::Buffer buffer;
-        buffer.setData(data);
-        
-        GL::Mesh mesh;
-        mesh.setCount(6).addVertexBuffer(
-            buffer, 0,
-            Shaders::MeshVisualizer2D::Position{}, // MESH VISUALIZER
-            GL::Attribute<0, Vector2> {}, GL::Attribute<1, Vector2> {}
-        );
-        return mesh;
-    }
-    
     SurfaceShaderVisualizer * newShaderVisualizerRead() {
         if (shaderVisualizerRead == nullptr) shaderVisualizerRead = new SurfaceShaderVisualizer {Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
         return shaderVisualizerRead;
     }
     
-    void drawVisualized(SurfaceShaderVisualizer * shader, const Color4 & color, SurfaceMeshBuffer meshBuffer) {
-//         if (texture2DRead != nullptr) shader->bindTexture(*texture2DRead);
-        shader->setColor(color).setWireframeColor({0.0f,1.0f,0.0f,1.0f}).draw(meshBuffer.first);
+    SurfaceShaderVisualizer * newShaderVisualizerReadTexture() {
+        if (shaderVisualizerReadTexture == nullptr) shaderVisualizerReadTexture = new SurfaceShaderVisualizer {Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
+        return shaderVisualizerReadTexture;
     }
     
-    SurfaceMeshBuffer buildPlaneVisualMesh(
+    void drawVisualized(SurfaceShaderVisualizer * shader, const Color4 & color, GL::Mesh && mesh) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        shader
+            ->setColor(color)
+            .setWireframeColor({0.0f,1.0f,0.0f,1.0f})
+            .draw(mesh);
+        glDisable(GL_BLEND);
+    }
+    
+    GL::Mesh buildPlaneVisualMesh(
         const Vector2 & Left1,
         const Vector2 & Right1,
         const Vector2 & Top1,
@@ -259,48 +231,122 @@ public:
 
         GL::Mesh mesh;
         mesh.setCount(6);
-        mesh.addVertexBuffer(buffer, 0, Shaders::MeshVisualizer2D::Position{});
-        SurfaceMeshBuffer meshBuffer;
-        meshBuffer.first = std::move(mesh);
-        meshBuffer.second = std::move(buffer);
-        return meshBuffer;
+        mesh.addVertexBuffer(std::move(buffer), 0, Shaders::MeshVisualizer2D::Position{});
+        return mesh;
     }
 
-    void drawPlaneVisual(
-        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
-        const Vector2 & Left1  = {-1.0f, 1.0f},
+    void drawPlaneVisualized(
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const Vector2 & Left1  = {-1.0f,  1.0f},
         const Vector2 & Right1 = {-1.0f, -1.0f},
         const Vector2 & Top1   = { 1.0f, -1.0f},
         const Vector2 & Left2  = { 1.0f,  1.0f},
         const Vector2 & Right2 = { 1.0f, -1.0f},
         const Vector2 & Top2   = {-1.0f,  1.0f}
     ) {
-//         if (texture2DRead != nullptr) {
-//             drawVisualized(
-//                 newShaderReadTexture(),
-//                 surfaceTextureColor,
-//                 buildPlaneVisualMesh(
-//                     Left1, Right1, Top1, Left2, Right2, Top2
-//                 )
-//             );
-//         } else {
+        if (texture2DRead != nullptr) {
+            drawVisualized(
+                newShaderVisualizerReadTexture(),
+                surfaceTextureColor,
+                buildPlaneVisualMesh(Left1, Right1, Top1, Left2, Right2, Top2)
+            );
+        } else {
             drawVisualized(
                 newShaderVisualizerRead(),
                 color,
                 buildPlaneVisualMesh(Left1, Right1, Top1, Left2, Right2, Top2)
             );
+        }
+    }
+    
+    void drawPlaneVisualized(
+        const Surface & surface,
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const Vector2 & Left1  = {-1.0f,  1.0f},
+        const Vector2 & Right1 = {-1.0f, -1.0f},
+        const Vector2 & Top1   = { 1.0f, -1.0f},
+        const Vector2 & Left2  = { 1.0f,  1.0f},
+        const Vector2 & Right2 = { 1.0f, -1.0f},
+        const Vector2 & Top2   = {-1.0f,  1.0f}
+    ) {
+        SurfaceTexture2D * tmp = texture2DRead;
+        texture2DRead = surface.texture2DDraw;
+        drawPlaneVisualized(color, Left1, Right1, Top1, Left2, Right2, Top2);
+        texture2DRead = tmp;
+    }
+    
+    GL::Mesh buildPlaneMesh(
+        const Vector2 & Left1,
+        const Vector2 & Right1,
+        const Vector2 & Top1,
+        const Vector2 & Left2,
+        const Vector2 & Right2,
+        const Vector2 & Top2
+    ) {
+        struct TriangleVertex {
+            Vector2 position;
+            Vector2 textureCoordinates;
+        };
+        
+        const TriangleVertex data[]{
+            {Left1 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
+            {Right1, {1.0f, 0.0f}}, /* Right position and texture coordinate */
+            {Top1  , {0.5f,  1.0f}}, /* Top position and texture coordinate */
+            {Left2 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
+            {Right2, {1.0f, 0.0f}}, /* Right position and texture coordinate */
+            {Top2  , {0.5f,  1.0f}}  /* Top position and texture coordinate */
+        };
+        
+        GL::Buffer buffer;
+        buffer.setData(data);
+        
+        GL::Mesh mesh;
+        mesh
+            .setCount(6)
+            .addVertexBuffer(
+                std::move(buffer), 0,
+                GL::Attribute<0, Vector2> {}, GL::Attribute<1, Vector2> {}
+            );
+        return mesh;
+    }
+    
+    void drawPlane(
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const Vector2 & Left1  = {-1.0f,  1.0f},
+        const Vector2 & Right1 = {-1.0f, -1.0f},
+        const Vector2 & Top1   = { 1.0f, -1.0f},
+        const Vector2 & Left2  = { 1.0f,  1.0f},
+        const Vector2 & Right2 = { 1.0f, -1.0f},
+        const Vector2 & Top2   = {-1.0f,  1.0f}
+    ) {
+        if (texture2DRead != nullptr) {
+            draw(
+                newShaderReadTexture(),
+                surfaceTextureColor,
+                buildPlaneMesh(Left1, Right1, Top1, Left2, Right2, Top2)
+            );
+        } else {
+            draw(
+                newShaderRead(),
+                color,
+                buildPlaneMesh(Left1, Right1, Top1, Left2, Right2, Top2)
+            );
+        }
     }
     
     void drawPlane(
         const Surface & surface,
-        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
-        const Vector2 & Left  = {-0.5f, -0.5f},
-        const Vector2 & Right = { 0.5f, -0.5f},
-        const Vector2 & Top   = { 0.0f,  0.5f}
+        const Color4 & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const Vector2 & Left1  = {-1.0f,  1.0f},
+        const Vector2 & Right1 = {-1.0f, -1.0f},
+        const Vector2 & Top1   = { 1.0f, -1.0f},
+        const Vector2 & Left2  = { 1.0f,  1.0f},
+        const Vector2 & Right2 = { 1.0f, -1.0f},
+        const Vector2 & Top2   = {-1.0f,  1.0f}
     ) {
         SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
-        drawPlane(surface, color, Left, Right, Top);
+        drawPlane(color, Left1, Right1, Top1, Left2, Right2, Top2);
         texture2DRead = tmp;
     }
 
@@ -309,13 +355,13 @@ public:
             if (shaderRead == nullptr) shaderRead = new SurfaceShader(Shaders::Flat2D::Flag::Textured);
             
             shaderRead
-                ->setColor({1.0f, 1.0f, 1.0f, 1.0f})
+                ->setColor({1.0f,  1.0f,  1.0f,  1.0f})
                 .bindTexture(*texture2DRead)
                 .draw(MeshTools::compile(Primitives::planeSolid(Primitives::PlaneFlag::TextureCoordinates)));
         } else {
             if (shaderDraw == nullptr) shaderDraw = new SurfaceShader;
             shaderDraw
-                ->setColor({0.0f, 1.0f, 1.0f, 1.0f})
+                ->setColor({0.0f,  1.0f,  1.0f,  1.0f})
                 .draw(MeshTools::compile(Primitives::planeSolid(Primitives::PlaneFlag::TextureCoordinates)));
         }
     }
@@ -333,12 +379,13 @@ Surface surfaceTemporary;
 Surface surfaceTemporary2;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
-//     surfaceTemporary2.clear();
-//     surfaceTemporary2.drawTriangle();
+    surfaceTemporary2.clear();
+    surfaceTemporary2.drawTriangle();
 //     surfaceTemporary.clear();
-//     surfaceTemporary.drawTriangle(surfaceTemporary2);
+//     surfaceTemporary.drawPlane();
     surfaceMain.clear();
-    surfaceMain.drawPlaneVisual();
+    surfaceMain.drawPlane();
+    surfaceMain.drawPlaneVisualized({1.0f, 0.0f,  0.0f,  0.0f});
     glis.GLIS_SwapBuffers(screen);
 }
 

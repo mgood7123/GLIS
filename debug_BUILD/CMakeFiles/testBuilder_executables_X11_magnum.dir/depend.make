@@ -241,6 +241,8 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum-integration/src/Magnum/ImGuiIntegration/Widgets.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum-integration/src/Magnum/ImGuiIntegration/visibility.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Array.h
+CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/DebugTools/ColorMap.h
+CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/DebugTools/visibility.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/DimensionTraits.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/GL/AbstractFramebuffer.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/GL/AbstractObject.h
