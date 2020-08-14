@@ -23,6 +23,8 @@ typedef ImageView2D SurfaceImageView2D;
 typedef Containers::ArrayView<const void> SurfaceImageData;
 typedef GL::Texture2D SurfaceTexture2D;
 typedef Shaders::Flat2D SurfaceShader;
+typedef Shaders::MeshVisualizer2D SurfaceShaderVisualizer;
+typedef std::pair<GL::Mesh, GL::Buffer> SurfaceMeshBuffer;
 
 constexpr Color4 surfaceTextureColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
@@ -36,6 +38,9 @@ private:
     SurfaceShader * shaderRead = nullptr;
     SurfaceShader * shaderReadTexture = nullptr;
     SurfaceShader * shaderDraw = nullptr;
+    SurfaceShaderVisualizer * shaderVisualizerRead = nullptr;
+    SurfaceShaderVisualizer * shaderVisualizerReadTexture = nullptr;
+    SurfaceShaderVisualizer * shaderVisualizerDraw = nullptr;
 
 public:
     void release() {
@@ -55,6 +60,12 @@ public:
         shaderReadTexture = nullptr;
         delete shaderDraw;
         shaderDraw = nullptr;
+        delete shaderVisualizerRead;
+        shaderVisualizerRead = nullptr;
+        delete shaderVisualizerReadTexture;
+        shaderVisualizerReadTexture = nullptr;
+        delete shaderVisualizerDraw;
+        shaderVisualizerDraw = nullptr;
     }
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
@@ -212,47 +223,72 @@ public:
         return mesh;
     }
     
-    void drawPlane(
-        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
-        const Vector2 & Left  = {-0.5f, -0.5f},
-        const Vector2 & Right = { 0.5f, -0.5f},
-        const Vector2 & Top   = { 0.0f,  0.5f}
+    SurfaceShaderVisualizer * newShaderVisualizerRead() {
+        if (shaderVisualizerRead == nullptr) shaderVisualizerRead = new SurfaceShaderVisualizer {Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
+        return shaderVisualizerRead;
+    }
+    
+    void drawVisualized(SurfaceShaderVisualizer * shader, const Color4 & color, SurfaceMeshBuffer meshBuffer) {
+//         if (texture2DRead != nullptr) shader->bindTexture(*texture2DRead);
+        shader->setColor(color).setWireframeColor({0.0f,1.0f,0.0f,1.0f}).draw(meshBuffer.first);
+    }
+    
+    SurfaceMeshBuffer buildPlaneVisualMesh(
+        const Vector2 & Left1,
+        const Vector2 & Right1,
+        const Vector2 & Top1,
+        const Vector2 & Left2,
+        const Vector2 & Right2,
+        const Vector2 & Top2
     ) {
-        if (texture2DRead != nullptr) {
-            draw(newShaderReadTexture(), surfaceTextureColor, buildPlaneMesh(Left, Right, Top));
-        } else {
-            const Vector2 & Left1  = {-1.0f, 1.0f};
-            const Vector2 & Right1 = {-1.0f, -1.0f};
-            const Vector2 & Top1   = { 1.0f, -1.0f};
-            const Vector2 & Left2  = { 1.0f,  1.0f};
-            const Vector2 & Right2 = { 1.0f, -1.0f};
-            const Vector2 & Top2   = {-1.0f,  1.0f};
+        struct TriangleVertex {
+            Vector2 position;
+        };
 
-            struct TriangleVertex {
-                Vector2 position;
-            };
+        const TriangleVertex data[]{
+            {Left1}, /* Left position and no texture coordinate */
+            {Right1}, /* Right position and no texture coordinate */
+            {Top1}, /* Top position and no texture coordinate */
+            {Left2}, /* Left position and no texture coordinate */
+            {Right2}, /* Right position and no texture coordinate */
+            {Top2}  /* Top position and no texture coordinate */
+        };
 
-            const TriangleVertex data[]{
-                {Left1}, /* Left position and no texture coordinate */
-                {Right1}, /* Right position and no texture coordinate */
-                {Top1}, /* Top position and no texture coordinate */
-                {Left2}, /* Left position and no texture coordinate */
-                {Right2}, /* Right position and no texture coordinate */
-                {Top2}  /* Top position and no texture coordinate */
-            };
+        GL::Buffer buffer;
+        buffer.setData(data);
 
-            GL::Buffer buffer;
-            buffer.setData(data);
+        GL::Mesh mesh;
+        mesh.setCount(6);
+        mesh.addVertexBuffer(buffer, 0, Shaders::MeshVisualizer2D::Position{});
+        SurfaceMeshBuffer meshBuffer;
+        meshBuffer.first = std::move(mesh);
+        meshBuffer.second = std::move(buffer);
+        return meshBuffer;
+    }
 
-            GL::Mesh mesh;
-            mesh.setCount(6);
-            mesh.addVertexBuffer(buffer, 0, Shaders::MeshVisualizer2D::Position{});
-            Shaders::MeshVisualizer2D shader{Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
-            shader
-                .setColor({1.0f,0.0f,0.0f,1.0f})
-                .setWireframeColor({0.0f,1.0f,0.0f,1.0f})
-                .draw(mesh);
-        }
+    void drawPlaneVisual(
+        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Vector2 & Left1  = {-1.0f, 1.0f},
+        const Vector2 & Right1 = {-1.0f, -1.0f},
+        const Vector2 & Top1   = { 1.0f, -1.0f},
+        const Vector2 & Left2  = { 1.0f,  1.0f},
+        const Vector2 & Right2 = { 1.0f, -1.0f},
+        const Vector2 & Top2   = {-1.0f,  1.0f}
+    ) {
+//         if (texture2DRead != nullptr) {
+//             drawVisualized(
+//                 newShaderReadTexture(),
+//                 surfaceTextureColor,
+//                 buildPlaneVisualMesh(
+//                     Left1, Right1, Top1, Left2, Right2, Top2
+//                 )
+//             );
+//         } else {
+            drawVisualized(
+                newShaderVisualizerRead(),
+                color,
+                buildPlaneVisualMesh(Left1, Right1, Top1, Left2, Right2, Top2)
+            );
     }
     
     void drawPlane(
@@ -264,7 +300,7 @@ public:
     ) {
         SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
-        drawPlane(color, Left, Right, Top);
+        drawPlane(surface, color, Left, Right, Top);
         texture2DRead = tmp;
     }
 
@@ -302,7 +338,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 //     surfaceTemporary.clear();
 //     surfaceTemporary.drawTriangle(surfaceTemporary2);
     surfaceMain.clear();
-    surfaceMain.drawPlane();
+    surfaceMain.drawPlaneVisual();
     glis.GLIS_SwapBuffers(screen);
 }
 
