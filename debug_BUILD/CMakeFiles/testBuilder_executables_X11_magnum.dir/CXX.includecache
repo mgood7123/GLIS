@@ -2328,6 +2328,18 @@ Magnum/Shaders/visibility.h
 Magnum/GL/Attribute.h
 ../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/Attribute.h
 
+../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
+Corrade/Utility/Utility.h
+-
+Magnum/DimensionTraits.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/DimensionTraits.h
+Magnum/GL/AbstractShaderProgram.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/AbstractShaderProgram.h
+Magnum/Shaders/Generic.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/Generic.h
+Magnum/Shaders/visibility.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/visibility.h
+
 ../dependancies/magnum/src/Magnum/Shaders/Phong.h
 Magnum/GL/AbstractShaderProgram.h
 ../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/AbstractShaderProgram.h
@@ -2716,6 +2728,8 @@ Magnum/ImageView.h
 Magnum/PixelFormat.h
 -
 Magnum/GL/DefaultFramebuffer.h
+-
+Magnum/Shaders/MeshVisualizer.h
 -
 
 dependancies/corrade/src/Corrade/configure.h

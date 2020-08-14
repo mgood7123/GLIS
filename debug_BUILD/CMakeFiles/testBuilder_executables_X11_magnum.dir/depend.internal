@@ -299,6 +299,7 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
  ../dependancies/magnum/src/Magnum/Sampler.h
  ../dependancies/magnum/src/Magnum/Shaders/Flat.h
  ../dependancies/magnum/src/Magnum/Shaders/Generic.h
+ ../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
  ../dependancies/magnum/src/Magnum/Shaders/Phong.h
  ../dependancies/magnum/src/Magnum/Shaders/visibility.h
  ../dependancies/magnum/src/Magnum/Tags.h

@@ -9,6 +9,7 @@
 #include <Magnum/ImageView.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/Shaders/MeshVisualizer.h>
 
 GLIS_CLASS screen;
 GLIS glis;
@@ -23,16 +24,20 @@ typedef Containers::ArrayView<const void> SurfaceImageData;
 typedef GL::Texture2D SurfaceTexture2D;
 typedef Shaders::Flat2D SurfaceShader;
 
+constexpr Color4 surfaceTextureColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
 class Surface {
-public:
+private:
     SurfaceFramebuffer * framebuffer_ = nullptr;
     SurfaceImageView2D * image_ = nullptr;
     SurfaceImageData * data_ = nullptr;
     SurfaceTexture2D * texture2DRead = nullptr;
     SurfaceTexture2D * texture2DDraw = nullptr;
     SurfaceShader * shaderRead = nullptr;
+    SurfaceShader * shaderReadTexture = nullptr;
     SurfaceShader * shaderDraw = nullptr;
-    
+
+public:
     void release() {
         delete framebuffer_;
         framebuffer_ = nullptr;
@@ -46,6 +51,8 @@ public:
         texture2DDraw = nullptr;
         delete shaderRead;
         shaderRead = nullptr;
+        delete shaderReadTexture;
+        shaderReadTexture = nullptr;
         delete shaderDraw;
         shaderDraw = nullptr;
     }
@@ -99,6 +106,168 @@ public:
         }
     }
     
+    SurfaceShader * newShaderReadTexture() {
+        if (shaderReadTexture == nullptr) shaderReadTexture = new SurfaceShader(Shaders::Flat2D::Flag::Textured);
+        return shaderReadTexture;
+    }
+
+    SurfaceShader * newShaderRead() {
+        if (shaderRead == nullptr) shaderRead = new SurfaceShader;
+        return shaderRead;
+    }
+    
+    void draw(SurfaceShader * shader, const Color4 & color, GL::Mesh && mesh) {
+        if (texture2DRead != nullptr) shader->bindTexture(*texture2DRead);
+        shader->setColor(color).draw(mesh);
+    }
+    
+    GL::Mesh buildTriangleMesh(
+        const Vector2 & Left,
+        const Vector2 & Right,
+        const Vector2 & Top
+    ) {
+        struct TriangleVertex {
+            Vector2 position;
+            Vector2 textureCoordinates;
+        };
+        
+        const TriangleVertex data[]{
+            {Left , {0.0f, 0.0f}}, /* Left position and texture coordinate */
+            {Right, {1.0f, 0.0f}}, /* Right position and texture coordinate */
+            {Top  , {0.5f, 1.0f}}  /* Top position and texture coordinate */
+        };
+        
+        GL::Buffer buffer;
+        buffer.setData(data);
+        
+        GL::Mesh mesh;
+        mesh.setCount(3).addVertexBuffer(
+            std::move(buffer), 0,
+            GL::Attribute<0, Vector2> {}, GL::Attribute<1, Vector2> {}
+        );
+        return mesh;
+    }
+    
+    void drawTriangle(
+        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Vector2 & Left  = {-0.5f, -0.5f},
+        const Vector2 & Right = { 0.5f, -0.5f},
+        const Vector2 & Top   = { 0.0f,  0.5f}
+    ) {
+        if (texture2DRead != nullptr) {
+            draw(newShaderReadTexture(), surfaceTextureColor, buildTriangleMesh(Left, Right, Top));
+        } else {
+            draw(newShaderRead(), color, buildTriangleMesh(Left, Right, Top));
+        }
+    }
+    
+    void drawTriangle(
+        const Surface & surface,
+        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Vector2 & Left  = {-0.5f, -0.5f},
+        const Vector2 & Right = { 0.5f, -0.5f},
+        const Vector2 & Top   = { 0.0f,  0.5f}
+    ) {
+        SurfaceTexture2D * tmp = texture2DRead;
+        texture2DRead = surface.texture2DDraw;
+        drawTriangle(color, Left, Right, Top);
+        texture2DRead = tmp;
+    }
+    
+    GL::Mesh buildPlaneMesh(
+        const Vector2 & Left,
+        const Vector2 & Right,
+        const Vector2 & Top
+    ) {
+        const Vector2 & Left1  = {-1.0f, 1.0f};
+        const Vector2 & Right1 = {-1.0f, -1.0f};
+        const Vector2 & Top1   = { 1.0f, -1.0f};
+        const Vector2 & Left2  = { 1.0f,  1.0f};
+        const Vector2 & Right2 = { 1.0f, -1.0f};
+        const Vector2 & Top2   = {-1.0f,  1.0f};
+        
+        struct TriangleVertex {
+            Vector2 position;
+            Vector2 textureCoordinates;
+        };
+        
+        const TriangleVertex data[]{
+            {Left1 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
+            {Right1, {1.0f, 0.0f}}, /* Right position and texture coordinate */
+            {Top1  , {0.5f, 1.0f}}, /* Top position and texture coordinate */
+            {Left2 , {0.0f, 0.0f}}, /* Left position and texture coordinate */
+            {Right2, {1.0f, 0.0f}}, /* Right position and texture coordinate */
+            {Top2  , {0.5f, 1.0f}}  /* Top position and texture coordinate */
+        };
+        
+        GL::Buffer buffer;
+        buffer.setData(data);
+        
+        GL::Mesh mesh;
+        mesh.setCount(6).addVertexBuffer(
+            buffer, 0,
+            Shaders::MeshVisualizer2D::Position{}, // MESH VISUALIZER
+            GL::Attribute<0, Vector2> {}, GL::Attribute<1, Vector2> {}
+        );
+        return mesh;
+    }
+    
+    void drawPlane(
+        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Vector2 & Left  = {-0.5f, -0.5f},
+        const Vector2 & Right = { 0.5f, -0.5f},
+        const Vector2 & Top   = { 0.0f,  0.5f}
+    ) {
+        if (texture2DRead != nullptr) {
+            draw(newShaderReadTexture(), surfaceTextureColor, buildPlaneMesh(Left, Right, Top));
+        } else {
+            const Vector2 & Left1  = {-1.0f, 1.0f};
+            const Vector2 & Right1 = {-1.0f, -1.0f};
+            const Vector2 & Top1   = { 1.0f, -1.0f};
+            const Vector2 & Left2  = { 1.0f,  1.0f};
+            const Vector2 & Right2 = { 1.0f, -1.0f};
+            const Vector2 & Top2   = {-1.0f,  1.0f};
+
+            struct TriangleVertex {
+                Vector2 position;
+            };
+
+            const TriangleVertex data[]{
+                {Left1}, /* Left position and no texture coordinate */
+                {Right1}, /* Right position and no texture coordinate */
+                {Top1}, /* Top position and no texture coordinate */
+                {Left2}, /* Left position and no texture coordinate */
+                {Right2}, /* Right position and no texture coordinate */
+                {Top2}  /* Top position and no texture coordinate */
+            };
+
+            GL::Buffer buffer;
+            buffer.setData(data);
+
+            GL::Mesh mesh;
+            mesh.setCount(6);
+            mesh.addVertexBuffer(buffer, 0, Shaders::MeshVisualizer2D::Position{});
+            Shaders::MeshVisualizer2D shader{Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
+            shader
+                .setColor({1.0f,0.0f,0.0f,1.0f})
+                .setWireframeColor({0.0f,1.0f,0.0f,1.0f})
+                .draw(mesh);
+        }
+    }
+    
+    void drawPlane(
+        const Surface & surface,
+        const Color4 & color = {0.0f, 1.0f, 1.0f, 1.0f},
+        const Vector2 & Left  = {-0.5f, -0.5f},
+        const Vector2 & Right = { 0.5f, -0.5f},
+        const Vector2 & Top   = { 0.0f,  0.5f}
+    ) {
+        SurfaceTexture2D * tmp = texture2DRead;
+        texture2DRead = surface.texture2DDraw;
+        drawPlane(color, Left, Right, Top);
+        texture2DRead = tmp;
+    }
+
     void drawSquare() {
         if (texture2DRead != nullptr) {
             if (shaderRead == nullptr) shaderRead = new SurfaceShader(Shaders::Flat2D::Flag::Textured);
@@ -111,7 +280,7 @@ public:
             if (shaderDraw == nullptr) shaderDraw = new SurfaceShader;
             shaderDraw
                 ->setColor({0.0f, 1.0f, 1.0f, 1.0f})
-                .draw(MeshTools::compile(Primitives::planeSolid()));
+                .draw(MeshTools::compile(Primitives::planeSolid(Primitives::PlaneFlag::TextureCoordinates)));
         }
     }
     
@@ -125,22 +294,27 @@ public:
 
 Surface surfaceMain;
 Surface surfaceTemporary;
+Surface surfaceTemporary2;
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
-    surfaceTemporary.clear();
-    surfaceTemporary.drawSquare();
+//     surfaceTemporary2.clear();
+//     surfaceTemporary2.drawTriangle();
+//     surfaceTemporary.clear();
+//     surfaceTemporary.drawTriangle(surfaceTemporary2);
     surfaceMain.clear();
-    surfaceMain.drawSquare(surfaceTemporary);
+    surfaceMain.drawPlane();
     glis.GLIS_SwapBuffers(screen);
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
+    surfaceTemporary2.resize({screen.width, screen.height});
     surfaceTemporary.resize({screen.width, screen.height});
     surfaceMain.resize({screen.width, screen.height});
 }
 
 GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, screen, font, fps) {
     glis.destroyX11Window(screen);
+    surfaceTemporary2.release();
     surfaceTemporary.release();
     surfaceMain.release();
     glis.GLIS_destroy_GLIS(screen);
@@ -151,5 +325,6 @@ int main() {
     glis.GLIS_setupOnScreenRendering(screen);
     screen.contextMagnum.create();
     surfaceTemporary.newFramebuffer({screen.width, screen.height});
+    surfaceTemporary2.newFramebuffer({screen.width, screen.height});
     glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
 }

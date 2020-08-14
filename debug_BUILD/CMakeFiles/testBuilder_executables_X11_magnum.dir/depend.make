@@ -298,6 +298,7 @@ CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Sampler.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Flat.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Generic.h
+CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Phong.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/visibility.h
 CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o: ../dependancies/magnum/src/Magnum/Tags.h
