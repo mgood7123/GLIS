@@ -215,15 +215,16 @@ public:
         const struct Vertex {
             Vector2 position;
         } vertex[] {
-            // something about pixel perfect
-            {topRight-Vector2{0.00375f,0.00375f}},    {bottomRight-Vector2{0.00375f,0.00375f}},
-            {bottomRight+Vector2{0.00375f,0.00375f}}, {bottomLeft+Vector2{0.00375f,0.00375f}},
-            {bottomLeft+Vector2{0.00375f,0.00375f}},  {topLeft+Vector2{0.00375f,0.00375f}},
-            {topLeft-Vector2{0.00375f,0.00375f}},     {topRight-Vector2{0.00375f,0.00375f}}
+            {topRight},    {bottomRight},
+            {bottomRight}, {bottomLeft},
+            {bottomLeft},  {topLeft},
+            {topLeft},     {topRight}
         };
         
         GL::Buffer vertices(vertex);
-
+        
+//         glm::translate(glm::mat4(1), glm::vec3(0.375, 0.375, 0.0f));
+        
         GL::Mesh mesh;
         mesh
             .setPrimitive(MeshPrimitive::Lines)
@@ -238,10 +239,6 @@ public:
         const Vector2 & topRight =    { 1.0f,  1.0f},
         const Vector2 & bottomRight = { 1.0f, -1.0f},
         const Vector2 & bottomLeft =  {-1.0f, -1.0f}
-//         const Vector2 & topLeft =     {-1.0f,  1.0f},
-//         const Vector2 & topRight =    { 1.0f,  1.0f},
-//         const Vector2 & bottomRight = { 1.0f, -1.0f},
-//         const Vector2 & bottomLeft =  {-1.0f, -1.0f}
     ) {
         draw(
             newShaderRead(),
@@ -346,11 +343,11 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 //     surfaceTemporary.drawTriangle(surfaceTemporary2);
 //     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
 //     
-    surfaceTemporary.clear();
-    surfaceTemporary.drawTriangle();
+//     surfaceTemporary.clear();
+//     surfaceTemporary.drawTriangle();
 //     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
     surfaceMain.clear();
-    surfaceMain.drawPlane(surfaceTemporary);
+    surfaceMain.drawTriangle();
     surfaceMain.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.4f});
     glis.GLIS_SwapBuffers(screen);
 }
