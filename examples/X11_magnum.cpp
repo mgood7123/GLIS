@@ -225,6 +225,8 @@ public:
         
 //         glm::translate(glm::mat4(1), glm::vec3(0.375, 0.375, 0.0f));
         
+        // [03:12] <derhass> in practice, if all you need are axis-aligned rectangles, snap-in to the next inward pixel centers will work well enough
+        
         GL::Mesh mesh;
         mesh
             .setPrimitive(MeshPrimitive::Lines)
