@@ -46,6 +46,7 @@ private:
 public:
     int width = 0;
     int height = 0;
+    static constexpr float globalScale = 1.0f;
     
     void release() {
         delete framebuffer_;
@@ -166,9 +167,7 @@ public:
         );
         return mesh;
     }
-    
-    static constexpr float globalScale = 1.0f;
-    
+        
     void drawTriangle(
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & Left  = {-globalScale, -globalScale},
@@ -284,10 +283,10 @@ public:
     
     void drawPlane(
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & topLeft =     {-1.0f,  1.0f},
-        const Vector2 & topRight =    { 1.0f,  1.0f},
-        const Vector2 & bottomRight = { 1.0f, -1.0f},
-        const Vector2 & bottomLeft =  {-1.0f, -1.0f}
+        const Vector2 & topLeft =     {-globalScale,  globalScale},
+        const Vector2 & topRight =    { globalScale,  globalScale},
+        const Vector2 & bottomRight = { globalScale, -globalScale},
+        const Vector2 & bottomLeft =  {-globalScale, -globalScale}
     ) {
         if (texture2DRead != nullptr) {
             draw(
@@ -307,10 +306,10 @@ public:
     void drawPlane(
         const Surface & surface,
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & topLeft =     {-1.0f,  1.0f},
-        const Vector2 & topRight =    { 1.0f,  1.0f},
-        const Vector2 & bottomRight = { 1.0f, -1.0f},
-        const Vector2 & bottomLeft =  {-1.0f, -1.0f}
+        const Vector2 & topLeft =     {-globalScale,  globalScale},
+        const Vector2 & topRight =    { globalScale,  globalScale},
+        const Vector2 & bottomRight = { globalScale, -globalScale},
+        const Vector2 & bottomLeft =  {-globalScale, -globalScale}
     ) {
         SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
@@ -342,18 +341,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 //     surfaceTemporary.drawTriangle();
 //     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
     surfaceMain.clear();
-//     surfaceMain.drawTriangle(
-//         {0.0f, 1.0f,  1.0f,  1.0f},
-//         {-1.0f, -1.0f},
-//         { 1.0f, -1.0f},
-//         { 0.0f,  1.0f}
-//     );
-    surfaceMain.drawTriangle(
-        {1.0f, 0.0f,  1.0f,  1.0f},
-        {-Surface::globalScale, -Surface::globalScale},
-        { Surface::globalScale, -Surface::globalScale},
-        { 0.0f,  Surface::globalScale}
-    );
+    surfaceMain.drawTriangle();
     surfaceMain.drawPlaneWireframe({1.0f, 1.0f,  1.0f,  1.0f});
     glis.GLIS_SwapBuffers(screen);
 }
