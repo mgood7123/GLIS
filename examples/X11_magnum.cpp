@@ -42,8 +42,11 @@ private:
     SurfaceShaderVisualizer * shaderVisualizerRead = nullptr;
     SurfaceShaderVisualizer * shaderVisualizerReadTexture = nullptr;
     SurfaceShaderVisualizer * shaderVisualizerDraw = nullptr;
-
+    
 public:
+    int width = 0;
+    int height = 0;
+    
     void release() {
         delete framebuffer_;
         framebuffer_ = nullptr;
@@ -76,8 +79,8 @@ public:
     }
 
     void newFramebuffer(const Magnum::VectorTypeFor<2, int> & size) {
-        // setting the viewport size on a GL::Framebuffer seems to cause it to display incorrectly
-        // even if the framebuffer is re-created
+        width = size[0];
+        height = size[1];
         if (framebuffer_ == nullptr) framebuffer_ = new SurfaceFramebuffer {{{}, size}};
         framebuffer_->setViewport({{}, size});
         newTexture2D(size);
@@ -89,6 +92,8 @@ public:
         if (framebuffer_ != nullptr) {
             newFramebuffer(size);
         } else {
+            width = size[0];
+            height = size[1];
             GL::defaultFramebuffer.setViewport({{}, size});
         }
     }
@@ -144,27 +149,31 @@ public:
         };
         
         const TriangleVertex data[]{
-            {Left , {0.0f, 0.0f}}, /* Left position and texture coordinate */
-            {Right, {1.0f, 0.0f}}, /* Right position and texture coordinate */
-            {Top  , {0.5f,  1.0f}}  /* Top position and texture coordinate */
+            {Left , {0.0f, 0.0f}}, /* Left position and texture coordinate for mapping textures */
+            {Right, {1.0f, 0.0f}}, /* Right position and texture coordinate for mapping textures */
+            {Top  , {0.5f,  1.0f}}  /* Top position and texture coordinate for mapping textures */
         };
         
-        GL::Buffer buffer;
-        buffer.setData(data);
+        GL::Buffer buffer(data);
         
         GL::Mesh mesh;
-        mesh.setCount(3).addVertexBuffer(
-            std::move(buffer), 0,
-            GL::Attribute<0, Vector2> {}, GL::Attribute<1, Vector2> {}
+        mesh
+            .setCount(3)
+            .addVertexBuffer(
+                std::move(buffer), 0,
+                GL::Attribute<0, Vector2> {},
+                GL::Attribute<1, Vector2> {}
         );
         return mesh;
     }
     
+    static constexpr float globalScale = 1.0f;
+    
     void drawTriangle(
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & Left  = {-0.5f, -0.5f},
-        const Vector2 & Right = { 0.5f, -0.5f},
-        const Vector2 & Top   = { 0.0f,  0.5f}
+        const Vector2 & Left  = {-globalScale, -globalScale},
+        const Vector2 & Right = { globalScale, -globalScale},
+        const Vector2 & Top   = { 0.0f,  globalScale}
     ) {
         if (texture2DRead != nullptr) {
             draw(newShaderReadTexture(), surfaceTextureColor, buildTriangleMesh(Left, Right, Top));
@@ -176,34 +185,14 @@ public:
     void drawTriangle(
         const Surface & surface,
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & Left  = {-0.5f, -0.5f},
-        const Vector2 & Right = { 0.5f, -0.5f},
-        const Vector2 & Top   = { 0.0f,  0.5f}
+        const Vector2 & Left  = {-globalScale, -globalScale},
+        const Vector2 & Right = { globalScale, -globalScale},
+        const Vector2 & Top   = { 0.0f,  globalScale}
     ) {
         SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
         drawTriangle(color, Left, Right, Top);
         texture2DRead = tmp;
-    }
-    
-    SurfaceShaderVisualizer * newShaderVisualizerRead() {
-        if (shaderVisualizerRead == nullptr) shaderVisualizerRead = new SurfaceShaderVisualizer {Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
-        return shaderVisualizerRead;
-    }
-    
-    SurfaceShaderVisualizer * newShaderVisualizerReadTexture() {
-        if (shaderVisualizerReadTexture == nullptr) shaderVisualizerReadTexture = new SurfaceShaderVisualizer {Shaders::MeshVisualizer2D::Flag::Wireframe|Shaders::MeshVisualizer2D::Flag::NoGeometryShader};
-        return shaderVisualizerReadTexture;
-    }
-    
-    void drawWireframe(SurfaceShaderVisualizer * shader, const SurfaceColor & color, GL::Mesh && mesh) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        shader
-            ->setColor(color)
-            .setWireframeColor({0.0f,1.0f,0.0f,1.0f})
-            .draw(mesh);
-        glDisable(GL_BLEND);
     }
     
     GL::Mesh buildPlaneWireframeMesh(
@@ -212,18 +201,24 @@ public:
         const Vector2 & bottomRight,
         const Vector2 & bottomLeft
     ) {
+        // offset left and top lines by one pixel
+        // offset x axis of bottom left vector
+        const Vector2 & bl = Vector2((float)(((bottomLeft[0] * (width/2))+1) / (width/2)), bottomLeft[1]);
+        // offset y axis of top left vector
+        const Vector2 & tl = Vector2(topLeft[0], (float)(((topLeft[1] * (height/2))-1) / (height/2)));
+        // offset y axis of top right vector
+        const Vector2 & tr = Vector2(topRight[0], (float)(((topRight[1] * (height/2))-1) / (height/2)));
+        
         const struct Vertex {
             Vector2 position;
         } vertex[] {
             {topRight},    {bottomRight},
             {bottomRight}, {bottomLeft},
-            {bottomLeft},  {topLeft},
-            {topLeft},     {topRight}
+            {bl},  {tl},
+            {tl},  {tr}
         };
         
         GL::Buffer vertices(vertex);
-        
-//         glm::translate(glm::mat4(1), glm::vec3(0.375, 0.375, 0.0f));
         
         // [03:12] <derhass> in practice, if all you need are axis-aligned rectangles, snap-in to the next inward pixel centers will work well enough
         
@@ -237,10 +232,10 @@ public:
 
     void drawPlaneWireframe(
         const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & topLeft =     {-1.0f,  1.0f},
-        const Vector2 & topRight =    { 1.0f,  1.0f},
-        const Vector2 & bottomRight = { 1.0f, -1.0f},
-        const Vector2 & bottomLeft =  {-1.0f, -1.0f}
+        const Vector2 & topLeft =     {-globalScale,  globalScale},
+        const Vector2 & topRight =    { globalScale,  globalScale},
+        const Vector2 & bottomRight = { globalScale, -globalScale},
+        const Vector2 & bottomLeft =  {-globalScale, -globalScale}
     ) {
         draw(
             newShaderRead(),
@@ -349,8 +344,19 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
 //     surfaceTemporary.drawTriangle();
 //     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
     surfaceMain.clear();
-    surfaceMain.drawTriangle();
-    surfaceMain.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.4f});
+//     surfaceMain.drawTriangle(
+//         {0.0f, 1.0f,  1.0f,  1.0f},
+//         {-1.0f, -1.0f},
+//         { 1.0f, -1.0f},
+//         { 0.0f,  1.0f}
+//     );
+    surfaceMain.drawTriangle(
+        {1.0f, 0.0f,  1.0f,  1.0f},
+        {-Surface::globalScale, -Surface::globalScale},
+        { Surface::globalScale, -Surface::globalScale},
+        { 0.0f,  Surface::globalScale}
+    );
+    surfaceMain.drawPlaneWireframe({1.0f, 1.0f,  1.0f,  1.0f});
     glis.GLIS_SwapBuffers(screen);
 }
 
