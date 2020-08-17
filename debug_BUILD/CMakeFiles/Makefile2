@@ -56,6 +56,7 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 all: CMakeFiles/testBuilder_executables_X11_font_2.dir/all
 all: CMakeFiles/testBuilder_executables_X11_font_1.dir/all
 all: CMakeFiles/testBuilder_executables_X11_Shapes.dir/all
+all: CMakeFiles/testBuilder_executables_Surface.dir/all
 all: CMakeFiles/testBuilder_executables_Texture.dir/all
 all: CMakeFiles/testBuilder_executables_X11_font_0.dir/all
 all: CMakeFiles/testBuilder_executables_X11_2.dir/all
@@ -68,7 +69,6 @@ all: CMakeFiles/testBuilder_executables_compositor.dir/all
 all: CMakeFiles/GLIS.dir/all
 all: CMakeFiles/testBuilder_executables_shm.dir/all
 all: CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/all
-all: CMakeFiles/testBuilder_executables_X11_magnum.dir/all
 all: CMakeFiles/testBuilder_executables_MovingWindows.dir/all
 all: CMakeFiles/testBuilder_executables_wrap.dir/all
 all: CMakeFiles/testBuilder_executables_X11.dir/all
@@ -112,6 +112,7 @@ preinstall: dependancies/magnum-plugins/preinstall
 clean: CMakeFiles/testBuilder_executables_X11_font_2.dir/clean
 clean: CMakeFiles/testBuilder_executables_X11_font_1.dir/clean
 clean: CMakeFiles/testBuilder_executables_X11_Shapes.dir/clean
+clean: CMakeFiles/testBuilder_executables_Surface.dir/clean
 clean: CMakeFiles/testBuilder_executables_Texture.dir/clean
 clean: CMakeFiles/testBuilder_executables_X11_font_0.dir/clean
 clean: CMakeFiles/testBuilder_executables_X11_2.dir/clean
@@ -124,7 +125,6 @@ clean: CMakeFiles/testBuilder_executables_compositor.dir/clean
 clean: CMakeFiles/GLIS.dir/clean
 clean: CMakeFiles/testBuilder_executables_shm.dir/clean
 clean: CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/clean
-clean: CMakeFiles/testBuilder_executables_X11_magnum.dir/clean
 clean: CMakeFiles/testBuilder_executables_MovingWindows.dir/clean
 clean: CMakeFiles/testBuilder_executables_wrap.dir/clean
 clean: CMakeFiles/testBuilder_executables_X11.dir/clean
@@ -1520,12 +1520,12 @@ CMakeFiles/testBuilder_executables_X11_font_2.dir/all: dependancies/magnum-integ
 CMakeFiles/testBuilder_executables_X11_font_2.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_2.dir/build.make CMakeFiles/testBuilder_executables_X11_font_2.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_2.dir/build.make CMakeFiles/testBuilder_executables_X11_font_2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=96 "Built target testBuilder_executables_X11_font_2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_font_2"
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_2.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_font_2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_font_2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_2.dir/rule
@@ -1566,12 +1566,12 @@ CMakeFiles/testBuilder_executables_X11_font_1.dir/all: dependancies/magnum-integ
 CMakeFiles/testBuilder_executables_X11_font_1.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_1.dir/build.make CMakeFiles/testBuilder_executables_X11_font_1.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_1.dir/build.make CMakeFiles/testBuilder_executables_X11_font_1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_font_1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=96 "Built target testBuilder_executables_X11_font_1"
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_1.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_font_1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_font_1.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_1.dir/rule
@@ -1612,12 +1612,12 @@ CMakeFiles/testBuilder_executables_X11_Shapes.dir/all: dependancies/magnum-integ
 CMakeFiles/testBuilder_executables_X11_Shapes.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_Shapes"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=95 "Built target testBuilder_executables_X11_Shapes"
 .PHONY : CMakeFiles/testBuilder_executables_X11_Shapes.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_Shapes.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_Shapes.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_Shapes.dir/rule
@@ -1631,6 +1631,52 @@ testBuilder_executables_X11_Shapes: CMakeFiles/testBuilder_executables_X11_Shape
 CMakeFiles/testBuilder_executables_X11_Shapes.dir/clean:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/clean
 .PHONY : CMakeFiles/testBuilder_executables_X11_Shapes.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/testBuilder_executables_Surface.dir
+
+# All Build rule for target.
+CMakeFiles/testBuilder_executables_Surface.dir/all: CMakeFiles/GLIS.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum-integration/src/Magnum/ImGuiIntegration/CMakeFiles/MagnumImGuiIntegration.dir/all
+CMakeFiles/testBuilder_executables_Surface.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/depend
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=92 "Built target testBuilder_executables_Surface"
+.PHONY : CMakeFiles/testBuilder_executables_Surface.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/testBuilder_executables_Surface.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_Surface.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+.PHONY : CMakeFiles/testBuilder_executables_Surface.dir/rule
+
+# Convenience name for target.
+testBuilder_executables_Surface: CMakeFiles/testBuilder_executables_Surface.dir/rule
+
+.PHONY : testBuilder_executables_Surface
+
+# clean rule for target.
+CMakeFiles/testBuilder_executables_Surface.dir/clean:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/clean
+.PHONY : CMakeFiles/testBuilder_executables_Surface.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/testBuilder_executables_Texture.dir
@@ -1658,12 +1704,12 @@ CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/magnum-integrat
 CMakeFiles/testBuilder_executables_Texture.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=92 "Built target testBuilder_executables_Texture"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_Texture"
 .PHONY : CMakeFiles/testBuilder_executables_Texture.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_Texture.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_Texture.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_Texture.dir/rule
@@ -1704,12 +1750,12 @@ CMakeFiles/testBuilder_executables_X11_font_0.dir/all: dependancies/magnum-integ
 CMakeFiles/testBuilder_executables_X11_font_0.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_0.dir/build.make CMakeFiles/testBuilder_executables_X11_font_0.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_0.dir/build.make CMakeFiles/testBuilder_executables_X11_font_0.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=95 "Built target testBuilder_executables_X11_font_0"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_font_0"
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_0.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_font_0.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_font_0.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_font_0.dir/rule
@@ -1796,12 +1842,12 @@ CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/all: dependancies/magnum-int
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=94 "Built target testBuilder_executables_X11_DNC_GRID"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_DNC_GRID"
 .PHONY : CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/rule
@@ -1888,12 +1934,12 @@ CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum-integratio
 CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=94 "Built target testBuilder_executables_X11_3"
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_3.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/rule
@@ -1934,12 +1980,12 @@ CMakeFiles/testBuilder_executables_X11Cube.dir/all: dependancies/magnum-integrat
 CMakeFiles/testBuilder_executables_X11Cube.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=93 "Built target testBuilder_executables_X11Cube"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11Cube"
 .PHONY : CMakeFiles/testBuilder_executables_X11Cube.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11Cube.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11Cube.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11Cube.dir/rule
@@ -2187,52 +2233,6 @@ CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/clean:
 .PHONY : CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/testBuilder_executables_X11_magnum.dir
-
-# All Build rule for target.
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: CMakeFiles/GLIS.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/freetype-2.10.2/CMakeFiles/freetype.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/corrade/src/Corrade/Interconnect/CMakeFiles/CorradeInterconnect.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/corrade/src/Corrade/PluginManager/CMakeFiles/CorradePluginManager.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/corrade/src/Corrade/TestSuite/CMakeFiles/CorradeTestSuite.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/corrade/src/Corrade/Utility/CMakeFiles/CorradeUtility.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum-integration/src/Magnum/ImGuiIntegration/CMakeFiles/MagnumImGuiIntegration.dir/all
-CMakeFiles/testBuilder_executables_X11_magnum.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/depend
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_magnum"
-.PHONY : CMakeFiles/testBuilder_executables_X11_magnum.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/testBuilder_executables_X11_magnum.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_magnum.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
-.PHONY : CMakeFiles/testBuilder_executables_X11_magnum.dir/rule
-
-# Convenience name for target.
-testBuilder_executables_X11_magnum: CMakeFiles/testBuilder_executables_X11_magnum.dir/rule
-
-.PHONY : testBuilder_executables_X11_magnum
-
-# clean rule for target.
-CMakeFiles/testBuilder_executables_X11_magnum.dir/clean:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/clean
-.PHONY : CMakeFiles/testBuilder_executables_X11_magnum.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/testBuilder_executables_MovingWindows.dir
 
 # All Build rule for target.
@@ -2350,12 +2350,12 @@ CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/magnum-integration/
 CMakeFiles/testBuilder_executables_X11.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11.dir/build.make CMakeFiles/testBuilder_executables_X11.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=93 "Built target testBuilder_executables_X11"
 .PHONY : CMakeFiles/testBuilder_executables_X11.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11.dir/rule

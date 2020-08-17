@@ -1,47 +1,31 @@
-//
-// Created by smallville7123 on 19/07/20.
-//
-
-#include <glis/glis.hpp>
 #include <Magnum/Shaders/Flat.h>
-#include <Magnum/Primitives/Plane.h>
 #include <Magnum/GL/Texture.h>
 #include <Magnum/ImageView.h>
-#include <Magnum/DebugTools/ColorMap.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
-#include <Magnum/Shaders/MeshVisualizer.h>
-
-GLIS_CLASS screen;
-GLIS glis;
-GLIS_FONT font;
-GLIS_FPS fps;
 
 using namespace Magnum;
 
-typedef GL::Framebuffer SurfaceFramebuffer;
-typedef ImageView2D SurfaceImageView2D;
-typedef Containers::ArrayView<const void> SurfaceImageData;
-typedef GL::Texture2D SurfaceTexture2D;
-typedef Shaders::Flat2D SurfaceShader;
-typedef Shaders::MeshVisualizer2D SurfaceShaderVisualizer;
-typedef Color4 SurfaceColor;
+typedef GL::Framebuffer GLIS_SurfaceFramebuffer;
+typedef ImageView2D GLIS_SurfaceImageView2D;
+typedef Containers::ArrayView<const void> GLIS_SurfaceImageData;
+typedef GL::Texture2D GLIS_SurfaceTexture2D;
+typedef Shaders::Flat2D GLIS_SurfaceShader;
+typedef Color4 GLIS_SurfaceColor;
+constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 
-constexpr SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
+// https://www.geeksforgeeks.org/window-to-viewport-transformation-in-computer-graphics-with-implementation/
 
-class Surface {
+class GLIS_Surface {
 private:
-    SurfaceFramebuffer * framebuffer_ = nullptr;
-    SurfaceImageView2D * image_ = nullptr;
-    SurfaceImageData * data_ = nullptr;
-    SurfaceTexture2D * texture2DRead = nullptr;
-    SurfaceTexture2D * texture2DDraw = nullptr;
-    SurfaceShader * shaderRead = nullptr;
-    SurfaceShader * shaderReadTexture = nullptr;
-    SurfaceShader * shaderDraw = nullptr;
-    SurfaceShaderVisualizer * shaderVisualizerRead = nullptr;
-    SurfaceShaderVisualizer * shaderVisualizerReadTexture = nullptr;
-    SurfaceShaderVisualizer * shaderVisualizerDraw = nullptr;
+    GLIS_SurfaceFramebuffer * framebuffer_ = nullptr;
+    GLIS_SurfaceImageView2D * image_ = nullptr;
+    GLIS_SurfaceImageData * data_ = nullptr;
+    GLIS_SurfaceTexture2D * texture2DRead = nullptr;
+    GLIS_SurfaceTexture2D * texture2DDraw = nullptr;
+    GLIS_SurfaceShader * shaderRead = nullptr;
+    GLIS_SurfaceShader * shaderReadTexture = nullptr;
+    GLIS_SurfaceShader * shaderDraw = nullptr;
     
 public:
     int width = 0;
@@ -65,24 +49,18 @@ public:
         shaderReadTexture = nullptr;
         delete shaderDraw;
         shaderDraw = nullptr;
-        delete shaderVisualizerRead;
-        shaderVisualizerRead = nullptr;
-        delete shaderVisualizerReadTexture;
-        shaderVisualizerReadTexture = nullptr;
-        delete shaderVisualizerDraw;
-        shaderVisualizerDraw = nullptr;
     }
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
         delete texture2DDraw;
-        texture2DDraw = new SurfaceTexture2D;
+        texture2DDraw = new GLIS_SurfaceTexture2D;
         texture2DDraw->setStorage(1, GL::TextureFormat::RGBA8, size);
     }
 
     void newFramebuffer(const Magnum::VectorTypeFor<2, int> & size) {
         width = size[0];
         height = size[1];
-        if (framebuffer_ == nullptr) framebuffer_ = new SurfaceFramebuffer {{{}, size}};
+        if (framebuffer_ == nullptr) framebuffer_ = new GLIS_SurfaceFramebuffer {{{}, size}};
         framebuffer_->setViewport({{}, size});
         newTexture2D(size);
         framebuffer_->attachTexture(GL::Framebuffer::ColorAttachment{0}, *texture2DDraw, 0);
@@ -100,7 +78,7 @@ public:
     }
     
     void setTextureData(int texture_width, int texture_height, const void * data) {
-        if (data_ == nullptr) data_ = new SurfaceImageData(data, texture_width*texture_height);
+        if (data_ == nullptr) data_ = new GLIS_SurfaceImageData(data, texture_width*texture_height);
         if (image_ == nullptr) image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
         newTexture2D({texture_width, texture_height});
         texture2DDraw
@@ -124,19 +102,22 @@ public:
         }
     }
     
-    SurfaceShader * newShaderReadTexture() {
-        if (shaderReadTexture == nullptr) shaderReadTexture = new SurfaceShader(Shaders::Flat2D::Flag::Textured);
+    GLIS_SurfaceShader * newShaderReadTexture() {
+        if (shaderReadTexture == nullptr) shaderReadTexture = new GLIS_SurfaceShader(Shaders::Flat2D::Flag::Textured);
         return shaderReadTexture;
     }
 
-    SurfaceShader * newShaderRead() {
-        if (shaderRead == nullptr) shaderRead = new SurfaceShader;
+    GLIS_SurfaceShader * newShaderRead() {
+        if (shaderRead == nullptr) shaderRead = new GLIS_SurfaceShader;
         return shaderRead;
     }
     
-    void draw(SurfaceShader * shader, const SurfaceColor & color, GL::Mesh && mesh) {
+    void draw(GLIS_SurfaceShader * shader, const GLIS_SurfaceColor & color, GL::Mesh && mesh) {
         if (texture2DRead != nullptr) shader->bindTexture(*texture2DRead);
-        shader->setColor(color).draw(mesh);
+        shader
+            ->setColor(color)
+//             glOrtho(-0.5, (surfaceMain.width - 1) + 0.5, -0.5, (surfaceMain.height - 1) + 0.5);
+            .draw(mesh);
     }
     
     GL::Mesh buildTriangleMesh(
@@ -169,7 +150,7 @@ public:
     }
         
     void drawTriangle(
-        const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & Left  = {-globalScale, -globalScale},
         const Vector2 & Right = { globalScale, -globalScale},
         const Vector2 & Top   = { 0.0f,  globalScale}
@@ -182,13 +163,13 @@ public:
     }
     
     void drawTriangle(
-        const Surface & surface,
-        const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const GLIS_Surface & surface,
+        const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & Left  = {-globalScale, -globalScale},
         const Vector2 & Right = { globalScale, -globalScale},
         const Vector2 & Top   = { 0.0f,  globalScale}
     ) {
-        SurfaceTexture2D * tmp = texture2DRead;
+        GLIS_SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
         drawTriangle(color, Left, Right, Top);
         texture2DRead = tmp;
@@ -201,6 +182,7 @@ public:
         const Vector2 & bottomLeft
     ) {
         // offset left and top lines by one pixel
+        
         // offset x axis of bottom left vector
         const Vector2 & bl = Vector2((float)(((bottomLeft[0] * (width/2))+1) / (width/2)), bottomLeft[1]);
         // offset y axis of top left vector
@@ -213,8 +195,10 @@ public:
         } vertex[] {
             {topRight},    {bottomRight},
             {bottomRight}, {bottomLeft},
-            {bl},  {tl},
-            {tl},  {tr}
+            {bottomLeft},  {topLeft},
+            {topLeft},  {topRight}
+//             {bl},  {tl},
+//             {tl},  {tr}
         };
         
         GL::Buffer vertices(vertex);
@@ -228,7 +212,7 @@ public:
     }
 
     void drawPlaneWireframe(
-        const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & topLeft =     {-globalScale,  globalScale},
         const Vector2 & topRight =    { globalScale,  globalScale},
         const Vector2 & bottomRight = { globalScale, -globalScale},
@@ -282,7 +266,7 @@ public:
     }
     
     void drawPlane(
-        const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & topLeft =     {-globalScale,  globalScale},
         const Vector2 & topRight =    { globalScale,  globalScale},
         const Vector2 & bottomRight = { globalScale, -globalScale},
@@ -304,73 +288,16 @@ public:
     }
     
     void drawPlane(
-        const Surface & surface,
-        const SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+        const GLIS_Surface & surface,
+        const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & topLeft =     {-globalScale,  globalScale},
         const Vector2 & topRight =    { globalScale,  globalScale},
         const Vector2 & bottomRight = { globalScale, -globalScale},
         const Vector2 & bottomLeft =  {-globalScale, -globalScale}
     ) {
-        SurfaceTexture2D * tmp = texture2DRead;
+        GLIS_SurfaceTexture2D * tmp = texture2DRead;
         texture2DRead = surface.texture2DDraw;
         drawPlane(color, topLeft, topRight, bottomRight, bottomLeft);
         texture2DRead = tmp;
     }
 };
-
-Surface surfaceMain;
-Surface surfaceTemporary;
-Surface surfaceTemporary2;
-Surface surfaceTemporary3;
-Surface surfaceTemporary4;
-
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
-//     surfaceTemporary3.clear();
-//     surfaceTemporary3.drawTriangle();
-//     surfaceTemporary3.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
-//     
-//     surfaceTemporary2.clear();
-//     surfaceTemporary2.drawPlane(surfaceTemporary3);
-//     surfaceTemporary2.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
-//     
-//     surfaceTemporary.clear();
-//     surfaceTemporary.drawTriangle(surfaceTemporary2);
-//     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
-//     
-//     surfaceTemporary.clear();
-//     surfaceTemporary.drawTriangle();
-//     surfaceTemporary.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  0.0f});
-    surfaceMain.clear();
-    surfaceMain.drawTriangle();
-    surfaceMain.drawPlaneWireframe({1.0f, 1.0f,  1.0f,  1.0f});
-    glis.GLIS_SwapBuffers(screen);
-}
-
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
-    surfaceTemporary4.resize({screen.width, screen.height});
-    surfaceTemporary3.resize({screen.width, screen.height});
-    surfaceTemporary2.resize({screen.width, screen.height});
-    surfaceTemporary.resize({screen.width, screen.height});
-    surfaceMain.resize({screen.width, screen.height});
-}
-
-GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(close, glis, screen, font, fps) {
-    glis.destroyX11Window(screen);
-    surfaceTemporary4.release();
-    surfaceTemporary3.release();
-    surfaceTemporary2.release();
-    surfaceTemporary.release();
-    surfaceMain.release();
-    glis.GLIS_destroy_GLIS(screen);
-}
-
-int main() {
-    glis.getX11Window(screen, 400, 400);
-    glis.GLIS_setupOnScreenRendering(screen);
-    screen.contextMagnum.create();
-    surfaceTemporary.newFramebuffer({screen.width, screen.height});
-    surfaceTemporary2.newFramebuffer({screen.width, screen.height});
-    surfaceTemporary3.newFramebuffer({screen.width, screen.height});
-    surfaceTemporary4.newFramebuffer({screen.width, screen.height});
-    glis.runUntilX11WindowClose(glis, screen, font, fps, draw, resize, close);
-}

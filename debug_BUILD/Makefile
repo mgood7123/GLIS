@@ -56,18 +56,6 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -91,6 +79,18 @@ install/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # Special rule for the target package
 package: preinstall
@@ -216,6 +216,19 @@ testBuilder_executables_X11_Shapes: cmake_check_build_system
 testBuilder_executables_X11_Shapes/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_Shapes.dir/build.make CMakeFiles/testBuilder_executables_X11_Shapes.dir/build
 .PHONY : testBuilder_executables_X11_Shapes/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_Surface
+
+# Build rule for target.
+testBuilder_executables_Surface: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Surface
+.PHONY : testBuilder_executables_Surface
+
+# fast build rule for target.
+testBuilder_executables_Surface/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/build
+.PHONY : testBuilder_executables_Surface/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_Texture
@@ -372,19 +385,6 @@ testBuilder_executables_DefaultFramebuffer: cmake_check_build_system
 testBuilder_executables_DefaultFramebuffer/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_DefaultFramebuffer.dir/build
 .PHONY : testBuilder_executables_DefaultFramebuffer/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_X11_magnum
-
-# Build rule for target.
-testBuilder_executables_X11_magnum: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_magnum
-.PHONY : testBuilder_executables_X11_magnum
-
-# fast build rule for target.
-testBuilder_executables_X11_magnum/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/build
-.PHONY : testBuilder_executables_X11_magnum/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_MovingWindows
@@ -1579,6 +1579,33 @@ compositor_clients/shm.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.s
 .PHONY : compositor_clients/shm.cpp.s
 
+examples/Surface.o: examples/Surface.cpp.o
+
+.PHONY : examples/Surface.o
+
+# target to build an object file
+examples/Surface.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
+.PHONY : examples/Surface.cpp.o
+
+examples/Surface.i: examples/Surface.cpp.i
+
+.PHONY : examples/Surface.i
+
+# target to preprocess a source file
+examples/Surface.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.i
+.PHONY : examples/Surface.cpp.i
+
+examples/Surface.s: examples/Surface.cpp.s
+
+.PHONY : examples/Surface.s
+
+# target to generate assembly for a file
+examples/Surface.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.s
+.PHONY : examples/Surface.cpp.s
+
 examples/X11.o: examples/X11.cpp.o
 
 .PHONY : examples/X11.o
@@ -1821,33 +1848,6 @@ examples/X11_font_2.s: examples/X11_font_2.cpp.s
 examples/X11_font_2.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_2.dir/build.make CMakeFiles/testBuilder_executables_X11_font_2.dir/examples/X11_font_2.cpp.s
 .PHONY : examples/X11_font_2.cpp.s
-
-examples/X11_magnum.o: examples/X11_magnum.cpp.o
-
-.PHONY : examples/X11_magnum.o
-
-# target to build an object file
-examples/X11_magnum.cpp.o:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.o
-.PHONY : examples/X11_magnum.cpp.o
-
-examples/X11_magnum.i: examples/X11_magnum.cpp.i
-
-.PHONY : examples/X11_magnum.i
-
-# target to preprocess a source file
-examples/X11_magnum.cpp.i:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.i
-.PHONY : examples/X11_magnum.cpp.i
-
-examples/X11_magnum.s: examples/X11_magnum.cpp.s
-
-.PHONY : examples/X11_magnum.s
-
-# target to generate assembly for a file
-examples/X11_magnum.cpp.s:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_magnum.dir/build.make CMakeFiles/testBuilder_executables_X11_magnum.dir/examples/X11_magnum.cpp.s
-.PHONY : examples/X11_magnum.cpp.s
 
 examples/compositor.o: examples/compositor.cpp.o
 
@@ -2395,12 +2395,13 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... testBuilder_executables_X11_font_2"
 	@echo "... testBuilder_executables_X11_font_1"
 	@echo "... testBuilder_executables_X11_Shapes"
+	@echo "... install/strip"
+	@echo "... testBuilder_executables_Surface"
 	@echo "... testBuilder_executables_Texture"
 	@echo "... testBuilder_executables_X11_font_0"
 	@echo "... testBuilder_executables_X11_2"
@@ -2413,7 +2414,6 @@ help:
 	@echo "... GLIS"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_DefaultFramebuffer"
-	@echo "... testBuilder_executables_X11_magnum"
 	@echo "... package"
 	@echo "... testBuilder_executables_MovingWindows"
 	@echo "... testBuilder_executables_wrap"
@@ -2520,6 +2520,9 @@ help:
 	@echo "... compositor_clients/shm.o"
 	@echo "... compositor_clients/shm.i"
 	@echo "... compositor_clients/shm.s"
+	@echo "... examples/Surface.o"
+	@echo "... examples/Surface.i"
+	@echo "... examples/Surface.s"
 	@echo "... examples/X11.o"
 	@echo "... examples/X11.i"
 	@echo "... examples/X11.s"
@@ -2547,9 +2550,6 @@ help:
 	@echo "... examples/X11_font_2.o"
 	@echo "... examples/X11_font_2.i"
 	@echo "... examples/X11_font_2.s"
-	@echo "... examples/X11_magnum.o"
-	@echo "... examples/X11_magnum.i"
-	@echo "... examples/X11_magnum.s"
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"
