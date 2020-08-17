@@ -15,6 +15,18 @@ typedef Color4 GLIS_SurfaceColor;
 constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 
 // https://www.geeksforgeeks.org/window-to-viewport-transformation-in-computer-graphics-with-implementation/
+// https://www.khronos.org/opengl/wiki/Compute_eye_space_from_window_space
+// https://www.geeksforgeeks.org/window-to-viewport-transformation-in-computer-graphics-with-implementation/
+// https://www.javatpoint.com/computer-graphics-window-to-viewport-co-ordinate-transformation
+
+// [02:27] <derhass> TacoCodedSalad: you could start by understanding the current situation.
+// draw it on paper.
+// i.e.
+// just assume your viewport would be 10 by 6 pixels
+// and that understand what it means to draw lines
+// resulting in a rectangle (-1,-1) to (1,1) in NDC coords.
+// you should immediately see the isse
+// as soon as you understood the window space coordinates of these points
 
 class GLIS_Surface {
 private:
