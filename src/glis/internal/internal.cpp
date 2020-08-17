@@ -1496,10 +1496,14 @@ bool GLIS::runUntilX11WindowClose(
     XSetWMProtocols(glis_class.display_id, glis_class.native_window, &wmDeleteMessage, 1);
     XEvent event;
     bool running = true;
+    bool resized = false;
 
     while (running) {
-        if (onWindowDraw != nullptr)
+        
+        // do not draw untill resize event has been caught for the first time
+        if (onWindowDraw != nullptr && resized)
             onWindowDraw(glis, glis_class, glis_font, glis_fps);
+        
         if (XCheckIfEvent(glis_class.display_id, &event, predicate, nullptr)) {
             if (event.type == ClientMessage) {
                 if (event.xclient.data.l[0] == wmDeleteMessage) {
@@ -1508,10 +1512,12 @@ bool GLIS::runUntilX11WindowClose(
                     running = false;
                 }
             } else if (event.type == ConfigureNotify) {
+                // TODO: detect when ConfigureNotify is an actual resize event
                 glis_class.width = event.xconfigure.width;
                 glis_class.height = event.xconfigure.height;
                 if (onWindowResize != nullptr)
                     onWindowResize(glis, glis_class, glis_font, glis_fps);
+                resized = true;
             }
         }
     }

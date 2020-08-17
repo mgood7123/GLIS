@@ -102,6 +102,10 @@ public:
         }
     }
     
+    Range2Di getViewport() {
+        return framebuffer_ != nullptr ? framebuffer_->viewport() : GL::defaultFramebuffer.viewport();
+    }
+    
     GLIS_SurfaceShader * newShaderReadTexture() {
         if (shaderReadTexture == nullptr) shaderReadTexture = new GLIS_SurfaceShader(Shaders::Flat2D::Flag::Textured);
         return shaderReadTexture;

@@ -62,6 +62,13 @@ int main() {
     screen.contextMagnum.create();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    Range2Di viewport = GL::defaultFramebuffer.viewport();
+    LOG_MAGNUM_INFO << "screen.width: " << screen.width;
+    LOG_MAGNUM_INFO << "screen.height: " << screen.height;
+    LOG_MAGNUM_INFO << "screen.surface_width: " << screen.surface_width;
+    LOG_MAGNUM_INFO << "screen.surface_height: " << screen.surface_height;
+    LOG_MAGNUM_INFO << "viewport.width: " << viewport.sizeX();
+    LOG_MAGNUM_INFO << "viewport.height: " << viewport.sizeY();
     surfaceTemporary.newFramebuffer({screen.width, screen.height});
     surfaceTemporary2.newFramebuffer({screen.width, screen.height});
     surfaceTemporary3.newFramebuffer({screen.width, screen.height});
