@@ -44,7 +44,9 @@ public:
     EGLNativeWindowType native_window = 0;
     GLint
             width = 0,
-            height = 0;
+            height = 0,
+            surface_width = 0,
+            surface_height = 0;
     int dpi = 0;
     SOCKET_SERVER server;
     Kernel KERNEL;

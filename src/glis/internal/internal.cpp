@@ -412,10 +412,10 @@ bool GLIS::GLIS_switch_to_context(class GLIS_CLASS &GLIS) {
 }
 
 bool GLIS::GLIS_get_width_height(class GLIS_CLASS &GLIS) {
-    EGLBoolean r1 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_WIDTH, &GLIS.width);
+    EGLBoolean r1 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_WIDTH, &GLIS.surface_width);
     GLIS_error_to_string_EGL("eglQuerySurface");
     if (r1 == EGL_FALSE) return false;
-    EGLBoolean r2 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_HEIGHT, &GLIS.height);
+    EGLBoolean r2 = eglQuerySurface(GLIS.display, GLIS.surface, EGL_HEIGHT, &GLIS.surface_height);
     GLIS_error_to_string_EGL("eglQuerySurface");
     if (r2 == EGL_FALSE) return false;
     return true;
