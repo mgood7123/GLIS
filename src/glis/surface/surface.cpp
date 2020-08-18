@@ -393,6 +393,19 @@ public:
     BITMAP_FORMAT_RGBA8 & getPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row) {
         assert(1205 == getPixelIndex(5, 3));
         int index = getPixelIndex(column, row);
+        
+        // if ((400/2) * 1) + 0 + (400/2) is window space 400,
+        // but the equivilant pixel location on my screen is 399,
+        // and ((400/2) * -1) + 0 + (400/2) is both
+        // window space 0 and pixel location 0,
+        // what can i do about this?
+        
+        // specifically, in my application, pixel 400 is drawn at the END of my screen, while pixel 0 is drawn OFF SCREEN from the start of my application, meaning that pixel 0 is offscreen while pixel 1 is the real START of my screen, HOWEVER is conflicts with the window space of NDC 1.0f is pixel 0
+        
+        // in which, doing the math for NDC Y    ((400/2) * 1) + 0 + (400/2)    ->    (200 * 1) + 0 + 200    ->    200 + 200    ->    400,    and NDC X    ((400/2) * -1) + 0 + (400/2)    ->    (200 * -1) + 0 + 200    ->    -200 + 200    ->    0
+        
+        // which, based on the actual observed behaviour, either 0 is INVALID, or 400 is INVALID
+        
         LOG_MAGNUM_INFO << "column " << column << ", row " << row << " is at index " << index;
         return data[index];
     }
