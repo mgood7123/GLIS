@@ -2090,6 +2090,12 @@ Magnum/Types.h
 Magnum/Math/RectangularMatrix.h
 ../dependancies/magnum/src/Magnum/Math/Magnum/Math/RectangularMatrix.h
 
+../dependancies/magnum/src/Magnum/Math/Matrix3.h
+Magnum/Math/Matrix.h
+../dependancies/magnum/src/Magnum/Math/Magnum/Math/Matrix.h
+Magnum/Math/Vector3.h
+../dependancies/magnum/src/Magnum/Math/Magnum/Math/Vector3.h
+
 ../dependancies/magnum/src/Magnum/Math/Matrix4.h
 Magnum/Math/Matrix.h
 ../dependancies/magnum/src/Magnum/Math/Magnum/Math/Matrix.h
@@ -2292,6 +2298,16 @@ Magnum/Primitives/visibility.h
 Magnum/Trade/Trade.h
 ../dependancies/magnum/src/Magnum/Primitives/Magnum/Trade/Trade.h
 
+../dependancies/magnum/src/Magnum/Primitives/Plane.h
+Corrade/Containers/EnumSet.h
+-
+Corrade/Utility/Macros.h
+-
+Magnum/Trade/Trade.h
+../dependancies/magnum/src/Magnum/Primitives/Magnum/Trade/Trade.h
+Magnum/Primitives/visibility.h
+../dependancies/magnum/src/Magnum/Primitives/Magnum/Primitives/visibility.h
+
 ../dependancies/magnum/src/Magnum/Primitives/visibility.h
 Corrade/Utility/VisibilityMacros.h
 -
@@ -2317,6 +2333,18 @@ Magnum/Shaders/visibility.h
 ../dependancies/magnum/src/Magnum/Shaders/Generic.h
 Magnum/GL/Attribute.h
 ../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/Attribute.h
+
+../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
+Corrade/Utility/Utility.h
+-
+Magnum/DimensionTraits.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/DimensionTraits.h
+Magnum/GL/AbstractShaderProgram.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/GL/AbstractShaderProgram.h
+Magnum/Shaders/Generic.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/Generic.h
+Magnum/Shaders/visibility.h
+../dependancies/magnum/src/Magnum/Shaders/Magnum/Shaders/visibility.h
 
 ../dependancies/magnum/src/Magnum/Shaders/Phong.h
 Magnum/GL/AbstractShaderProgram.h
@@ -2697,6 +2725,10 @@ glis/glis.hpp
 -
 ../src/glis/surface/surface.cpp
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
+Magnum/Primitives/Plane.h
+-
+Magnum/Shaders/MeshVisualizer.h
+-
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
 Magnum/Shaders/Flat.h
@@ -2708,6 +2740,8 @@ Magnum/ImageView.h
 Magnum/PixelFormat.h
 -
 Magnum/GL/DefaultFramebuffer.h
+-
+Magnum/Math/Matrix3.h
 -
 
 dependancies/corrade/src/Corrade/configure.h

@@ -272,6 +272,7 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
  ../dependancies/magnum/src/Magnum/Math/Half.h
  ../dependancies/magnum/src/Magnum/Math/Math.h
  ../dependancies/magnum/src/Magnum/Math/Matrix.h
+ ../dependancies/magnum/src/Magnum/Math/Matrix3.h
  ../dependancies/magnum/src/Magnum/Math/Matrix4.h
  ../dependancies/magnum/src/Magnum/Math/Packing.h
  ../dependancies/magnum/src/Magnum/Math/Range.h
@@ -294,10 +295,12 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
  ../dependancies/magnum/src/Magnum/Platform/Platform.h
  ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
  ../dependancies/magnum/src/Magnum/Primitives/Cube.h
+ ../dependancies/magnum/src/Magnum/Primitives/Plane.h
  ../dependancies/magnum/src/Magnum/Primitives/visibility.h
  ../dependancies/magnum/src/Magnum/Sampler.h
  ../dependancies/magnum/src/Magnum/Shaders/Flat.h
  ../dependancies/magnum/src/Magnum/Shaders/Generic.h
+ ../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
  ../dependancies/magnum/src/Magnum/Shaders/Phong.h
  ../dependancies/magnum/src/Magnum/Shaders/visibility.h
  ../dependancies/magnum/src/Magnum/Tags.h

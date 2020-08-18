@@ -1393,7 +1393,7 @@ bool GLIS::getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int 
 #else
     GLIS.native_window = ANativeWindow_fromSurface(static_cast<JNIEnv*>(jenv), static_cast<jobject>(surface));
     if (GLIS.native_window == 0) {
-        LOG_ERROR("error, cannot obtain a native window");
+        LOG_ERROR("error: cannot obtain a native window");
         return false;
     }
     GLIS.width = width;
@@ -1437,7 +1437,7 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     // create a new X11 window
     GLIS.display_id = XOpenDisplay(nullptr);
     if (GLIS.display_id == 0) {
-        LOG_ERROR("error, cannot connect to X server");
+        LOG_ERROR("error: cannot connect to X server");
         return false;
     }
     GLIS.native_window = XCreateSimpleWindow(
@@ -1448,7 +1448,7 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     GLIS.width = width;
     GLIS.height = height;
     XMapWindow(GLIS.display_id, GLIS.native_window);
-    XStoreName(GLIS.display_id, GLIS.native_window, "Compositor");
+    XStoreName(GLIS.display_id, GLIS.native_window, "Application");
 
     // obtain the current dpi
 
@@ -1632,7 +1632,7 @@ bool GLIS::getWaylandWindow(GLIS_CLASS & GLIS, int width, int height) {
     // create a new Wayland window
     GLIS.display_id = reinterpret_cast<EGLNativeDisplayType>(wl_display_connect(nullptr));
     if (GLIS.display_id == nullptr) {
-        LOG_ERROR("error, cannot connect to Wayland");
+        LOG_ERROR("error: cannot connect to Wayland");
         return false;
     }
 

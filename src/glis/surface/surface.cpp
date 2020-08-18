@@ -3,6 +3,7 @@
 #include <Magnum/ImageView.h>
 #include <Magnum/PixelFormat.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
+#include <Magnum/Math/Matrix3.h>
 
 using namespace Magnum;
 
@@ -13,6 +14,10 @@ typedef GL::Texture2D GLIS_SurfaceTexture2D;
 typedef Shaders::Flat2D GLIS_SurfaceShader;
 typedef Color4 GLIS_SurfaceColor;
 constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
+
+// https://gamedev.stackexchange.com/a/110358 software rendering and opengl rendering details
+
+
 
 // https://www.geeksforgeeks.org/window-to-viewport-transformation-in-computer-graphics-with-implementation/
 // https://www.khronos.org/opengl/wiki/Compute_eye_space_from_window_space
@@ -28,6 +33,13 @@ constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 // you should immediately see the isse
 // as soon as you understood the window space coordinates of these points
 
+// [23:09] <derhass> TacoCodedSalad_: you need to take a sheet of paper, assume the square cells are pixels, just make up some window of some arbitrary number of pixels in width and height (ideally so that it fits on the sheet)
+// [23:09] <derhass> TacoCodedSalad_: then, calculate where (-1,1) and (1,1) end up in your window space
+// [23:10] <derhass> TacoCodedSalad_: mark thise points on your paper, take a ruler and connect them with a straight line segment
+// [23:10] <derhass> TacoCodedSalad_: and then, figure out which pixels it is supposed to affect
+
+// http://print-graph-paper.com/virtual-graph-paper
+
 class GLIS_Surface {
 private:
     GLIS_SurfaceFramebuffer * framebuffer_ = nullptr;
@@ -42,6 +54,7 @@ private:
 public:
     int width = 0;
     int height = 0;
+    
     static constexpr float globalScale = 1.0f;
     
     void release() {
@@ -89,12 +102,21 @@ public:
         }
     }
     
-    void setTextureData(int texture_width, int texture_height, const void * data) {
-        if (data_ == nullptr) data_ = new GLIS_SurfaceImageData(data, texture_width*texture_height);
-        if (image_ == nullptr) image_ = new ImageView2D(PixelFormat::RGBA8Unorm, {texture_width, texture_height}, *data_);
+    void resize(const Magnum::VectorTypeFor<2, int> & size1, const Magnum::VectorTypeFor<2, int> & size2) {
+        width = size2[0];
+        height = size2[1];
+        GL::defaultFramebuffer.setViewport({size1, size2});
+    }
+
+    template <typename T> void setTextureData(const T * data, int texture_width, int texture_height) {
+        
+        Containers::ArrayView<const T> data_ (data, texture_width*texture_height);
+        ImageView2D image_ (PixelFormat::RGBA8Unorm, {texture_width, texture_height}, std::move(data_));
+        
         newTexture2D({texture_width, texture_height});
+        
         texture2DDraw
-            ->setSubImage(0, {}, *image_)
+            ->setSubImage(0, {}, std::move(image_))
             .generateMipmap();
     }
     
@@ -104,14 +126,13 @@ public:
         *texture2DDraw = GL::Texture2D::wrap(id);
     }
     
+    void bind() {
+        framebuffer_ != nullptr ? framebuffer_->bind() : GL::defaultFramebuffer.bind();
+    }
+    
     void clear() {
-        if (framebuffer_ != nullptr) {
-            framebuffer_->bind();
-            framebuffer_->clear(GL::FramebufferClear::Color);
-        } else {
-            GL::defaultFramebuffer.bind();
-            GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
-        }
+        if (framebuffer_ != nullptr) framebuffer_->clear(GL::FramebufferClear::Color);
+        else GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
     }
     
     Range2Di getViewport() {
@@ -124,7 +145,11 @@ public:
     }
 
     GLIS_SurfaceShader * newShaderRead() {
-        if (shaderRead == nullptr) shaderRead = new GLIS_SurfaceShader;
+        if (shaderRead == nullptr) {
+            shaderRead = new GLIS_SurfaceShader;
+            shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.005f, 2.005f}));
+//             shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.0f, 2.0f}));
+        }
         return shaderRead;
     }
     
@@ -132,7 +157,6 @@ public:
         if (texture2DRead != nullptr) shader->bindTexture(*texture2DRead);
         shader
             ->setColor(color)
-//             glOrtho(-0.5, (surfaceMain.width - 1) + 0.5, -0.5, (surfaceMain.height - 1) + 0.5);
             .draw(mesh);
     }
     
@@ -209,12 +233,12 @@ public:
         const struct Vertex {
             Vector2 position;
         } vertex[] {
-            {topRight},    {bottomRight},
-            {bottomRight}, {bottomLeft},
-            {bottomLeft},  {topLeft},
-            {topLeft},  {topRight}
-//             {bl},  {tl},
-//             {tl},  {tr}
+            {topRight},    {bottomRight}, // right
+            {bottomRight}, {bottomLeft},  // bottom
+            {bottomLeft},  {topLeft},     // left
+            {topLeft},     {topRight}     // top
+//             {bl},  {tl},                  // left
+//             {tl},  {tr}                   // top
         };
         
         GL::Buffer vertices(vertex);
@@ -316,4 +340,104 @@ public:
         drawPlane(color, topLeft, topRight, bottomRight, bottomLeft);
         texture2DRead = tmp;
     }
+    
+    
+    
+    // texture manipulation
+    
+        Vector2i NDC_to_WindowSpace(const Vector2 & xy) {
+        // https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Viewport_transform
+        // https://wikimedia.org/api/rest_v1/media/math/render/svg/138401cb60a7c667336fb41d47d22f37c8f2a569
+
+        // NDC to Window Space: x: (width/2)*X_NDC + X + (width/2)
+        // NDC to Window Space: y: (height/2)*Y_NDC + Y + (height/2)
+
+        // NDC {X: -1, Y: 1}, {X: 1, Y: 1}
+
+        // width: 400
+        // height: 400
+
+        // window space: x: ((400/2) * -1) + 0 + (400/2)
+        // window space: x: (200 * -1) + 0 + 200
+        // window space: x: -200 + 200
+        // window space: x: 0
+
+        // window space: y: ((400/2) * 1) + 0 + (400/2)
+        // window space: y: (200 * 1) + 0 + 200
+        // window space: y: 200 + 200
+        // window space: y: 400
+
+        // window space: {X: 0, Y: 400}, {X: 400, Y: 400}
+        float widthdiv2 = static_cast<float>(width/2);
+        float heightdiv2 = static_cast<float>(height/2);
+        float xf = static_cast<float>((widthdiv2 * xy[0]) + 0.0f + widthdiv2);
+        float yf = static_cast<float>((heightdiv2 * xy[1]) + 0.0f + heightdiv2);
+        int xi = static_cast<int>(xf);
+        int yi = static_cast<int>(yf);
+        return {xi, yi};
+    }
+    
+    struct BITMAP_FORMAT_RGBA8 {
+        uint8_t R = 0;
+        uint8_t G = 0;
+        uint8_t B = 0;
+        uint8_t A = 255;
+    };
+    
+    int getPixelIndex(int column, int row) {
+        // index 0 is column 0 row 0
+        // index width is column 0 row 1
+        return (width * row) + column;
+    }
+    
+    BITMAP_FORMAT_RGBA8 & getPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row) {
+        assert(1205 == getPixelIndex(5, 3));
+        int index = getPixelIndex(column, row);
+        LOG_MAGNUM_INFO << "column " << column << ", row " << row << " is at index " << index;
+        return data[index];
+    }
+    
+    void setPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row, const BITMAP_FORMAT_RGBA8 & pixel) {
+        getPixel(data, column, row) = pixel;
+    }
+    
+    void drawRectangleLines(
+        BITMAP_FORMAT_RGBA8 * data,
+        const Vector2 & topLeft,
+        const Vector2 & topRight,
+        const Vector2 & bottomRight,
+        const Vector2 & bottomLeft
+    ) {
+        const Vector2i & pixelsTopLeft = NDC_to_WindowSpace(topLeft);
+        const Vector2i & pixelsTopRight = NDC_to_WindowSpace(topRight);
+        const Vector2i & pixelsBottomRight = NDC_to_WindowSpace(bottomRight);
+        const Vector2i & pixelsBottomLeft = NDC_to_WindowSpace(bottomLeft);
+        LOG_MAGNUM_INFO << "pixels top left:     " << pixelsTopLeft;
+        LOG_MAGNUM_INFO << "pixels top right:    " << pixelsTopRight;
+        LOG_MAGNUM_INFO << "pixels bottom right: " << pixelsBottomRight;
+        LOG_MAGNUM_INFO << "pixels bottom left:  " << pixelsBottomLeft;
+//         setPixel(data, pixelsTopLeft[0], pixelsTopLeft[1], {255, 0, 0, 255});
+//         setPixel(data, pixelsTopRight[0], pixelsTopRight[1], {255, 0, 0, 255});
+        setPixel(data, pixelsBottomRight[0], pixelsBottomRight[1], {255, 0, 0, 255});
+//         setPixel(data, pixelsBottomLeft[0], pixelsBottomLeft[1], {255, 0, 0, 255});
+    }
+    
+    void drawTextureRectangle() {
+        BITMAP_FORMAT_RGBA8 data[width*height];
+        
+        const Vector2 & topLeft =     {-globalScale,  globalScale};
+        const Vector2 & topRight =    { globalScale,  globalScale};
+        const Vector2 & bottomRight = { globalScale, -globalScale};
+        const Vector2 & bottomLeft =  {-globalScale, -globalScale};
+
+        drawRectangleLines(data, topLeft, topRight, bottomRight, bottomLeft);
+
+        setTextureData(reinterpret_cast<uint32_t*>(data), width, height);
+
+        GLIS_SurfaceTexture2D * tmp = texture2DRead;
+        texture2DRead = texture2DDraw;
+        drawPlane();
+        texture2DRead = tmp;
+    }
+    
 };
