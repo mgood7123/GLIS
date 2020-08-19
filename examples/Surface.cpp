@@ -38,8 +38,8 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
     surfaceMain.clear();
     surfaceMain.bind();
 //     surfaceMain.drawPlane(surfaceTemporary);
-//     surfaceMain.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  1.0f});
-    surfaceMain.drawTextureRectangle();
+    surfaceMain.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  1.0f});
+//     surfaceMain.drawTextureRectangle();
     
     glis.GLIS_SwapBuffers(screen);
 }
@@ -50,6 +50,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(resize, glis, screen, font, fps) {
 //     surfaceTemporary2.resize({screen.width, screen.height});
 //     surfaceTemporary.resize({screen.width, screen.height});
 //     surfaceMain.resize({0.333*screen.width, 0.333*screen.height}, {0.667*screen.width, 0.667*screen.height});
+//     surfaceMain.resize({2,2}, {400, 400});
     surfaceMain.resize({screen.width, screen.height});
 }
 

@@ -147,8 +147,8 @@ public:
     GLIS_SurfaceShader * newShaderRead() {
         if (shaderRead == nullptr) {
             shaderRead = new GLIS_SurfaceShader;
-            shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.005f, 2.005f}));
-//             shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.0f, 2.0f}));
+//             shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.005f, 2.005f}));
+            shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.0f, 2.0f}));
         }
         return shaderRead;
     }
@@ -250,14 +250,24 @@ public:
             .setCount(sizeof(vertex)/sizeof(Vertex));
         return mesh;
     }
+    
+    Vector2 move_NDC_to_pixel_center(Vector2 points) {
+        // assume vector of w,h
+        return {points[0] > 0.0f ? points[0] - (1.0f/(2.0f/static_cast<float>(width))) : points[0] + (1.0f/(2.0f/static_cast<float>(width))), points[1] > 0.0f ? points[1] - (1.0f/(2.0f/static_cast<float>(height))) : points[1] + (1.0f/(2.0f/static_cast<float>(height)))
+    }
 
     void drawPlaneWireframe(
         const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        const Vector2 & topLeft =     {-globalScale,  globalScale},
-        const Vector2 & topRight =    { globalScale,  globalScale},
-        const Vector2 & bottomRight = { globalScale, -globalScale},
-        const Vector2 & bottomLeft =  {-globalScale, -globalScale}
+        // thanks to imirkin - #xorg-devel
+        const Vector2 & topLeft =     {-1.0f + (1.0f/(2.0f*400.0f)),  1.0f - (1.0f/(2.0f*400.0f))},
+        const Vector2 & topRight =    { 1.0f - (1.0f/(2.0f*400.0f)),  1.0f - (1.0f/(2.0f*400.0f))},
+        const Vector2 & bottomRight = { 1.0f - (1.0f/(2.0f*400.0f)), -1.0f + (1.0f/(2.0f*400.0f))},
+        const Vector2 & bottomLeft =  {-1.0f + (1.0f/(2.0f*400.0f)), -1.0f + (1.0f/(2.0f*400.0f))}
     ) {
+        LOG_MAGNUM_INFO_FUNCTION(topLeft);
+        LOG_MAGNUM_INFO_FUNCTION(topRight);
+        LOG_MAGNUM_INFO_FUNCTION(bottomRight);
+        LOG_MAGNUM_INFO_FUNCTION(bottomLeft);
         draw(
             newShaderRead(),
             color,
@@ -381,6 +391,12 @@ public:
         // almost all GPU's support line widths of up to 32 pixels,
         // and most GPU's support widths of up to 2048 pixels
         // 10 is the max width on nvidia, 7 is max on intel
+        
+        
+        // shift NDC values by half a pixel so NDC is on pixel center instead of pixel edge
+        // [13:04] <imirkin> ndc value +/- 1/(2*width)
+        // [13:04] <imirkin> + on the left, - on the right
+        // [13:05] <imirkin> you can't hard-code it as the width/height may change, but you can take them in as uniforms
         
         float widthdiv2 = static_cast<float>(width/2);
         float heightdiv2 = static_cast<float>(height/2);
