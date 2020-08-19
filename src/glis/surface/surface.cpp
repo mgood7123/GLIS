@@ -374,6 +374,12 @@ public:
         // determine what side of a pixel the given NDC coordinate will draw to
         // and fix it if it is off screen
         
+        // https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf
+        // 14.5 Line Segments, pdf page 493, printed page 471
+        
+        // almost all GPU's support line widths of up to 32 pixels,
+        // and most GPU's support widths of up to 2048 pixels
+        
         float widthdiv2 = static_cast<float>(width/2);
         float heightdiv2 = static_cast<float>(height/2);
         float xf = (widthdiv2 * xy[0]) + 0.0f + widthdiv2;
