@@ -376,6 +376,7 @@ public:
         
         // https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf
         // 14.5 Line Segments, pdf page 493, printed page 471
+        // also see section 13.7 in the GL 4.6 spec ("Primitive Clipping")
         
         // almost all GPU's support line widths of up to 32 pixels,
         // and most GPU's support widths of up to 2048 pixels
