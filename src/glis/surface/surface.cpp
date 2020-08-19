@@ -379,6 +379,7 @@ public:
         
         // almost all GPU's support line widths of up to 32 pixels,
         // and most GPU's support widths of up to 2048 pixels
+        // 10 is the max width on nvidia, 7 is max on intel
         
         float widthdiv2 = static_cast<float>(width/2);
         float heightdiv2 = static_cast<float>(height/2);
