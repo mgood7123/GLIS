@@ -345,7 +345,7 @@ public:
     
     // texture manipulation
     
-        Vector2i NDC_to_WindowSpace(const Vector2 & xy) {
+    Vector2i NDC_to_WindowSpace(const Vector2 & xy) {
         // https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Viewport_transform
         // https://wikimedia.org/api/rest_v1/media/math/render/svg/138401cb60a7c667336fb41d47d22f37c8f2a569
 
@@ -368,10 +368,18 @@ public:
         // window space: y: 400
 
         // window space: {X: 0, Y: 400}, {X: 400, Y: 400}
+        
+        // https://magcius.github.io/xplain/article/rast1.html
+            
+        // determine what side of a pixel the given NDC coordinate will draw to
+        // and fix it if it is off screen
+        
         float widthdiv2 = static_cast<float>(width/2);
         float heightdiv2 = static_cast<float>(height/2);
-        float xf = static_cast<float>((widthdiv2 * xy[0]) + 0.0f + widthdiv2);
-        float yf = static_cast<float>((heightdiv2 * xy[1]) + 0.0f + heightdiv2);
+        float xf = (widthdiv2 * xy[0]) + 0.0f + widthdiv2;
+        LOG_MAGNUM_INFO_FUNCTION(xf);
+        float yf = (heightdiv2 * xy[1]) + 0.0f + heightdiv2;
+        LOG_MAGNUM_INFO_FUNCTION(yf);
         int xi = static_cast<int>(xf);
         int yi = static_cast<int>(yf);
         return {xi, yi};
@@ -391,7 +399,7 @@ public:
     }
     
     BITMAP_FORMAT_RGBA8 & getPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row) {
-        assert(1205 == getPixelIndex(5, 3));
+//         assert(1205 == getPixelIndex(5, 3));
         int index = getPixelIndex(column, row);
         
         // if ((400/2) * 1) + 0 + (400/2) is window space 400,
@@ -432,7 +440,7 @@ public:
 //         setPixel(data, pixelsTopLeft[0], pixelsTopLeft[1], {255, 0, 0, 255});
 //         setPixel(data, pixelsTopRight[0], pixelsTopRight[1], {255, 0, 0, 255});
         setPixel(data, pixelsBottomRight[0], pixelsBottomRight[1], {255, 0, 0, 255});
-//         setPixel(data, pixelsBottomLeft[0], pixelsBottomLeft[1], {255, 0, 0, 255});
+        setPixel(data, pixelsBottomLeft[0], pixelsBottomLeft[1], {255, 0, 0, 255});
     }
     
     void drawTextureRectangle() {
