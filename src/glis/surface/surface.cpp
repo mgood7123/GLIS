@@ -40,6 +40,82 @@ constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 
 // http://print-graph-paper.com/virtual-graph-paper
 
+class GLIS_NDCGrid {
+public:
+    int width;
+    int height;
+    float * x = nullptr;
+    float * y = nullptr;
+
+    GLIS_NDCGrid() {};
+    
+    GLIS_NDCGrid(int width, int height) {
+        this->width = width;
+        this->height = height;
+        x = new float[width+1];
+        y = new float[height+1];
+        float widthdiv2 = static_cast<float>((width)/2);
+        float heightdiv2 = static_cast<float>((height)/2);
+        for (int i = 0; i <= width; i++) {
+            float pixel = static_cast<float>(i);
+            float step_1 = pixel - widthdiv2 - 0.0f;
+            float step_2 = step_1 / widthdiv2;
+            x[i] = step_2;
+        }
+        for (int i = 0; i <= height; i++) {
+            float pixel = static_cast<float>(i);
+            float step_1 = pixel - heightdiv2 - 0.0f;
+            float step_2 = step_1 / heightdiv2;
+            y[i] = step_2;
+        }
+    }
+    
+    ~GLIS_NDCGrid() {
+        delete[] x;
+        delete[] y;
+    }
+};
+
+class GLIS_NDCGridPixelCentered {
+public:
+    int width;
+    int height;
+    float * x = nullptr;
+    float * y = nullptr;
+
+    GLIS_NDCGridPixelCentered() {};
+    
+    GLIS_NDCGridPixelCentered(int width, int height) {
+        this->width = width;
+        this->height = height;
+        x = new float[width+1];
+        y = new float[height+1];
+        float widthdiv2 = static_cast<float>((width)/2);
+        float heightdiv2 = static_cast<float>((height)/2);
+        for (int i = 0; i <= width; i++) {
+            float pixel = static_cast<float>(i);
+            float step_1 = pixel - widthdiv2 - 0.0f;
+            float step_2 = step_1 / widthdiv2;
+            x[i] = step_2 > 0.0f
+            ? step_2 - (1.0f/(2.0f*static_cast<float>(width))) 
+            : step_2 + (1.0f/(2.0f*static_cast<float>(width)));
+        }
+        for (int i = 0; i <= height; i++) {
+            float pixel = static_cast<float>(i);
+            float step_1 = pixel - heightdiv2 - 0.0f;
+            float step_2 = step_1 / heightdiv2;
+            y[i] = step_2 > 0.0f
+            ? step_2 - (1.0f/(2.0f*static_cast<float>(height))) 
+            : step_2 + (1.0f/(2.0f*static_cast<float>(height)));
+        }
+    }
+    
+    ~GLIS_NDCGridPixelCentered() {
+        delete[] x;
+        delete[] y;
+    }
+};
+
 class GLIS_Surface {
 private:
     GLIS_SurfaceFramebuffer * framebuffer_ = nullptr;
@@ -52,6 +128,62 @@ private:
     GLIS_SurfaceShader * shaderDraw = nullptr;
     
 public:
+    // Method to compare which one is the more close. 
+    // We find the closest by taking the difference 
+    // between the target and both values. It assumes 
+    // that val2 is greater than val1 and target lies 
+    // between these two. 
+    float getClosest(float arr[], int val1, int val2, float target) 
+    { 
+        if (target - arr[val1] >= arr[val2] - target) 
+            return val2;
+        else
+            return val1; 
+    }
+    
+    // Returns element closest to target in arr[]
+    int findClosest(float arr[], int n, float target) {
+        // Corner cases
+        if (target <= arr[0]) 
+            return 0; 
+        if (target >= arr[n - 1]) 
+            return n - 1;
+    
+        // Doing binary search 
+        int i = 0, j = n, mid = 0;
+        while (i < j) { 
+            mid = (i + j) / 2; 
+    
+            if (arr[mid] == target) 
+                return mid;
+    
+            /* If target is less than array element, 
+                then search in left */
+            if (target < arr[mid]) { 
+    
+                // If target is greater than previous 
+                // to mid, return closest of two 
+                if (mid > 0 && target > arr[mid - 1]) 
+                    return getClosest(arr, mid - 1, mid, target); 
+    
+                /* Repeat for left half */
+                j = mid; 
+            } 
+    
+            // If target is greater than mid 
+            else { 
+                if (mid < n - 1 && target < arr[mid + 1]) 
+                    return getClosest(arr, mid, 
+                                    mid + 1, target); 
+                // update i 
+                i = mid + 1;
+            } 
+        } 
+    
+        // Only single element left after search 
+        return mid; 
+    }
+
     int width = 0;
     int height = 0;
     
@@ -253,6 +385,12 @@ public:
     
     // thanks to imirkin - #xorg-devel
     Vector2 move_NDC_to_pixel_center(Vector2 points) {
+        // create a pixel-centered NCD grid to round to nearest DNC center
+        // create a pixel grid
+        // convert this pixel grid into an NDC grid
+        // shift each value in the grid to pixel center
+        // round given NDC to nearest NDC center
+        
         // assume vector of w,h
         return {
             // shift x
@@ -266,7 +404,62 @@ public:
             : points[1] + (1.0f/(2.0f*static_cast<float>(height)))
         };
     }
+    
+    Vector2 NDC_to_WindowSpacef(const Vector2 & xy) {
+        // https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Viewport_transform
+        // https://wikimedia.org/api/rest_v1/media/math/render/svg/138401cb60a7c667336fb41d47d22f37c8f2a569
 
+        // NDC to Window Space: x: (width/2)*X_NDC + X + (width/2)
+        // NDC to Window Space: y: (height/2)*Y_NDC + Y + (height/2)
+
+        // NDC {X: -1, Y: 1}, {X: 1, Y: 1}
+
+        // width: 400
+        // height: 400
+
+        // window space: x: ((400/2) * -1) + 0 + (400/2)
+        // window space: x: (200 * -1) + 0 + 200
+        // window space: x: -200 + 200
+        // window space: x: 0
+
+        // window space: y: ((400/2) * 1) + 0 + (400/2)
+        // window space: y: (200 * 1) + 0 + 200
+        // window space: y: 200 + 200
+        // window space: y: 400
+
+        // window space: {X: 0, Y: 400}, {X: 400, Y: 400}
+        
+        // https://magcius.github.io/xplain/article/rast1.html
+            
+        // determine what side of a pixel the given NDC coordinate will draw to
+        // and fix it if it is off screen
+        
+        // https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf
+        // 14.5 Line Segments, pdf page 493, printed page 471
+        // also see section 13.7 in the GL 4.6 spec ("Primitive Clipping")
+        
+        // almost all GPU's support line widths of up to 32 pixels,
+        // and most GPU's support widths of up to 2048 pixels
+        // 10 is the max width on nvidia, 7 is max on intel
+        
+        
+        // shift NDC values by half a pixel so NDC is on pixel center instead of pixel edge
+        // [13:04] <imirkin> ndc value +/- 1/(2*width)
+        // [13:04] <imirkin> + on the left, - on the right
+        // [13:05] <imirkin> you can't hard-code it as the width/height may change, but you can take them in as uniforms
+        
+        float widthdiv2 = static_cast<float>(width/2);
+        float heightdiv2 = static_cast<float>(height/2);
+        float xf = (widthdiv2 * xy[0]) + 0.0f + widthdiv2;
+        float yf = (heightdiv2 * xy[1]) + 0.0f + heightdiv2;
+        return {xf, yf};
+    }
+    
+    Vector2i NDC_to_WindowSpace(const Vector2 & xy) {
+        Vector2 v = NDC_to_WindowSpacef(xy);
+        return {static_cast<int>(v[0]), static_cast<int>(v[1])};
+    }
+    
     void drawPlaneWireframe(
         const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & topLeft =     {-1.0f,  1.0f},
@@ -274,6 +467,37 @@ public:
         const Vector2 & bottomRight = { 1.0f, -1.0f},
         const Vector2 & bottomLeft =  {-1.0f, -1.0f}
     ) {
+        GLIS_NDCGrid grid4_(4, height);
+        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[0]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[1]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[2]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[3]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[4]);
+        GLIS_NDCGridPixelCentered grid4(4, height);
+        LOG_MAGNUM_INFO_FUNCTION(grid4.x[0]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4.x[1]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4.x[2]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4.x[3]);
+        LOG_MAGNUM_INFO_FUNCTION(grid4.x[4]);
+        int w = 3;
+        GLIS_NDCGridPixelCentered grid(w, height);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[0]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[1]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[2]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[3]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.y[0]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.y[height]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, -1)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 1)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.534464)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.54)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)+1]);
+        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)-1]);
+        LOG_MAGNUM_INFO_FUNCTION(topLeft);
+        LOG_MAGNUM_INFO_FUNCTION(move_NDC_to_pixel_center(topLeft));
+        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacef(topLeft));
+        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacef(move_NDC_to_pixel_center(topLeft)));
         draw(
             newShaderRead(),
             color,
@@ -365,61 +589,7 @@ public:
     
     
     // texture manipulation
-    
-    Vector2i NDC_to_WindowSpace(const Vector2 & xy) {
-        // https://www.khronos.org/opengl/wiki/Vertex_Post-Processing#Viewport_transform
-        // https://wikimedia.org/api/rest_v1/media/math/render/svg/138401cb60a7c667336fb41d47d22f37c8f2a569
-
-        // NDC to Window Space: x: (width/2)*X_NDC + X + (width/2)
-        // NDC to Window Space: y: (height/2)*Y_NDC + Y + (height/2)
-
-        // NDC {X: -1, Y: 1}, {X: 1, Y: 1}
-
-        // width: 400
-        // height: 400
-
-        // window space: x: ((400/2) * -1) + 0 + (400/2)
-        // window space: x: (200 * -1) + 0 + 200
-        // window space: x: -200 + 200
-        // window space: x: 0
-
-        // window space: y: ((400/2) * 1) + 0 + (400/2)
-        // window space: y: (200 * 1) + 0 + 200
-        // window space: y: 200 + 200
-        // window space: y: 400
-
-        // window space: {X: 0, Y: 400}, {X: 400, Y: 400}
         
-        // https://magcius.github.io/xplain/article/rast1.html
-            
-        // determine what side of a pixel the given NDC coordinate will draw to
-        // and fix it if it is off screen
-        
-        // https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf
-        // 14.5 Line Segments, pdf page 493, printed page 471
-        // also see section 13.7 in the GL 4.6 spec ("Primitive Clipping")
-        
-        // almost all GPU's support line widths of up to 32 pixels,
-        // and most GPU's support widths of up to 2048 pixels
-        // 10 is the max width on nvidia, 7 is max on intel
-        
-        
-        // shift NDC values by half a pixel so NDC is on pixel center instead of pixel edge
-        // [13:04] <imirkin> ndc value +/- 1/(2*width)
-        // [13:04] <imirkin> + on the left, - on the right
-        // [13:05] <imirkin> you can't hard-code it as the width/height may change, but you can take them in as uniforms
-        
-        float widthdiv2 = static_cast<float>(width/2);
-        float heightdiv2 = static_cast<float>(height/2);
-        float xf = (widthdiv2 * xy[0]) + 0.0f + widthdiv2;
-        LOG_MAGNUM_INFO_FUNCTION(xf);
-        float yf = (heightdiv2 * xy[1]) + 0.0f + heightdiv2;
-        LOG_MAGNUM_INFO_FUNCTION(yf);
-        int xi = static_cast<int>(xf);
-        int yi = static_cast<int>(yf);
-        return {xi, yi};
-    }
-    
     struct BITMAP_FORMAT_RGBA8 {
         uint8_t R = 0;
         uint8_t G = 0;
