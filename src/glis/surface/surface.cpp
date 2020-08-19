@@ -119,7 +119,9 @@ public:
         GLIS_NDCGrid grid(width, height);
         LOG_MAGNUM_INFO << "testing width";
         for (int i = 0; i <= width; i++) {
-            float val = (static_cast<float>(width/2) * grid.x[i]) + 0.0f + static_cast<float>(width/2);
+            float val = grid.x[i] > 0.0f 
+            ? grid.x[i] - (1.0f/(2.0f*static_cast<float>(width))) 
+            : grid.x[i] + (1.0f/(2.0f*static_cast<float>(width)));
             auto a = std::to_string(grid.x[i]);
             auto b = std::to_string(val);
             auto c = std::to_string(x[i]);
@@ -135,7 +137,9 @@ public:
         }
         LOG_MAGNUM_INFO << "testing height";
         for (int i = 0; i <= height; i++) {
-            float val = (static_cast<float>(height/2) * grid.y[i]) + 0.0f + static_cast<float>(height/2);
+            float val = grid.y[i] > 0.0f 
+            ? grid.y[i] - (1.0f/(2.0f*static_cast<float>(height))) 
+            : grid.y[i] + (1.0f/(2.0f*static_cast<float>(height)));
             auto a = std::to_string(grid.y[i]);
             auto b = std::to_string(val);
             auto c = std::to_string(y[i]);
@@ -273,7 +277,7 @@ public:
         }
         delete grid;
         grid = new GLIS_NDCGridPixelCentered(size[0], size[1]);
-        grid->test();
+//         grid->test();
     }
     
     void resize(const Magnum::VectorTypeFor<2, int> & size1, const Magnum::VectorTypeFor<2, int> & size2) {
@@ -503,7 +507,7 @@ public:
     }
     
     Vector2 Correct_NDC(const Vector2 & xy) {
-        return {grid->x[findClosest(grid->x, width, xy[0])], grid->y[findClosest(grid->y, height, xy[1])]};
+        return {grid->x[findClosest(grid->x, width+1, xy[0])], grid->y[findClosest(grid->y, height+1, xy[1])]};
     }
     
     void drawPlaneWireframe(
@@ -513,10 +517,6 @@ public:
         const Vector2 & bottomRight = { 1.0f, -1.0f},
         const Vector2 & bottomLeft =  {-1.0f, -1.0f}
     ) {
-        LOG_MAGNUM_INFO_FUNCTION(grid->x[0]);
-        LOG_MAGNUM_INFO_FUNCTION(grid->x[width]);
-        LOG_MAGNUM_INFO_FUNCTION(grid->x[findClosest(grid->x, width, -1.0f)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid->x[findClosest(grid->x, width, 1.0f)]);
         LOG_MAGNUM_INFO_FUNCTION(topLeft);
         LOG_MAGNUM_INFO_FUNCTION(Correct_NDC(topLeft));
         LOG_MAGNUM_INFO_FUNCTION(move_NDC_to_pixel_center(topLeft));
