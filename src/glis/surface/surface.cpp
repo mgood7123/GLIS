@@ -120,27 +120,33 @@ public:
         LOG_MAGNUM_INFO << "testing width";
         for (int i = 0; i <= width; i++) {
             float val = (static_cast<float>(width/2) * grid.x[i]) + 0.0f + static_cast<float>(width/2);
+            auto a = std::to_string(grid.x[i]);
+            auto b = std::to_string(val);
+            auto c = std::to_string(x[i]);
             LOG_MAGNUM_INFO
             << "testing grid.x[i] ("
-            << std::to_string(grid.x[i])
+            << a.c_str()
             << ") centered ("
-            << std::to_string(val)
+            << b.c_str()
             << ") matches x[i] ("
-            << std::to_string(x[i])
-            << ")";
+            << c.c_str()
+            << ") with i = " << i;
             assert(val == x[i]);
         }
         LOG_MAGNUM_INFO << "testing height";
         for (int i = 0; i <= height; i++) {
             float val = (static_cast<float>(height/2) * grid.y[i]) + 0.0f + static_cast<float>(height/2);
+            auto a = std::to_string(grid.y[i]);
+            auto b = std::to_string(val);
+            auto c = std::to_string(y[i]);
             LOG_MAGNUM_INFO
             << "testing grid.y[i] ("
-            << std::to_string(grid.y[i])
+            << a.c_str()
             << ") centered ("
-            << std::to_string(val)
+            << b.c_str()
             << ") matches y[i] ("
-            << std::to_string(y[i])
-            << ")";
+            << c.c_str()
+            << ") with i = " << i;
             assert(val == y[i]);
         }
     }
