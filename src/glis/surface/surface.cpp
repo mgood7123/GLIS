@@ -251,27 +251,38 @@ public:
         return mesh;
     }
     
+    // thanks to imirkin - #xorg-devel
     Vector2 move_NDC_to_pixel_center(Vector2 points) {
         // assume vector of w,h
-        return {points[0] > 0.0f ? points[0] - (1.0f/(2.0f/static_cast<float>(width))) : points[0] + (1.0f/(2.0f/static_cast<float>(width))), points[1] > 0.0f ? points[1] - (1.0f/(2.0f/static_cast<float>(height))) : points[1] + (1.0f/(2.0f/static_cast<float>(height)))
+        return {
+            // shift x
+            points[0] > 0.0f 
+            ? points[0] - (1.0f/(2.0f*static_cast<float>(width))) 
+            : points[0] + (1.0f/(2.0f*static_cast<float>(width))),
+            
+            // shift y
+            points[1] > 0.0f 
+            ? points[1] - (1.0f/(2.0f*static_cast<float>(height))) 
+            : points[1] + (1.0f/(2.0f*static_cast<float>(height)))
+        };
     }
 
     void drawPlaneWireframe(
         const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-        // thanks to imirkin - #xorg-devel
-        const Vector2 & topLeft =     {-1.0f + (1.0f/(2.0f*400.0f)),  1.0f - (1.0f/(2.0f*400.0f))},
-        const Vector2 & topRight =    { 1.0f - (1.0f/(2.0f*400.0f)),  1.0f - (1.0f/(2.0f*400.0f))},
-        const Vector2 & bottomRight = { 1.0f - (1.0f/(2.0f*400.0f)), -1.0f + (1.0f/(2.0f*400.0f))},
-        const Vector2 & bottomLeft =  {-1.0f + (1.0f/(2.0f*400.0f)), -1.0f + (1.0f/(2.0f*400.0f))}
+        const Vector2 & topLeft =     {-1.0f,  1.0f},
+        const Vector2 & topRight =    { 1.0f,  1.0f},
+        const Vector2 & bottomRight = { 1.0f, -1.0f},
+        const Vector2 & bottomLeft =  {-1.0f, -1.0f}
     ) {
-        LOG_MAGNUM_INFO_FUNCTION(topLeft);
-        LOG_MAGNUM_INFO_FUNCTION(topRight);
-        LOG_MAGNUM_INFO_FUNCTION(bottomRight);
-        LOG_MAGNUM_INFO_FUNCTION(bottomLeft);
         draw(
             newShaderRead(),
             color,
-            buildPlaneWireframeMesh(topLeft, topRight, bottomRight, bottomLeft)
+            buildPlaneWireframeMesh(
+                move_NDC_to_pixel_center(topLeft),
+                move_NDC_to_pixel_center(topRight),
+                move_NDC_to_pixel_center(bottomRight),
+                move_NDC_to_pixel_center(bottomLeft)
+            )
         );
     }
     
