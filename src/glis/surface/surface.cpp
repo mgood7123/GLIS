@@ -114,6 +114,36 @@ public:
         delete[] x;
         delete[] y;
     }
+    
+    void test() {
+        GLIS_NDCGrid grid(width, height);
+        LOG_MAGNUM_INFO << "testing width";
+        for (int i = 0; i <= width; i++) {
+            float val = (static_cast<float>(width/2) * grid.x[i]) + 0.0f + static_cast<float>(width/2);
+            LOG_MAGNUM_INFO
+            << "testing grid.x[i] ("
+            << std::to_string(grid.x[i])
+            << ") centered ("
+            << std::to_string(val)
+            << ") matches x[i] ("
+            << std::to_string(x[i])
+            << ")";
+            assert(val == x[i]);
+        }
+        LOG_MAGNUM_INFO << "testing height";
+        for (int i = 0; i <= height; i++) {
+            float val = (static_cast<float>(height/2) * grid.y[i]) + 0.0f + static_cast<float>(height/2);
+            LOG_MAGNUM_INFO
+            << "testing grid.y[i] ("
+            << std::to_string(grid.y[i])
+            << ") centered ("
+            << std::to_string(val)
+            << ") matches y[i] ("
+            << std::to_string(y[i])
+            << ")";
+            assert(val == y[i]);
+        }
+    }
 };
 
 class GLIS_Surface {
@@ -126,7 +156,8 @@ private:
     GLIS_SurfaceShader * shaderRead = nullptr;
     GLIS_SurfaceShader * shaderReadTexture = nullptr;
     GLIS_SurfaceShader * shaderDraw = nullptr;
-    
+    GLIS_NDCGridPixelCentered * grid = nullptr;
+
 public:
     // Method to compare which one is the more close. 
     // We find the closest by taking the difference 
@@ -186,7 +217,7 @@ public:
 
     int width = 0;
     int height = 0;
-    
+        
     static constexpr float globalScale = 1.0f;
     
     void release() {
@@ -206,6 +237,8 @@ public:
         shaderReadTexture = nullptr;
         delete shaderDraw;
         shaderDraw = nullptr;
+        delete grid;
+        grid = nullptr;
     }
     
     void newTexture2D(const VectorTypeFor<2, int> & size) {
@@ -232,6 +265,9 @@ public:
             height = size[1];
             GL::defaultFramebuffer.setViewport({{}, size});
         }
+        delete grid;
+        grid = new GLIS_NDCGridPixelCentered(size[0], size[1]);
+        grid->test();
     }
     
     void resize(const Magnum::VectorTypeFor<2, int> & size1, const Magnum::VectorTypeFor<2, int> & size2) {
@@ -280,7 +316,7 @@ public:
         if (shaderRead == nullptr) {
             shaderRead = new GLIS_SurfaceShader;
 //             shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.005f, 2.005f}));
-            shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.0f, 2.0f}));
+//             shaderRead->setTransformationProjectionMatrix(Matrix3::projection({2.0f, 2.0f}));
         }
         return shaderRead;
     }
@@ -460,6 +496,10 @@ public:
         return {static_cast<int>(v[0]), static_cast<int>(v[1])};
     }
     
+    Vector2 Correct_NDC(const Vector2 & xy) {
+        return {grid->x[findClosest(grid->x, width, xy[0])], grid->y[findClosest(grid->y, height, xy[1])]};
+    }
+    
     void drawPlaneWireframe(
         const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
         const Vector2 & topLeft =     {-1.0f,  1.0f},
@@ -467,34 +507,12 @@ public:
         const Vector2 & bottomRight = { 1.0f, -1.0f},
         const Vector2 & bottomLeft =  {-1.0f, -1.0f}
     ) {
-        GLIS_NDCGrid grid4_(4, height);
-        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[0]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[1]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[2]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[3]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4_.x[4]);
-        GLIS_NDCGridPixelCentered grid4(4, height);
-        LOG_MAGNUM_INFO_FUNCTION(grid4.x[0]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4.x[1]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4.x[2]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4.x[3]);
-        LOG_MAGNUM_INFO_FUNCTION(grid4.x[4]);
-        int w = 3;
-        GLIS_NDCGridPixelCentered grid(w, height);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[0]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[1]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[2]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[3]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.y[0]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.y[height]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, -1)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 1)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.534464)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.54)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)+1]);
-        LOG_MAGNUM_INFO_FUNCTION(grid.x[findClosest(grid.x, w, 0.5)-1]);
+        LOG_MAGNUM_INFO_FUNCTION(grid->x[0]);
+        LOG_MAGNUM_INFO_FUNCTION(grid->x[width]);
+        LOG_MAGNUM_INFO_FUNCTION(grid->x[findClosest(grid->x, width, -1.0f)]);
+        LOG_MAGNUM_INFO_FUNCTION(grid->x[findClosest(grid->x, width, 1.0f)]);
         LOG_MAGNUM_INFO_FUNCTION(topLeft);
+        LOG_MAGNUM_INFO_FUNCTION(Correct_NDC(topLeft));
         LOG_MAGNUM_INFO_FUNCTION(move_NDC_to_pixel_center(topLeft));
         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacef(topLeft));
         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacef(move_NDC_to_pixel_center(topLeft)));
@@ -665,5 +683,4 @@ public:
         drawPlane();
         texture2DRead = tmp;
     }
-    
 };
