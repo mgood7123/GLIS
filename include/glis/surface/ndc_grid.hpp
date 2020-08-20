@@ -118,6 +118,9 @@ public:
             return arr[mid];
         }
 
+        // In OpenGL (ES), a pixel of the framebuffer is defined as being covered by a primitive
+        // if the center of the pixel is covered by the primitive as illustrated in the diagram
+        // to the right.
         Magnum::Vector2 Correct_NDC(const Magnum::Vector2 &xy);
     };
 

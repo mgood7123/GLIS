@@ -81,7 +81,12 @@ GLIS_NDC_Tools::GridPixelCentered::GridPixelCentered(int width, int height) {
     // shift NDC values by half a pixel so NDC is on pixel center instead of pixel edge
     // [13:04] <imirkin> ndc value +/- 1/(2*width)
     // [13:04] <imirkin> + on the left, - on the right
-    // [13:05] <imirkin> you can't hard-code it as the width/height may change, but you can take them in as uniforms
+    // [13:05] <imirkin> you can't hard-code it as the width/height may change,
+    // but you can take them in as uniforms
+
+    // In OpenGL (ES), a pixel of the framebuffer is defined as being covered by a primitive
+    // if the center of the pixel is covered by the primitive as illustrated in the diagram
+    // to the right.
 
     float widthdiv2 = static_cast<float>((width)/2);
     float heightdiv2 = static_cast<float>((height)/2);

@@ -2824,6 +2824,12 @@ glis/ipc/ipc.hpp
 glis/internal/internal.hpp
 -
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/ndc_grid.cpp
+glis/surface/ndc_grid.hpp
+-
+cassert
+-
+
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
 glis/surface/surface.hpp
 -
