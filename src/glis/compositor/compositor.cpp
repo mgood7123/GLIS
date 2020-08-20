@@ -234,26 +234,26 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                         // TODO: replace this with a GLIS_Surface
 
                         // possible implementation
-//                        GLIS_Surface m;
-//                        m.resize({GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT});
-//                        // rgba8
-//                        m.setTextureData(reinterpret_cast<uint32_t*>(CW->TEXTURE), CW->w, CW->h);
-//                        m.texture2DRead = m.texture2DDraw;
-//                        GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
-//                        m.drawPlaneCorners(
-//                                GLIS_SurfaceColor {0,0,0,0},
-//                                {a.x[CW->x], a.y[CW->y]},
-//                                {a.x[CW->w], a.y[CW->h]}
-//                        );
-                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
-                                                        0,
-                                                        // pos
-                                                        CW->x, CW->y,
-                                                        // dimens
-                                                        CW->w, CW->h,
-                                                        // max dimens
-                                                        GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT
+                        GLIS_Surface m;
+                        m.resize({GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT});
+                        // rgba8
+                        m.setTextureData(reinterpret_cast<uint32_t*>(CW->TEXTURE), CW->w, CW->h);
+                        m.texture2DRead = m.texture2DDraw;
+                        GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
+                        m.drawPlaneCorners(
+                                GLIS_SurfaceColor {0,0,0,0},
+                                {a.x[CW->x], a.y[CW->y]},
+                                {a.x[CW->w], a.y[CW->h]}
                         );
+//                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
+//                                                        0,
+//                                                        // pos
+//                                                        CW->x, CW->y,
+//                                                        // dimens
+//                                                        CW->w, CW->h,
+//                                                        // max dimens
+//                                                        GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT
+//                        );
                         drawn++;
                     }
                 }
@@ -341,6 +341,9 @@ void GLIS_COMPOSITOR_DO_MAIN(
     LOG_INFO("initializing main Compositor");
     glis.GLIS_error_to_string_GL("before onscreen setup");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
+        CompositorMain.contextMagnum.create();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glis.GLIS_error_to_string_GL("after onscreen setup");
         glis.GLIS_Viewport(CompositorMain);
         glis.GLIS_error_to_string_GL("glViewPort");
