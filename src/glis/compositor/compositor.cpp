@@ -253,7 +253,6 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                         Client_Window *CW = CompositorMain.KERNEL.table->table[index]->resource.get<Client_Window*>();
 
                         compositor_surface.texture2DRead = CW->tex;
-//                        compositor_surface.genTextureFromGLTexture(CW->TEXTURE);
                         GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
                         compositor_surface.drawPlaneCorners(
                                 GLIS_SurfaceColor {0,0,0,0},
