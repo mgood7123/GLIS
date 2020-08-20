@@ -52,7 +52,7 @@ public:
 };
 
 class GLIS_Surface {
-private:
+public:
     GLIS_SurfaceFramebuffer * framebuffer_ = nullptr;
     GLIS_SurfaceImageView2D * image_ = nullptr;
     GLIS_SurfaceImageData * data_ = nullptr;
@@ -65,8 +65,6 @@ private:
     GLIS_SurfaceShader * newShaderReadTexture();
 
     GLIS_SurfaceShader * newShaderRead();
-
-public:
 
     GLIS_Mesh mesh;
 

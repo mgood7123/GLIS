@@ -233,7 +233,7 @@ void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const Magnum::Vecto
                                 const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
     texture2DRead = surface.texture2DDraw;
-    drawTriangle({0,0,0,0}, left, right, top);
+    drawTriangle(GLIS_SurfaceColor {0,0,0,0}, left, right, top);
     texture2DRead = tmp;
 }
 
@@ -264,7 +264,7 @@ void GLIS_Surface::drawPlane(const GLIS_Surface &surface,
                              const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
     texture2DRead = surface.texture2DDraw;
-    drawPlane({0,0,0,0}, topLeft, topRight, bottomRight, bottomLeft);
+    drawPlane(GLIS_SurfaceColor {0,0,0,0}, topLeft, topRight, bottomRight, bottomLeft);
     texture2DRead = tmp;
 }
 

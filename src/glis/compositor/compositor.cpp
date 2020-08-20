@@ -2,6 +2,9 @@
 
 #include <glis/glis.hpp>
 
+// lots of detail here about Windows UI
+// https://docs.microsoft.com/en-us/windows/win32/uxguide/inter-mouse#pointer-shapes
+
 bool stop_drawing = false;
 
 class Client_Window {
@@ -228,6 +231,20 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             ObjectTypeWindow
                             ) {
                         Client_Window *CW = CompositorMain.KERNEL.table->table[index]->resource.get<Client_Window*>();
+                        // TODO: replace this with a GLIS_Surface
+
+                        // possible implementation
+//                        GLIS_Surface m;
+//                        m.resize({GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT});
+//                        // rgba8
+//                        m.setTextureData(reinterpret_cast<uint32_t*>(CW->TEXTURE), CW->w, CW->h);
+//                        m.texture2DRead = m.texture2DDraw;
+//                        GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
+//                        m.drawPlaneCorners(
+//                                GLIS_SurfaceColor {0,0,0,0},
+//                                {a.x[CW->x], a.y[CW->y]},
+//                                {a.x[CW->w], a.y[CW->h]}
+//                        );
                         glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
                                                         0,
                                                         // pos

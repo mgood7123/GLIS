@@ -36,7 +36,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
     surfaceTemporary.drawPlaneCorners(surfaceTemporary1, {0,0}, {1,1});
 
     surfaceMain.bindAndClear();
-    surfaceMain.drawPlane(surfaceTemporary);
+    surfaceMain.drawTriangle(surfaceTemporary);
 
     glis.GLIS_SwapBuffers(screen);
 }
