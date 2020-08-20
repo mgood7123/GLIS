@@ -159,7 +159,7 @@ void GLIS_Surface::resize(const Magnum::VectorTypeFor<2, int> &size) {
     }
     delete mesh.grid;
     mesh.grid = new GLIS_NDC_Tools::GridPixelCentered(size[0], size[1]);
-    mesh.grid->test();
+    if (width > 1 && height > 1) mesh.grid->test();
 }
 
 void GLIS_Surface::resize(const Magnum::VectorTypeFor<2, int> &size1,
@@ -184,7 +184,7 @@ void GLIS_Surface::clear() {
     else Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color);
 }
 
-void GLIS_Surface::bindAnyClear() {
+void GLIS_Surface::bindAndClear() {
     bind();
     clear();
 }
@@ -229,12 +229,11 @@ void GLIS_Surface::drawTriangle(const GLIS_SurfaceColor &color, const Magnum::Ve
     }
 }
 
-void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const GLIS_SurfaceColor &color,
-                                const Magnum::Vector2 &left, const Magnum::Vector2 &right,
-                                const Magnum::Vector2 &top) {
+void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const Magnum::Vector2 &left,
+                                const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
     texture2DRead = surface.texture2DDraw;
-    drawTriangle(color, left, right, top);
+    drawTriangle({0,0,0,0}, left, right, top);
     texture2DRead = tmp;
 }
 
@@ -253,19 +252,67 @@ GLIS_Surface::drawPlaneWireframe(const GLIS_SurfaceColor &color, const Magnum::V
 void GLIS_Surface::drawPlane(const GLIS_SurfaceColor &color, const Magnum::Vector2 &topLeft,
                              const Magnum::Vector2 &topRight, const Magnum::Vector2 &bottomRight,
                              const Magnum::Vector2 &bottomLeft) {
-    Magnum::GL::Mesh && mesh = std::move(this->mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft));
     if (texture2DRead != nullptr) {
-        draw(newShaderReadTexture(), surfaceTextureColor, std::move(mesh));
+        draw(newShaderReadTexture(), surfaceTextureColor, this->mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft));
     } else {
-        draw(newShaderRead(), color, std::move(mesh));
+        draw(newShaderRead(), color, this->mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft));
     }
 }
 
-void GLIS_Surface::drawPlane(const GLIS_Surface &surface, const GLIS_SurfaceColor &color,
+void GLIS_Surface::drawPlane(const GLIS_Surface &surface,
                              const Magnum::Vector2 &topLeft, const Magnum::Vector2 &topRight,
                              const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
     texture2DRead = surface.texture2DDraw;
-    drawPlane(color, topLeft, topRight, bottomRight, bottomLeft);
+    drawPlane({0,0,0,0}, topLeft, topRight, bottomRight, bottomLeft);
     texture2DRead = tmp;
+}
+
+void
+GLIS_Surface::drawPlaneWireframeCorners(const GLIS_SurfaceColor &color, const Magnum::Vector2 &topLeft,
+                                 const Magnum::Vector2 &bottomRight) {
+    // the X of top right is the X of bottom right
+    // the Y of top right is the Y of top left
+    const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
+    const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
+
+    drawPlaneWireframe(
+            color,
+            topLeft,
+            topRight,
+            bottomRight,
+            bottomLeft
+    );
+}
+
+void GLIS_Surface::drawPlaneCorners(const GLIS_SurfaceColor &color, const Magnum::Vector2 &topLeft,
+                             const Magnum::Vector2 &bottomRight) {
+    // the X of top right is the X of bottom right
+    // the Y of top right is the Y of top left
+    const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
+    const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
+
+    drawPlane(
+            color,
+            topLeft,
+            topRight,
+            bottomRight,
+            bottomLeft
+    );
+}
+
+void GLIS_Surface::drawPlaneCorners(const GLIS_Surface &surface, const Magnum::Vector2 &topLeft,
+                                    const Magnum::Vector2 &bottomRight) {
+    // the X of top right is the X of bottom right
+    // the Y of top right is the Y of top left
+    const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
+    const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
+
+    drawPlane(
+            surface,
+            topLeft,
+            topRight,
+            bottomRight,
+            bottomLeft
+    );
 }

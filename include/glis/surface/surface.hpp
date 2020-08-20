@@ -103,21 +103,21 @@ public:
 
     void clear();
 
-    void bindAnyClear();
+    void bindAndClear();
 
     Magnum::Range2Di getViewport();
 
     void draw(GLIS_SurfaceShader * shader, const GLIS_SurfaceColor & color, Magnum::GL::Mesh && mesh);
 
     void drawTriangleWireframe(
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & left  = {-globalScale, -globalScale},
             const Magnum::Vector2 & right = { globalScale, -globalScale},
             const Magnum::Vector2 & top   = { 0.0f,  globalScale}
     );
 
     void drawTriangle(
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & left  = {-globalScale, -globalScale},
             const Magnum::Vector2 & right = { globalScale, -globalScale},
             const Magnum::Vector2 & top   = { 0.0f,  globalScale}
@@ -125,14 +125,13 @@ public:
 
     void drawTriangle(
             const GLIS_Surface & surface,
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & left  = {-globalScale, -globalScale},
             const Magnum::Vector2 & right = { globalScale, -globalScale},
             const Magnum::Vector2 & top   = { 0.0f,  globalScale}
     );
 
     void drawPlaneWireframe(
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & topLeft =     {-1.0f,  1.0f},
             const Magnum::Vector2 & topRight =    { 1.0f,  1.0f},
             const Magnum::Vector2 & bottomRight = { 1.0f, -1.0f},
@@ -140,7 +139,7 @@ public:
     );
 
     void drawPlane(
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
             const Magnum::Vector2 & topRight =    { globalScale,  globalScale},
             const Magnum::Vector2 & bottomRight = { globalScale, -globalScale},
@@ -149,11 +148,28 @@ public:
 
     void drawPlane(
             const GLIS_Surface & surface,
-            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
             const Magnum::Vector2 & topRight =    { globalScale,  globalScale},
             const Magnum::Vector2 & bottomRight = { globalScale, -globalScale},
             const Magnum::Vector2 & bottomLeft =  {-globalScale, -globalScale}
+    );
+
+    void drawPlaneWireframeCorners(
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
+            const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
+            const Magnum::Vector2 & bottomRight = { globalScale, -globalScale}
+    );
+
+    void drawPlaneCorners(
+            const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
+            const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
+            const Magnum::Vector2 & bottomRight = { globalScale, -globalScale}
+    );
+
+    void drawPlaneCorners(
+            const GLIS_Surface & surface,
+            const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
+            const Magnum::Vector2 & bottomRight = { globalScale, -globalScale}
     );
 };
 

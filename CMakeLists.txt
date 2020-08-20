@@ -146,7 +146,9 @@ build_program(examples X11_font_2)
 build_program(examples X11_Shapes)
 
 # magnum
-build_program(examples Surface)
+build_program(examples Surface_01)
+build_program(examples Surface_02)
+build_program(examples Surface_03)
 build_program(examples X11Cube)
 build_program(examples X11_DNC_GRID)
 build_program(examples wrap)

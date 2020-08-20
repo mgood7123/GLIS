@@ -56,6 +56,18 @@ CMAKE_BINARY_DIR = /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -80,17 +92,26 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
 
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\" \"headers\" \"pkgconfig\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # Special rule for the target package
 package: preinstall
@@ -124,27 +145,6 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\" \"headers\" \"pkgconfig\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -218,19 +218,6 @@ testBuilder_executables_X11_Shapes/fast:
 .PHONY : testBuilder_executables_X11_Shapes/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_Surface
-
-# Build rule for target.
-testBuilder_executables_Surface: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Surface
-.PHONY : testBuilder_executables_Surface
-
-# fast build rule for target.
-testBuilder_executables_Surface/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/build
-.PHONY : testBuilder_executables_Surface/fast
-
-#=============================================================================
 # Target rules for targets named testBuilder_executables_Texture
 
 # Build rule for target.
@@ -242,19 +229,6 @@ testBuilder_executables_Texture: cmake_check_build_system
 testBuilder_executables_Texture/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_Texture.dir/build.make CMakeFiles/testBuilder_executables_Texture.dir/build
 .PHONY : testBuilder_executables_Texture/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_X11_font_0
-
-# Build rule for target.
-testBuilder_executables_X11_font_0: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_font_0
-.PHONY : testBuilder_executables_X11_font_0
-
-# fast build rule for target.
-testBuilder_executables_X11_font_0/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_0.dir/build.make CMakeFiles/testBuilder_executables_X11_font_0.dir/build
-.PHONY : testBuilder_executables_X11_font_0/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_X11_2
@@ -270,32 +244,6 @@ testBuilder_executables_X11_2/fast:
 .PHONY : testBuilder_executables_X11_2/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_X11_DNC_GRID
-
-# Build rule for target.
-testBuilder_executables_X11_DNC_GRID: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_DNC_GRID
-.PHONY : testBuilder_executables_X11_DNC_GRID
-
-# fast build rule for target.
-testBuilder_executables_X11_DNC_GRID/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build
-.PHONY : testBuilder_executables_X11_DNC_GRID/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
-
-# Build rule for target.
-testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
-.PHONY : testBuilder_executables_OffScreenFramebuffer
-
-# fast build rule for target.
-testBuilder_executables_OffScreenFramebuffer/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
-.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
-
-#=============================================================================
 # Target rules for targets named testBuilder_executables_X11_3
 
 # Build rule for target.
@@ -309,30 +257,82 @@ testBuilder_executables_X11_3/fast:
 .PHONY : testBuilder_executables_X11_3/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_X11Cube
+# Target rules for targets named testBuilder_executables_X11_font_0
 
 # Build rule for target.
-testBuilder_executables_X11Cube: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11Cube
-.PHONY : testBuilder_executables_X11Cube
+testBuilder_executables_X11_font_0: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_font_0
+.PHONY : testBuilder_executables_X11_font_0
 
 # fast build rule for target.
-testBuilder_executables_X11Cube/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/build
-.PHONY : testBuilder_executables_X11Cube/fast
+testBuilder_executables_X11_font_0/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_0.dir/build.make CMakeFiles/testBuilder_executables_X11_font_0.dir/build
+.PHONY : testBuilder_executables_X11_font_0/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_wayland
+# Target rules for targets named testBuilder_executables_Surface_02
 
 # Build rule for target.
-testBuilder_executables_wayland: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_wayland
-.PHONY : testBuilder_executables_wayland
+testBuilder_executables_Surface_02: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Surface_02
+.PHONY : testBuilder_executables_Surface_02
 
 # fast build rule for target.
-testBuilder_executables_wayland/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/build
-.PHONY : testBuilder_executables_wayland/fast
+testBuilder_executables_Surface_02/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_02.dir/build.make CMakeFiles/testBuilder_executables_Surface_02.dir/build
+.PHONY : testBuilder_executables_Surface_02/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_compositor_stop_drawing
+
+# Build rule for target.
+testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_stop_drawing
+.PHONY : testBuilder_executables_compositor_stop_drawing
+
+# fast build rule for target.
+testBuilder_executables_compositor_stop_drawing/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
+.PHONY : testBuilder_executables_compositor_stop_drawing/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_Surface_01
+
+# Build rule for target.
+testBuilder_executables_Surface_01: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Surface_01
+.PHONY : testBuilder_executables_Surface_01
+
+# fast build rule for target.
+testBuilder_executables_Surface_01/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_01.dir/build.make CMakeFiles/testBuilder_executables_Surface_01.dir/build
+.PHONY : testBuilder_executables_Surface_01/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_MovingWindows
+
+# Build rule for target.
+testBuilder_executables_MovingWindows: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindows
+.PHONY : testBuilder_executables_MovingWindows
+
+# fast build rule for target.
+testBuilder_executables_MovingWindows/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/build
+.PHONY : testBuilder_executables_MovingWindows/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_MovingWindowsB
+
+# Build rule for target.
+testBuilder_executables_MovingWindowsB: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindowsB
+.PHONY : testBuilder_executables_MovingWindowsB
+
+# fast build rule for target.
+testBuilder_executables_MovingWindowsB/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build
+.PHONY : testBuilder_executables_MovingWindowsB/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_compositor
@@ -387,30 +387,30 @@ testBuilder_executables_DefaultFramebuffer/fast:
 .PHONY : testBuilder_executables_DefaultFramebuffer/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_MovingWindows
+# Target rules for targets named testBuilder_executables_wayland
 
 # Build rule for target.
-testBuilder_executables_MovingWindows: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindows
-.PHONY : testBuilder_executables_MovingWindows
+testBuilder_executables_wayland: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_wayland
+.PHONY : testBuilder_executables_wayland
 
 # fast build rule for target.
-testBuilder_executables_MovingWindows/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindows.dir/build.make CMakeFiles/testBuilder_executables_MovingWindows.dir/build
-.PHONY : testBuilder_executables_MovingWindows/fast
+testBuilder_executables_wayland/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wayland.dir/build.make CMakeFiles/testBuilder_executables_wayland.dir/build
+.PHONY : testBuilder_executables_wayland/fast
 
 #=============================================================================
-# Target rules for targets named testBuilder_executables_wrap
+# Target rules for targets named testBuilder_executables_X11Cube
 
 # Build rule for target.
-testBuilder_executables_wrap: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_wrap
-.PHONY : testBuilder_executables_wrap
+testBuilder_executables_X11Cube: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11Cube
+.PHONY : testBuilder_executables_X11Cube
 
 # fast build rule for target.
-testBuilder_executables_wrap/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_wrap.dir/build.make CMakeFiles/testBuilder_executables_wrap.dir/build
-.PHONY : testBuilder_executables_wrap/fast
+testBuilder_executables_X11Cube/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11Cube.dir/build.make CMakeFiles/testBuilder_executables_X11Cube.dir/build
+.PHONY : testBuilder_executables_X11Cube/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_X11
@@ -439,6 +439,58 @@ testBuilder_executables_compositor_start_drawing/fast:
 .PHONY : testBuilder_executables_compositor_start_drawing/fast
 
 #=============================================================================
+# Target rules for targets named testBuilder_executables_wrap
+
+# Build rule for target.
+testBuilder_executables_wrap: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_wrap
+.PHONY : testBuilder_executables_wrap
+
+# fast build rule for target.
+testBuilder_executables_wrap/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_wrap.dir/build.make CMakeFiles/testBuilder_executables_wrap.dir/build
+.PHONY : testBuilder_executables_wrap/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_X11_DNC_GRID
+
+# Build rule for target.
+testBuilder_executables_X11_DNC_GRID: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_X11_DNC_GRID
+.PHONY : testBuilder_executables_X11_DNC_GRID
+
+# fast build rule for target.
+testBuilder_executables_X11_DNC_GRID/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build.make CMakeFiles/testBuilder_executables_X11_DNC_GRID.dir/build
+.PHONY : testBuilder_executables_X11_DNC_GRID/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_Surface_03
+
+# Build rule for target.
+testBuilder_executables_Surface_03: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_Surface_03
+.PHONY : testBuilder_executables_Surface_03
+
+# fast build rule for target.
+testBuilder_executables_Surface_03/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_03.dir/build.make CMakeFiles/testBuilder_executables_Surface_03.dir/build
+.PHONY : testBuilder_executables_Surface_03/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_OffScreenFramebuffer
+
+# Build rule for target.
+testBuilder_executables_OffScreenFramebuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_OffScreenFramebuffer
+.PHONY : testBuilder_executables_OffScreenFramebuffer
+
+# fast build rule for target.
+testBuilder_executables_OffScreenFramebuffer/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build.make CMakeFiles/testBuilder_executables_OffScreenFramebuffer.dir/build
+.PHONY : testBuilder_executables_OffScreenFramebuffer/fast
+
+#=============================================================================
 # Target rules for targets named testBuilder_executables_MYPRIVATEAPP
 
 # Build rule for target.
@@ -463,32 +515,6 @@ testBuilder_executables_RotatingCube: cmake_check_build_system
 testBuilder_executables_RotatingCube/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_RotatingCube.dir/build.make CMakeFiles/testBuilder_executables_RotatingCube.dir/build
 .PHONY : testBuilder_executables_RotatingCube/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_compositor_stop_drawing
-
-# Build rule for target.
-testBuilder_executables_compositor_stop_drawing: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compositor_stop_drawing
-.PHONY : testBuilder_executables_compositor_stop_drawing
-
-# fast build rule for target.
-testBuilder_executables_compositor_stop_drawing/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build.make CMakeFiles/testBuilder_executables_compositor_stop_drawing.dir/build
-.PHONY : testBuilder_executables_compositor_stop_drawing/fast
-
-#=============================================================================
-# Target rules for targets named testBuilder_executables_MovingWindowsB
-
-# Build rule for target.
-testBuilder_executables_MovingWindowsB: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_MovingWindowsB
-.PHONY : testBuilder_executables_MovingWindowsB
-
-# fast build rule for target.
-testBuilder_executables_MovingWindowsB/fast:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build.make CMakeFiles/testBuilder_executables_MovingWindowsB.dir/build
-.PHONY : testBuilder_executables_MovingWindowsB/fast
 
 #=============================================================================
 # Target rules for targets named gmock_main
@@ -1579,32 +1605,86 @@ compositor_clients/shm.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_shm.dir/build.make CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.s
 .PHONY : compositor_clients/shm.cpp.s
 
-examples/Surface.o: examples/Surface.cpp.o
+examples/Surface_01.o: examples/Surface_01.cpp.o
 
-.PHONY : examples/Surface.o
+.PHONY : examples/Surface_01.o
 
 # target to build an object file
-examples/Surface.cpp.o:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
-.PHONY : examples/Surface.cpp.o
+examples/Surface_01.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_01.dir/build.make CMakeFiles/testBuilder_executables_Surface_01.dir/examples/Surface_01.cpp.o
+.PHONY : examples/Surface_01.cpp.o
 
-examples/Surface.i: examples/Surface.cpp.i
+examples/Surface_01.i: examples/Surface_01.cpp.i
 
-.PHONY : examples/Surface.i
+.PHONY : examples/Surface_01.i
 
 # target to preprocess a source file
-examples/Surface.cpp.i:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.i
-.PHONY : examples/Surface.cpp.i
+examples/Surface_01.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_01.dir/build.make CMakeFiles/testBuilder_executables_Surface_01.dir/examples/Surface_01.cpp.i
+.PHONY : examples/Surface_01.cpp.i
 
-examples/Surface.s: examples/Surface.cpp.s
+examples/Surface_01.s: examples/Surface_01.cpp.s
 
-.PHONY : examples/Surface.s
+.PHONY : examples/Surface_01.s
 
 # target to generate assembly for a file
-examples/Surface.cpp.s:
-	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface.dir/build.make CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.s
-.PHONY : examples/Surface.cpp.s
+examples/Surface_01.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_01.dir/build.make CMakeFiles/testBuilder_executables_Surface_01.dir/examples/Surface_01.cpp.s
+.PHONY : examples/Surface_01.cpp.s
+
+examples/Surface_02.o: examples/Surface_02.cpp.o
+
+.PHONY : examples/Surface_02.o
+
+# target to build an object file
+examples/Surface_02.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_02.dir/build.make CMakeFiles/testBuilder_executables_Surface_02.dir/examples/Surface_02.cpp.o
+.PHONY : examples/Surface_02.cpp.o
+
+examples/Surface_02.i: examples/Surface_02.cpp.i
+
+.PHONY : examples/Surface_02.i
+
+# target to preprocess a source file
+examples/Surface_02.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_02.dir/build.make CMakeFiles/testBuilder_executables_Surface_02.dir/examples/Surface_02.cpp.i
+.PHONY : examples/Surface_02.cpp.i
+
+examples/Surface_02.s: examples/Surface_02.cpp.s
+
+.PHONY : examples/Surface_02.s
+
+# target to generate assembly for a file
+examples/Surface_02.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_02.dir/build.make CMakeFiles/testBuilder_executables_Surface_02.dir/examples/Surface_02.cpp.s
+.PHONY : examples/Surface_02.cpp.s
+
+examples/Surface_03.o: examples/Surface_03.cpp.o
+
+.PHONY : examples/Surface_03.o
+
+# target to build an object file
+examples/Surface_03.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_03.dir/build.make CMakeFiles/testBuilder_executables_Surface_03.dir/examples/Surface_03.cpp.o
+.PHONY : examples/Surface_03.cpp.o
+
+examples/Surface_03.i: examples/Surface_03.cpp.i
+
+.PHONY : examples/Surface_03.i
+
+# target to preprocess a source file
+examples/Surface_03.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_03.dir/build.make CMakeFiles/testBuilder_executables_Surface_03.dir/examples/Surface_03.cpp.i
+.PHONY : examples/Surface_03.cpp.i
+
+examples/Surface_03.s: examples/Surface_03.cpp.s
+
+.PHONY : examples/Surface_03.s
+
+# target to generate assembly for a file
+examples/Surface_03.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_Surface_03.dir/build.make CMakeFiles/testBuilder_executables_Surface_03.dir/examples/Surface_03.cpp.s
+.PHONY : examples/Surface_03.cpp.s
 
 examples/X11.o: examples/X11.cpp.o
 
@@ -2449,38 +2529,40 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... testBuilder_executables_X11_font_2"
 	@echo "... testBuilder_executables_X11_font_1"
 	@echo "... testBuilder_executables_X11_Shapes"
-	@echo "... install/strip"
-	@echo "... testBuilder_executables_Surface"
 	@echo "... testBuilder_executables_Texture"
-	@echo "... testBuilder_executables_X11_font_0"
 	@echo "... testBuilder_executables_X11_2"
-	@echo "... testBuilder_executables_X11_DNC_GRID"
-	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_X11_3"
-	@echo "... testBuilder_executables_X11Cube"
-	@echo "... testBuilder_executables_wayland"
+	@echo "... testBuilder_executables_X11_font_0"
+	@echo "... testBuilder_executables_Surface_02"
+	@echo "... rebuild_cache"
+	@echo "... testBuilder_executables_compositor_stop_drawing"
+	@echo "... testBuilder_executables_Surface_01"
+	@echo "... testBuilder_executables_MovingWindows"
+	@echo "... list_install_components"
+	@echo "... testBuilder_executables_MovingWindowsB"
 	@echo "... testBuilder_executables_compositor"
 	@echo "... GLIS"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_DefaultFramebuffer"
 	@echo "... package"
-	@echo "... testBuilder_executables_MovingWindows"
-	@echo "... testBuilder_executables_wrap"
+	@echo "... testBuilder_executables_wayland"
+	@echo "... testBuilder_executables_X11Cube"
 	@echo "... testBuilder_executables_X11"
 	@echo "... testBuilder_executables_compositor_start_drawing"
+	@echo "... testBuilder_executables_wrap"
+	@echo "... testBuilder_executables_X11_DNC_GRID"
+	@echo "... testBuilder_executables_Surface_03"
+	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
 	@echo "... testBuilder_executables_RotatingCube"
 	@echo "... package_source"
 	@echo "... edit_cache"
-	@echo "... testBuilder_executables_compositor_stop_drawing"
-	@echo "... rebuild_cache"
-	@echo "... testBuilder_executables_MovingWindowsB"
-	@echo "... list_install_components"
 	@echo "... gmock_main"
 	@echo "... gmock"
 	@echo "... gtest_main"
@@ -2574,9 +2656,15 @@ help:
 	@echo "... compositor_clients/shm.o"
 	@echo "... compositor_clients/shm.i"
 	@echo "... compositor_clients/shm.s"
-	@echo "... examples/Surface.o"
-	@echo "... examples/Surface.i"
-	@echo "... examples/Surface.s"
+	@echo "... examples/Surface_01.o"
+	@echo "... examples/Surface_01.i"
+	@echo "... examples/Surface_01.s"
+	@echo "... examples/Surface_02.o"
+	@echo "... examples/Surface_02.i"
+	@echo "... examples/Surface_02.s"
+	@echo "... examples/Surface_03.o"
+	@echo "... examples/Surface_03.i"
+	@echo "... examples/Surface_03.s"
 	@echo "... examples/X11.o"
 	@echo "... examples/X11.i"
 	@echo "... examples/X11.s"
