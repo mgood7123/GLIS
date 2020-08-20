@@ -461,13 +461,13 @@ public:
         
         GL::Buffer vertices(vertex);
         
-        LOG_MAGNUM_INFO_FUNCTION(topLeft);
-        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(topLeft));
-        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(topLeft));
-        auto tl = grid->Correct_NDC(topLeft);
-        LOG_MAGNUM_INFO_FUNCTION(tl);
-        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(tl));
-        LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(tl));
+//         LOG_MAGNUM_INFO_FUNCTION(topLeft);
+//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(topLeft));
+//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(topLeft));
+//         auto tl = grid->Correct_NDC(topLeft);
+//         LOG_MAGNUM_INFO_FUNCTION(tl);
+//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(tl));
+//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(tl));
         
         GL::Mesh mesh;
         mesh
@@ -582,53 +582,9 @@ public:
         uint8_t A = 255;
     };
     
-    int getPixelIndex(int column, int row) {
-        // index 0 is column 0 row 0
-        // index width is column 0 row 1
-        return (width * row) + column;
-    }
-    
-    BITMAP_FORMAT_RGBA8 & getPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row) {
-        int index = getPixelIndex(column, row);
-        LOG_MAGNUM_INFO << "column " << column << ", row " << row << " is at index " << index;
-        return data[index];
-    }
-    
-    void setPixel(BITMAP_FORMAT_RGBA8 * data, int column, int row, const BITMAP_FORMAT_RGBA8 & pixel) {
-        getPixel(data, column, row) = pixel;
-    }
-    
-    void drawRectangleLines(
-        BITMAP_FORMAT_RGBA8 * data,
-        const Vector2 & topLeft,
-        const Vector2 & topRight,
-        const Vector2 & bottomRight,
-        const Vector2 & bottomLeft
-    ) {
-//         const Vector2i & pixelsTopLeft = NDC_to_WindowSpace(topLeft);
-//         const Vector2i & pixelsTopRight = NDC_to_WindowSpace(topRight);
-//         const Vector2i & pixelsBottomRight = NDC_to_WindowSpace(bottomRight);
-//         const Vector2i & pixelsBottomLeft = NDC_to_WindowSpace(bottomLeft);
-//         LOG_MAGNUM_INFO << "pixels top left:     " << pixelsTopLeft;
-//         LOG_MAGNUM_INFO << "pixels top right:    " << pixelsTopRight;
-//         LOG_MAGNUM_INFO << "pixels bottom right: " << pixelsBottomRight;
-//         LOG_MAGNUM_INFO << "pixels bottom left:  " << pixelsBottomLeft;
-//         setPixel(data, pixelsTopLeft[0], pixelsTopLeft[1], {255, 0, 0, 255});
-//         setPixel(data, pixelsTopRight[0], pixelsTopRight[1], {255, 0, 0, 255});
-//         setPixel(data, pixelsBottomRight[0], pixelsBottomRight[1], {255, 0, 0, 255});
-//         setPixel(data, pixelsBottomLeft[0], pixelsBottomLeft[1], {255, 0, 0, 255});
-    }
-    
     void drawTextureRectangle() {
         BITMAP_FORMAT_RGBA8 data[width*height];
         
-        const Vector2 & topLeft =     {-globalScale,  globalScale};
-        const Vector2 & topRight =    { globalScale,  globalScale};
-        const Vector2 & bottomRight = { globalScale, -globalScale};
-        const Vector2 & bottomLeft =  {-globalScale, -globalScale};
-
-        drawRectangleLines(data, topLeft, topRight, bottomRight, bottomLeft);
-
         setTextureData(reinterpret_cast<uint32_t*>(data), width, height);
 
         GLIS_SurfaceTexture2D * tmp = texture2DRead;

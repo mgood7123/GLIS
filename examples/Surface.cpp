@@ -36,7 +36,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(draw, glis, screen, font, fps) {
     
     surfaceMain.clear();
     surfaceMain.bind();
-//     surfaceMain.drawPlane(surfaceTemporary);
+    surfaceMain.drawPlane(surfaceTemporary);
     surfaceMain.drawPlaneWireframe({1.0f, 0.0f,  0.0f,  1.0f});
     
     glis.GLIS_SwapBuffers(screen);
