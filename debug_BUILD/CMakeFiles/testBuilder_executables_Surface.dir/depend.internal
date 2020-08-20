@@ -295,12 +295,10 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
  ../dependancies/magnum/src/Magnum/Platform/Platform.h
  ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
  ../dependancies/magnum/src/Magnum/Primitives/Cube.h
- ../dependancies/magnum/src/Magnum/Primitives/Plane.h
  ../dependancies/magnum/src/Magnum/Primitives/visibility.h
  ../dependancies/magnum/src/Magnum/Sampler.h
  ../dependancies/magnum/src/Magnum/Shaders/Flat.h
  ../dependancies/magnum/src/Magnum/Shaders/Generic.h
- ../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
  ../dependancies/magnum/src/Magnum/Shaders/Phong.h
  ../dependancies/magnum/src/Magnum/Shaders/visibility.h
  ../dependancies/magnum/src/Magnum/Tags.h
@@ -337,9 +335,10 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o
  ../include/glis/ipc/serializer.hpp
  ../include/glis/ipc/server_core.hpp
  ../include/glis/ipc/shm.hpp
+ ../include/glis/surface/ndc_grid.hpp
+ ../include/glis/surface/surface.hpp
  ../include/glis/templates/templates.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/examples/Surface.cpp
- /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
  dependancies/corrade/src/Corrade/configure.h
  dependancies/magnum-integration/src/Magnum/ImGuiIntegration/configure.h
  dependancies/magnum/src/Magnum/configure.h

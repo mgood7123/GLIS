@@ -262,6 +262,7 @@ CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
  ../dependancies/magnum/src/Magnum/GL/Texture.h
  ../dependancies/magnum/src/Magnum/GL/TextureFormat.h
  ../dependancies/magnum/src/Magnum/GL/visibility.h
+ ../dependancies/magnum/src/Magnum/ImageView.h
  ../dependancies/magnum/src/Magnum/Magnum.h
  ../dependancies/magnum/src/Magnum/Math/Angle.h
  ../dependancies/magnum/src/Magnum/Math/BoolVector.h
@@ -271,6 +272,7 @@ CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
  ../dependancies/magnum/src/Magnum/Math/Half.h
  ../dependancies/magnum/src/Magnum/Math/Math.h
  ../dependancies/magnum/src/Magnum/Math/Matrix.h
+ ../dependancies/magnum/src/Magnum/Math/Matrix3.h
  ../dependancies/magnum/src/Magnum/Math/Matrix4.h
  ../dependancies/magnum/src/Magnum/Math/Packing.h
  ../dependancies/magnum/src/Magnum/Math/Range.h
@@ -287,12 +289,15 @@ CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
  ../dependancies/magnum/src/Magnum/MeshTools/CompressIndices.h
  ../dependancies/magnum/src/Magnum/MeshTools/Interleave.h
  ../dependancies/magnum/src/Magnum/MeshTools/visibility.h
+ ../dependancies/magnum/src/Magnum/PixelFormat.h
+ ../dependancies/magnum/src/Magnum/PixelStorage.h
  ../dependancies/magnum/src/Magnum/Platform/GLContext.h
  ../dependancies/magnum/src/Magnum/Platform/Platform.h
  ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
  ../dependancies/magnum/src/Magnum/Primitives/Cube.h
  ../dependancies/magnum/src/Magnum/Primitives/visibility.h
  ../dependancies/magnum/src/Magnum/Sampler.h
+ ../dependancies/magnum/src/Magnum/Shaders/Flat.h
  ../dependancies/magnum/src/Magnum/Shaders/Generic.h
  ../dependancies/magnum/src/Magnum/Shaders/Phong.h
  ../dependancies/magnum/src/Magnum/Shaders/visibility.h
@@ -330,6 +335,8 @@ CMakeFiles/testBuilder_executables_shm.dir/compositor_clients/shm.cpp.o
  ../include/glis/ipc/serializer.hpp
  ../include/glis/ipc/server_core.hpp
  ../include/glis/ipc/shm.hpp
+ ../include/glis/surface/ndc_grid.hpp
+ ../include/glis/surface/surface.hpp
  ../include/glis/templates/templates.hpp
  /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/compositor_clients/shm.cpp
  dependancies/corrade/src/Corrade/configure.h

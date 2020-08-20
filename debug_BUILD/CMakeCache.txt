@@ -59,6 +59,9 @@ ALSOFT_INSTALL_CONFIG:BOOL=ON
 //Install example programs (alplay, alstream, ...)
 ALSOFT_INSTALL_EXAMPLES:BOOL=ON
 
+//Install HRTF data files
+ALSOFT_INSTALL_HRTF_DATA:BOOL=ON
+
 //Install HRTF definition files
 ALSOFT_INSTALL_HRTF_DEFS:BOOL=ON
 

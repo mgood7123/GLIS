@@ -262,33 +262,6 @@ AbstractImporter.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/AbstractImporter.cpp.s
 .PHONY : AbstractImporter.cpp.s
 
-AbstractMaterialData.o: AbstractMaterialData.cpp.o
-
-.PHONY : AbstractMaterialData.o
-
-# target to build an object file
-AbstractMaterialData.cpp.o:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o
-.PHONY : AbstractMaterialData.cpp.o
-
-AbstractMaterialData.i: AbstractMaterialData.cpp.i
-
-.PHONY : AbstractMaterialData.i
-
-# target to preprocess a source file
-AbstractMaterialData.cpp.i:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.i
-.PHONY : AbstractMaterialData.cpp.i
-
-AbstractMaterialData.s: AbstractMaterialData.cpp.s
-
-.PHONY : AbstractMaterialData.s
-
-# target to generate assembly for a file
-AbstractMaterialData.cpp.s:
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.s
-.PHONY : AbstractMaterialData.cpp.s
-
 AbstractSceneConverter.o: AbstractSceneConverter.cpp.o
 
 .PHONY : AbstractSceneConverter.o
@@ -424,6 +397,33 @@ Data.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.s
 .PHONY : Data.cpp.s
 
+FlatMaterialData.o: FlatMaterialData.cpp.o
+
+.PHONY : FlatMaterialData.o
+
+# target to build an object file
+FlatMaterialData.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/FlatMaterialData.cpp.o
+.PHONY : FlatMaterialData.cpp.o
+
+FlatMaterialData.i: FlatMaterialData.cpp.i
+
+.PHONY : FlatMaterialData.i
+
+# target to preprocess a source file
+FlatMaterialData.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/FlatMaterialData.cpp.i
+.PHONY : FlatMaterialData.cpp.i
+
+FlatMaterialData.s: FlatMaterialData.cpp.s
+
+.PHONY : FlatMaterialData.s
+
+# target to generate assembly for a file
+FlatMaterialData.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/FlatMaterialData.cpp.s
+.PHONY : FlatMaterialData.cpp.s
+
 ImageData.o: ImageData.cpp.o
 
 .PHONY : ImageData.o
@@ -477,6 +477,33 @@ LightData.s: LightData.cpp.s
 LightData.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.s
 .PHONY : LightData.cpp.s
+
+MaterialData.o: MaterialData.cpp.o
+
+.PHONY : MaterialData.o
+
+# target to build an object file
+MaterialData.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/MaterialData.cpp.o
+.PHONY : MaterialData.cpp.o
+
+MaterialData.i: MaterialData.cpp.i
+
+.PHONY : MaterialData.i
+
+# target to preprocess a source file
+MaterialData.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/MaterialData.cpp.i
+.PHONY : MaterialData.cpp.i
+
+MaterialData.s: MaterialData.cpp.s
+
+.PHONY : MaterialData.s
+
+# target to generate assembly for a file
+MaterialData.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/MaterialData.cpp.s
+.PHONY : MaterialData.cpp.s
 
 MeshData.o: MeshData.cpp.o
 
@@ -667,6 +694,87 @@ ObjectData3D.cpp.s:
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/ObjectData3D.cpp.s
 .PHONY : ObjectData3D.cpp.s
 
+PbrClearCoatMaterialData.o: PbrClearCoatMaterialData.cpp.o
+
+.PHONY : PbrClearCoatMaterialData.o
+
+# target to build an object file
+PbrClearCoatMaterialData.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrClearCoatMaterialData.cpp.o
+.PHONY : PbrClearCoatMaterialData.cpp.o
+
+PbrClearCoatMaterialData.i: PbrClearCoatMaterialData.cpp.i
+
+.PHONY : PbrClearCoatMaterialData.i
+
+# target to preprocess a source file
+PbrClearCoatMaterialData.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrClearCoatMaterialData.cpp.i
+.PHONY : PbrClearCoatMaterialData.cpp.i
+
+PbrClearCoatMaterialData.s: PbrClearCoatMaterialData.cpp.s
+
+.PHONY : PbrClearCoatMaterialData.s
+
+# target to generate assembly for a file
+PbrClearCoatMaterialData.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrClearCoatMaterialData.cpp.s
+.PHONY : PbrClearCoatMaterialData.cpp.s
+
+PbrMetallicRoughnessMaterialData.o: PbrMetallicRoughnessMaterialData.cpp.o
+
+.PHONY : PbrMetallicRoughnessMaterialData.o
+
+# target to build an object file
+PbrMetallicRoughnessMaterialData.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrMetallicRoughnessMaterialData.cpp.o
+.PHONY : PbrMetallicRoughnessMaterialData.cpp.o
+
+PbrMetallicRoughnessMaterialData.i: PbrMetallicRoughnessMaterialData.cpp.i
+
+.PHONY : PbrMetallicRoughnessMaterialData.i
+
+# target to preprocess a source file
+PbrMetallicRoughnessMaterialData.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrMetallicRoughnessMaterialData.cpp.i
+.PHONY : PbrMetallicRoughnessMaterialData.cpp.i
+
+PbrMetallicRoughnessMaterialData.s: PbrMetallicRoughnessMaterialData.cpp.s
+
+.PHONY : PbrMetallicRoughnessMaterialData.s
+
+# target to generate assembly for a file
+PbrMetallicRoughnessMaterialData.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrMetallicRoughnessMaterialData.cpp.s
+.PHONY : PbrMetallicRoughnessMaterialData.cpp.s
+
+PbrSpecularGlossinessMaterialData.o: PbrSpecularGlossinessMaterialData.cpp.o
+
+.PHONY : PbrSpecularGlossinessMaterialData.o
+
+# target to build an object file
+PbrSpecularGlossinessMaterialData.cpp.o:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrSpecularGlossinessMaterialData.cpp.o
+.PHONY : PbrSpecularGlossinessMaterialData.cpp.o
+
+PbrSpecularGlossinessMaterialData.i: PbrSpecularGlossinessMaterialData.cpp.i
+
+.PHONY : PbrSpecularGlossinessMaterialData.i
+
+# target to preprocess a source file
+PbrSpecularGlossinessMaterialData.cpp.i:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrSpecularGlossinessMaterialData.cpp.i
+.PHONY : PbrSpecularGlossinessMaterialData.cpp.i
+
+PbrSpecularGlossinessMaterialData.s: PbrSpecularGlossinessMaterialData.cpp.s
+
+.PHONY : PbrSpecularGlossinessMaterialData.s
+
+# target to generate assembly for a file
+PbrSpecularGlossinessMaterialData.cpp.s:
+	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD && $(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/PbrSpecularGlossinessMaterialData.cpp.s
+.PHONY : PbrSpecularGlossinessMaterialData.cpp.s
+
 PhongMaterialData.o: PhongMaterialData.cpp.o
 
 .PHONY : PhongMaterialData.o
@@ -770,9 +878,6 @@ help:
 	@echo "... AbstractImporter.o"
 	@echo "... AbstractImporter.i"
 	@echo "... AbstractImporter.s"
-	@echo "... AbstractMaterialData.o"
-	@echo "... AbstractMaterialData.i"
-	@echo "... AbstractMaterialData.s"
 	@echo "... AbstractSceneConverter.o"
 	@echo "... AbstractSceneConverter.i"
 	@echo "... AbstractSceneConverter.s"
@@ -788,12 +893,18 @@ help:
 	@echo "... Data.o"
 	@echo "... Data.i"
 	@echo "... Data.s"
+	@echo "... FlatMaterialData.o"
+	@echo "... FlatMaterialData.i"
+	@echo "... FlatMaterialData.s"
 	@echo "... ImageData.o"
 	@echo "... ImageData.i"
 	@echo "... ImageData.s"
 	@echo "... LightData.o"
 	@echo "... LightData.i"
 	@echo "... LightData.s"
+	@echo "... MaterialData.o"
+	@echo "... MaterialData.i"
+	@echo "... MaterialData.s"
 	@echo "... MeshData.o"
 	@echo "... MeshData.i"
 	@echo "... MeshData.s"
@@ -815,6 +926,15 @@ help:
 	@echo "... ObjectData3D.o"
 	@echo "... ObjectData3D.i"
 	@echo "... ObjectData3D.s"
+	@echo "... PbrClearCoatMaterialData.o"
+	@echo "... PbrClearCoatMaterialData.i"
+	@echo "... PbrClearCoatMaterialData.s"
+	@echo "... PbrMetallicRoughnessMaterialData.o"
+	@echo "... PbrMetallicRoughnessMaterialData.i"
+	@echo "... PbrMetallicRoughnessMaterialData.s"
+	@echo "... PbrSpecularGlossinessMaterialData.o"
+	@echo "... PbrSpecularGlossinessMaterialData.i"
+	@echo "... PbrSpecularGlossinessMaterialData.s"
 	@echo "... PhongMaterialData.o"
 	@echo "... PhongMaterialData.i"
 	@echo "... PhongMaterialData.s"

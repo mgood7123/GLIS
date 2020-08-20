@@ -2,9 +2,8 @@
 // Created by smallville7123 on 12/07/20.
 //
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
-#pragma once
+#ifndef GLIS_HPP
+#define GLIS_HPP
 
 #include <glis/font/font.hpp>
 #include <glis/internal/common.hpp>
@@ -458,3 +457,5 @@ public:
     void clearWhite();
 };
 #pragma clang diagnostic pop
+
+#endif

@@ -23,4 +23,6 @@
 #include <glis/font/font.hpp>
 #include <glis/internal/internal.hpp>
 #include <glis/backup/backup.hpp>
+#include <glis/surface/ndc_grid.hpp>
+#include <glis/surface/surface.hpp>
 #include <glis/compositor/compositor.hpp>

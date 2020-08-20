@@ -16,6 +16,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o"
   "CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
+  "CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o"
+  "CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o"
   "Debug/lib/libGLIS.pdb"
   "Debug/lib/libGLIS.so"
 )

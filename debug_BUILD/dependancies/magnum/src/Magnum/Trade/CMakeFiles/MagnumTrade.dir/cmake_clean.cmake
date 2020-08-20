@@ -8,12 +8,17 @@ file(REMOVE_RECURSE
   "CMakeFiles/MagnumTrade.dir/AbstractSceneConverter.cpp.o"
   "CMakeFiles/MagnumTrade.dir/AnimationData.cpp.o"
   "CMakeFiles/MagnumTrade.dir/CameraData.cpp.o"
+  "CMakeFiles/MagnumTrade.dir/FlatMaterialData.cpp.o"
   "CMakeFiles/MagnumTrade.dir/ImageData.cpp.o"
+  "CMakeFiles/MagnumTrade.dir/MaterialData.cpp.o"
   "CMakeFiles/MagnumTrade.dir/MeshData.cpp.o"
   "CMakeFiles/MagnumTrade.dir/MeshData2D.cpp.o"
   "CMakeFiles/MagnumTrade.dir/MeshData3D.cpp.o"
   "CMakeFiles/MagnumTrade.dir/ObjectData2D.cpp.o"
   "CMakeFiles/MagnumTrade.dir/ObjectData3D.cpp.o"
+  "CMakeFiles/MagnumTrade.dir/PbrClearCoatMaterialData.cpp.o"
+  "CMakeFiles/MagnumTrade.dir/PbrMetallicRoughnessMaterialData.cpp.o"
+  "CMakeFiles/MagnumTrade.dir/PbrSpecularGlossinessMaterialData.cpp.o"
   "CMakeFiles/MagnumTrade.dir/PhongMaterialData.cpp.o"
 )
 

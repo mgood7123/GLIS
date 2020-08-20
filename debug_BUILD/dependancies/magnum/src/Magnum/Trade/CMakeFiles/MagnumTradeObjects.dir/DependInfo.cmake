@@ -4,7 +4,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/AbstractMaterialData.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/ArrayAllocator.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/Data.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/LightData.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o"

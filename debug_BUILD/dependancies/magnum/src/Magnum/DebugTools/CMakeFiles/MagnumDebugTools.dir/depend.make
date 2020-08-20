@@ -7,7 +7,6 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/Compar
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Optional.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Pointer.h
-dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/PointerStl.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/StridedArrayView.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/Tags.h
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/CompareImage.cpp.o: ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h

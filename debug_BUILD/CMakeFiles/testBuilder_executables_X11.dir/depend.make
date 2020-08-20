@@ -261,6 +261,7 @@ CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/m
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/GL/Texture.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/GL/TextureFormat.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/GL/visibility.h
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/ImageView.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Magnum.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Angle.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/BoolVector.h
@@ -270,6 +271,7 @@ CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/m
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Half.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Math.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Matrix.h
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Matrix3.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Matrix4.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Packing.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Math/Range.h
@@ -286,12 +288,15 @@ CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/m
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/MeshTools/CompressIndices.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/MeshTools/Interleave.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/MeshTools/visibility.h
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/PixelFormat.h
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/PixelStorage.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Platform/GLContext.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Platform/Platform.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Primitives/Cube.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Primitives/visibility.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Sampler.h
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Flat.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Generic.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Phong.h
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/visibility.h
@@ -329,6 +334,8 @@ CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/i
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/ipc/serializer.hpp
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/ipc/server_core.hpp
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/ipc/shm.hpp
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/surface/ndc_grid.hpp
+CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/surface/surface.hpp
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../include/glis/templates/templates.hpp
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: ../examples/X11.cpp
 CMakeFiles/testBuilder_executables_X11.dir/examples/X11.cpp.o: dependancies/corrade/src/Corrade/configure.h

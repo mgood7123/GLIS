@@ -6,4 +6,4 @@
 #define ALSOFT_GIT_BRANCH "master"
 
 /* Define the hash of the head commit */
-#define ALSOFT_GIT_COMMIT_HASH "84354c79"
+#define ALSOFT_GIT_COMMIT_HASH "23259b48"

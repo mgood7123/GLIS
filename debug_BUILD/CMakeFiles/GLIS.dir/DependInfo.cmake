@@ -53,6 +53,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/serializer.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/server_core.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o"
   "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/shm.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o"
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/ndc_grid.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o"
+  "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp" "/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

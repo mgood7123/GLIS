@@ -2389,6 +2389,60 @@ src/glis/ipc/shm.cpp.s:
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.s
 .PHONY : src/glis/ipc/shm.cpp.s
 
+src/glis/surface/ndc_grid.o: src/glis/surface/ndc_grid.cpp.o
+
+.PHONY : src/glis/surface/ndc_grid.o
+
+# target to build an object file
+src/glis/surface/ndc_grid.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o
+.PHONY : src/glis/surface/ndc_grid.cpp.o
+
+src/glis/surface/ndc_grid.i: src/glis/surface/ndc_grid.cpp.i
+
+.PHONY : src/glis/surface/ndc_grid.i
+
+# target to preprocess a source file
+src/glis/surface/ndc_grid.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.i
+.PHONY : src/glis/surface/ndc_grid.cpp.i
+
+src/glis/surface/ndc_grid.s: src/glis/surface/ndc_grid.cpp.s
+
+.PHONY : src/glis/surface/ndc_grid.s
+
+# target to generate assembly for a file
+src/glis/surface/ndc_grid.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.s
+.PHONY : src/glis/surface/ndc_grid.cpp.s
+
+src/glis/surface/surface.o: src/glis/surface/surface.cpp.o
+
+.PHONY : src/glis/surface/surface.o
+
+# target to build an object file
+src/glis/surface/surface.cpp.o:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o
+.PHONY : src/glis/surface/surface.cpp.o
+
+src/glis/surface/surface.i: src/glis/surface/surface.cpp.i
+
+.PHONY : src/glis/surface/surface.i
+
+# target to preprocess a source file
+src/glis/surface/surface.cpp.i:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.i
+.PHONY : src/glis/surface/surface.cpp.i
+
+src/glis/surface/surface.s: src/glis/surface/surface.cpp.s
+
+.PHONY : src/glis/surface/surface.s
+
+# target to generate assembly for a file
+src/glis/surface/surface.cpp.s:
+	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.s
+.PHONY : src/glis/surface/surface.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -2610,6 +2664,12 @@ help:
 	@echo "... src/glis/ipc/shm.o"
 	@echo "... src/glis/ipc/shm.i"
 	@echo "... src/glis/ipc/shm.s"
+	@echo "... src/glis/surface/ndc_grid.o"
+	@echo "... src/glis/surface/ndc_grid.i"
+	@echo "... src/glis/surface/ndc_grid.s"
+	@echo "... src/glis/surface/surface.o"
+	@echo "... src/glis/surface/surface.i"
+	@echo "... src/glis/surface/surface.s"
 .PHONY : help
 
 

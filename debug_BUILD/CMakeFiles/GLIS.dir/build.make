@@ -265,9 +265,35 @@ CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/ipc/shm.cpp -o CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.s
 
+CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o: CMakeFiles/GLIS.dir/flags.make
+CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o: ../src/glis/surface/ndc_grid.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/ndc_grid.cpp
+
+CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/ndc_grid.cpp > CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.i
+
+CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/ndc_grid.cpp -o CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.s
+
+CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o: CMakeFiles/GLIS.dir/flags.make
+CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o: ../src/glis/surface/surface.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
+
+CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp > CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.i
+
+CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp -o CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.s
+
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o: CMakeFiles/GLIS.dir/flags.make
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o: ../src/glis/internal/xdg-shell-protocol.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o   -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/xdg-shell-protocol.c
 
 CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.i: cmake_force
@@ -296,6 +322,8 @@ GLIS_OBJECTS = \
 "CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o" \
+"CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o" \
+"CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o" \
 "CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o"
 
 # External object files for target GLIS
@@ -317,6 +345,8 @@ Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/ipc.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/serializer.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/server_core.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/ipc/shm.cpp.o
+Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/surface/ndc_grid.cpp.o
+Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/surface/surface.cpp.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/src/glis/internal/xdg-shell-protocol.c.o
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/build.make
 Debug/lib/libGLIS.so: Debug/lib/libMagnumDebugTools-d.so.2.4
@@ -341,7 +371,7 @@ Debug/lib/libGLIS.so: /usr/lib/x86_64-linux-gnu/libGLESv2.so
 Debug/lib/libGLIS.so: Debug/lib/libMagnum-d.so.2.4
 Debug/lib/libGLIS.so: Debug/lib/libCorradeUtility-d.so.2.4
 Debug/lib/libGLIS.so: CMakeFiles/GLIS.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX shared library Debug/lib/libGLIS.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX shared library Debug/lib/libGLIS.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GLIS.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -3,9 +3,6 @@
 //
 
 #include <glis/glis.hpp>
-#include "../src/glis/surface/surface.cpp"
-#include <Magnum/Primitives/Plane.h>
-#include <Magnum/Shaders/MeshVisualizer.h>
 
 GLIS_CLASS screen;
 GLIS glis;

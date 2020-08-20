@@ -294,12 +294,10 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../depend
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Platform/Platform.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Platform/WindowlessEglApplication.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Primitives/Cube.h
-CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Primitives/Plane.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Primitives/visibility.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Sampler.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Flat.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Generic.h
-CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/MeshVisualizer.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/Phong.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Shaders/visibility.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../dependancies/magnum/src/Magnum/Tags.h
@@ -336,9 +334,10 @@ CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../includ
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/ipc/serializer.hpp
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/ipc/server_core.hpp
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/ipc/shm.hpp
+CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/surface/ndc_grid.hpp
+CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/surface/surface.hpp
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../include/glis/templates/templates.hpp
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../examples/Surface.cpp
-CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: ../src/glis/surface/surface.cpp
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: dependancies/corrade/src/Corrade/configure.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: dependancies/magnum-integration/src/Magnum/ImGuiIntegration/configure.h
 CMakeFiles/testBuilder_executables_Surface.dir/examples/Surface.cpp.o: dependancies/magnum/src/Magnum/configure.h

@@ -558,22 +558,6 @@ tuple
 Magnum/Math/Half.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Magnum/Math/Half.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Half.cpp
-Magnum/Math/Half.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Magnum/Math/Half.h
-iomanip
--
-sstream
--
-Corrade/Utility/DebugStl.h
--
-algorithm
--
-Corrade/Utility/String.h
--
-Corrade/Utility/TweakableParser.h
--
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Packing.cpp
 Packing.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Packing.h

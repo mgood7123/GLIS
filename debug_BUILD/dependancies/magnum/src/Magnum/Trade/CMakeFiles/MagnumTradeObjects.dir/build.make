@@ -57,22 +57,9 @@ include dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/p
 # Include the compile flags for this target's objects.
 include dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 
-dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
-dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o: ../dependancies/magnum/src/Magnum/Trade/AbstractMaterialData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/AbstractMaterialData.cpp
-
-dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.i"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/AbstractMaterialData.cpp > CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.i
-
-dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.s"
-	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/AbstractMaterialData.cpp -o CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.s
-
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o: ../dependancies/magnum/src/Magnum/Trade/ArrayAllocator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/ArrayAllocator.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.i: cmake_force
@@ -85,7 +72,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllo
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o: ../dependancies/magnum/src/Magnum/Trade/Data.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/Data.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.i: cmake_force
@@ -98,7 +85,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o: ../dependancies/magnum/src/Magnum/Trade/LightData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/LightData.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.i: cmake_force
@@ -111,7 +98,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.o: ../dependancies/magnum/src/Magnum/Trade/MeshObjectData2D.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/MeshObjectData2D.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData2D.cpp.i: cmake_force
@@ -124,7 +111,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjec
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.o: ../dependancies/magnum/src/Magnum/Trade/MeshObjectData3D.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/MeshObjectData3D.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjectData3D.cpp.i: cmake_force
@@ -137,7 +124,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/MeshObjec
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.o: ../dependancies/magnum/src/Magnum/Trade/SceneData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/SceneData.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData.cpp.i: cmake_force
@@ -150,7 +137,7 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/SceneData
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.o: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/flags.make
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.o: ../dependancies/magnum/src/Magnum/Trade/TextureData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.o"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.o -c /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/TextureData.cpp
 
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.i: cmake_force
@@ -161,7 +148,6 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/TextureDa
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.s"
 	cd /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/dependancies/magnum/src/Magnum/Trade && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Trade/TextureData.cpp -o CMakeFiles/MagnumTradeObjects.dir/TextureData.cpp.s
 
-MagnumTradeObjects: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o
 MagnumTradeObjects: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o
 MagnumTradeObjects: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o
 MagnumTradeObjects: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o

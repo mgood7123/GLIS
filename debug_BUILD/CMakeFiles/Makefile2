@@ -1796,12 +1796,12 @@ CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/magnum-integratio
 CMakeFiles/testBuilder_executables_X11_2.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_2.dir/build.make CMakeFiles/testBuilder_executables_X11_2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=94 "Built target testBuilder_executables_X11_2"
 .PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_2.dir/rule
@@ -1934,12 +1934,12 @@ CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum-integratio
 CMakeFiles/testBuilder_executables_X11_3.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/depend
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_3.dir/build.make CMakeFiles/testBuilder_executables_X11_3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=94 "Built target testBuilder_executables_X11_3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target testBuilder_executables_X11_3"
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testBuilder_executables_X11_3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 71
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 70
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testBuilder_executables_X11_3.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : CMakeFiles/testBuilder_executables_X11_3.dir/rule
@@ -2120,7 +2120,7 @@ CMakeFiles/GLIS.dir/all: dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeF
 CMakeFiles/GLIS.dir/all: dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/all
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/depend
 	$(MAKE) -f CMakeFiles/GLIS.dir/build.make CMakeFiles/GLIS.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=9,10,11,12 "Built target GLIS"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=9,10,11,12,13 "Built target GLIS"
 .PHONY : CMakeFiles/GLIS.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2608,12 +2608,12 @@ dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all: dependa
 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all: dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build.make dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=87 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target gmock_main"
 .PHONY : dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/rule
@@ -2635,12 +2635,12 @@ dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock_main.dir/clean:
 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all: dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build.make dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build.make dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=87 "Built target gmock"
 .PHONY : dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/rule
@@ -2662,7 +2662,7 @@ dependancies/AnyOpt/googletest/googlemock/CMakeFiles/gmock.dir/clean:
 dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all: dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build.make dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build.make dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=88 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target gtest_main"
 .PHONY : dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2689,12 +2689,12 @@ dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest_main.dir/clean:
 dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build.make dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build.make dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=88 "Built target gtest"
 .PHONY : dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/AnyOpt/googletest/googletest/CMakeFiles/gtest.dir/rule
@@ -2744,7 +2744,7 @@ dependancies/AnyOpt/tests/CMakeFiles/testBuilder_executables_AnyOpt_Tests.dir/cl
 dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all:
 	$(MAKE) -f dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build.make dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/depend
 	$(MAKE) -f dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build.make dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=70 "Built target WinKernel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=71 "Built target WinKernel"
 .PHONY : dependancies/WINAPI/SDK/src/Windows/Kernel/CMakeFiles/WinKernel.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2857,7 +2857,7 @@ dependancies/openal-soft/CMakeFiles/ex-common.dir/all: dependancies/openal-soft/
 
 # Build rule for subdir invocation for target.
 dependancies/openal-soft/CMakeFiles/ex-common.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 15
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/ex-common.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/openal-soft/CMakeFiles/ex-common.dir/rule
@@ -2880,12 +2880,12 @@ dependancies/openal-soft/CMakeFiles/OpenAL.dir/all: dependancies/openal-soft/CMa
 dependancies/openal-soft/CMakeFiles/OpenAL.dir/all: dependancies/openal-soft/CMakeFiles/build_version.dir/all
 	$(MAKE) -f dependancies/openal-soft/CMakeFiles/OpenAL.dir/build.make dependancies/openal-soft/CMakeFiles/OpenAL.dir/depend
 	$(MAKE) -f dependancies/openal-soft/CMakeFiles/OpenAL.dir/build.make dependancies/openal-soft/CMakeFiles/OpenAL.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=56,57,58,59,60,61,62,63,64,65,66,67,68 "Built target OpenAL"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=57,58,59,60,61,62,63,64,65,66,67,68,69 "Built target OpenAL"
 .PHONY : dependancies/openal-soft/CMakeFiles/OpenAL.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/openal-soft/CMakeFiles/OpenAL.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 15
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/OpenAL.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/openal-soft/CMakeFiles/OpenAL.dir/rule
@@ -2907,12 +2907,12 @@ dependancies/openal-soft/CMakeFiles/OpenAL.dir/clean:
 dependancies/openal-soft/CMakeFiles/common.dir/all:
 	$(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/depend
 	$(MAKE) -f dependancies/openal-soft/CMakeFiles/common.dir/build.make dependancies/openal-soft/CMakeFiles/common.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=71,72,73 "Built target common"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=72,73 "Built target common"
 .PHONY : dependancies/openal-soft/CMakeFiles/common.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/openal-soft/CMakeFiles/common.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/openal-soft/CMakeFiles/common.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/openal-soft/CMakeFiles/common.dir/rule
@@ -3261,12 +3261,12 @@ dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all: dependancies/magnum/sr
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all: dependancies/magnum/src/Magnum/CMakeFiles/MagnumMathObjects.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build.make dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=13,14,15 "Built target Magnum"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=14,15 "Built target Magnum"
 .PHONY : dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/CMakeFiles/Magnum.dir/rule
@@ -3431,7 +3431,7 @@ dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all: dep
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 21
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/Platform/CMakeFiles/MagnumEglContext.dir/rule
@@ -3517,12 +3517,12 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: d
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumDebugTools"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=16 "Built target MagnumDebugTools"
 .PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 46
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 45
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/rule
@@ -3545,12 +3545,12 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all: dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools_RESOURCES-dependencies.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build.make dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=16,17,18 "Built target MagnumDebugToolsObjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=17,18 "Built target MagnumDebugToolsObjects"
 .PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugToolsObjects.dir/rule
@@ -3607,7 +3607,7 @@ dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all: dependancies/magn
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 21
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 20
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/GL/CMakeFiles/MagnumGL.dir/rule
@@ -3666,7 +3666,7 @@ dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all: dep
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 31
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 30
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/MeshTools/CMakeFiles/MagnumMeshTools.dir/rule
@@ -3725,7 +3725,7 @@ dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all: d
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 35
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 34
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/Primitives/CMakeFiles/MagnumPrimitives.dir/rule
@@ -3754,7 +3754,7 @@ dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all: d
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/rule
@@ -3776,12 +3776,12 @@ dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraph.dir/clean:
 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all:
 	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build.make dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=42 "Built target MagnumSceneGraphObjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumSceneGraphObjects"
 .PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/SceneGraph/CMakeFiles/MagnumSceneGraphObjects.dir/rule
@@ -3806,7 +3806,7 @@ dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependa
 dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all: dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShadersObjects.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build.make dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=43 "Built target MagnumShaders"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=42,43 "Built target MagnumShaders"
 .PHONY : dependancies/magnum/src/Magnum/Shaders/CMakeFiles/MagnumShaders.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3893,12 +3893,12 @@ dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/
 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=45 "Built target MagnumText"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target MagnumText"
 .PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 28
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 27
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/rule
@@ -3920,7 +3920,7 @@ dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumText.dir/clean:
 dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all:
 	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build.make dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=46 "Built target MagnumTextObjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=45 "Built target MagnumTextObjects"
 .PHONY : dependancies/magnum/src/Magnum/Text/CMakeFiles/MagnumTextObjects.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3951,7 +3951,7 @@ dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/al
 dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools_RCS-dependencies.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build.make dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=47 "Built target MagnumTextureTools"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=46,47 "Built target MagnumTextureTools"
 .PHONY : dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
 
 # Build rule for subdir invocation for target.
@@ -4008,12 +4008,12 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancie
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
 	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=48,49,50 "Built target MagnumTrade"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=48,49,50,51 "Built target MagnumTrade"
 .PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 15
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/rule
@@ -4035,12 +4035,12 @@ dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/clean:
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all:
 	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/depend
 	$(MAKE) -f dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build.make dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=51,52 "Built target MagnumTradeObjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=52 "Built target MagnumTradeObjects"
 .PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTradeObjects.dir/rule
@@ -4100,7 +4100,7 @@ dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/all: 
 
 # Build rule for subdir invocation for target.
 dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 33
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 32
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum/src/MagnumPlugins/MagnumFont/CMakeFiles/MagnumFont.dir/rule
@@ -4152,7 +4152,7 @@ dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/all
 dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/all: dependancies/magnum/src/Magnum/Trade/CMakeFiles/MagnumTrade.dir/all
 	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/build.make dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/depend
 	$(MAKE) -f dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/build.make dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target TgaImporter"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=70 "Built target TgaImporter"
 .PHONY : dependancies/magnum/src/MagnumPlugins/TgaImporter/CMakeFiles/TgaImporter.dir/all
 
 # Build rule for subdir invocation for target.
@@ -4217,7 +4217,7 @@ dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all: dependanci
 dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all: dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi_RESOURCES-dependencies.dir/all
 	$(MAKE) -f dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/build.make dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/depend
 	$(MAKE) -f dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/build.make dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=53,54,55 "Built target MagnumUi"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=53,54,55,56 "Built target MagnumUi"
 .PHONY : dependancies/magnum-extras/src/Magnum/Ui/CMakeFiles/MagnumUi.dir/all
 
 # Build rule for subdir invocation for target.
@@ -4308,7 +4308,7 @@ dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFo
 
 # Build rule for subdir invocation for target.
 dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 28
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 27
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum-plugins/src/MagnumPlugins/FreeTypeFont/CMakeFiles/FreeTypeFont.dir/rule
@@ -4362,12 +4362,12 @@ dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrue
 dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/all: dependancies/magnum/src/Magnum/TextureTools/CMakeFiles/MagnumTextureTools.dir/all
 	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/depend
 	$(MAKE) -f dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/build.make dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num=69 "Built target StbTrueTypeFont"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles --progress-num= "Built target StbTrueTypeFont"
 .PHONY : dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/all
 
 # Build rule for subdir invocation for target.
 dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 27
 	$(MAKE) -f CMakeFiles/Makefile2 dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/debug_BUILD/CMakeFiles 0
 .PHONY : dependancies/magnum-plugins/src/MagnumPlugins/StbTrueTypeFont/CMakeFiles/StbTrueTypeFont.dir/rule

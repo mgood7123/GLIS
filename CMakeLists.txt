@@ -80,6 +80,8 @@ testBuilder_add_source(GLIS src/glis/ipc/ipc.cpp)
 testBuilder_add_source(GLIS src/glis/ipc/serializer.cpp)
 testBuilder_add_source(GLIS src/glis/ipc/server_core.cpp)
 testBuilder_add_source(GLIS src/glis/ipc/shm.cpp)
+testBuilder_add_source(GLIS src/glis/surface/ndc_grid.cpp)
+testBuilder_add_source(GLIS src/glis/surface/surface.cpp)
 
 if (ANDROID)
     testBuilder_add_library(GLIS GLESv3)

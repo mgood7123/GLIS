@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MagnumTradeObjects.dir/AbstractMaterialData.cpp.o"
   "CMakeFiles/MagnumTradeObjects.dir/ArrayAllocator.cpp.o"
   "CMakeFiles/MagnumTradeObjects.dir/Data.cpp.o"
   "CMakeFiles/MagnumTradeObjects.dir/LightData.cpp.o"

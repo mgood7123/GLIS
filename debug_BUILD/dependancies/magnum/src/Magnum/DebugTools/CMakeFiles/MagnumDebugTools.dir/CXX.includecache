@@ -98,12 +98,6 @@ Corrade/Utility/Assert.h
 Corrade/Utility/Debug.h
 ../dependancies/corrade/src/Corrade/Containers/Corrade/Utility/Debug.h
 
-../dependancies/corrade/src/Corrade/Containers/PointerStl.h
-memory
--
-Corrade/Containers/Pointer.h
-../dependancies/corrade/src/Corrade/Containers/Corrade/Containers/Pointer.h
-
 ../dependancies/corrade/src/Corrade/Containers/StridedArrayView.h
 Corrade/Containers/ArrayView.h
 ../dependancies/corrade/src/Corrade/Containers/Corrade/Containers/ArrayView.h
@@ -645,8 +639,6 @@ Magnum/Trade/Trade.h
 ../dependancies/magnum/src/Magnum/Trade/Magnum/Trade/Trade.h
 Magnum/Trade/visibility.h
 ../dependancies/magnum/src/Magnum/Trade/Magnum/Trade/visibility.h
-Corrade/Containers/PointerStl.h
--
 Magnum/FileCallback.h
 ../dependancies/magnum/src/Magnum/Trade/Magnum/FileCallback.h
 

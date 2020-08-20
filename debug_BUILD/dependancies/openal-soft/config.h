@@ -77,9 +77,6 @@
 /* Define if we have the SDL2 backend */
 /* #undef HAVE_SDL2 */
 
-/* Define to the size of a long int type */
-#define SIZEOF_LONG 8
-
 /* Define if we have dlfcn.h */
 #define HAVE_DLFCN_H
 

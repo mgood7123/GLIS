@@ -8,7 +8,6 @@ dependancies/magnum/src/Magnum/DebugTools/CMakeFiles/MagnumDebugTools.dir/Compar
  ../dependancies/corrade/src/Corrade/Containers/EnumSet.h
  ../dependancies/corrade/src/Corrade/Containers/Optional.h
  ../dependancies/corrade/src/Corrade/Containers/Pointer.h
- ../dependancies/corrade/src/Corrade/Containers/PointerStl.h
  ../dependancies/corrade/src/Corrade/Containers/StridedArrayView.h
  ../dependancies/corrade/src/Corrade/Containers/Tags.h
  ../dependancies/corrade/src/Corrade/Containers/constructHelpers.h

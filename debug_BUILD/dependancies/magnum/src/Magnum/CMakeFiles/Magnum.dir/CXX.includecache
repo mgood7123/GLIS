@@ -230,13 +230,7 @@ Magnum/DimensionTraits.h
 
 ../dependancies/magnum/src/Magnum/Implementation/compressedPixelFormatMapping.hpp
 
-../dependancies/magnum/src/Magnum/Implementation/meshIndexTypeMapping.hpp
-
-../dependancies/magnum/src/Magnum/Implementation/meshPrimitiveMapping.hpp
-
 ../dependancies/magnum/src/Magnum/Implementation/pixelFormatMapping.hpp
-
-../dependancies/magnum/src/Magnum/Implementation/vertexFormatMapping.hpp
 
 ../dependancies/magnum/src/Magnum/Magnum.h
 Corrade/Utility/Utility.h
@@ -594,32 +588,6 @@ Magnum/Types.h
 Magnum/visibility.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Math/Magnum/visibility.h
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Mesh.cpp
-Mesh.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Mesh.h
-string
--
-Corrade/Containers/ArrayView.h
--
-Corrade/Utility/Assert.h
--
-Corrade/Utility/Debug.h
--
-Magnum/Implementation/meshPrimitiveMapping.hpp
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Implementation/meshPrimitiveMapping.hpp
-Magnum/Implementation/meshIndexTypeMapping.hpp
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Implementation/meshIndexTypeMapping.hpp
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Mesh.h
-Corrade/Utility/Assert.h
--
-Corrade/Utility/StlForwardString.h
--
-Magnum/Magnum.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Magnum.h
-Magnum/visibility.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/visibility.h
-
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/PixelFormat.cpp
 PixelFormat.h
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/PixelFormat.h
@@ -641,30 +609,6 @@ Magnum/Implementation/compressedPixelFormatMapping.hpp
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Implementation/compressedPixelFormatMapping.hpp
 
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/PixelFormat.h
-Corrade/Utility/Assert.h
--
-Corrade/Utility/StlForwardString.h
--
-Magnum/Magnum.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Magnum.h
-Magnum/visibility.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/visibility.h
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/VertexFormat.cpp
-VertexFormat.h
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/VertexFormat.h
-string
--
-Corrade/Containers/ArrayView.h
--
-Corrade/Utility/Assert.h
--
-Corrade/Utility/Debug.h
--
-Magnum/Implementation/vertexFormatMapping.hpp
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/Magnum/Implementation/vertexFormatMapping.hpp
-
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/magnum/src/Magnum/VertexFormat.h
 Corrade/Utility/Assert.h
 -
 Corrade/Utility/StlForwardString.h
