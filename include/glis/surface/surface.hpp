@@ -91,7 +91,7 @@ public:
         newTexture2D({texture_width, texture_height});
 
         texture2DDraw
-                ->setSubImage(0, {}, std::move(image_))
+                ->setSubImage(0, {}, std::move(image_)) // seg fault here
                 .generateMipmap();
     }
 

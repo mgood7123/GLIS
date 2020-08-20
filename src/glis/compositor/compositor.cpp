@@ -237,7 +237,9 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                         GLIS_Surface m;
                         m.resize({GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT});
                         // rgba8
-                        m.setTextureData(reinterpret_cast<uint32_t*>(CW->TEXTURE), CW->w, CW->h);
+                        // seg fault here
+                        m.genTextureFromGLTexture(CW->TEXTURE);
+//                        m.setTextureData(reinterpret_cast<uint32_t*>(CW->TEXTURE), CW->w, CW->h);
                         m.texture2DRead = m.texture2DDraw;
                         GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
                         m.drawPlaneCorners(
