@@ -4,6 +4,114 @@
 
 #include <glis/surface/surface.hpp>
 
+Magnum::GL::Mesh GLIS_Mesh::buildTriangleWireframeMesh(const Magnum::Vector2 &left,
+                                                    const Magnum::Vector2 &right,
+                                                    const Magnum::Vector2 &top) {
+    const struct Vertex {
+        Magnum::Vector2 position;
+    } vertex[] {
+            {grid->Correct_NDC(left)},    {grid->Correct_NDC(right)},
+            {grid->Correct_NDC(right)}, {grid->Correct_NDC(top)},
+            {grid->Correct_NDC(top)},  {grid->Correct_NDC(left)}
+    };
+
+    Magnum::GL::Buffer vertices(vertex);
+
+    Magnum::GL::Mesh mesh;
+    mesh
+            .setPrimitive(Magnum::MeshPrimitive::Lines)
+            .addVertexBuffer(std::move(vertices), 0, Magnum::GL::Attribute<0, Magnum::Vector2> {})
+            .setCount(sizeof(vertex)/sizeof(Vertex));
+    return mesh;
+}
+
+Magnum::GL::Mesh GLIS_Mesh::buildTriangleMesh(const Magnum::Vector2 &left,
+                                              const Magnum::Vector2 &right,
+                                              const Magnum::Vector2 &top) {
+    struct TriangleVertex {
+        Magnum::Vector2 position;
+        Magnum::Vector2 textureCoordinates;
+    };
+
+    const TriangleVertex data[]{
+            {left , {0.0f, 0.0f}}, /* Left position and texture coordinate for mapping textures */
+            {right, {1.0f, 0.0f}}, /* Right position and texture coordinate for mapping textures */
+            {top  , {0.5f, 1.0f}}  /* Top position and texture coordinate for mapping textures */
+    };
+
+    Magnum::GL::Buffer buffer(data);
+
+    Magnum::GL::Mesh mesh;
+    mesh
+            .setCount(3)
+            .addVertexBuffer(
+                    std::move(buffer), 0,
+                    Magnum::GL::Attribute<0, Magnum::Vector2> {},
+                    Magnum::GL::Attribute<1, Magnum::Vector2> {}
+            );
+    return mesh;
+}
+
+Magnum::GL::Mesh GLIS_Mesh::buildPlaneWireframeMesh(const Magnum::Vector2 &topLeft,
+                                            const Magnum::Vector2 &topRight,
+                                            const Magnum::Vector2 &bottomRight,
+                                            const Magnum::Vector2 &bottomLeft) {
+    const struct Vertex {
+        Magnum::Vector2 position;
+    } vertex[] {
+            {grid->Correct_NDC(topRight)},    {grid->Correct_NDC(bottomRight)}, // right
+            {grid->Correct_NDC(bottomRight)}, {grid->Correct_NDC(bottomLeft)},  // bottom
+            {grid->Correct_NDC(bottomLeft)},  {grid->Correct_NDC(topLeft)},     // left
+            {grid->Correct_NDC(topLeft)},     {grid->Correct_NDC(topRight)}     // top
+    };
+
+    Magnum::GL::Buffer vertices(vertex);
+
+    Magnum::GL::Mesh mesh;
+    mesh
+            .setPrimitive(Magnum::MeshPrimitive::Lines)
+            .addVertexBuffer(std::move(vertices), 0, Magnum::GL::Attribute<0, Magnum::Vector2> {})
+            .setCount(sizeof(vertex)/sizeof(Vertex));
+    return mesh;
+}
+
+Magnum::GL::Mesh
+GLIS_Mesh::buildPlaneMesh(const Magnum::Vector2 &topLeft, const Magnum::Vector2 &topRight,
+                                   const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
+    const struct Vertex {
+        Magnum::Vector2 position;
+        Magnum::Vector2 textureCoordinates;
+    } vertex[] {
+            {topRight,    {1.0f, 1.0f}},
+            {bottomRight, {1.0f, 0.0f}},
+            {bottomLeft,  {0.0f, 0.0f}},
+            {topLeft,     {0.0f, 1.0f}}
+    };
+
+    Magnum::UnsignedInt indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+    };
+
+    Magnum::GL::Buffer vertexBuffer(vertex);
+    Magnum::GL::Buffer indexBuffer(indices);
+
+    Magnum::GL::Mesh mesh;
+    mesh
+            .setPrimitive(Magnum::MeshPrimitive::TriangleStrip)
+            .addVertexBuffer(
+                    std::move(vertexBuffer), 0,
+                    Magnum::GL::Attribute<0, Magnum::Vector2> {}, Magnum::GL::Attribute<1, Magnum::Vector2> {}
+            )
+            .setCount(sizeof(vertex)/sizeof(Vertex))
+            .setIndexBuffer(
+                    std::move(indexBuffer), 0, Magnum::GL::MeshIndexType::UnsignedInt
+            )
+            .setCount(sizeof(indices)/sizeof(Magnum::UnsignedInt))
+            ;
+    return mesh;
+}
+
 void GLIS_Surface::release() {
     delete framebuffer_;
     framebuffer_ = nullptr;
@@ -21,8 +129,8 @@ void GLIS_Surface::release() {
     shaderReadTexture = nullptr;
     delete shaderDraw;
     shaderDraw = nullptr;
-    delete grid;
-    grid = nullptr;
+    delete mesh.grid;
+    mesh.grid = nullptr;
 }
 
 void GLIS_Surface::newTexture2D(const Magnum::VectorTypeFor<2, int> &size) {
@@ -49,9 +157,9 @@ void GLIS_Surface::resize(const Magnum::VectorTypeFor<2, int> &size) {
         height = size[1];
         Magnum::GL::defaultFramebuffer.setViewport({{}, size});
     }
-    delete grid;
-    grid = new GLIS_NDC_Tools::GridPixelCentered(size[0], size[1]);
-    grid->test();
+    delete mesh.grid;
+    mesh.grid = new GLIS_NDC_Tools::GridPixelCentered(size[0], size[1]);
+    mesh.grid->test();
 }
 
 void GLIS_Surface::resize(const Magnum::VectorTypeFor<2, int> &size1,
@@ -103,80 +211,31 @@ void GLIS_Surface::draw(GLIS_SurfaceShader *shader, const GLIS_SurfaceColor &col
             .draw(mesh);
 }
 
-Magnum::GL::Mesh
-GLIS_Surface::buildTriangleMesh(const Magnum::Vector2 &Left, const Magnum::Vector2 &Right,
-                                const Magnum::Vector2 &Top) {
-    struct TriangleVertex {
-        Magnum::Vector2 position;
-        Magnum::Vector2 textureCoordinates;
-    };
-
-    const TriangleVertex data[]{
-            {Left , {0.0f, 0.0f}}, /* Left position and texture coordinate for mapping textures */
-            {Right, {1.0f, 0.0f}}, /* Right position and texture coordinate for mapping textures */
-            {Top  , {0.5f, 1.0f}}  /* Top position and texture coordinate for mapping textures */
-    };
-
-    Magnum::GL::Buffer buffer(data);
-
-    Magnum::GL::Mesh mesh;
-    mesh
-            .setCount(3)
-            .addVertexBuffer(
-                    std::move(buffer), 0,
-                    Magnum::GL::Attribute<0, Magnum::Vector2> {},
-                    Magnum::GL::Attribute<1, Magnum::Vector2> {}
-            );
-    return mesh;
+void GLIS_Surface::drawTriangleWireframe(const GLIS_SurfaceColor &color, const Magnum::Vector2 &left,
+                                const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
+    if (texture2DRead != nullptr) {
+        draw(newShaderReadTexture(), surfaceTextureColor, this->mesh.buildTriangleWireframeMesh(left, right, top));
+    } else {
+        draw(newShaderRead(), color, this->mesh.buildTriangleWireframeMesh(left, right, top));
+    }
 }
 
-void GLIS_Surface::drawTriangle(const GLIS_SurfaceColor &color, const Magnum::Vector2 &Left,
-                                const Magnum::Vector2 &Right, const Magnum::Vector2 &Top) {
+void GLIS_Surface::drawTriangle(const GLIS_SurfaceColor &color, const Magnum::Vector2 &left,
+                                const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
     if (texture2DRead != nullptr) {
-        draw(newShaderReadTexture(), surfaceTextureColor, buildTriangleMesh(Left, Right, Top));
+        draw(newShaderReadTexture(), surfaceTextureColor, this->mesh.buildTriangleMesh(left, right, top));
     } else {
-        draw(newShaderRead(), color, buildTriangleMesh(Left, Right, Top));
+        draw(newShaderRead(), color, this->mesh.buildTriangleMesh(left, right, top));
     }
 }
 
 void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const GLIS_SurfaceColor &color,
-                                const Magnum::Vector2 &Left, const Magnum::Vector2 &Right,
-                                const Magnum::Vector2 &Top) {
+                                const Magnum::Vector2 &left, const Magnum::Vector2 &right,
+                                const Magnum::Vector2 &top) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
     texture2DRead = surface.texture2DDraw;
-    drawTriangle(color, Left, Right, Top);
+    drawTriangle(color, left, right, top);
     texture2DRead = tmp;
-}
-
-Magnum::GL::Mesh GLIS_Surface::buildPlaneWireframeMesh(const Magnum::Vector2 &topLeft,
-                                                       const Magnum::Vector2 &topRight,
-                                                       const Magnum::Vector2 &bottomRight,
-                                                       const Magnum::Vector2 &bottomLeft) {
-    const struct Vertex {
-        Magnum::Vector2 position;
-    } vertex[] {
-            {grid->Correct_NDC(topRight)},    {grid->Correct_NDC(bottomRight)}, // right
-            {grid->Correct_NDC(bottomRight)}, {grid->Correct_NDC(bottomLeft)},  // bottom
-            {grid->Correct_NDC(bottomLeft)},  {grid->Correct_NDC(topLeft)},     // left
-            {grid->Correct_NDC(topLeft)},     {grid->Correct_NDC(topRight)}     // top
-    };
-
-    Magnum::GL::Buffer vertices(vertex);
-
-//         LOG_MAGNUM_INFO_FUNCTION(topLeft);
-//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(topLeft));
-//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(topLeft));
-//         auto tl = grid->Correct_NDC(topLeft);
-//         LOG_MAGNUM_INFO_FUNCTION(tl);
-//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpace(tl));
-//         LOG_MAGNUM_INFO_FUNCTION(NDC_to_WindowSpacei(tl));
-
-    Magnum::GL::Mesh mesh;
-    mesh
-            .setPrimitive(Magnum::MeshPrimitive::Lines)
-            .addVertexBuffer(std::move(vertices), 0, Magnum::GL::Attribute<0, Magnum::Vector2> {})
-            .setCount(sizeof(vertex)/sizeof(Vertex));
-    return mesh;
 }
 
 void
@@ -187,62 +246,18 @@ GLIS_Surface::drawPlaneWireframe(const GLIS_SurfaceColor &color, const Magnum::V
     draw(
             newShaderRead(),
             color,
-            buildPlaneWireframeMesh(topLeft, topRight, bottomRight, bottomLeft)
+            this->mesh.buildPlaneWireframeMesh(topLeft, topRight, bottomRight, bottomLeft)
     );
-}
-
-Magnum::GL::Mesh
-GLIS_Surface::buildPlaneMesh(const Magnum::Vector2 &topLeft, const Magnum::Vector2 &topRight,
-                             const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
-    const struct Vertex {
-        Magnum::Vector2 position;
-        Magnum::Vector2 textureCoordinates;
-    } vertex[] {
-            {topRight,    {1.0f, 1.0f}},
-            {bottomRight, {1.0f, 0.0f}},
-            {bottomLeft,  {0.0f, 0.0f}},
-            {topLeft,     {0.0f, 1.0f}}
-    };
-
-    Magnum::UnsignedInt indices[] = {
-            0, 1, 3, // first triangle
-            1, 2, 3  // second triangle
-    };
-
-    Magnum::GL::Buffer vertexBuffer(vertex);
-    Magnum::GL::Buffer indexBuffer(indices);
-
-    Magnum::GL::Mesh mesh;
-    mesh
-            .setPrimitive(Magnum::MeshPrimitive::TriangleStrip)
-            .addVertexBuffer(
-                    std::move(vertexBuffer), 0,
-                    Magnum::GL::Attribute<0, Magnum::Vector2> {}, Magnum::GL::Attribute<1, Magnum::Vector2> {}
-            )
-            .setCount(sizeof(vertex)/sizeof(Vertex))
-            .setIndexBuffer(
-                    std::move(indexBuffer), 0, Magnum::GL::MeshIndexType::UnsignedInt
-            )
-            .setCount(sizeof(indices)/sizeof(Magnum::UnsignedInt))
-            ;
-    return mesh;
 }
 
 void GLIS_Surface::drawPlane(const GLIS_SurfaceColor &color, const Magnum::Vector2 &topLeft,
                              const Magnum::Vector2 &topRight, const Magnum::Vector2 &bottomRight,
                              const Magnum::Vector2 &bottomLeft) {
+    Magnum::GL::Mesh && mesh = std::move(this->mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft));
     if (texture2DRead != nullptr) {
-        draw(
-                newShaderReadTexture(),
-                surfaceTextureColor,
-                buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft)
-        );
+        draw(newShaderReadTexture(), surfaceTextureColor, std::move(mesh));
     } else {
-        draw(
-                newShaderRead(),
-                color,
-                buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft)
-        );
+        draw(newShaderRead(), color, std::move(mesh));
     }
 }
 

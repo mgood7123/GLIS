@@ -20,6 +20,37 @@ constexpr GLIS_SurfaceColor surfaceTextureColor = {1.0f,  1.0f,  1.0f,  1.0f};
 
 // http://print-graph-paper.com/virtual-graph-paper
 
+class GLIS_Mesh {
+public:
+    GLIS_NDC_Tools::GridPixelCentered * grid = nullptr;
+
+    Magnum::GL::Mesh buildTriangleWireframeMesh(
+            const Magnum::Vector2 & left,
+            const Magnum::Vector2 & right,
+            const Magnum::Vector2 & top
+    );
+
+    Magnum::GL::Mesh buildTriangleMesh(
+            const Magnum::Vector2 & left,
+            const Magnum::Vector2 & right,
+            const Magnum::Vector2 & top
+    );
+
+    Magnum::GL::Mesh buildPlaneWireframeMesh(
+            const Magnum::Vector2 & topLeft,
+            const Magnum::Vector2 & topRight,
+            const Magnum::Vector2 & bottomRight,
+            const Magnum::Vector2 & bottomLeft
+    );
+
+    Magnum::GL::Mesh buildPlaneMesh(
+            const Magnum::Vector2 & topLeft,
+            const Magnum::Vector2 & topRight,
+            const Magnum::Vector2 & bottomRight,
+            const Magnum::Vector2 & bottomLeft
+    );
+};
+
 class GLIS_Surface {
 private:
     GLIS_SurfaceFramebuffer * framebuffer_ = nullptr;
@@ -30,9 +61,14 @@ private:
     GLIS_SurfaceShader * shaderRead = nullptr;
     GLIS_SurfaceShader * shaderReadTexture = nullptr;
     GLIS_SurfaceShader * shaderDraw = nullptr;
-    GLIS_NDC_Tools::GridPixelCentered * grid = nullptr;
+
+    GLIS_SurfaceShader * newShaderReadTexture();
+
+    GLIS_SurfaceShader * newShaderRead();
 
 public:
+
+    GLIS_Mesh mesh;
 
     int width = 0;
     int height = 0;
@@ -71,38 +107,28 @@ public:
 
     Magnum::Range2Di getViewport();
 
-    GLIS_SurfaceShader * newShaderReadTexture();
-
-    GLIS_SurfaceShader * newShaderRead();
-
     void draw(GLIS_SurfaceShader * shader, const GLIS_SurfaceColor & color, Magnum::GL::Mesh && mesh);
 
-    Magnum::GL::Mesh buildTriangleMesh(
-            const Magnum::Vector2 & Left,
-            const Magnum::Vector2 & Right,
-            const Magnum::Vector2 & Top
+    void drawTriangleWireframe(
+            const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
+            const Magnum::Vector2 & left  = {-globalScale, -globalScale},
+            const Magnum::Vector2 & right = { globalScale, -globalScale},
+            const Magnum::Vector2 & top   = { 0.0f,  globalScale}
     );
 
     void drawTriangle(
             const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-            const Magnum::Vector2 & Left  = {-globalScale, -globalScale},
-            const Magnum::Vector2 & Right = { globalScale, -globalScale},
-            const Magnum::Vector2 & Top   = { 0.0f,  globalScale}
+            const Magnum::Vector2 & left  = {-globalScale, -globalScale},
+            const Magnum::Vector2 & right = { globalScale, -globalScale},
+            const Magnum::Vector2 & top   = { 0.0f,  globalScale}
     );
 
     void drawTriangle(
             const GLIS_Surface & surface,
             const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
-            const Magnum::Vector2 & Left  = {-globalScale, -globalScale},
-            const Magnum::Vector2 & Right = { globalScale, -globalScale},
-            const Magnum::Vector2 & Top   = { 0.0f,  globalScale}
-    );
-
-    Magnum::GL::Mesh buildPlaneWireframeMesh(
-            const Magnum::Vector2 & topLeft,
-            const Magnum::Vector2 & topRight,
-            const Magnum::Vector2 & bottomRight,
-            const Magnum::Vector2 & bottomLeft
+            const Magnum::Vector2 & left  = {-globalScale, -globalScale},
+            const Magnum::Vector2 & right = { globalScale, -globalScale},
+            const Magnum::Vector2 & top   = { 0.0f,  globalScale}
     );
 
     void drawPlaneWireframe(
@@ -113,13 +139,6 @@ public:
             const Magnum::Vector2 & bottomLeft =  {-1.0f, -1.0f}
     );
 
-    Magnum::GL::Mesh buildPlaneMesh(
-            const Magnum::Vector2 & topLeft,
-            const Magnum::Vector2 & topRight,
-            const Magnum::Vector2 & bottomRight,
-            const Magnum::Vector2 & bottomLeft
-    );
-
     void drawPlane(
             const GLIS_SurfaceColor & color = {0.0f,  1.0f,  1.0f,  1.0f},
             const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
@@ -136,34 +155,6 @@ public:
             const Magnum::Vector2 & bottomRight = { globalScale, -globalScale},
             const Magnum::Vector2 & bottomLeft =  {-globalScale, -globalScale}
     );
-
-
-
-/*
-    // texture manipulation
-
-    // https://en.wikibooks.org/wiki/GLSL_Programming/Rasterization
-    //     explains why a NDC point of -1 needs to be centered for it to be lit up
-    //     as it seems like, to correctly do software drawing i will need to implement/emulate rasterization
-
-    struct BITMAP_FORMAT_RGBA8 {
-        uint8_t R = 0;
-        uint8_t G = 0;
-        uint8_t B = 0;
-        uint8_t A = 255;
-    };
-
-    void drawTextureRectangle() {
-        BITMAP_FORMAT_RGBA8 data[width*height];
-
-        setTextureData(reinterpret_cast<uint32_t*>(data), width, height);
-
-        GLIS_SurfaceTexture2D * tmp = texture2DRead;
-        texture2DRead = texture2DDraw;
-        drawPlane();
-        texture2DRead = tmp;
-    }
-*/
 };
 
 #endif //ANDROIDCOMPOSITOR_SURFACE_HPP
