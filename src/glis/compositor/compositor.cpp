@@ -8,7 +8,7 @@
 bool stop_drawing = false;
 
 GLIS_Surface compositor_surface;
-GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
+GLIS_NDC_Tools::Grid compositor_grid(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
 
 class Client_Window {
 public:
@@ -129,24 +129,6 @@ void handleCommands(
         x->texture_data = malloc(client->shared_memory.slot.texture.size);
         memcpy(x->texture_data, client->shared_memory.slot.texture.load_ptr(), client->shared_memory.slot.texture.size);
         LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, x->texture_w, x->texture_h);
-
-//        if (x->TEXTURE == 0) {
-//            glGenTextures(1, &x->TEXTURE);
-//            glis.GLIS_error_to_string_GL("glGenTextures");
-//            glBindTexture(GL_TEXTURE_2D, x->TEXTURE); glis.GLIS_error_to_string_GL("glBindTexture");
-//            glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, w, h); glis.GLIS_error_to_string_GL("glTexStorage2D");
-//            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, client->shared_memory.slot.texture.load_ptr()); glis.GLIS_error_to_string_GL("glTexSubImage2D");
-//            glGenerateMipmap(GL_TEXTURE_2D); glis.GLIS_error_to_string_GL("glGenerateMipmap");
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); glis.GLIS_error_to_string_GL("glTexParameteri");
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); glis.GLIS_error_to_string_GL("glTexParameteri");
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER); glis.GLIS_error_to_string_GL("glTexParameteri");
-//            glBindTexture(GL_TEXTURE_2D, 0); glis.GLIS_error_to_string_GL("glBindTexture");
-//        } else {
-//            glBindTexture(GL_TEXTURE_2D, x->TEXTURE); glis.GLIS_error_to_string_GL("glBindTexture");
-//            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, client->shared_memory.slot.texture.load_ptr()); glis.GLIS_error_to_string_GL("glTexSubImage2D");
-//            glBindTexture(GL_TEXTURE_2D, 0); glis.GLIS_error_to_string_GL("glBindTexture");
-//        }
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
         LOG_INFO("CLIENT ID: %zu, CLIENT has uploaded", client->id);
     } else if (command == glis.GLIS_SERVER_COMMANDS.modify_window) {
@@ -250,39 +232,16 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
 
                         if (x->texture_data == nullptr) continue;
 
-                        Corrade::Containers::ArrayView<const uint32_t> data_ (
+                        compositor_surface.setTextureData(
                                 static_cast<uint32_t *>(x->texture_data),
-                                x->texture_w*x->texture_h
+                                x->texture_w, x->texture_h
                         );
-
-                        Magnum::ImageView2D image_ (
-                                Magnum::PixelFormat::RGBA8Unorm,
-                                {x->texture_w, x->texture_h},
-                                std::move(data_)
-                        );
-                        x->texture2D = new Magnum::GL::Texture2D;
-                        x->texture2D->setStorage(1, Magnum::GL::TextureFormat::RGBA8, {x->texture_w, x->texture_h})
-                                .setSubImage(0, {}, std::move(image_))
-                                .generateMipmap();
-
-                        compositor_surface.texture2DRead = x->texture2D;
+                        compositor_surface.texture2DRead = compositor_surface.texture2DDraw;
                         compositor_surface.drawPlaneCorners(
-                                GLIS_SurfaceColor {0,0,0,0},
-                                {a.x[x->x], a.y[x->y]},
-                                {a.x[x->w], a.y[x->h]}
+                                GLIS_SurfaceColor{0, 0, 0, 0},
+                                {compositor_grid.x[x->x], compositor_grid.y[x->y]},
+                                {compositor_grid.x[x->w], compositor_grid.y[x->h]}
                         );
-                        compositor_surface.texture2DRead = nullptr;
-                        delete x->texture2D;
-                        x->texture2D = nullptr;
-//                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
-//                                                        0,
-//                                                        // pos
-//                                                        CW->x, CW->y,
-//                                                        // dimens
-//                                                        CW->w, CW->h,
-//                                                        // max dimens
-//                                                        GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT
-//                        );
                         drawn++;
                     }
                 }
@@ -290,7 +249,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
     }
     fps.onFrameEnd();
     std::string text = std::string("FPS: ") + std::to_string(fps.averageFps);
-    font.render_text(text.c_str(), text_size, 0, 20, font.colors.white);
+    font.render_text(text.c_str(), text_size, 0, text_size->size, font.colors.white);
     glis.GLIS_error_to_string_GL("before GLIS_Sync_GPU");
     glis.GLIS_Sync_GPU();
     glis.GLIS_SwapBuffers(CompositorMain);
