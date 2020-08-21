@@ -12,8 +12,14 @@ void GLIS_FPS::onFrameStart() {
     frameStartTime = getCurrentTime();
 }
 
+void GLIS_FPS::onFrameEndLapse() {
+    frameEndTime = getCurrentTime();
+    frameLength = frameEndTime - frameStartTime;
+}
+
 void GLIS_FPS::onFrameEnd() {
-    int frameLength = getCurrentTime() - frameStartTime;
+    frameEndTime = getCurrentTime();
+    frameLength = frameEndTime - frameStartTime;
 
     frameLengths.push(frameLength);
     queueAggregate += frameLength;

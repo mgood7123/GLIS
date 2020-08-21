@@ -128,10 +128,6 @@ GLIS_FONT::render_text(const char *text, GLIS_FONT::atlas *a, float x, float y, 
 
     // flip y axis
     float y_ = static_cast<float>(height) - y;
-
-    printf("text: %s\n", text);
-    printf("x: %G, y: %G\n", x, y);
-    printf("sx: %G, sy: %G\n", 1.0f, 1.0f);
     const uint8_t *p;
 
     /* Use the texture containing the atlas */
