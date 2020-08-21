@@ -261,7 +261,9 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                                 static_cast<uint32_t *>(x->texture_data),
                                 x->texture_w, x->texture_h
                         );
+
                         compositor_surface.texture2DRead = compositor_surface.texture2DDraw;
+
                         compositor_surface.drawPlaneCorners(
                                 GLIS_SurfaceColor{0, 0, 0, 0},
                                 {compositor_grid.x[x->x], compositor_grid.y[x->y]},

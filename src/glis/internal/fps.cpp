@@ -30,5 +30,7 @@ void GLIS_FPS::onFrameEnd() {
         queueAggregate -= oldFrame;
     }
 
-    averageFps = frameLengths.size() / (trackedTime / 1000);
+    auto s = frameLengths.size();
+
+    averageFps = static_cast<float>(s) / (static_cast<float>(trackedTime) / 1000.0f);
 }
