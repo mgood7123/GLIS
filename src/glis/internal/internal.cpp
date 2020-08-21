@@ -1363,7 +1363,7 @@ bool GLIS::GLIS_close_window(size_t window_id) {
     return true;
 }
 
-void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id,
+void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &texture_id,
                                const GLint &texture_width, const GLint &texture_height) {
     LOG_INFO("uploading texture");
     GLIS_SwapBuffers(GLIS);
@@ -1381,7 +1381,7 @@ void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &text
     LOG_INFO("uploaded texture");
 }
 
-void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id,
+void GLIS::GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id,
                                const GLint &texture_width, const GLint &texture_height) {
     GLIS_upload_texture(GLIS, window_id, GLIS_current_texture, texture_width, texture_height);
 }

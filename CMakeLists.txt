@@ -163,6 +163,8 @@ build_program(compositor_clients OffScreenFramebuffer)
 build_program(compositor_clients Texture)
 build_program(compositor_clients MYPRIVATEAPP)
 build_program(compositor_clients shm)
+build_program(compositor_clients 100_windows)
+build_program(compositor_clients 100_textures)
 
 #magnum
 build_program(compositor_clients RotatingCube)

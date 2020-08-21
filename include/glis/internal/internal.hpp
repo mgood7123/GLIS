@@ -362,13 +362,13 @@ public:
     bool GLIS_close_window(size_t window_id);
 
     void
-    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, GLuint &texture_id, const GLint &texture_width,
+    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, GLuint &texture_id, const GLint &texture_width,
                         const GLint &texture_height);
 
     // uses the default texture
 
     void
-    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t &window_id, const GLint &texture_width,
+    GLIS_upload_texture(GLIS_CLASS &GLIS, size_t window_id, const GLint &texture_width,
                         const GLint &texture_height);
 
     bool getAndroidWindow(void * jenv, void * surface, GLIS_CLASS & GLIS, int width, int height);
