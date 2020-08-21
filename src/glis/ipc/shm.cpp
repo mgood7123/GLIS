@@ -50,7 +50,9 @@ bool SHM_create(int &fd, int8_t **data, size_t size) {
     }
     LOG_INFO("fd %d is valid and should be able to be opened", fd);
     int region_size = ashmem_get_size_region(fd);
-    LOG_INFO("region created with %zu size", region_size);
+    char *c = SHM_str_humanise_bytes(static_cast<off_t>(region_size));
+    LOG_INFO("region created with %zu bytes (%s) of memory", region_size, c);
+    free(c);
     assert(region_size == size);
 
     // Use fd to mmap from offset "0" to size mentioned below,

@@ -17,7 +17,6 @@ int main() {
     screen.width = GLIS_COMMON_WIDTH;
     screen.height = GLIS_COMMON_HEIGHT;
 
-
     // thread 1
     GLIS_COMPOSITOR_BEFORE_REQUEST_STARTUP(glis);
 
@@ -32,7 +31,7 @@ int main() {
             fps,
             font,
             "/home/smallville7123/AndroidCompositor/app/src/main/jni/executables/fonts/VeraMono.ttf",
-            10,
+            11,
             loop,
             GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION,
             GLIS_COMPOSITOR_DEFAULT_RESIZE_FUNCTION,

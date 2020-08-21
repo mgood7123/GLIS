@@ -164,6 +164,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
     GLIS_FPS command_processing;
     GLIS_FPS clear;
     GLIS_FPS drawing;
+    GLIS_FPS counts;
 
     fps.onFrameStart();
 
@@ -235,17 +236,42 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
             + " milliseconds";
     const char * text_clear_time = text_02.c_str();
     LOG_MAGNUM_INFO << text_clear_time;
-    drawing.onFrameStart();
-    int drawn = 0;
+    counts.onFrameStart();
     int count = CompositorMain.KERNEL.table->Page.count();
+    size_t page_size = CompositorMain.KERNEL.table->page_size;
+    int drawn = 0;
+    int windows = 0;
+    int clients = 0;
+    {
+        size_t index = 0;
+        for (int page = 1; page <= count; page++) {
+            size_t page_ = page_size * page;
+            index = page_ - page_size;
+            for (; index < page_; index++)
+                if (CompositorMain.KERNEL.table->table[index] != nullptr) {
+                    ObjectType type = CompositorMain.KERNEL.table->table[index]->type;
+                    if (type == ObjectTypeProcess) clients++;
+                    if (type == ObjectTypeWindow) windows++;
+                }
+        }
+    }
+    counts.onFrameEnd();
+    std::string text_03 = std::string("clients:               ") + std::to_string(clients);
+    const char * text_clients = text_03.c_str();
+    std::string text_04 = std::string("windows:               ") + std::to_string(windows);
+    const char * text_windows = text_04.c_str();
+    std::string text_05 = std::string("counted in:            ")
+                          + std::to_string(counts.frameLength)
+                          + " milliseconds";
+    const char * text_counts = text_05.c_str();
+    drawing.onFrameStart();
     if (!stop_drawing && count != 0) {
         int page = 1;
         size_t index = 0;
-        size_t page_size = CompositorMain.KERNEL.table->page_size;
         // TODO: remove client and client windows upon client death
         for (; page <= count; page++) {
             size_t page_ = page_size * page;
-            index = ((page_) - page_size);
+            index = page_ - page_size;
             for (; index < page_; index++)
                 if (CompositorMain.KERNEL.table->table[index] != nullptr) {
                     if (
@@ -275,32 +301,38 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
         }
     }
     drawing.onFrameEnd();
-    std::string text_03 =
+    std::string text_06 =
             std::string("drawn textures in:     ")
             + std::to_string(drawing.frameLength)
             + " milliseconds";
-    const char * text_draw_time = text_03.c_str();
-    std::string text_04 =
+    const char * text_draw_time = text_06.c_str();
+    std::string text_07 =
             std::string("textures:              ")
             + std::to_string(drawn);
-    const char * text_textures = text_04.c_str();
+    const char * text_textures = text_07.c_str();
     LOG_MAGNUM_INFO << text_draw_time;
     LOG_MAGNUM_INFO << text_textures;
     fps.onFrameEnd();
-    std::string text_05 =
+    std::string text_08 =
             std::string("frame completed in:    ")
             + std::to_string(fps.frameLength)
             + " milliseconds";
-    const char * text_frame_time = text_05.c_str();
+    const char * text_frame_time = text_08.c_str();
     LOG_MAGNUM_INFO << text_frame_time;
-    std::string text_06 = std::string("FPS: ") + std::to_string(fps.averageFps);
-    const char * text_fps = text_06.c_str();
+    std::string text_09 = std::string("FPS: ") + std::to_string(fps.averageFps);
+    const char * text_fps = text_09.c_str();
+
     font.render_text(text_fps, text_size, 0, text_size->size*1, font.colors.white);
-    font.render_text(text_command_time, text_size, 0, text_size->size*2, font.colors.white);
-    font.render_text(text_clear_time, text_size, 0, text_size->size*3, font.colors.white);
-    font.render_text(text_draw_time, text_size, 0, text_size->size*4, font.colors.white);
+
+    font.render_text(text_clients, text_size, 0, text_size->size*2, font.colors.white);
+    font.render_text(text_windows, text_size, 0, text_size->size*3, font.colors.white);
+    font.render_text(text_counts, text_size, 0, text_size->size*4, font.colors.white);
     font.render_text(text_textures, text_size, 0, text_size->size*5, font.colors.white);
-    font.render_text(text_frame_time, text_size, 0, text_size->size*6, font.colors.white);
+
+    font.render_text(text_command_time, text_size, 0, text_size->size*6, font.colors.white);
+    font.render_text(text_clear_time, text_size, 0, text_size->size*7, font.colors.white);
+    font.render_text(text_draw_time, text_size, 0, text_size->size*8, font.colors.white);
+    font.render_text(text_frame_time, text_size, 0, text_size->size*9, font.colors.white);
     glis.GLIS_SwapBuffers(CompositorMain);
 
     // TODO: should fps.onFrameEnd() be moved to here?
@@ -381,6 +413,7 @@ void GLIS_COMPOSITOR_DO_MAIN(
     LOG_INFO("initializing main Compositor");
     glis.GLIS_error_to_string_GL("before onscreen setup");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
+//        glis.vsync(CompositorMain, 0);
         CompositorMain.contextMagnum.create();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
