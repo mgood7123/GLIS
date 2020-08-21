@@ -8,10 +8,13 @@
 bool stop_drawing = false;
 
 GLIS_Surface compositor_surface;
+GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
 
 class Client_Window {
 public:
-    GLIS_SurfaceTexture2D * tex = nullptr;
+    void * texture_data = nullptr;
+    int texture_w = 0;
+    int texture_h = 0;
     int x = 0;
     int y = 0;
     int w = 0;
@@ -19,9 +22,11 @@ public:
     GLuint TEXTURE = 0;
 
     ~Client_Window() {
-        delete tex;
-        tex = nullptr;
+        if (texture_data != nullptr) free(texture_data);
+        texture_data = nullptr;
     }
+
+    Magnum::GL::Texture2D *texture2D = nullptr;
 };
 
 class Client {
@@ -118,21 +123,12 @@ void handleCommands(
         assert(window_id >= 0);
         assert(CompositorMain.KERNEL.table->table[window_id] != nullptr);
         Client_Window *x = CompositorMain.KERNEL.table->table[window_id]->resource.get<Client_Window*>();
-        int w = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
-        int h = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
-        LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, w, h);
-
-        Corrade::Containers::ArrayView<const uint32_t> data_ (
-                static_cast<uint32_t *>(client->shared_memory.slot.texture.load_ptr()),
-                w*h
-        );
-
-        Magnum::ImageView2D image_ (Magnum::PixelFormat::RGBA8Unorm, {w, h}, std::move(data_));
-        delete x->tex;
-        x->tex = new GLIS_SurfaceTexture2D;
-        x->tex->setStorage(1, Magnum::GL::TextureFormat::RGBA8, {w, h})
-            .setSubImage(0, {}, std::move(image_))
-            .generateMipmap();
+        x->texture_w = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
+        x->texture_h = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
+        if (x->texture_data != nullptr) free(x->texture_data);
+        x->texture_data = malloc(client->shared_memory.slot.texture.size);
+        memcpy(x->texture_data, client->shared_memory.slot.texture.load_ptr(), client->shared_memory.slot.texture.size);
+        LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, x->texture_w, x->texture_h);
 
 //        if (x->TEXTURE == 0) {
 //            glGenTextures(1, &x->TEXTURE);
@@ -250,15 +246,34 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             ==
                             ObjectTypeWindow
                             ) {
-                        Client_Window *CW = CompositorMain.KERNEL.table->table[index]->resource.get<Client_Window*>();
+                        Client_Window *x = CompositorMain.KERNEL.table->table[index]->resource.get<Client_Window*>();
 
-                        compositor_surface.texture2DRead = CW->tex;
-                        GLIS_NDC_Tools::Grid a(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
+                        if (x->texture_data == nullptr) continue;
+
+                        Corrade::Containers::ArrayView<const uint32_t> data_ (
+                                static_cast<uint32_t *>(x->texture_data),
+                                x->texture_w*x->texture_h
+                        );
+
+                        Magnum::ImageView2D image_ (
+                                Magnum::PixelFormat::RGBA8Unorm,
+                                {x->texture_w, x->texture_h},
+                                std::move(data_)
+                        );
+                        x->texture2D = new Magnum::GL::Texture2D;
+                        x->texture2D->setStorage(1, Magnum::GL::TextureFormat::RGBA8, {x->texture_w, x->texture_h})
+                                .setSubImage(0, {}, std::move(image_))
+                                .generateMipmap();
+
+                        compositor_surface.texture2DRead = x->texture2D;
                         compositor_surface.drawPlaneCorners(
                                 GLIS_SurfaceColor {0,0,0,0},
-                                {a.x[CW->x], a.y[CW->y]},
-                                {a.x[CW->w], a.y[CW->h]}
+                                {a.x[x->x], a.y[x->y]},
+                                {a.x[x->w], a.y[x->h]}
                         );
+                        compositor_surface.texture2DRead = nullptr;
+                        delete x->texture2D;
+                        x->texture2D = nullptr;
 //                        glis.GLIS_draw_rectangle<GLint>(GL_TEXTURE0, CW->TEXTURE,
 //                                                        0,
 //                                                        // pos
