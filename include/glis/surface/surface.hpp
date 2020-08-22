@@ -85,14 +85,25 @@ public:
 
     template <typename T> void setTextureData(const T * data, int texture_width, int texture_height) {
 
-        Corrade::Containers::ArrayView<const T> data_ (data, texture_width*texture_height);
-        Magnum::ImageView2D image_ (Magnum::PixelFormat::RGBA8Unorm, {texture_width, texture_height}, std::move(data_));
-
         newTexture2D({texture_width, texture_height});
 
-        texture2DDraw
-                ->setSubImage(0, {}, std::move(image_)) // seg fault here
-                .generateMipmap();
+        texture2DDraw->setSubImage(
+            0,
+            {},
+            std::move(
+                    Magnum::ImageView2D(
+                        Magnum::PixelFormat::RGBA8Unorm,
+                        {texture_width, texture_height},
+                        std::move(
+                                Corrade::Containers::ArrayView<const T> (
+                                        data,
+                                        texture_width*texture_height
+                                )
+                        )
+                    )
+
+            )
+        ).generateMipmap();
     }
 
     void genTextureFromGLTexture(const GLuint & id);

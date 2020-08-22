@@ -10,7 +10,8 @@
 #include <glis/internal/log.hpp>
 #include <glis/internal/fps.hpp>
 #include <glis/ipc/shm.hpp>
-
+#include <mutex>
+extern std::mutex GLIS_INTERNAL_LOCK;
 #define GLIS_CALLBACKS_DRAW_RESIZE_CLOSE_PARAMATER(name) void (*name)(class GLIS &, class GLIS_CLASS &, class GLIS_FONT &, class GLIS_FPS &)
 #define GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(functionName, GLIS_name, GLIS_CLASS_name, GLIS_FONT_name, GLIS_FPS_name) void functionName (GLIS & GLIS_name, GLIS_CLASS & GLIS_CLASS_name, GLIS_FONT & GLIS_FONT_name, GLIS_FPS & GLIS_FPS_name)
 
@@ -239,11 +240,8 @@ public:
         size_t reference_count = 0;
         class slot_ {
         public:
-            slot_(); // default constructor required
             class slot__ {
             public:
-                slot__(); // default constructor required
-                slot__(GLIS_shared_memory *pMemory);;
                 GLIS_shared_memory * shared_memory = nullptr;
                 int slot = 0;
                 int size = 0;
@@ -265,29 +263,11 @@ public:
 
             class multi_size {
             public:
-                multi_size(); // default constructor required
-                multi_size(GLIS_shared_memory *pMemory);;
                 class slot__ type_int8_t;
                 class slot__ type_int16_t;
                 class slot__ type_int32_t;
                 class slot__ type_int64_t;
                 class slot__ type_size_t;
-            };
-
-            slot_(GLIS_shared_memory *shared_memory) {
-                status = slot__(shared_memory);
-                command = slot__(shared_memory);
-                additional_data_0 = multi_size(shared_memory);
-                additional_data_1 = multi_size(shared_memory);
-                additional_data_2 = multi_size(shared_memory);
-                additional_data_3 = multi_size(shared_memory);
-                additional_data_4 = multi_size(shared_memory);
-                result_data_0 = multi_size(shared_memory);
-                result_data_1 = multi_size(shared_memory);
-                result_data_2 = multi_size(shared_memory);
-                result_data_3 = multi_size(shared_memory);
-                result_data_4 = multi_size(shared_memory);
-                texture = slot__(shared_memory);
             };
 
             class slot__ status;
@@ -305,13 +285,15 @@ public:
             class slot__ texture;
             size_t total_size = 0;
         };
-        slot_ slot = slot_(this);
+        slot_ slot;
         class status__ {
         public:
             int8_t standby = 0;
             int8_t ready_to_be_read = 1;
             int8_t ready_to_be_written = 2;
         } status;
+
+        void init();
     };
 
     GLIS_shared_memory GLIS_INTERNAL_SHARED_MEMORY;

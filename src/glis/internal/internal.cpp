@@ -37,8 +37,9 @@
 #include <glis/ipc/ipc.hpp>
 #include <glis/internal/internal.hpp>
 
-
 #define LOG_TAG "GLIS"
+
+std::mutex GLIS_INTERNAL_LOCK;
 
 std::string GLIS_INTERNAL_MESSAGE_PREFIX = "";
 
@@ -1204,7 +1205,11 @@ bool GLIS::GLIS_shared_memory_realloc(GLIS::GLIS_shared_memory &sh, size_t size)
 }
 
 bool GLIS::GLIS_shared_memory_free(GLIS::GLIS_shared_memory &sh) {
-    if (SHM_close(sh.fd, &sh.data, sh.size)) {
+    bool ret = SHM_close(sh.fd, &sh.data, sh.size);
+    if (ret == true) {
+        // asan mark this as heap-use-after-free
+//        assert(sh.data == nullptr);
+        // heap use after free - compositor:313
         sh.size = 0;
         return true;
     }
@@ -1228,18 +1233,27 @@ void *GLIS::KEEP_ALIVE_MAIN_NOTIFIER(void *arg) {
         bool connected = false;
     };
     Client * client = static_cast<Client *>(arg);
+    // should we lock the client mutex here?
     SOCKET_SERVER *server = SERVER_get(client->table_id);
     LOG_ERROR("CLIENT ID: %zu, connecting", client->id);
-    assert(server->socket_accept());
+    assert(server->socket_accept()); // this blocks until a connection is established
     LOG_ERROR("CLIENT ID: %zu, connected", client->id);
     client->connected = true;
     server->connection_wait_until_disconnect();
+    // lock the mutex so the server does not attempt to access data we are deleting
+    GLIS_INTERNAL_LOCK.lock();
     LOG_INFO("CLIENT ID: %zu, closed its connection", client->id);
     SERVER_deallocate_server(client->table_id);
     GLIS_shared_memory_free(client->shared_memory);
+    assert(client->shared_memory.data == nullptr);
+    assert(client->shared_memory.slot.texture.shared_memory->data == nullptr);
+    assert(client->shared_memory.slot.status.shared_memory->data == nullptr);
     LOG_INFO("CLIENT ID: %zu, shared_memory.reference_count = %zu", client->id, client->shared_memory.reference_count);
     client->shared_memory.reference_count--;
     LOG_INFO("CLIENT ID: %zu, shared_memory.reference_count = %zu", client->id, client->shared_memory.reference_count);
+    LOG_INFO("CLIENT ID: %zu, client disconnected", client->id);
+    client->connected = false;
+    GLIS_INTERNAL_LOCK.unlock();
     *ret = 0;
     return ret;
 }
@@ -1287,6 +1301,7 @@ void GLIS::GLIS_sync_server(const char *operation, size_t id) {
 
 bool GLIS::GLIS_INIT_SHARED_MEMORY(int w, int h) {
     if (GLIS_SHARED_MEMORY_INITIALIZED) return true;
+    GLIS_INTERNAL_SHARED_MEMORY.init();
 
     SERVER_LOG_TRANSFER_INFO = true;
     SOCKET_CLIENT client;
@@ -1742,67 +1757,125 @@ void GLIS::GLIS_Viewport(class GLIS_CLASS &GLIS) {
     glViewport(0, 0, GLIS.width, GLIS.height);
 }
 
-GLIS::GLIS_shared_memory::slot_::slot_() {}
+void GLIS::GLIS_shared_memory::init() {
+    slot.command.shared_memory = this;
+    slot.status.shared_memory = this;
+    slot.texture.shared_memory = this;
 
-GLIS::GLIS_shared_memory::slot_::slot__::slot__() {}
+    slot.additional_data_0.type_int8_t.shared_memory = this;
+    slot.additional_data_0.type_int16_t.shared_memory = this;
+    slot.additional_data_0.type_int32_t.shared_memory = this;
+    slot.additional_data_0.type_int64_t.shared_memory = this;
+    slot.additional_data_0.type_size_t.shared_memory = this;
 
-GLIS::GLIS_shared_memory::slot_::slot__::slot__(GLIS::GLIS_shared_memory *pMemory) {
-    shared_memory = pMemory;
-    assert(pMemory != 0x0);
+    slot.additional_data_1.type_int8_t.shared_memory = this;
+    slot.additional_data_1.type_int16_t.shared_memory = this;
+    slot.additional_data_1.type_int32_t.shared_memory = this;
+    slot.additional_data_1.type_int64_t.shared_memory = this;
+    slot.additional_data_1.type_size_t.shared_memory = this;
+
+    slot.additional_data_2.type_int8_t.shared_memory = this;
+    slot.additional_data_2.type_int16_t.shared_memory = this;
+    slot.additional_data_2.type_int32_t.shared_memory = this;
+    slot.additional_data_2.type_int64_t.shared_memory = this;
+    slot.additional_data_2.type_size_t.shared_memory = this;
+
+    slot.additional_data_3.type_int8_t.shared_memory = this;
+    slot.additional_data_3.type_int16_t.shared_memory = this;
+    slot.additional_data_3.type_int32_t.shared_memory = this;
+    slot.additional_data_3.type_int64_t.shared_memory = this;
+    slot.additional_data_3.type_size_t.shared_memory = this;
+
+    slot.additional_data_4.type_int8_t.shared_memory = this;
+    slot.additional_data_4.type_int16_t.shared_memory = this;
+    slot.additional_data_4.type_int32_t.shared_memory = this;
+    slot.additional_data_4.type_int64_t.shared_memory = this;
+    slot.additional_data_4.type_size_t.shared_memory = this;
+
+    slot.result_data_0.type_int8_t.shared_memory = this;
+    slot.result_data_0.type_int16_t.shared_memory = this;
+    slot.result_data_0.type_int32_t.shared_memory = this;
+    slot.result_data_0.type_int64_t.shared_memory = this;
+    slot.result_data_0.type_size_t.shared_memory = this;
+
+    slot.result_data_1.type_int8_t.shared_memory = this;
+    slot.result_data_1.type_int16_t.shared_memory = this;
+    slot.result_data_1.type_int32_t.shared_memory = this;
+    slot.result_data_1.type_int64_t.shared_memory = this;
+    slot.result_data_1.type_size_t.shared_memory = this;
+
+    slot.result_data_2.type_int8_t.shared_memory = this;
+    slot.result_data_2.type_int16_t.shared_memory = this;
+    slot.result_data_2.type_int32_t.shared_memory = this;
+    slot.result_data_2.type_int64_t.shared_memory = this;
+    slot.result_data_2.type_size_t.shared_memory = this;
+
+    slot.result_data_3.type_int8_t.shared_memory = this;
+    slot.result_data_3.type_int16_t.shared_memory = this;
+    slot.result_data_3.type_int32_t.shared_memory = this;
+    slot.result_data_3.type_int64_t.shared_memory = this;
+    slot.result_data_3.type_size_t.shared_memory = this;
+
+    slot.result_data_4.type_int8_t.shared_memory = this;
+    slot.result_data_4.type_int16_t.shared_memory = this;
+    slot.result_data_4.type_int32_t.shared_memory = this;
+    slot.result_data_4.type_int64_t.shared_memory = this;
+    slot.result_data_4.type_size_t.shared_memory = this;
 }
 
 void *GLIS::GLIS_shared_memory::slot_::slot__::load_ptr() {
+    assert(shared_memory->data != nullptr);
     return &shared_memory->data[slot];
 }
 
 void GLIS::GLIS_shared_memory::slot_::slot__::store_int8_t(int8_t value) {
+    assert(shared_memory->data != nullptr);
     shared_memory->data[slot] = value;
 }
 
 void GLIS::GLIS_shared_memory::slot_::slot__::store_int16_t(int16_t value) {
+    assert(shared_memory->data != nullptr);
     reinterpret_cast<int16_t*>(&shared_memory->data[slot])[0] = value;
 }
 
 void GLIS::GLIS_shared_memory::slot_::slot__::store_int32_t(int32_t value) {
+    assert(shared_memory->data != nullptr);
     reinterpret_cast<int32_t*>(&shared_memory->data[slot])[0] = value;
 }
 
 void GLIS::GLIS_shared_memory::slot_::slot__::store_int64_t(int64_t value) {
+    assert(shared_memory->data != nullptr);
     reinterpret_cast<int64_t*>(&shared_memory->data[slot])[0] = value;
 }
 
 void GLIS::GLIS_shared_memory::slot_::slot__::store_size_t(size_t value) {
+    assert(shared_memory->data != nullptr);
     reinterpret_cast<size_t*>(&shared_memory->data[slot])[0] = value;
 }
 
 int8_t GLIS::GLIS_shared_memory::slot_::slot__::load_int8_t() {
+    assert(shared_memory->data != nullptr);
     return shared_memory->data[slot];
 }
 
 int16_t GLIS::GLIS_shared_memory::slot_::slot__::load_int16_t() {
+    assert(shared_memory->data != nullptr);
     return reinterpret_cast<int16_t*>(&shared_memory->data[slot])[0];
 }
 
 int32_t GLIS::GLIS_shared_memory::slot_::slot__::load_int32_t() {
+    assert(shared_memory->data != nullptr);
     return reinterpret_cast<int32_t*>(&shared_memory->data[slot])[0];
 }
 
 int64_t GLIS::GLIS_shared_memory::slot_::slot__::load_int64_t() {
+    assert(shared_memory->data != nullptr);
     return reinterpret_cast<int64_t*>(&shared_memory->data[slot])[0];
 }
 
 size_t GLIS::GLIS_shared_memory::slot_::slot__::load_size_t() {
+    assert(shared_memory->data != nullptr);
     return reinterpret_cast<size_t*>(&shared_memory->data[slot])[0];
-}
-
-GLIS::GLIS_shared_memory::slot_::multi_size::multi_size() {}
-
-GLIS::GLIS_shared_memory::slot_::multi_size::multi_size(GLIS::GLIS_shared_memory *pMemory) {
-    type_int8_t = slot__(pMemory);
-    type_int16_t = slot__(pMemory);
-    type_int32_t = slot__(pMemory);
-    type_int64_t = slot__(pMemory);
-    type_size_t = slot__(pMemory);
 }
 
 void GLIS::clearBlack() {

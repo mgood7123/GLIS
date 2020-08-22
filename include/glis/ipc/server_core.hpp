@@ -121,6 +121,7 @@ class SOCKET_SERVER {
 
     public:
         char *TAG = nullptr;
+        bool TAG_DEALLOCATE;
         SOCKET_SERVER_DATA *internaldata = nullptr;
         int socket_fd = 0;
         int socket_data_fd = 0;
@@ -236,6 +237,7 @@ class SOCKET_CLIENT {
         const char * default_client_name = "SOCKET_SERVER";
         const size_t default_client_name_length = strlen(default_client_name);
         char * TAG = nullptr;
+        bool TAG_DEALLOCATE;
         SOCKET_DATA_TRANSFER_INFO DATA_TRANSFER_INFO;
 
         int log_info(const char* fmt, ...);
@@ -259,6 +261,5 @@ class SOCKET_CLIENT {
         bool connect_to_server();
 
         bool disconnect_from_server();
-
 };
 #pragma clang diagnostic pop

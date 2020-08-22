@@ -37,7 +37,7 @@ char *SHM_str_humanise_bytes(off_t bytes) {
 bool SHM_create(int &fd, int8_t **data, size_t size) {
     char *b = SHM_str_humanise_bytes(static_cast<off_t>(size));
     LOG_INFO("requesting %zu bytes (%s) of memory", size, b);
-    free(b);
+    delete[] b;
     fd = ashmem_create_region("my_shm_region", size);
     if(fd < 0) {
         LOG_ERROR("ashmem_create_region: errno: %d (%s)", errno, strerror(errno));
@@ -52,7 +52,7 @@ bool SHM_create(int &fd, int8_t **data, size_t size) {
     int region_size = ashmem_get_size_region(fd);
     char *c = SHM_str_humanise_bytes(static_cast<off_t>(region_size));
     LOG_INFO("region created with %zu bytes (%s) of memory", region_size, c);
-    free(c);
+    delete[] c;
     assert(region_size == size);
 
     // Use fd to mmap from offset "0" to size mentioned below,
@@ -86,6 +86,7 @@ bool SHM_resize(int &fd, int8_t **data, size_t size) {
 bool SHM_delete(int8_t **data, size_t size) {
     return true;
 }
+
 bool SHM_close(int &fd, int8_t **data, size_t size) {
     if (!ashmem_valid(fd)) {
         LOG_ERROR("ashmem_valid: errno: %d (%s)", errno, strerror(errno));

@@ -154,9 +154,3 @@ Windows/Kernel/WindowsAPITable.h
 Windows/Kernel/WindowsAPIKernel.h
 -
 
-/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/WINAPI/SDK/src/Windows/Kernel/WindowsAPITable.cpp
-Windows/Kernel/WindowsAPITable.h
--
-cassert
--
-

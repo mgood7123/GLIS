@@ -30,13 +30,13 @@ Kernel::Kernel(Kernel &&x) {
     fflush(stdout);
 }
 
-Kernel & Kernel::operator=(const Kernel &x) const {
+Kernel & Kernel::operator=(const Kernel &x) {
     puts("Kernel copy assignment");
     fflush(stdout);
     return *const_cast<Kernel*>(this);
 }
 
-Kernel & Kernel::operator=(Kernel &&x) const {
+Kernel & Kernel::operator=(Kernel &&x) {
     puts("Kernel move assignment");
     fflush(stdout);
     return *const_cast<Kernel*>(this);

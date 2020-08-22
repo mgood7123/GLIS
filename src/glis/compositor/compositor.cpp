@@ -10,23 +10,123 @@ bool stop_drawing = false;
 GLIS_Surface compositor_surface;
 GLIS_NDC_Tools::Grid compositor_grid(GLIS_COMMON_WIDTH, GLIS_COMMON_HEIGHT);
 
+constexpr bool SHOULD_CACHE_TEXTURES = true;
+
 class Client_Window {
 public:
+    Magnum::GL::Texture2D texture2D;
     void * texture_data = nullptr;
+    int texture_data_size = 0;
     int texture_w = 0;
     int texture_h = 0;
     int x = 0;
     int y = 0;
     int w = 0;
     int h = 0;
-    GLuint TEXTURE = 0;
 
-    ~Client_Window() {
-        if (texture_data != nullptr) free(texture_data);
-        texture_data = nullptr;
+    void genTexture() {
+        // cache texture
+
+        const Magnum::Vector2i s = {texture_w, texture_h};
+
+        texture2D = Magnum::GL::Texture2D();
+        texture2D.setStorage(1, Magnum::GL::TextureFormat::RGBA8, s);
+
+        texture2D.setSubImage(
+                0,
+                {},
+                std::move(
+                        Magnum::ImageView2D(
+                                Magnum::PixelFormat::RGBA8Unorm,
+                                s,
+                                std::move(
+                                        Corrade::Containers::ArrayView<const uint32_t> (
+                                                static_cast<uint32_t *>(texture_data),
+                                                texture_w*texture_h
+                                        )
+                                )
+                        )
+
+                )
+        ).generateMipmap();
     }
 
-    Magnum::GL::Texture2D *texture2D = nullptr;
+    Client_Window() {
+        puts("Client_Window constructor");
+        fflush(stdout);
+    }
+
+    Client_Window(const Client_Window &x) {
+        puts("Client_Window copy constructor");
+        fflush(stdout);
+        this->x = x.x;
+        y = x.y;
+        w = x.w;
+        h = x.h;
+        texture_w = x.texture_w;
+        texture_h = x.texture_h;
+        texture_data_size = x.texture_data_size;
+        if (x.texture_data != nullptr) {
+            if (texture_data != nullptr) free(texture_data);
+            texture_data = malloc(texture_data_size);
+            memcpy(texture_data, x.texture_data, texture_data_size);
+        }
+        genTexture();
+    }
+
+    Client_Window(Client_Window &&x) {
+        puts("Client_Window move constructor");
+        fflush(stdout);
+        std::swap(this->x, x.x);
+        std::swap(y, x.y);
+        std::swap(w, x.w);
+        std::swap(h, x.h);
+        std::swap(texture_w, x.texture_w);
+        std::swap(texture_h, x.texture_h);
+        std::swap(texture_data_size, x.texture_data_size);
+        std::swap(texture_data, x.texture_data);
+        std::swap(texture2D, x.texture2D);
+    }
+
+    Client_Window & operator=(const Client_Window &x) {
+        puts("Client_Window copy assignment");
+        fflush(stdout);
+        this->x = x.x;
+        y = x.y;
+        w = x.w;
+        h = x.h;
+        texture_w = x.texture_w;
+        texture_h = x.texture_h;
+        texture_data_size = x.texture_data_size;
+        if (x.texture_data != nullptr) {
+            if (texture_data != nullptr) free(texture_data);
+            texture_data = malloc(texture_data_size);
+            memcpy(texture_data, x.texture_data, texture_data_size);
+        }
+        genTexture();
+        return *this;
+    }
+
+    Client_Window & operator=(Client_Window &&x) {
+        puts("Client_Window move assignment");
+        fflush(stdout);
+        std::swap(this->x, x.x);
+        std::swap(y, x.y);
+        std::swap(w, x.w);
+        std::swap(h, x.h);
+        std::swap(texture_w, x.texture_w);
+        std::swap(texture_h, x.texture_h);
+        std::swap(texture_data_size, x.texture_data_size);
+        std::swap(texture_data, x.texture_data);
+        std::swap(texture2D, x.texture2D);
+        return *this;
+    }
+
+    ~Client_Window() {
+        puts("Client_Window Destructor");
+        fflush(stdout);
+        if (texture_data != nullptr) free(texture_data);
+    }
 };
 
 class Client {
@@ -62,7 +162,8 @@ void handleCommands(
     if (command == glis.GLIS_SERVER_COMMANDS.new_connection) {
         LOG_ERROR("registering new client");
         client = new Client;
-        Object * O = CompositorMain.KERNEL.newObject(ObjectTypeProcess, 0, client);
+        client->shared_memory.init();
+        Object * O = CompositorMain.KERNEL.newObject(ObjectTypeProcess, ObjectFlagAutoDeallocateResource, client);
         client->id = CompositorMain.KERNEL.table->findObject(O);
         LOG_ERROR("registered new client with client id: %zu", client->id);
         CompositorMain.server.socket_get_fd(client->shared_memory.fd);
@@ -110,7 +211,7 @@ void handleCommands(
         x->y = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
         x->w = client->shared_memory.slot.additional_data_2.type_int64_t.load_int64_t();
         x->h = client->shared_memory.slot.additional_data_3.type_int64_t.load_int64_t();
-        size_t id = CompositorMain.KERNEL.table->findObject(CompositorMain.KERNEL.newObject(ObjectTypeWindow, 0, x));
+        size_t id = CompositorMain.KERNEL.table->findObject(CompositorMain.KERNEL.newObject(ObjectTypeWindow, ObjectFlagAutoDeallocateResource, x));
         LOG_INFO(
                 "CLIENT ID: %zu, window  %zu: %d,%d,%d,%d",
                 client->id, id, x->x, x->y, x->w, x->h
@@ -126,9 +227,13 @@ void handleCommands(
         x->texture_w = client->shared_memory.slot.additional_data_0.type_int64_t.load_int64_t();
         x->texture_h = client->shared_memory.slot.additional_data_1.type_int64_t.load_int64_t();
         if (x->texture_data != nullptr) free(x->texture_data);
-        x->texture_data = malloc(client->shared_memory.slot.texture.size);
-        memcpy(x->texture_data, client->shared_memory.slot.texture.load_ptr(), client->shared_memory.slot.texture.size);
+        x->texture_data_size = client->shared_memory.slot.texture.size;
+        x->texture_data = malloc(x->texture_data_size);
+        memcpy(x->texture_data, client->shared_memory.slot.texture.load_ptr(), x->texture_data_size);
         LOG_INFO("CLIENT ID: %zu, received w: %llu, h: %llu", client->id, x->texture_w, x->texture_h);
+
+        if (SHOULD_CACHE_TEXTURES) x->genTexture();
+
         client->shared_memory.slot.status.store_int8_t(client->shared_memory.status.standby);
         LOG_INFO("CLIENT ID: %zu, CLIENT has uploaded", client->id);
     } else if (command == glis.GLIS_SERVER_COMMANDS.modify_window) {
@@ -199,18 +304,33 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
             for (; index < page_size * page && !should_break; index++) {
                 if (CompositorMain.KERNEL.table->table[index] != nullptr) {
                     if (
-                            CompositorMain.KERNEL.table->table[index]->type
-                            ==
-                            ObjectTypeProcess
-                            ) {
-                        Client *client = CompositorMain.KERNEL.table->table[index]->resource.get<Client*>();
-                        if (client->shared_memory.data == nullptr) {
-                            CompositorMain.KERNEL.table->DELETE(index);
-                        } else if (client->shared_memory.slot.status.load_int8_t() != client->shared_memory.status.standby) {
-                            command = client->shared_memory.slot.command.load_int8_t();
-                            client->shared_memory.slot.command.store_int8_t(-1);
-                            LOG_ERROR("using client with CLIENT ID: %zu", client->id);
-                            handleCommands(glis, CompositorMain, command, client, stop_drawing, in, out);
+                        CompositorMain.KERNEL.table->table[index]->type
+                        ==
+                        ObjectTypeProcess
+                    ) {
+                        Client *client = CompositorMain.KERNEL.table->table[index]->resource.get<Client *>();
+
+                        // client->connected can change during keep alive shutdown
+                        // if the keep alive notifier has ended upon locking this lock
+                        // then it is safe to assume that the lock will not be locked again
+                        GLIS_INTERNAL_LOCK.lock();
+                        if (client->connected) {
+                            CompositorMain.server.log_info("CLIENT ID: %zu, client connected", client->id);
+                            if (client->shared_memory.slot.status.load_int8_t() !=
+                                client->shared_memory.status.standby) {
+                                command = client->shared_memory.slot.command.load_int8_t();
+                                client->shared_memory.slot.command.store_int8_t(-1);
+                                LOG_ERROR("using client with CLIENT ID: %zu", client->id);
+                                handleCommands(glis, CompositorMain, command, client,
+                                               stop_drawing, in, out);
+                            }
+                            GLIS_INTERNAL_LOCK.unlock();
+                        } else {
+                            CompositorMain.server.log_info("CLIENT ID: %zu, client disconnected", client->id);
+                            GLIS_INTERNAL_LOCK.unlock();
+                            if (client->shared_memory.data == nullptr) {
+                                CompositorMain.KERNEL.table->DELETE(index);
+                            }
                         }
                     }
                 }
@@ -225,7 +345,6 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
             + std::to_string(command_processing.frameLength)
             + " milliseconds";
     const char * text_command_time = text_01.c_str();
-    LOG_MAGNUM_INFO << text_command_time;
     if (command != -1) LOG_INFO("rendering");
     clear.onFrameStart();
     compositor_surface.clear();
@@ -235,7 +354,6 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
             + std::to_string(clear.frameLength)
             + " milliseconds";
     const char * text_clear_time = text_02.c_str();
-    LOG_MAGNUM_INFO << text_clear_time;
     counts.onFrameStart();
     int count = CompositorMain.KERNEL.table->Page.count();
     size_t page_size = CompositorMain.KERNEL.table->page_size;
@@ -283,18 +401,24 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
 
                         if (x->texture_data == nullptr) continue;
 
-                        compositor_surface.setTextureData(
-                                static_cast<uint32_t *>(x->texture_data),
-                                x->texture_w, x->texture_h
-                        );
+                        if (!SHOULD_CACHE_TEXTURES) x->genTexture();
 
-                        compositor_surface.texture2DRead = compositor_surface.texture2DDraw;
+                        const Magnum::Vector2 & topLeft =     {compositor_grid.x[x->x], compositor_grid.y[x->y]};
+                        const Magnum::Vector2 & bottomRight = {compositor_grid.x[x->w], compositor_grid.y[x->h]};
+                        const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
+                        const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
 
-                        compositor_surface.drawPlaneCorners(
-                                GLIS_SurfaceColor{0, 0, 0, 0},
-                                {compositor_grid.x[x->x], compositor_grid.y[x->y]},
-                                {compositor_grid.x[x->w], compositor_grid.y[x->h]}
-                        );
+                        // cache shader
+                        if (compositor_surface.shaderReadTexture == nullptr)
+                            compositor_surface.shaderReadTexture = new Magnum::Shaders::Flat2D(
+                                    Magnum::Shaders::Flat2D::Flag::Textured);
+
+                        compositor_surface.shaderReadTexture->bindTexture(x->texture2D)
+                            .setColor({1.0f,1.0f,1.0f,1.0f})
+                            .draw(
+                                compositor_surface.mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft)
+                            );
+
                         drawn++;
                     }
                 }
@@ -310,15 +434,12 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
             std::string("textures:              ")
             + std::to_string(drawn);
     const char * text_textures = text_07.c_str();
-    LOG_MAGNUM_INFO << text_draw_time;
-    LOG_MAGNUM_INFO << text_textures;
     fps.onFrameEnd();
     std::string text_08 =
             std::string("frame completed in:    ")
             + std::to_string(fps.frameLength)
             + " milliseconds";
     const char * text_frame_time = text_08.c_str();
-    LOG_MAGNUM_INFO << text_frame_time;
     std::string text_09 = std::string("FPS: ") + std::to_string(fps.averageFps);
     const char * text_fps = text_09.c_str();
 
@@ -413,7 +534,6 @@ void GLIS_COMPOSITOR_DO_MAIN(
     LOG_INFO("initializing main Compositor");
     glis.GLIS_error_to_string_GL("before onscreen setup");
     if (glis.GLIS_setupOnScreenRendering(CompositorMain)) {
-//        glis.vsync(CompositorMain, 0);
         CompositorMain.contextMagnum.create();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

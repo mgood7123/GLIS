@@ -1,0 +1,7 @@
+# Hashes of file build rules.
+11e87d9a1c3dc50105e5f91c68909cd4 dependancies/magnum-extras/src/Magnum/Ui/resource_MagnumUi_RESOURCES.cpp
+d30368d6bfc1d01dbc2eef91c1c25530 dependancies/magnum/src/Magnum/DebugTools/resource_MagnumDebugTools_RESOURCES.cpp
+38d98ae7b3be2aeeda6f3dd5a94d6fc4 dependancies/magnum/src/Magnum/Shaders/resource_MagnumShaders_RCS.cpp
+8833f250218b8302fee14e333312377b dependancies/magnum/src/Magnum/TextureTools/resource_MagnumTextureTools_RCS.cpp
+38413f52b3a9562fbbb480de45a955b4 dependancies/openal-soft/CMakeFiles/build_version
+b188e6005f6cdff24b832815ed67fef3 dependancies/openal-soft/hrtf_default.h

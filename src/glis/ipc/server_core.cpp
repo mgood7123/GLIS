@@ -130,8 +130,8 @@ bool SOCKET_GET(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_
     char *t = str_humanise_bytes(s.total_wrote);
     LOG_INFO("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
              end - start, t);
-    delete n;
-    delete t;
+    delete[] n;
+    delete[] t;
     return true;
 }
 
@@ -155,8 +155,8 @@ SOCKET_SEND(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_data_fd, 
     char *t = str_humanise_bytes(s.total_wrote);
     LOG_INFO("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
              end - start, t);
-    delete n;
-    delete t;
+    delete[] n;
+    delete[] t;
     return true;
 }
 
@@ -233,8 +233,8 @@ bool SOCKET_GET_MESSAGE(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &sock
     char *t = str_humanise_bytes(s.total_wrote);
     LOG_INFO("%sObtained %s of data in %G milliseconds (Total obtained: %s of data)", TAG, n,
              end - start, t);
-    delete n;
-    delete t;
+    delete[] n;
+    delete[] t;
     return true;
 }
 
@@ -257,8 +257,8 @@ bool SOCKET_SEND_MESSAGE(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &soc
     char *t = str_humanise_bytes(s.total_wrote);
     LOG_INFO("%sWrote %s of data in %G milliseconds (Total sent: %s of data)", TAG, n,
              end - start, t);
-    delete n;
-    delete t;
+    delete[] n;
+    delete[] t;
     return true;
 }
 
@@ -358,7 +358,7 @@ void SOCKET_GET_FD(SOCKET_DATA_TRANSFER_INFO &s, const char *TAG, int &socket_da
                 status = *ptr & 0xFF;	/* prevent sign extension */
                 if (status == 0) {
                     if (msg.msg_controllen == CMSG_LEN(sizeof(int)))
-                    LOG_ERROR("status = 0 but no fd");
+                    LOG_ERROR("status = 0");
                     fd = *(int *)CMSG_DATA(cmptr);
                     LOG_ERROR("received fd: %d", fd);
                     free(cmptr);
@@ -492,8 +492,10 @@ void SOCKET_SERVER::set_name(const char *name) {
     memset(&server_name, 0, 107);
     if (name == nullptr || name == NULL) {
         // build default TAG
+        if (TAG_DEALLOCATE) free(TAG);
         TAG = strdup(
                 std::string(std::string("SERVER: ") + (default_server_name) + " : ").c_str());
+        TAG_DEALLOCATE = true;
         LOG_ERROR("%sname was not supplied, conflicts are likely to happen", TAG);
         if (strlen(default_server_name) > 107) {
             LOG_ERROR(
@@ -515,7 +517,9 @@ void SOCKET_SERVER::set_name(const char *name) {
             memcpy(server_name, name, 107);
         } else memcpy(server_name, name, strlen(name));
         // build new TAG
+        if (TAG_DEALLOCATE) free(TAG);
         TAG = strdup(std::string(std::string("SERVER: ") + server_name + " : ").c_str());
+        TAG_DEALLOCATE = true;
         LOG_INFO(
                 "%sset name to %s",
                 TAG, server_name
@@ -536,10 +540,8 @@ SOCKET_SERVER::SOCKET_SERVER(const char *name) {
 }
 
 SOCKET_SERVER::~SOCKET_SERVER() {
-    if (TAG != nullptr) {
-        free(TAG);
-        TAG = nullptr;
-    }
+    if (TAG_DEALLOCATE) free(TAG);
+    TAG = nullptr;
 }
 
 bool
@@ -742,7 +744,9 @@ void SOCKET_CLIENT::set_name(const char *name) {
     socket_name[0] = '\0';
     if (name == nullptr || name == NULL) {
         // build default TAG
+        if (TAG_DEALLOCATE) free(TAG);
         TAG = strdup(std::string(std::string("CLIENT: ") + (default_client_name) + " : ").c_str());
+        TAG_DEALLOCATE = true;
         if (strlen(default_client_name) > 107) {
             LOG_ERROR(
                     "%sdefault name is longer than 107 characters, truncating, conflicts may happen",
@@ -763,7 +767,9 @@ void SOCKET_CLIENT::set_name(const char *name) {
             memcpy(&socket_name[1], name, 107);
         } else memcpy(&socket_name[1], name, strlen(name));
         // build new TAG
+        if (TAG_DEALLOCATE) free(TAG);
         TAG = strdup(std::string(std::string("CLIENT: ") + &socket_name[1] + " : ").c_str());
+        TAG_DEALLOCATE = true;
         LOG_INFO(
                 "%sset name to %s",
                 TAG, &socket_name[1]
