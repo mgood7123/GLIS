@@ -352,6 +352,8 @@ GLIS_FONT::font_init &GLIS_FONT::font_init::operator=(GLIS_FONT::font_init &&p2)
 
 GLIS_FONT::font_init::~font_init() {
     std::cout << "font_init destructor" << std::endl << std::flush;
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
     if (hasProgram) {
         glDeleteProgram(program);
         glDeleteShader(f);
@@ -505,6 +507,7 @@ void GLIS_FONT::atlas::init(FT_Face face, int height) {
 
 void GLIS_FONT::atlas::denit() {
     glDeleteTextures(1, &tex);
+
 }
 
 GLIS_FONT::atlas::atlas(FT_Face face, int height) {

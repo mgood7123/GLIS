@@ -402,6 +402,7 @@ bool GLIS::GLIS_create_context(class GLIS_CLASS &GLIS) {
 }
 
 bool GLIS::GLIS_switch_to_context(class GLIS_CLASS &GLIS) {
+    // calls xcb_register_for_special_xge
     EGLBoolean r = eglMakeCurrent(GLIS.display, GLIS.surface, GLIS.surface, GLIS.context);
     GLIS_error_to_string_EGL("eglMakeCurrent");
     if (r == EGL_FALSE) return false;
@@ -1468,13 +1469,12 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
     // obtain the current dpi
 
     char *resourceString = XResourceManagerString(GLIS.display_id);
-    XrmDatabase db;
     XrmValue value;
     char *type = NULL;
 
     XrmInitialize(); /* Need to initialize the DB before calling Xrm* functions */
 
-    db = XrmGetStringDatabase(resourceString);
+    XrmDatabase db = XrmGetStringDatabase(resourceString);
 
     if (resourceString) {
         if (XrmGetResource(db, "Xft.dpi", "String", &type, &value) == True) {
@@ -1483,6 +1483,8 @@ bool GLIS::getX11Window(GLIS_CLASS & GLIS, int width, int height) {
             }
         }
     }
+
+    XrmDestroyDatabase(db);
     LOG_INFO("DPI: %d", GLIS.dpi);
     return true;
 #endif
