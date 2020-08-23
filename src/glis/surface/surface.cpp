@@ -4,6 +4,22 @@
 
 #include <glis/surface/surface.hpp>
 
+// TODO: add an optimizing command queue, this will trade speed for speed
+//  specifically, if run-time optimization takes longer than draw time
+//  then optimization is generally not recommended
+//  since drawing will be faster than optimizing
+//  as an example, if it takes 2ms to draw an unoptimized command queue
+//  but it takes 3ms to optimize, and 1ms to draw an optimized command queue
+//  then it would be faster to draw the unoptimized command queue
+//  as it takes 2ms to draw an unoptimized command queue
+//  while it takes 4ms to draw an optimized command queue
+//  with the bottleneck being the time taken to optimize the command queue
+//  this is all at runtime however
+//  if we can move optimization into compile-time
+//  then drawing an optimized command queue will always be
+//  at least as fast as drawing an unoptimized command queue
+//  and thus would have no trade-off's
+
 Magnum::GL::Mesh GLIS_Mesh::buildTriangleWireframeMesh(const Magnum::Vector2 &left,
                                                     const Magnum::Vector2 &right,
                                                     const Magnum::Vector2 &top) {
