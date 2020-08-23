@@ -19,6 +19,9 @@
 //  then drawing an optimized command queue will always be
 //  at least as fast as drawing an unoptimized command queue
 //  and thus would have no trade-off's
+//  Template<> functions CANNOT be used as a compile-time construct since
+//  they only only generate functions with substituted type info
+//  and cannot generate actual new code
 
 Magnum::GL::Mesh GLIS_Mesh::buildTriangleWireframeMesh(const Magnum::Vector2 &left,
                                                     const Magnum::Vector2 &right,
