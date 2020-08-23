@@ -2826,6 +2826,10 @@ glis/ipc/ipc.hpp
 glis/internal/internal.hpp
 -
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/surface/surface.cpp
+glis/surface/surface.hpp
+-
+
 dependancies/corrade/src/Corrade/configure.h
 ciso646
 -

@@ -133,6 +133,13 @@ public:
     );
 
     void drawTriangle(
+            const GLIS_SurfaceTexture2D * texture,
+            const Magnum::Vector2 & left  = {-globalScale, -globalScale},
+            const Magnum::Vector2 & right = { globalScale, -globalScale},
+            const Magnum::Vector2 & top   = { 0.0f,  globalScale}
+    );
+
+    void drawTriangle(
             const GLIS_Surface & surface,
             const Magnum::Vector2 & left  = {-globalScale, -globalScale},
             const Magnum::Vector2 & right = { globalScale, -globalScale},
@@ -156,6 +163,14 @@ public:
     );
 
     void drawPlane(
+            const GLIS_SurfaceTexture2D * texture,
+            const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
+            const Magnum::Vector2 & topRight =    { globalScale,  globalScale},
+            const Magnum::Vector2 & bottomRight = { globalScale, -globalScale},
+            const Magnum::Vector2 & bottomLeft =  {-globalScale, -globalScale}
+    );
+
+    void drawPlane(
             const GLIS_Surface & surface,
             const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
             const Magnum::Vector2 & topRight =    { globalScale,  globalScale},
@@ -171,6 +186,12 @@ public:
 
     void drawPlaneCorners(
             const GLIS_SurfaceColor & color = {1.0f,  1.0f,  1.0f,  1.0f},
+            const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
+            const Magnum::Vector2 & bottomRight = { globalScale, -globalScale}
+    );
+
+    void drawPlaneCorners(
+            const GLIS_SurfaceTexture2D * texture,
             const Magnum::Vector2 & topLeft =     {-globalScale,  globalScale},
             const Magnum::Vector2 & bottomRight = { globalScale, -globalScale}
     );

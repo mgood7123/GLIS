@@ -229,12 +229,17 @@ void GLIS_Surface::drawTriangle(const GLIS_SurfaceColor &color, const Magnum::Ve
     }
 }
 
-void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const Magnum::Vector2 &left,
+void GLIS_Surface::drawTriangle(const GLIS_SurfaceTexture2D * texture, const Magnum::Vector2 &left,
                                 const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
-    texture2DRead = surface.texture2DDraw;
+    texture2DRead = const_cast<GLIS_SurfaceTexture2D *>(texture);
     drawTriangle(GLIS_SurfaceColor {0,0,0,0}, left, right, top);
     texture2DRead = tmp;
+}
+
+void GLIS_Surface::drawTriangle(const GLIS_Surface &surface, const Magnum::Vector2 &left,
+                                const Magnum::Vector2 &right, const Magnum::Vector2 &top) {
+    drawTriangle(surface.texture2DDraw, left, right, top);
 }
 
 void
@@ -259,13 +264,19 @@ void GLIS_Surface::drawPlane(const GLIS_SurfaceColor &color, const Magnum::Vecto
     }
 }
 
-void GLIS_Surface::drawPlane(const GLIS_Surface &surface,
+void GLIS_Surface::drawPlane(const GLIS_SurfaceTexture2D * texture,
                              const Magnum::Vector2 &topLeft, const Magnum::Vector2 &topRight,
                              const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
     GLIS_SurfaceTexture2D * tmp = texture2DRead;
-    texture2DRead = surface.texture2DDraw;
+    texture2DRead = const_cast<GLIS_SurfaceTexture2D *>(texture);
     drawPlane(GLIS_SurfaceColor {0,0,0,0}, topLeft, topRight, bottomRight, bottomLeft);
     texture2DRead = tmp;
+}
+
+void GLIS_Surface::drawPlane(const GLIS_Surface &surface,
+                             const Magnum::Vector2 &topLeft, const Magnum::Vector2 &topRight,
+                             const Magnum::Vector2 &bottomRight, const Magnum::Vector2 &bottomLeft) {
+    drawPlane(surface.texture2DDraw, topLeft, topRight, bottomRight, bottomLeft);
 }
 
 void
@@ -301,7 +312,7 @@ void GLIS_Surface::drawPlaneCorners(const GLIS_SurfaceColor &color, const Magnum
     );
 }
 
-void GLIS_Surface::drawPlaneCorners(const GLIS_Surface &surface, const Magnum::Vector2 &topLeft,
+void GLIS_Surface::drawPlaneCorners(const GLIS_SurfaceTexture2D * texture, const Magnum::Vector2 &topLeft,
                                     const Magnum::Vector2 &bottomRight) {
     // the X of top right is the X of bottom right
     // the Y of top right is the Y of top left
@@ -309,10 +320,15 @@ void GLIS_Surface::drawPlaneCorners(const GLIS_Surface &surface, const Magnum::V
     const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
 
     drawPlane(
-            surface,
+            texture,
             topLeft,
             topRight,
             bottomRight,
             bottomLeft
     );
+}
+
+void GLIS_Surface::drawPlaneCorners(const GLIS_Surface &surface, const Magnum::Vector2 &topLeft,
+                                    const Magnum::Vector2 &bottomRight) {
+    drawPlaneCorners(surface.texture2DDraw, topLeft, bottomRight);
 }

@@ -14,7 +14,7 @@ constexpr bool SHOULD_CACHE_TEXTURES = true;
 
 class Client_Window {
 public:
-    Magnum::GL::Texture2D texture2D;
+    Magnum::GL::Texture2D * texture2D = nullptr;
     void * texture_data = nullptr;
     int texture_data_size = 0;
     int texture_w = 0;
@@ -29,10 +29,10 @@ public:
 
         const Magnum::Vector2i s = {texture_w, texture_h};
 
-        texture2D = Magnum::GL::Texture2D();
-        texture2D.setStorage(1, Magnum::GL::TextureFormat::RGBA8, s);
-
-        texture2D.setSubImage(
+        delete texture2D;
+        texture2D = new Magnum::GL::Texture2D;
+        texture2D->setStorage(1, Magnum::GL::TextureFormat::RGBA8, s)
+            .setSubImage(
                 0,
                 {},
                 std::move(
@@ -46,9 +46,9 @@ public:
                                         )
                                 )
                         )
-
                 )
-        ).generateMipmap();
+            )
+            .generateMipmap();
     }
 
     Client_Window() {
@@ -71,7 +71,7 @@ public:
             texture_data = malloc(texture_data_size);
             memcpy(texture_data, x.texture_data, texture_data_size);
         }
-        genTexture();
+        if (texture2D != nullptr) genTexture();
     }
 
     Client_Window(Client_Window &&x) {
@@ -103,7 +103,7 @@ public:
             texture_data = malloc(texture_data_size);
             memcpy(texture_data, x.texture_data, texture_data_size);
         }
-        genTexture();
+        if (texture2D != nullptr) genTexture();
         return *this;
     }
 
@@ -126,6 +126,7 @@ public:
         puts("Client_Window Destructor");
         fflush(stdout);
         if (texture_data != nullptr) free(texture_data);
+        delete texture2D;
     }
 };
 
@@ -409,21 +410,27 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
 
                         if (!SHOULD_CACHE_TEXTURES) x->genTexture();
 
-                        const Magnum::Vector2 & topLeft =     {compositor_grid.x[x->x], compositor_grid.y[x->y]};
-                        const Magnum::Vector2 & bottomRight = {compositor_grid.x[x->w], compositor_grid.y[x->h]};
-                        const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
-                        const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
+                        compositor_surface.drawPlaneCorners(
+                            x->texture2D,
+                            {compositor_grid.x[x->x], compositor_grid.y[x->y]},
+                            {compositor_grid.x[x->w], compositor_grid.y[x->h]}
+                        );
 
-                        // cache shader
-                        if (compositor_surface.shaderReadTexture == nullptr)
-                            compositor_surface.shaderReadTexture = new Magnum::Shaders::Flat2D(
-                                    Magnum::Shaders::Flat2D::Flag::Textured);
-
-                        compositor_surface.shaderReadTexture->bindTexture(x->texture2D)
-                            .setColor({1.0f,1.0f,1.0f,1.0f})
-                            .draw(
-                                compositor_surface.mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft)
-                            );
+//                        const Magnum::Vector2 & topLeft =     {compositor_grid.x[x->x], compositor_grid.y[x->y]};
+//                        const Magnum::Vector2 & bottomRight = {compositor_grid.x[x->w], compositor_grid.y[x->h]};
+//                        const Magnum::Vector2 topRight {bottomRight[0], topLeft[1]};
+//                        const Magnum::Vector2 bottomLeft {topLeft[0], bottomRight[1]};
+//
+//                        // cache shader
+//                        if (compositor_surface.shaderReadTexture == nullptr)
+//                            compositor_surface.shaderReadTexture = new Magnum::Shaders::Flat2D(
+//                                    Magnum::Shaders::Flat2D::Flag::Textured);
+//
+//                        compositor_surface.shaderReadTexture->bindTexture(x->texture2D)
+//                            .setColor({1.0f,1.0f,1.0f,1.0f})
+//                            .draw(
+//                                compositor_surface.mesh.buildPlaneMesh(topLeft, topRight, bottomRight, bottomLeft)
+//                            );
 
                         drawn++;
                     }
