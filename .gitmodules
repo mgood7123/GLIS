@@ -25,3 +25,6 @@
 [submodule "dependancies/AnyOpt"]
 	path = dependancies/AnyOpt
 	url = https://github.com/mgood7123/AnyOpt
+[submodule "References/Processing3Compositor"]
+	path = References/Processing3Compositor
+	url = http://github.com/mgood7123/Processing3Compositor
