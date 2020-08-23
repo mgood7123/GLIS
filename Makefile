@@ -108,7 +108,7 @@ rebuild_test_debug:
 	make clean_debug
 	make test_debug
 
-asan_flags = asan_OPTIONS=detect_stack_use_after_return=1
+asan_flags = LSAN_OPTIONS=verbosity=1:log_threads=1 ASAN_OPTIONS=verbosity=1:detect_stack_use_after_return=1
 
 test_debug_asan: debug_asan
 	for file in $(debug_asan_executable_dir)/* ; do echo "testing $$file..." ; ${asan_flags} $$file ; echo "$$file returned with code $$?" ; done
