@@ -137,6 +137,7 @@ public:
     size_t id = -1;
     size_t table_id = 0;
     bool connected = false;
+    pthread_t thread_id;
 };
 
 GLIS_FONT::atlas *text_size = nullptr;
@@ -178,8 +179,7 @@ void handleCommands(
         in.get<int>(&h);
         glis.GLIS_SHARED_MEMORY_SLOTS_COMPUTE_SLOTS__(client->shared_memory, w, h);
         char *s = SERVER_allocate_new_server(SERVER_START_REPLY_MANUALLY, client->table_id);
-        pthread_t t; // unused
-        int e = pthread_create(&t, nullptr, GLIS::KEEP_ALIVE_MAIN_NOTIFIER, client);
+        int e = pthread_create(&client->thread_id, nullptr, GLIS::KEEP_ALIVE_MAIN_NOTIFIER, client);
         if (e != 0) {
             LOG_ERROR(
                     "CLIENT ID: %zu, pthread_create(): errno: %d (%s) | return: %d (%s)",
@@ -327,6 +327,11 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             GLIS_INTERNAL_LOCK.unlock();
                         } else {
                             CompositorMain.server.log_info("CLIENT ID: %zu, client disconnected", client->id);
+                            int * res;
+                            int s = pthread_join(client->thread_id, reinterpret_cast<void **>(&res));
+                            if (s != 0) LOG_ERROR("ERROR: pthread_join returned %d", s);
+                            else LOG_INFO("KEEP_ALIVE_MAIN_NOTIFIER returned %d", *res);
+                            delete res;
                             GLIS_INTERNAL_LOCK.unlock();
                             if (client->shared_memory.data == nullptr) {
                                 CompositorMain.KERNEL.table->DELETE(index);

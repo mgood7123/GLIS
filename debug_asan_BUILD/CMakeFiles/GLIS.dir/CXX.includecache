@@ -2772,6 +2772,10 @@ glis/surface/ndc_grid.hpp
 
 ../include/glis/templates/templates.hpp
 
+/home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/compositor/compositor.cpp
+glis/glis.hpp
+-
+
 /home/smallville7123/AndroidCompositor/app/src/main/jni/GLIS/src/glis/internal/internal.cpp
 glis/glis.hpp
 -

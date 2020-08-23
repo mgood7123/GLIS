@@ -444,6 +444,8 @@ void GLIS_draw_rectangle(TYPE INITIALIZER, TYPE x1, TYPE y1, TYPE x2, TYPE y2, T
     GLIS_error_to_string_GL("glDeleteBuffers");
     glDeleteBuffers(1, &element_buffer_object);
     GLIS_error_to_string_GL("glDeleteBuffers");
+    free(v.vertex);
+    free(v.indices);
 }
 
 template<typename TYPE>

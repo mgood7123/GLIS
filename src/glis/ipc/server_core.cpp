@@ -403,7 +403,7 @@ SOCKET_SERVER *SERVER_get(size_t id) {
 }
 
 char *SERVER_allocate_new_server(void *(*SERVER_MAIN)(void *), size_t &id) {
-    Object *o = SERVER_KERNEL.newObject(0, 0, new SOCKET_SERVER);
+    Object *o = SERVER_KERNEL.newObject(0, ObjectFlagAutoDeallocateResource, new SOCKET_SERVER);
     id = SERVER_KERNEL.table->findObject(o);
     o->resource.get<SOCKET_SERVER*>()->set_name(std::to_string(id).c_str());
     if (SERVER_MAIN != nullptr) o->resource.get<SOCKET_SERVER*>()->startServer(SERVER_MAIN);
