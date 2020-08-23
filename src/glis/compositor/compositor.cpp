@@ -334,6 +334,7 @@ GLIS_CALLBACKS_DRAW_RESIZE_CLOSE(GLIS_COMPOSITOR_DEFAULT_DRAW_FUNCTION, glis, Co
                             delete res;
                             GLIS_INTERNAL_LOCK.unlock();
                             if (client->shared_memory.data == nullptr) {
+                                // after this returns, client will point to invalid data
                                 CompositorMain.KERNEL.table->DELETE(index);
                             }
                         }
