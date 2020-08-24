@@ -79,10 +79,14 @@ constexpr auto sorted1 = sort(result_);
 
 constexpr auto sorted2 = sort(append(append(10), 5));
 
+template <typename T>
+void printArray(T & a) {
+    for (auto& x : a ) std::cout << x << " ";
+    std::cout << std::endl;
+}
+
 int main() {
-    for (auto& x : sorted1 ) std::cout << x << " ";
-    std::cout << std::endl;
-    for (auto& x : sorted2 ) std::cout << x << " ";
-    std::cout << std::endl;
+    printArray(sorted1);
+    printArray(sorted2);
     return 0;
 }
