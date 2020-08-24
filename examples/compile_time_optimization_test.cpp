@@ -38,10 +38,12 @@ constexpr auto add(const array<int, N>& ar1, int value) noexcept {
     return result;
 }
 
+#define add_(array, value) add<array.size()>(array, value)
+
 int main()
 {
     constexpr auto result = add(5);
-    constexpr auto result_ = add<result.size()>(result, 10);
+    constexpr auto result_ = add_(result, 10);
     for (auto& x : result_) std::cout << x << " ";
     std::cout << std::endl;
     return 0;
