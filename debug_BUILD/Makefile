@@ -114,6 +114,17 @@ package_source/fast: package_source
 
 .PHONY : package_source/fast
 
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
+	/usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+
+.PHONY : package/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -134,17 +145,6 @@ list_install_components:
 list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
-
-# Special rule for the target package
-package: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	/usr/bin/cpack --config ./CPackConfig.cmake
-.PHONY : package
-
-# Special rule for the target package
-package/fast: package
-
-.PHONY : package/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -528,6 +528,19 @@ testBuilder_executables_100_textures: cmake_check_build_system
 testBuilder_executables_100_textures/fast:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_100_textures.dir/build.make CMakeFiles/testBuilder_executables_100_textures.dir/build
 .PHONY : testBuilder_executables_100_textures/fast
+
+#=============================================================================
+# Target rules for targets named testBuilder_executables_compile_time_optimization_test
+
+# Build rule for target.
+testBuilder_executables_compile_time_optimization_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testBuilder_executables_compile_time_optimization_test
+.PHONY : testBuilder_executables_compile_time_optimization_test
+
+# fast build rule for target.
+testBuilder_executables_compile_time_optimization_test/fast:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/build.make CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/build
+.PHONY : testBuilder_executables_compile_time_optimization_test/fast
 
 #=============================================================================
 # Target rules for targets named testBuilder_executables_RotatingCube
@@ -2009,6 +2022,33 @@ examples/X11_font_2.cpp.s:
 	$(MAKE) -f CMakeFiles/testBuilder_executables_X11_font_2.dir/build.make CMakeFiles/testBuilder_executables_X11_font_2.dir/examples/X11_font_2.cpp.s
 .PHONY : examples/X11_font_2.cpp.s
 
+examples/compile_time_optimization_test.o: examples/compile_time_optimization_test.cpp.o
+
+.PHONY : examples/compile_time_optimization_test.o
+
+# target to build an object file
+examples/compile_time_optimization_test.cpp.o:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/build.make CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/examples/compile_time_optimization_test.cpp.o
+.PHONY : examples/compile_time_optimization_test.cpp.o
+
+examples/compile_time_optimization_test.i: examples/compile_time_optimization_test.cpp.i
+
+.PHONY : examples/compile_time_optimization_test.i
+
+# target to preprocess a source file
+examples/compile_time_optimization_test.cpp.i:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/build.make CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/examples/compile_time_optimization_test.cpp.i
+.PHONY : examples/compile_time_optimization_test.cpp.i
+
+examples/compile_time_optimization_test.s: examples/compile_time_optimization_test.cpp.s
+
+.PHONY : examples/compile_time_optimization_test.s
+
+# target to generate assembly for a file
+examples/compile_time_optimization_test.cpp.s:
+	$(MAKE) -f CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/build.make CMakeFiles/testBuilder_executables_compile_time_optimization_test.dir/examples/compile_time_optimization_test.cpp.s
+.PHONY : examples/compile_time_optimization_test.cpp.s
+
 examples/compositor.o: examples/compositor.cpp.o
 
 .PHONY : examples/compositor.o
@@ -2614,6 +2654,7 @@ help:
 	@echo "... install"
 	@echo "... edit_cache"
 	@echo "... package_source"
+	@echo "... package"
 	@echo "... testBuilder_executables_X11_font_2"
 	@echo "... testBuilder_executables_X11_font_1"
 	@echo "... testBuilder_executables_X11_Shapes"
@@ -2633,7 +2674,6 @@ help:
 	@echo "... GLIS"
 	@echo "... testBuilder_executables_shm"
 	@echo "... testBuilder_executables_DefaultFramebuffer"
-	@echo "... package"
 	@echo "... testBuilder_executables_wayland"
 	@echo "... testBuilder_executables_X11Cube"
 	@echo "... testBuilder_executables_X11"
@@ -2644,6 +2684,7 @@ help:
 	@echo "... testBuilder_executables_OffScreenFramebuffer"
 	@echo "... testBuilder_executables_MYPRIVATEAPP"
 	@echo "... testBuilder_executables_100_textures"
+	@echo "... testBuilder_executables_compile_time_optimization_test"
 	@echo "... testBuilder_executables_RotatingCube"
 	@echo "... gmock_main"
 	@echo "... gmock"
@@ -2780,6 +2821,9 @@ help:
 	@echo "... examples/X11_font_2.o"
 	@echo "... examples/X11_font_2.i"
 	@echo "... examples/X11_font_2.s"
+	@echo "... examples/compile_time_optimization_test.o"
+	@echo "... examples/compile_time_optimization_test.i"
+	@echo "... examples/compile_time_optimization_test.s"
 	@echo "... examples/compositor.o"
 	@echo "... examples/compositor.i"
 	@echo "... examples/compositor.s"

@@ -130,6 +130,9 @@ macro(build_program directory name)
     endif()
 endmacro()
 
+# compile-time tests
+build_program(examples compile_time_optimization_test)
+
 # compositor
 build_program(examples compositor)
 
