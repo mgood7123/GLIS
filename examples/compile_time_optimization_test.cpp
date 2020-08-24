@@ -6,9 +6,11 @@ template <typename T, size_t N>
 struct array {
     T elems[N];
 
-    constexpr T * begin() const noexcept { return const_cast<T*>(elems); }
+    constexpr T * begin() noexcept { return elems; }
+    constexpr T const* begin() const noexcept { return elems; }
     constexpr T const* cbegin() const noexcept { return elems; }
-    constexpr T * end() const noexcept { return const_cast<T*>(&elems[N]); }
+    constexpr T * end() noexcept { return &elems[N]; }
+    constexpr T const* end() const noexcept { return &elems[N]; }
     constexpr T const* cend() const noexcept { return &elems[N]; }
     constexpr size_t size() const noexcept { return N; }
 };
@@ -27,7 +29,7 @@ constexpr void copy(const A * start, const B * end, C * start_) noexcept {
     }
 }
 
-template<int N>
+template<size_t N>
 constexpr auto add(const array<int, N>& ar1, int value) noexcept {
     array<int, N+1> result {0};
     copy (ar1.cbegin(), ar1.cend(), result.begin());
@@ -38,12 +40,10 @@ constexpr auto add(const array<int, N>& ar1, int value) noexcept {
     return result;
 }
 
-#define add_(array, value) add<array.size()>(array, value)
-
 int main()
 {
     constexpr auto result = add(5);
-    constexpr auto result_ = add_(result, 10);
+    constexpr auto result_ = add(result, 10);
     for (auto& x : result_) std::cout << x << " ";
     std::cout << std::endl;
     return 0;
