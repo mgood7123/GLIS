@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <iostream>
 
+// https://godbolt.org/ to verify compile-time execution
+
 template <typename T, size_t N>
 struct array {
     T elems[N];
