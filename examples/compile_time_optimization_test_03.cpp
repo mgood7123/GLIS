@@ -105,6 +105,14 @@ struct Instance {
 Instance<3*2> r;
 
 int main(int argc, char ** argv) {
+// Z takes 4 seconds
+// X takes 1 second
+// W is waiting
+// E is executing
+// execution:  |1|2|3|4|5|6|7|8|
+//             |Z|E|E|E|Z|E|E|E|
+//             |W|W|W|W|X|W|W|W|
+      
     if (argc == 2) r.line(1, 2);
     r.line(50, 60);
     std::cout << "original" << std::endl;

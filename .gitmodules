@@ -28,3 +28,12 @@
 [submodule "References/Processing3Compositor"]
 	path = References/Processing3Compositor
 	url = http://github.com/mgood7123/Processing3Compositor
+[submodule "dependancies/easyloggingpp"]
+	path = dependancies/easyloggingpp
+	url = https://github.com/amrayn/easyloggingpp/
+[submodule "dependancies/SPSCQueue"]
+	path = dependancies/SPSCQueue
+	url = https://github.com/rigtorp/SPSCQueue/
+[submodule "dependancies/taskflow"]
+	path = dependancies/taskflow
+	url = https://github.com/taskflow/taskflow

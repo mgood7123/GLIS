@@ -121,24 +121,124 @@ constexpr auto concat(const array<int, N1>& array_, const array<int, N2>& array_
     return result;
 }
 
-
-
+#include "taskflow/taskflow/taskflow.hpp"
 
 int main(int argc, char ** argv) {
-    if (argc == 1) {
-        constexpr array<int, 3> cmd1 = r.line(1, 2);
-        constexpr array<int, 6> cmd2 = r.line(cmd1, 3, 4);
-    } else {
-        constexpr array<int, 3> cmd2 = r.line(33, 44);
-    }
-    if (argc == 2) {
-        constexpr array<int, 3> cmd3 = r.line(5, 6);
-        constexpr array<int, 6> cmd4 = r.line(cmd3, 7, 8);
-    } else {
-        constexpr array<int, 3> cmd4 = r.line(77, 88);
-    }
+// Z takes 4 seconds
+// X takes 1 second
+// W is waiting
+// E is executing
+// execution:  |1|2|3|4|5|6|7|8|
+//             |Z|E|E|E|Z|E|E|E|
+//             |W|W|W|W|X|W|W|W|
     
-    constexpr array<int, 12> cmd5 = concat(cmd2, cmd4);
+    tf::Executor executor;
+    tf::Taskflow taskflow, tf;
+    
+    tf::Task A = taskflow.emplace(
+        [] () { std::cout << "Task A\n"; }
+    );
+    tf::Task B = taskflow.emplace(
+        [] () { std::cout << "Task B\n"; }
+    );
+    tf::Task C = taskflow.emplace(
+        [] () { std::cout << "Task C\n"; }
+    );
+    tf::Task D = taskflow.emplace(
+        [] () { std::cout << "Task D\n"; }
+    );
+    
+    A.precede(B);  // A runs before B
+    A.precede(C);  // A runs before C
+    B.precede(D);  // B runs before D
+    D.succeed(B);  // D runs after B
+    
+    executor.run(taskflow).wait();
+    
+    tf::Task init = tf.emplace([](){ }).name("init");
+    tf::Task stop = tf.emplace([](){ }).name("stop");
+
+    // creates a condition task that returns 0 or 1
+    tf::Task cond = tf.emplace([](){
+    std::cout << "flipping a coin\n";
+    return rand() % 2;
+    }).name("cond");
+
+    // creates a feedback loop
+    init.precede(cond);
+    cond.precede(cond, stop);  // cond--0-->cond, cond--1-->stop
+
+    executor.run(tf).wait();
+
+    tf::Taskflow f1, f2;
+
+    auto [f1A, f1B] = f1.emplace( 
+    []() { std::cout << "Task f1A\n"; },
+    []() { std::cout << "Task f1B\n"; }
+    );
+    auto [f2A, f2B, f2C] = f2.emplace( 
+    []() { std::cout << "Task f2A\n"; },
+    []() { std::cout << "Task f2B\n"; },
+    []() { std::cout << "Task f2C\n"; }
+    );
+    auto f1_module_task = f2.composed_of(f1);
+
+    f1_module_task.succeed(f2A, f2B)
+                .precede(f2C);
+                
+    executor.run(f2).wait();
+    
+    {
+
+        struct MyObserver : public tf::ObserverInterface {
+
+            MyObserver(const std::string& name) {
+                std::cout << "constructing observer " << name << '\n';
+            }
+
+            void set_up(size_t num_workers) override final {
+                std::cout << "settting up observer with " << num_workers << " workers\n";
+            }
+
+            void on_entry(size_t w, tf::TaskView tv) override final {
+                std::ostringstream oss;
+                oss << "worker " << w << " ready to run " << tv.name() << '\n';
+                std::cout << oss.str();
+            }
+
+            void on_exit(size_t w, tf::TaskView tv) override final {
+                std::ostringstream oss;
+                oss << "worker " << w << " finished running " << tv.name() << '\n';
+                std::cout << oss.str();
+            }
+        };
+
+        tf::Executor executor;
+
+        // Create a taskflow of eight tasks
+        tf::Taskflow taskflow;
+
+        auto A = taskflow.emplace([] () { std::cout << "1\n"; }).name("A");
+        auto B = taskflow.emplace([] () { std::cout << "2\n"; }).name("B");
+        B.precede(A);
+ 
+        // create an observer
+        std::shared_ptr<MyObserver> observer = executor.make_observer<MyObserver>("MyObserver");
+
+        // run the taskflow
+        executor.run(taskflow).get();
+
+        // remove the observer (optional)
+        executor.remove_observer(std::move(observer));
+        
+    }
+
+    constexpr auto cmd1 = r.line(1, 2);
+    constexpr auto cmd2 = r.line(cmd1, 3, 4);
+
+    constexpr auto cmd3 = r.line(5, 6);
+    constexpr auto cmd4 = r.line(cmd3, 6, 7);
+    constexpr auto cmd5 = concat(cmd2, cmd4);
     std::cout << "original" << std::endl;
     printArray(cmd5);
     std::cout << std::endl << "optimized" << std::endl;

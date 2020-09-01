@@ -8,6 +8,16 @@
 #include <condition_variable>
 #include <chrono>
 using namespace std::chrono_literals;
+#define ELPP_THREAD_SAFE
+#define ELPP_FORCE_USE_STD_THREAD
+#define ELPP_STL_LOGGING
+// #define ELPP_HANDLE_SIGABRT
+// #define ELPP_FEATURE_CRASH_LOG
+#include <easyloggingpp/src/easylogging++.h>
+INITIALIZE_EASYLOGGINGPP
+#include <deque>
+#include <cassert>
+#include <SPSCQueue/include/rigtorp/SPSCQueue.h>
 
 namespace std {
     template< class Rep, class Period, class Predicate >
@@ -85,18 +95,6 @@ struct TimeSince {
     }
 };
 
-#define ELPP_THREAD_SAFE
-#define ELPP_FORCE_USE_STD_THREAD
-#define ELPP_STL_LOGGING
-
-// #define ELPP_HANDLE_SIGABRT
-// #define ELPP_FEATURE_CRASH_LOG
-
-#include "easyloggingpp/src/easylogging++.h"
-#include "easyloggingpp/src/easylogging++.cc"
-
-INITIALIZE_EASYLOGGINGPP
-
 #define PipelinePrintModifiersPrintValue(value) #value << ": " << value
 #define PipelinePrintModifiersAlphaBool(boolean) #boolean << ": " << (boolean ? "true" : "false")
 #define PipelinePrintModifiersPrintStage(stage) "[Stage " << stage << "]"
@@ -108,13 +106,6 @@ INITIALIZE_EASYLOGGINGPP
 #define PipelinePrintStage(stage) PipelinePrint << PipelinePrintModifiersPrintStage(stage) << " "
 #define PipelineFPrintStageIf(condition, type, stage) PipelineFPrintIf(condition, type) << PipelinePrintModifiersPrintStage(stage) << " "
 #define PipelineFPrintStage(type, stage) PipelineFPrint(type) << PipelinePrintModifiersPrintStage(stage) << " "
-
-
-#include <iostream>
-#include <functional>
-#include <deque>
-#include <cassert>
-#include "SPSCQueue/include/rigtorp/SPSCQueue.h"
 
 template <typename T>
 using PipelineQueueType =
