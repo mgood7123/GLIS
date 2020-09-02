@@ -1,0 +1,14 @@
+2020-09-01 16:48:03,929 INFO [default] My first info log using default logger
+2020-09-01 16:48:52,885 INFO [default] My first info log using default logger
+2020-09-01 16:49:54,784 INFO [default] My first info log using default logger
+2020-09-01 16:50:13,840 INFO [default] test
+2020-09-01 16:50:13,840 INFO [default] finding wire with id A
+2020-09-01 16:50:13,840 INFO [default] testing wire with id A
+2020-09-01 16:50:13,840 INFO [default] found wire with id A
+2020-09-01 16:50:13,840 INFO [default] testing wire with id B
+2020-09-01 16:52:44,063 INFO [default] test
+2020-09-01 16:52:44,064 INFO [default] finding wire with id A
+2020-09-01 16:52:44,064 INFO [default] testing wire with id A
+2020-09-01 16:52:44,064 INFO [default] found wire with id A
+2020-09-01 16:52:44,064 INFO [default] testing wire with id B
+2020-09-01 16:53:33,171 INFO [default] test

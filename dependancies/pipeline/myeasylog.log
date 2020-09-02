@@ -1,0 +1,133 @@
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:81] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:82] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:84] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:85] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::exec() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:121] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:99] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:100] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:103] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:104] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:90] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:91] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,840 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:93] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,841 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:94] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,841 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:110] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,841 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:111] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,841 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:114] Logger [hardware] is not registered yet!
+2020-09-01 19:41:08,841 DEBUG [default] [smallville7123@unknown-host] [T Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:115] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,084 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:81] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,084 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:82] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,084 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:84] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,084 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:85] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::exec() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:121] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:99] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:100] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:103] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:104] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:90] Logger [hardware] is not registered yet!
+2020-09-01 19:41:54,085 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:91] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,861 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:81] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,861 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:82] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:84] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_input(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:85] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::exec() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:121] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:99] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:100] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:103] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_input() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:104] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:90] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:91] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:93] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [void Hardware<T>::Flop<CAPACITY>::push_output(T&&) [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:94] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:110] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:111] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:114] Logger [hardware] is not registered yet!
+2020-09-01 19:42:20,862 DEBUG [default] [smallville7123@unknown-host] [T&& Hardware<T>::Flop<CAPACITY>::pull_output() [with int CAPACITY = 1; T = bool]] [..ville7123/AndroidCompositor/app/src/main/jni/GLIS/dependancies/pipeline/src/hardware/hardware.cpp:115] Logger [hardware] is not registered yet!
+[hardware:INFO] [FLOP   ] pushing input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushed input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] input->front(): 0x55e3a1f25540
+[hardware:INFO] [FLOP   ] pulling input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] pulled input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushing output
+[hardware:INFO] [FLOP   ] output->size(): 0
+[hardware:INFO] [FLOP   ] pushed ouput
+[hardware:INFO] [FLOP   ] output->size(): 1
+[hardware:INFO] [FLOP   ] pulling output
+[hardware:INFO] [FLOP   ] output->size(): 1
+[hardware:INFO] [FLOP   ] pulled output
+[hardware:INFO] [FLOP   ] output->size(): 0
+[hardware:INFO] [FLOP   ] pushing input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushed input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] input->front(): 0x5640b9876540
+[hardware:INFO] [FLOP   ] pulling input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] pulled input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushing output
+[hardware:INFO] [FLOP   ] output->size(): 0
+[hardware:INFO] [FLOP   ] pushed ouput
+[hardware:INFO] [FLOP   ] output->size(): 1
+[hardware:INFO] [FLOP   ] pulling output
+[hardware:INFO] [FLOP   ] output->size(): 1
+[hardware:INFO] [FLOP   ] pulled output
+[hardware:INFO] [FLOP   ] output->size(): 0
+[hardware:INFO] [FLOP   ] pushing input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushed input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] input->front(): 0x5613bab86540
+[hardware:INFO] [FLOP   ] pulling input
+[hardware:INFO] [FLOP   ] input->size(): 1
+[hardware:INFO] [FLOP   ] pulled input
+[hardware:INFO] [FLOP   ] input->size(): 0
+[hardware:INFO] [FLOP   ] pushing output
+[hardware:INFO] [FLOP   ] output->size(): 0
+[hardware:INFO] [FLOP   ] pushed ouput
+[hardware:INFO] [FLOP   ] output->size(): 1
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] start->outputs: [B, C]
+[hardware:INFO] id: A
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1
+[hardware:INFO] id: A
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] start->outputs: [B, C]
+[hardware:INFO] out_id: B
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] start->outputs: [B, C]
+[hardware:INFO] out_id: B
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1
+[hardware:INFO] out_id: C
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1
+[hardware:INFO] copy: 1
+[hardware:INFO] input: 1
+[hardware:INFO] start->outputs: [B, C]
+[hardware:INFO] out_id: B
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1
+[hardware:INFO] out_id: C
+[hardware:INFO] copy: 1
+[hardware:INFO] output: 1
+[hardware:INFO] input: 1

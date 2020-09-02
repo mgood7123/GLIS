@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.4.1)
+
+testBuilder_add_source(hardware_test_01 hardware.cpp)
+testBuilder_add_library(hardware_test_01 gtest_main)
+testBuilder_add_library(hardware_test_01 easyloggingpp)
+testBuilder_build(hardware_test_01 EXECUTABLES)
