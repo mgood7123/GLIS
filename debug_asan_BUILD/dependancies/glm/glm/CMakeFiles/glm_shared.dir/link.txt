@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g3 -O0 -fno-omit-frame-pointer -fsanitize=address -fsanitize-address-use-after-scope -fno-common  -shared -Wl,-soname,libglm_shared.so -o ../../../Debug/lib/libglm_shared.so CMakeFiles/glm_shared.dir/detail/glm.cpp.o 
